@@ -13,7 +13,7 @@ cursor.execute('SELECT * FROM wp_posts')
 
 # mongo
 conn = pymongo.MongoClient(safe=True)
-db = pymongo['blog']
+db = conn['blog']
 
 
 headers = (
@@ -26,7 +26,10 @@ headers = (
 )
 
 
-for content in cursor:
+for i, content in enumerate(cursor):
+    if i % 100 == 0:
+        print('finished {}'.format(i))
+
     docu = dict(zip(headers, content))
     db['post'].update(
         {'id': docu['id']},
