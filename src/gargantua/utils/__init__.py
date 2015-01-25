@@ -3,7 +3,6 @@
 import os
 import sys
 import logging
-import logging.basicConfig
 
 import motor
 
@@ -20,7 +19,7 @@ def setup_log(log_name, log_dir):
         level=logging.DEBUG,
         format=_format
     )
-    log = logging.getLogger(log_name)
+    log = logging.getLogger()
     ch = logging.StreamHandler(sys.stdout)
     ch.setLevel(logging.INFO)
     formatter = logging.Formatter(_format)
