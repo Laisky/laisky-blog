@@ -1,7 +1,8 @@
 Gargantua
 ---
-Version: 0.0.1
 Laisky's new blog by hand
+
+Version: 0.0.1
 
 ## Description
 
