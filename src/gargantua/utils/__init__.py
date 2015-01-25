@@ -15,7 +15,7 @@ def connect_db(dbhost, dbport):
 def setup_log(log_name, log_dir):
     _format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     logging.basicConfig(
-        filename=os.path.join(log_dir, '{}.log'.format('log_name')),
+        filename=os.path.join(log_dir, '{}.log'.format(log_name)),
         level=logging.DEBUG,
         format=_format
     )
