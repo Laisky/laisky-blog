@@ -9,7 +9,7 @@ requires = [str(i.req) for i in parse_requirements('requirements.txt',
             if i.req is not None]
 
 setup(name='gargantua',
-      version='0.1-dev',
+      version='0.0.1',
       packages=find_packages('src'),
       package_dir={'': 'src'},
       include_package_data=True,

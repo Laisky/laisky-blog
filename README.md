@@ -8,17 +8,13 @@ A simple blog by Python3
 
 ## Infrastructure
 
-- Python3
-    - tornado
-    - jinja2
-    - Motor
+- Backend
+    - Python3
+        - tornado
+    - MongoDB
+    - Nginx
 
-- MongoDB
-    - TokuMX
-
-- Nginx
-
-- HTML5
+- Frontend
     - CSS3 / LESS
     - JavaScript / jQuery
     - Bootstrap2

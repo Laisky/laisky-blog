@@ -1,8 +1,13 @@
 # debug
-ipython==2.3.1
+ipython
 
 # tools
-Jinja2==2.7.3
-motor==0.3.4
-pymongo==2.7.1
-tornado==4.0.2
+bcrypt
+Jinja2
+
+# db
+motor
+pymongo
+
+# server
+tornado
