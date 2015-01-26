@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+import re
 import sys
 import logging
 
@@ -18,3 +19,15 @@ def setup_log(log_name, log_dir):
     formatter = logging.Formatter(_format)
     ch.setFormatter(formatter)
     log.addHandler(ch)
+
+
+def validate_email(email):
+    epat = re.compile(
+        r'^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$'
+    )
+    return epat.match(email)
+
+
+def validate_mobile(mobile):
+    ippat = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
+    return ippat.match(mobile)

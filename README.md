@@ -1,6 +1,6 @@
 Gargantua
 ---
-Laisky's new blog by hand
+Laisky's new blog
 
 Version: 0.0.1
 
