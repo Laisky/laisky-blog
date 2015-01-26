@@ -14,16 +14,18 @@ import logging
 import tornado.wsgi
 import tornado.web
 from tornado.options import define, options
+import motorengine
 
 from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_PATH
 from .views import PageNotFound
-from .utils import connect_db, setup_log
+from .utils import setup_log
 
 
 log = logging.getLogger(__name__)
 setup_log(__name__, LOG_PATH)
 define('port', default=LISTEN_PORT, type=int)
 define('debug', default=False, type=bool)
+define('dbname', default=DB_NAME, type=str)
 define('dbhost', default=DB_HOST, type=str)
 define('dbport', default=DB_PORT, type=int)
 
@@ -53,6 +55,10 @@ class Application(tornado.wsgi.WSGIApplication):
         log.debug('connect dabase at {}:{}'
                   .format(options.dbhost, options.dbport))
 
-        conn = connect_db(options.dbhost, options.dbport)
-        db = conn[DB_NAME]
-        self.settings['db'] = db
+        tornado.ioloop.IOLoop.current()
+        motorengine.connect(
+            options.dbname,
+            options.dbhost,
+            options.dbport,
+            ioloop=tornado.ioloop.IOLoop.current()
+        )

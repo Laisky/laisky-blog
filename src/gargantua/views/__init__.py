@@ -10,3 +10,4 @@ class PageNotFound(BaseHandler):
     def get(self, url=''):
         self.render('404.html', url=url)
         self.finish()
+

@@ -6,7 +6,7 @@ bcrypt
 Jinja2
 
 # db
-motor
+motorengine
 pymongo
 
 # server

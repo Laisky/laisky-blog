@@ -4,13 +4,6 @@ import os
 import sys
 import logging
 
-import motor
-
-
-def connect_db(dbhost, dbport):
-    conn = motor.MotorClient(dbhost, dbport)
-    return conn
-
 
 def setup_log(log_name, log_dir):
     _format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'

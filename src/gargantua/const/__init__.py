@@ -21,3 +21,7 @@ ERROR = 1
 DB_HOST = 'localhost'
 DB_PORT = 27017
 DB_NAME = 'blog'
+
+
+# test
+DB_NAME = 'test'
