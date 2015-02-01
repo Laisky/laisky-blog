@@ -14,11 +14,11 @@ import logging
 import tornado.wsgi
 import tornado.web
 from tornado.options import define, options
-import motorengine
+import motor
 
 from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_PATH
-from .views import PageNotFound
 from .utils import setup_log
+from .views import BaseHandler
 
 
 log = logging.getLogger(__name__)
@@ -28,6 +28,13 @@ define('debug', default=False, type=bool)
 define('dbname', default=DB_NAME, type=str)
 define('dbhost', default=DB_HOST, type=str)
 define('dbport', default=DB_PORT, type=int)
+
+
+class PageNotFound(BaseHandler):
+
+    def get(self, url=''):
+        self.render('404.html', url=url)
+        self.finish()
 
 
 class Application(tornado.wsgi.WSGIApplication):
@@ -55,10 +62,5 @@ class Application(tornado.wsgi.WSGIApplication):
         log.debug('connect dabase at {}:{}'
                   .format(options.dbhost, options.dbport))
 
-        tornado.ioloop.IOLoop.current()
-        motorengine.connect(
-            options.dbname,
-            options.dbhost,
-            options.dbport,
-            ioloop=tornado.ioloop.IOLoop.current()
-        )
+        self.conn = motor.MotorClient(host=options.dbhost, port=options.dbport)
+        self.db = self.conn[options.dbname]

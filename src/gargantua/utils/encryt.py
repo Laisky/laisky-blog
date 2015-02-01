@@ -9,4 +9,4 @@ def generate_passwd(passpw):
 
 
 def validate_passwd(passpw, hashed):
-    return bcrypt.hashpw(passpw, hashed) == hashed
+    return bcrypt.hashpw(passpw.encode('utf-8'), hashed) == hashed
