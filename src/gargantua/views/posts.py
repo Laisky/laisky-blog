@@ -7,7 +7,7 @@ import tornado
 
 from .base import BaseHandler
 from ..models import post_render
-from ..utils.tornado import debug_wrapper
+from ..utils import debug_wrapper
 
 
 log = logging.getLogger(__name__)

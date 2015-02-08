@@ -3,11 +3,11 @@ ipython
 
 # tools
 bcrypt
-Jinja2
+jinja2
 
 # db
-motorengine
 pymongo
+motor
 
 # server
 tornado
