@@ -15,7 +15,7 @@ def setup_log(log_name, log_dir):
     )
     log = logging.getLogger()
     ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.INFO)
+    ch.setLevel(logging.DEBUG)
     formatter = logging.Formatter(_format)
     ch.setFormatter(formatter)
     log.addHandler(ch)

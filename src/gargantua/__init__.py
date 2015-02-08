@@ -18,7 +18,7 @@ import motor
 
 from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_PATH
 from .utils import setup_log
-from .views import BaseHandler
+from .views import BaseHandler, PostsHandler
 
 
 log = logging.getLogger(__name__)
@@ -51,6 +51,7 @@ class Application(tornado.wsgi.WSGIApplication):
             'debug': options.debug
         }
         handlers = [
+            ('/posts/(.*)', PostsHandler),
             # -------------- handler --------------
             ('/404.html', PageNotFound),
         ]

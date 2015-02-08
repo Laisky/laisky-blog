@@ -25,4 +25,4 @@ DB_NAME = 'blog'
 
 # test
 DB_HOST = 'blog.laisky.com'
-DB_NAME = 'test'
+# DB_NAME = 'test'
