@@ -1,16 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
-import inspect
-
-import gargantua
 
 
 # server
 LISTEN_PORT = 27850
 
 # common
-CWD = os.path.dirname(inspect.getfile(gargantua))
+CWD = os.dirname(__file__)
+LOG_NAME = 'gargantua'
 LOG_PATH = '/var/log/gargantua'
 
 # web signal

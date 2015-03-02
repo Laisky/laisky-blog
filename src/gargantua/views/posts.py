@@ -6,7 +6,7 @@ import pymongo
 import tornado
 
 from .base import BaseHandler
-from ..models import post_render
+from ..parsers import post_parser
 from ..utils import debug_wrapper
 
 
@@ -35,7 +35,7 @@ class PostsHandler(BaseHandler):
         cursor.sort([('_id', pymongo.DESCENDING)]).limit(n)
         posts = []
         for docu in (yield cursor.to_list(length=n)):
-            posts.append(post_render(docu))
+            posts.append(post_parser(docu))
 
         self.write_json(data=posts)
         self.finish()

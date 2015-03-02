@@ -16,13 +16,14 @@ import tornado.web
 from tornado.options import define, options
 import motor
 
-from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_PATH
+from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, \
+    LOG_PATH, LOG_NAME
 from .utils import setup_log
 from .views import BaseHandler, PostsHandler
 
 
-log = logging.getLogger(__name__)
-setup_log(__name__, LOG_PATH)
+log = logging.getLogger(LOG_NAME)
+setup_log(LOG_NAME, LOG_PATH)
 define('port', default=LISTEN_PORT, type=int)
 define('debug', default=False, type=bool)
 define('dbname', default=DB_NAME, type=str)
