@@ -18,8 +18,8 @@ import motor
 
 from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, \
     LOG_PATH, LOG_NAME
-from .utils import setup_log
-from .views import BaseHandler, PostsHandler
+from .utils import setup_log, BaseHandler
+from .views import PostsHandler
 
 
 log = logging.getLogger(LOG_NAME)

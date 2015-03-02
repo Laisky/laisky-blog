@@ -6,11 +6,11 @@ import sys
 import logging
 
 from .encryt import generate_passwd, validate_passwd
-from .tornado import debug_wrapper
+from .tornado import debug_wrapper, BaseHandler
 
 
 __all__ = ['generate_passwd', 'validate_passwd', 'debug_wrapper', 'setup_log',
-           'validate_email', 'validate_mobile']
+           'validate_email', 'validate_mobile', 'BaseHandler']
 
 
 def setup_log(log_name, log_dir):

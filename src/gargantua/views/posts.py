@@ -8,9 +8,10 @@ import tornado
 from .base import BaseHandler
 from ..parsers import post_parser
 from ..utils import debug_wrapper
+from ..const import LOG_NAME
 
 
-log = logging.getLogger(__name__)
+log = logging.getLogger(LOG_NAME)
 
 
 class PostsHandler(BaseHandler):
