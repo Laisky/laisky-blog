@@ -8,7 +8,7 @@ import traceback
 import tornado.web
 from jinja2 import Environment, FileSystemLoader, TemplateNotFound
 
-from ..const import OK, LOG_NAME
+from ..const import OK, LOG_NAME, CWD
 
 
 log = logging.getLogger(LOG_NAME)
@@ -34,11 +34,11 @@ class TemplateRendering():
             using-jinja2-as-the-template-engine-for-tornado-web-framework/
     """
 
-    def render_template(self, template_name, **kwargs):
+    def render_template(self, template_name, **kw):
         template_dirs = []
-        if self.settings.get('template_path', ''):
+        if kw['settings'].get('template_path', ''):
             template_dirs.append(
-                self.settings["template_path"]
+                kw['settings']["template_path"]
             )
 
         env = Environment(loader=FileSystemLoader(template_dirs))
@@ -47,7 +47,7 @@ class TemplateRendering():
             template = env.get_template(template_name)
         except TemplateNotFound:
             raise TemplateNotFound(template_name)
-        content = template.render(kwargs)
+        content = template.render(kw)
         return content
 
 

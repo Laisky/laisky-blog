@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
 import re
 import sys
 import logging
@@ -16,11 +15,6 @@ __all__ = ['generate_passwd', 'validate_passwd', 'debug_wrapper', 'setup_log',
 def setup_log(log_name, log_dir):
     _format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     log = logging.getLogger(log_name)
-    log.basicConfig(
-        filename=os.path.join(log_dir, '{}.log'.format(log_name)),
-        level=logging.DEBUG,
-        format=_format
-    )
     ch = logging.StreamHandler(sys.stdout)
     ch.setLevel(logging.DEBUG)
     formatter = logging.Formatter(_format)

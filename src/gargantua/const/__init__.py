@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
-
+import pathlib
 
 # server
 LISTEN_PORT = 27850
 
 # common
-CWD = os.dirname(__file__)
+CWD = pathlib.PurePath(__file__).parents[1]
 LOG_NAME = 'gargantua'
 LOG_PATH = '/var/log/gargantua'
 

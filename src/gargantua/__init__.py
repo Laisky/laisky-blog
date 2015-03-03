@@ -8,8 +8,8 @@ EMail  : ppcelery@gmail.com
 Home   : https://github.com/Laisky/laisky-blog
 """
 
-import os
 import logging
+from pathlib import Path
 
 import tornado.wsgi
 import tornado.web
@@ -19,7 +19,7 @@ import motor
 from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, \
     LOG_PATH, LOG_NAME
 from .utils import setup_log, BaseHandler
-from .views import PostsHandler
+from .views import PostsHandler, ArticlesPage
 
 
 log = logging.getLogger(LOG_NAME)
@@ -42,9 +42,9 @@ class Application(tornado.wsgi.WSGIApplication):
 
     def __init__(self):
         settings = {
-            'static_path': os.path.join(CWD, 'static'),
+            'static_path': str(Path(CWD, 'static')),
             'static_url_prefix': '/static/',
-            'template_path': os.path.join(CWD, 'static', 'templates'),
+            'template_path': str(Path(CWD, 'static', 'templates')),
             'cookie_secret': 'XmuwPAt8wHdnik4Xvc3GXmbXLifVmPZYhoc9Tx4x1iZ',
             'login_url': '/login/',
             'xsrf_cookies': True,
@@ -52,8 +52,11 @@ class Application(tornado.wsgi.WSGIApplication):
             'debug': options.debug
         }
         handlers = [
-            ('/posts/(.*)', PostsHandler),
             # -------------- handler --------------
+            ('/articles', ArticlesPage),
+            # ---------------- api ----------------
+            ('/api/posts/(.*)', PostsHandler),
+            # ---------------- 404 ----------------
             ('/404.html', PageNotFound),
         ]
         handlers.append(('/(.*)', PageNotFound))

@@ -10,7 +10,11 @@ log = logging.getLogger(LOG_NAME)
 
 
 class ArticlesPage(BaseHandler):
-    pass
+
+    def get(self):
+        log.info('ArticlesPage GET')
+
+        self.render('articles.html')
 
 
 class MainPage(BaseHandler):

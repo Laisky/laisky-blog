@@ -5,9 +5,8 @@ import logging
 import pymongo
 import tornado
 
-from .base import BaseHandler
 from ..parsers import post_parser
-from ..utils import debug_wrapper
+from ..utils import debug_wrapper, BaseHandler
 from ..const import LOG_NAME
 
 
@@ -21,7 +20,7 @@ class PostsHandler(BaseHandler):
         log.info('PostsHandler get {}'.format(url))
 
         router = {
-            'api/get-lastest-posts': self.get_lastest_posts,
+            'get-lastest-posts': self.get_lastest_posts,
         }
         router.get(url, self.redirect_404)()
 
