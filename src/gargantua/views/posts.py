@@ -5,7 +5,6 @@ import logging
 import pymongo
 import tornado
 
-from ..parsers import post_parser
 from ..utils import debug_wrapper, BaseHandler
 from ..const import LOG_NAME
 
@@ -27,15 +26,16 @@ class PostsHandler(BaseHandler):
     @tornado.gen.coroutine
     @debug_wrapper(log)
     def get_lastest_posts(self):
-        log.info('get_lastest_posts')
+        log.debug('get_lastest_posts')
 
         n = int(self.get_argument('n', strip=True, default=5))
 
-        cursor = self.db.posts.find()
+        cursor = self.db.posts.find({}, {'_id': 1})
         cursor.sort([('_id', pymongo.DESCENDING)]).limit(n)
-        posts = []
+        post_ids = []
         for docu in (yield cursor.to_list(length=n)):
-            posts.append(post_parser(docu))
+            post_ids.append(str(docu['_id']))
 
-        self.write_json(data=posts)
+        _ids = ';'.join(post_ids)
+        self.write_json(data=_ids)
         self.finish()

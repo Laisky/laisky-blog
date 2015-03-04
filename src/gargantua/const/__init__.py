@@ -16,7 +16,7 @@ ERROR = 1
 
 # db
 DB_HOST = 'localhost'
-DB_PORT = 27017
+DB_PORT = 27016
 DB_NAME = 'blog'
 
 
