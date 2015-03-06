@@ -8,21 +8,19 @@ import traceback
 import tornado.web
 from jinja2 import Environment, FileSystemLoader, TemplateNotFound
 
-from ..const import OK, LOG_NAME, CWD
+from ..const import OK, LOG_NAME
 
 
 log = logging.getLogger(LOG_NAME)
 
 
-def debug_wrapper(log=log):
-    def wrapper(func):
-        def _wrapper(*args, **kw):
-            try:
-                yield from func(*args, **kw)
-            except Exception:
-                log.error(traceback.format_exc())
-                raise
-        return _wrapper
+def debug_wrapper(func):
+    def wrapper(*args, **kw):
+        try:
+            yield from func(*args, **kw)
+        except Exception:
+            log.error(traceback.format_exc())
+            raise
     return wrapper
 
 
