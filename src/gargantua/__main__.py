@@ -7,9 +7,10 @@ import tornado.options as opt
 from tornado.options import options
 
 from . import Application
+from .const import LOG_NAME
 
 
-log = logging.getLogger(__name__)
+log = logging.getLogger(LOG_NAME)
 
 
 def main():

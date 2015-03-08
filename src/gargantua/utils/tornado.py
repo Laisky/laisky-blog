@@ -2,11 +2,26 @@
 # -*- coding: utf-8 -*-
 import os
 import json
+import logging
+import traceback
 
 import tornado.web
-from jinja2 import Environment, FileSystemLoader, TemplateNotFound
+from jinja2 import Environment, FileSystemLoader
 
-from ..const import OK
+from ..const import OK, LOG_NAME
+
+
+log = logging.getLogger(LOG_NAME)
+
+
+def debug_wrapper(func):
+    def wrapper(*args, **kw):
+        try:
+            yield from func(*args, **kw)
+        except Exception:
+            log.error(traceback.format_exc())
+            raise
+    return wrapper
 
 
 class TemplateRendering():
@@ -16,21 +31,16 @@ class TemplateRendering():
         http://bibhas.in/blog/\
             using-jinja2-as-the-template-engine-for-tornado-web-framework/
     """
+    _jinja_env = None
 
-    def render_template(self, template_name, **kwargs):
-        template_dirs = []
-        if self.settings.get('template_path', ''):
-            template_dirs.append(
-                self.settings["template_path"]
+    def render_template(self, template_name, **kw):
+        if not self._jinja_env:
+            self._jinja_env = Environment(
+                loader=FileSystemLoader(self.settings['template_path'])
             )
 
-        env = Environment(loader=FileSystemLoader(template_dirs))
-
-        try:
-            template = env.get_template(template_name)
-        except TemplateNotFound:
-            raise TemplateNotFound(template_name)
-        content = template.render(kwargs)
+        template = self._jinja_env.get_template(template_name)
+        content = template.render(kw)
         return content
 
 

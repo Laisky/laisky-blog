@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from .base import BaseHandler
 
-__all__ = ['BaseHandler']
+from .posts import PostsHandler
+from .pages import ArticlesPage
+
+__all__ = ['PostsHandler', 'ArticlesPage']

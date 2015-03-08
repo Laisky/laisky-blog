@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ static_url("css/loader.css") }}">
+<link rel="stylesheet" href="{{ static_url("css/articles.css") }}">
+<script src="{{ static_url("js/articles.js") }}" type="text/javascript"></script>
+{% endblock %}
+{% block body %}
+{{ super() }}
+<div class="container-fluid">js
+<div class="row-fluid">
+    <!-- articles -->
+    <div id="articles" class="span10">
+        <p>载入中...</p>
+        <ul class="loader">
+            <li class="loader"></li>
+            <li class="loader"></li>
+            <li class="loader"></li>
+            <li class="loader"></li>
+        </ul>
+    </div>
+    <!-- articles -->
+
+    <!-- navigator -->
+    <div class="span2">
+        <div id="navigator">
+            <div class="row-fluid">
+                <nav>
+                    <h3>文章归档</h2>
+                    <p>载入中...</p>
+                    <ul id="post_topics_bar" class="post-topics loader">
+                        <li class="loader"></li>
+                        <li class="loader"></li>
+                        <li class="loader"></li>
+                        <li class="loader"></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- navigator -->
+</div>
+</div>
+{% endblock %}
