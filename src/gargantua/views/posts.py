@@ -6,7 +6,7 @@ import pymongo
 import tornado
 from bson import ObjectId
 
-from ..utils import debug_wrapper, BaseHandler
+from ..utils import debug_wrapper, BaseHandler, unquote_fr_mongo
 from ..const import LOG_NAME
 
 
@@ -33,14 +33,14 @@ class PostsHandler(BaseHandler):
 
         n = int(self.get_argument('n', strip=True, default=5))
 
-        cursor = self.db.posts.find({}, {'_id': 1})
+        cursor = self.db.posts.find({})
         cursor.sort([('_id', pymongo.DESCENDING)]).limit(n)
-        post_ids = []
+        posts = []
         for docu in (yield cursor.to_list(length=n)):
-            post_ids.append(str(docu['_id']))
+            docu = unquote_fr_mongo(docu)
+            posts.append(docu)
 
-        _ids = ';'.join(post_ids)
-        self.write_json(data=_ids)
+        self.write_json(data=posts)
         self.finish()
 
     @tornado.gen.coroutine

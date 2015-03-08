@@ -6,10 +6,12 @@ import logging
 
 from .encryt import generate_passwd, validate_passwd
 from .tornado import debug_wrapper, BaseHandler
+from .mongo import unquote_fr_mongo
 
 
 __all__ = ['generate_passwd', 'validate_passwd', 'debug_wrapper', 'setup_log',
-           'validate_email', 'validate_mobile', 'BaseHandler']
+           'validate_email', 'validate_mobile', 'BaseHandler',
+           'unquote_fr_mongo']
 
 
 def setup_log(log_name, log_dir):
