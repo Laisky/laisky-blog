@@ -6,7 +6,7 @@ import pathlib
 LISTEN_PORT = 27850
 
 # common
-CWD = pathlib.PurePath(__file__).parents[1]
+CWD = pathlib.PurePath(__file__).parents[0]
 LOG_NAME = 'gargantua'
 LOG_PATH = '/var/log/gargantua'
 

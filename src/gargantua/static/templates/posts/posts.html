@@ -1,0 +1,14 @@
+{% for post in posts %}
+    <div id="posts-container" class="post">
+    <h2><a href="{{ post['post_name'] }}">{{ post['post_title'] }}</a></h2>
+        <div class="post-content">
+        <article>
+            {{ post['post_content'] }}
+        </article>
+        </div>
+        <div class="post-tail">
+            <span>comment</span>
+            <span>like</span>
+        </div>
+    </div>
+{% endfor %}

@@ -40,7 +40,8 @@ class PostsHandler(BaseHandler):
             docu = unquote_fr_mongo(docu)
             posts.append(docu)
 
-        self.write_json(data=posts)
+        _posts = self.render_template('posts/posts.html', posts=posts)
+        self.write_json(data=_posts)
         self.finish()
 
     @tornado.gen.coroutine

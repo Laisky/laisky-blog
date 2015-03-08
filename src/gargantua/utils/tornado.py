@@ -6,7 +6,7 @@ import logging
 import traceback
 
 import tornado.web
-from jinja2 import Environment, FileSystemLoader, TemplateNotFound
+from jinja2 import Environment, FileSystemLoader
 
 from ..const import OK, LOG_NAME
 
@@ -31,20 +31,15 @@ class TemplateRendering():
         http://bibhas.in/blog/\
             using-jinja2-as-the-template-engine-for-tornado-web-framework/
     """
+    _jinja_env = None
 
     def render_template(self, template_name, **kw):
-        template_dirs = []
-        if kw['settings'].get('template_path', ''):
-            template_dirs.append(
-                kw['settings']["template_path"]
+        if not self._jinja_env:
+            self._jinja_env = Environment(
+                loader=FileSystemLoader(self.settings['template_path'])
             )
 
-        env = Environment(loader=FileSystemLoader(template_dirs))
-
-        try:
-            template = env.get_template(template_name)
-        except TemplateNotFound:
-            raise TemplateNotFound(template_name)
+        template = self._jinja_env.get_template(template_name)
         content = template.render(kw)
         return content
 
