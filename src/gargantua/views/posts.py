@@ -7,7 +7,7 @@ import tornado
 from bson import ObjectId
 
 from ..utils import debug_wrapper, BaseHandler, unquote_fr_mongo
-from ..const import LOG_NAME
+from ..const import LOG_NAME, N_MAX_POSTS
 
 
 log = logging.getLogger(LOG_NAME)
@@ -33,6 +33,7 @@ class PostsHandler(BaseHandler):
 
         n = int(self.get_argument('n', strip=True, default=5))
 
+        n = min(n, N_MAX_POSTS)
         cursor = self.db.posts.find({})
         cursor.sort([('_id', pymongo.DESCENDING)]).limit(n)
         posts = []

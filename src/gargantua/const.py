@@ -23,3 +23,6 @@ DB_NAME = 'blog'
 # test
 DB_HOST = 'blog.laisky.com'
 # DB_NAME = 'test'
+
+# posts
+N_MAX_POSTS = 20
