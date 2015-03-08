@@ -1,11 +1,32 @@
 {% extends 'base.html' %}
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" href="{{ static_url("css/404.css") }}">
+<style type="text/css">
+    * {
+        text-align: center;
+    }
+</style>
+<script>
+    $(function() {
+        setInterval(function() {
+            changeTimeCount();
+        }, 1000);
+    });
+
+    function changeTimeCount() {
+        var sec = Number($("#count").html());
+        if(sec > 1){
+            $("#count").html(sec - 1);
+        }else {
+            window.location.replace('/articles');
+        }
+    };
+</script>
 {% endblock %}
 {% block body %}
 {{ super() }}
 <div class="container">
     <h1>Page Not Found</h1>
+    <p><span id="count">5</span> 秒 后将会被跳转到文章页</p>
 </div>
 {% endblock %}

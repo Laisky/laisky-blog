@@ -9,10 +9,13 @@ Home   : https://github.com/Laisky/laisky-blog
 """
 
 import logging
+import time
 from pathlib import Path
 
 import tornado.wsgi
 import tornado.web
+import tornado.gen
+import tornado.ioloop
 from tornado.options import define, options
 import motor
 
@@ -33,6 +36,7 @@ define('dbport', default=DB_PORT, type=int)
 
 class PageNotFound(BaseHandler):
 
+    @tornado.gen.coroutine
     def get(self, url=''):
         self.render('404.html', url=url)
         self.finish()
