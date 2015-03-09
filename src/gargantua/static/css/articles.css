@@ -2,8 +2,11 @@ h1 {
     text-align: center;
 }
 
-#articles {
+article {
+    line-height: 150%;
+}
 
+#articles {
     background-color: rgba(40, 41, 35, 0.8);
     width: 90%;
     max-width: 900px;
