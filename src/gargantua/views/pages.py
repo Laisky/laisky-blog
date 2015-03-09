@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
+import urllib
+
 import tornado
 
 from ..const import LOG_NAME
@@ -12,31 +14,22 @@ log = logging.getLogger(LOG_NAME)
 
 class ArticlesPage(BaseHandler):
 
-    @tornado.web.asynchronous
-    def get(self, url=None):
-        log.info('ArticlesPage GET for url {}'.format(repr(url)))
-
-        url = url or 'index'
-        router = {
-            'index': self.index,
-            'get-post-by-name': self.get_post_by_name
-        }
-        router.get(url, self.redirect_404)()
-
-    def index(self):
+    def get(self):
+        log.info('ArticlesPage GET')
         self.render('articles.html')
-        self.finish()
+
+
+class PostPage(BaseHandler):
 
     @tornado.gen.coroutine
     @debug_wrapper
-    def get_post_by_name(self):
-        name = self.get_argument('name', strip=True)
-        log.debug('get_post_by_name for name {}'.format(name))
+    def get(self, name):
+        log.debug('PostPage GET for name {}'.format(name))
 
+        name = urllib.parse.quote(name).lower()
         post = yield self.db.posts.find_one({'post_name': name})
-        _posts = self.render_template('post.html', posts=[post])
-        self.write_json(data=_posts)
-        self.finish()
+        tornado.web.urlencode
+        self.render('single-post.html', post=post)
 
 
 class MainPage(BaseHandler):
@@ -44,8 +37,4 @@ class MainPage(BaseHandler):
 
 
 class AboutMe(BaseHandler):
-    pass
-
-
-class PostPage(BaseHandler):
     pass

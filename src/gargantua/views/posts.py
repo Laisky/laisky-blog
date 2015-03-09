@@ -40,7 +40,7 @@ class PostsHandler(BaseHandler):
         for docu in (yield cursor.to_list(length=n)):
             docu = unquote_fr_mongo(docu)
             if not is_full:
-                docu['post_content'] = docu['post_content'][: 300]
+                docu['post_content'] = docu['post_content'][: 1000]
             posts.append(docu)
 
         _posts = self.render_template('posts/posts.html', posts=posts)
@@ -62,7 +62,7 @@ class PostsHandler(BaseHandler):
             docu['post_modified_gmt'] = \
                 docu['post_modified_gmt'].timestamp() * 1000
             if not is_full:
-                docu['post_content'] = docu['post_content'][: 300]
+                docu['post_content'] = docu['post_content'][: 1000]
 
         self.write_json(data=docu)
         self.finish()

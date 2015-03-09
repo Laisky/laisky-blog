@@ -9,7 +9,6 @@ Home   : https://github.com/Laisky/laisky-blog
 """
 
 import logging
-import time
 from pathlib import Path
 
 import tornado.wsgi
@@ -22,7 +21,7 @@ import motor
 from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, \
     LOG_PATH, LOG_NAME
 from .utils import setup_log, BaseHandler
-from .views import PostsHandler, ArticlesPage
+from .views import PostsHandler, ArticlesPage, PostPage
 
 
 log = logging.getLogger(LOG_NAME)
@@ -57,7 +56,8 @@ class Application(tornado.wsgi.WSGIApplication):
         }
         handlers = [
             # -------------- handler --------------
-            ('/articles/(.*)', ArticlesPage),
+            ('/articles', ArticlesPage),
+            ('/p/(.*)', PostPage),
             # ---------------- api ----------------
             ('/api/posts/(.*)', PostsHandler),
             # ---------------- 404 ----------------
