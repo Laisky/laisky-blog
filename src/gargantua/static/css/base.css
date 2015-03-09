@@ -24,6 +24,11 @@ article, p, h1, h2, h3 {
     color: #ddd;
 }
 
+article, p {
+  font-size: 15px;
+  font-weight: bold;
+}
+
 .navbar .brand {
   position: relative;
   margin-left: -10px;
