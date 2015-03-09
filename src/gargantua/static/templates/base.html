@@ -51,6 +51,29 @@
         }
 
 
+        function getBaseURL() {
+            var url = location.href;  // entire url including querystring - also: window.location.href;
+            var baseURL = url.substring(0, url.indexOf('/', 14));
+
+
+            if (baseURL.indexOf('http://localhost') != -1) {
+                // Base Url for localhost
+                var url = location.href;  // window.location.href;
+                var pathname = location.pathname;  // window.location.pathname;
+                var index1 = url.indexOf(pathname);
+                var index2 = url.indexOf("/", index1 + 1);
+                var baseLocalUrl = url.substr(0, index2);
+
+                return baseLocalUrl + "/";
+            }
+            else {
+                // Root Url for domain name
+                return baseURL + "/";
+            }
+
+        }
+
+
         jQuery.postJSON = function(url, args, callback) {
             args._xsrf = getCookie("_xsrf");
             $.ajax({url: url, data: $.param(args), dataType: "text", type: "POST",
@@ -71,7 +94,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <div class="brand">Laisky's Blog</div>
+            <div class="brand"><a href="/articles">Laisky's Blog</a></div>
             <ul id="welcome" class="nav" style="margin-right: auto; margin-left: auto; position: absolute;">
                 <li><a>The Beautiful World</a></li>
             </ul>
