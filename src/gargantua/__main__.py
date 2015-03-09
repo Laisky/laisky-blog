@@ -21,6 +21,7 @@ def main():
 
     if options.debug:
         log.info('start application in debug mode')
+        log.setLevel(logging.DEBUG)
     else:
         log.info('start application in normal mode')
     tornado.ioloop.IOLoop.instance().start()

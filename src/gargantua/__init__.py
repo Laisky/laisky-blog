@@ -57,7 +57,7 @@ class Application(tornado.wsgi.WSGIApplication):
         }
         handlers = [
             # -------------- handler --------------
-            ('/articles', ArticlesPage),
+            ('/articles/(.*)', ArticlesPage),
             # ---------------- api ----------------
             ('/api/posts/(.*)', PostsHandler),
             # ---------------- 404 ----------------

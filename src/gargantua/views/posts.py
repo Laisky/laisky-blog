@@ -29,9 +29,9 @@ class PostsHandler(BaseHandler):
     @tornado.gen.coroutine
     @debug_wrapper
     def get_lastest_posts(self):
-        log.debug('get_lastest_posts')
-
         n = int(self.get_argument('n', strip=True, default=5))
+        is_full = self.get_argument('is_full', strip=True, default=False)
+        log.debug('get_lastest_posts for n {}'.format(n))
 
         n = min(n, N_MAX_POSTS)
         cursor = self.db.posts.find({})
@@ -39,6 +39,8 @@ class PostsHandler(BaseHandler):
         posts = []
         for docu in (yield cursor.to_list(length=n)):
             docu = unquote_fr_mongo(docu)
+            if not is_full:
+                docu['post_content'] = docu['post_content'][: 300]
             posts.append(docu)
 
         _posts = self.render_template('posts/posts.html', posts=posts)
@@ -48,10 +50,9 @@ class PostsHandler(BaseHandler):
     @tornado.gen.coroutine
     @debug_wrapper
     def get_post_by_id(self):
-        log.debug('get_post_by_id')
-
-        is_full = self.get_argument('is_full', strip=True, default=True)
+        is_full = self.get_argument('is_full', strip=True, default=False)
         _id = self.get_argument('id', strip=True)
+        log.debug('get_post_by_id for _id {}, is_full {}'.format(_id, is_full))
 
         docu = yield self.db.posts.find_one({'_id': ObjectId(_id)})
         if docu:
@@ -60,6 +61,8 @@ class PostsHandler(BaseHandler):
             docu['_id'] = str(docu['_id'])
             docu['post_modified_gmt'] = \
                 docu['post_modified_gmt'].timestamp() * 1000
+            if not is_full:
+                docu['post_content'] = docu['post_content'][: 300]
 
         self.write_json(data=docu)
         self.finish()
