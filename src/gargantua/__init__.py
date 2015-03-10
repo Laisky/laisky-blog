@@ -21,7 +21,7 @@ import motor
 from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, \
     LOG_PATH, LOG_NAME
 from .utils import setup_log, BaseHandler
-from .views import PostsHandler, ArticlesPage, PostPage
+from .views import PostsHandler, ArchivesPage, PostPage
 
 
 log = logging.getLogger(LOG_NAME)
@@ -56,7 +56,7 @@ class Application(tornado.wsgi.WSGIApplication):
         }
         handlers = [
             # -------------- handler --------------
-            ('/articles', ArticlesPage),
+            ('/archives', ArchivesPage),
             ('/p/(.*)', PostPage),
             # ---------------- api ----------------
             ('/api/posts/(.*)', PostsHandler),

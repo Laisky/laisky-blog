@@ -12,11 +12,11 @@ from ..utils import BaseHandler, debug_wrapper
 log = logging.getLogger(LOG_NAME)
 
 
-class ArticlesPage(BaseHandler):
+class ArchivesPage(BaseHandler):
 
     def get(self):
-        log.info('ArticlesPage GET')
-        self.render('articles.html')
+        log.info('ArchivesPage GET')
+        self.render('archives.html')
 
 
 class PostPage(BaseHandler):
