@@ -11,7 +11,7 @@ function loadLastPosts() {
         console.log(data['status']);
     })
         .done(function(data) {
-            $("#articles").html(data['data'])
+            $("#archives").html(data['data'])
             hljs.initHighlightingOnLoad();
         });
 }

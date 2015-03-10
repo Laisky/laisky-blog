@@ -2,14 +2,14 @@
 {% block head %}
 {{ super() }}
 <link rel="stylesheet" href="{{ static_url("css/loader.css") }}">
-<link rel="stylesheet" href="{{ static_url("css/articles.css") }}">
+<link rel="stylesheet" href="{{ static_url("css/archives.css") }}">
 {% endblock %}
 {% block body %}
 {{ super() }}
 <div class="container-fluid">
 <div class="row-fluid">
-    <!-- articles -->
-    <div id="articles" class="span12">
+    <!-- archives -->
+    <div id="archives" class="span12">
         <div id="posts-container" class="post">
         <h2><a href="/p/{{ post['post_name'] }}">{{ post['post_title'] }}</a></h2>
             <div class="post-content">
@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-    <!-- articles -->
+    <!-- archives -->
 </div>
 </div>
 {% endblock %}
