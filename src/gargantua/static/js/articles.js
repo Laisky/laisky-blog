@@ -12,5 +12,6 @@ function loadLastPosts() {
     })
         .done(function(data) {
             $("#articles").html(data['data'])
+            hljs.initHighlightingOnLoad();
         });
 }
