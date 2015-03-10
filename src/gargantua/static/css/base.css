@@ -19,7 +19,7 @@ body {
   background: url(http://laisky-blog.qiniudn.com/background-1500x844.jpg) no-repeat fixed 0 0;
 }
 
-article, p, h1, h2, h3 {
+article, p, span, h1, h2, h3 {
     font-family: "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
     color: #ddd;
     font-weight: bolder;
