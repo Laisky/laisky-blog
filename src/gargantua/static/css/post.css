@@ -1,0 +1,31 @@
+@charset: 'UTF-8';
+
+.post {
+    background-color: rgba(40, 41, 35, 0.8);
+    width: 90%;
+    max-width: 900px;
+    /*min-height: 650px;*/
+    margin-top: 20px;
+    padding: 20px;
+    position: relative;
+    border: 2px solid;
+    border-radius: 25px;
+    margin-bottom: 15px;
+}
+
+.post h2 a {
+    color: rgb(246,247,208);
+}
+
+.post-tail {
+    text-align: right;
+    margin-right: 30px;
+}
+
+.icon-star {
+    margin-top: 0px;
+}
+
+.post-tail > span {
+    margin-left: 50px;
+}
