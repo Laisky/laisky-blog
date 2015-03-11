@@ -27,7 +27,7 @@ var postFuncs = {
             .done(function(data) {
                 $("#archives").html(data['data'])
                 hljs.initHighlightingOnLoad();
-                prettyImg();
+                imgFuncs.prettyImg();
             });
     }
 };
