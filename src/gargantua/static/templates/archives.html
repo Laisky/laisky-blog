@@ -2,15 +2,21 @@
 {% block head %}
 {{ super() }}
 <link rel="stylesheet" href="{{ static_url("css/loader.css") }}">
-<link rel="stylesheet" href="{{ static_url("css/articles.css") }}">
-<script src="{{ static_url("js/articles.js") }}" type="text/javascript"></script>
+<link rel="stylesheet" href="{{ static_url("css/archives.css") }}">
+<script src="{{ static_url("js/all.js") }}" type="text/javascript"></script>
+<script>
+    $(function() {
+        postFuncs.loadLastPosts();
+    })
+</script>
 {% endblock %}
 {% block body %}
 {{ super() }}
 <div class="container-fluid">
 <div class="row-fluid">
-    <!-- articles -->
-    <div id="articles" class="span10">
+    <!-- archives -->
+    <div id="archives" class="span10">
+        <div class="post">
         <p>载入中...</p>
         <ul class="loader">
             <li class="loader"></li>
@@ -18,8 +24,9 @@
             <li class="loader"></li>
             <li class="loader"></li>
         </ul>
+        </div>
     </div>
-    <!-- articles -->
+    <!-- archives -->
 
     <!-- navigator -->
     <div class="span2">
