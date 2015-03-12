@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block head %}
+{{ super() }}
+{% assets filters="less,cssmin", output="assets/archives.css",
+          "less/pages/archives.less" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+{% endassets %}
+{% assets filters="jsmin", output="assets/archives.js",
+          "js/pages/archives.js", "js/image.js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock %}
+{% block body %}
+{{ super() }}
+<div class="container-fluid">
+<div class="row-fluid">
+    <!-- archives -->
+    <div id="archives" class="span10">
+        <div class="post">
+        <p>载入中...</p>
+        {% include "widgets/loader.html" %}
+        </div>
+    </div>
+    <!-- archives -->
+
+    <!-- navigator -->
+    <div class="span2">
+        <div id="navigator">
+            <div class="row-fluid">
+                <nav>
+                    <h3>文章归档</h3>
+                    <p>载入中...</p>
+                    {% include "widgets/loader.html" %}
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- navigator -->
+</div>
+</div>
+{% endblock %}

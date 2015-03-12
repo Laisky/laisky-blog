@@ -16,7 +16,7 @@ class ArchivesPage(BaseHandler):
 
     def get(self):
         log.info('ArchivesPage GET')
-        self.render('archives.html')
+        self.render('archives/index.html')
 
 
 class PostPage(BaseHandler):
@@ -28,7 +28,7 @@ class PostPage(BaseHandler):
 
         name = urllib.parse.quote(name).lower()
         post = yield self.db.posts.find_one({'post_name': name})
-        self.render('single-post.html', post=post)
+        self.render('p/index.html', post=post)
 
 
 class MainPage(BaseHandler):

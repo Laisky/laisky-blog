@@ -43,7 +43,7 @@ class PostsHandler(BaseHandler):
                 docu['post_content'] = docu['post_content'][: 1000]
             posts.append(docu)
 
-        _posts = self.render_template('posts/posts.html', posts=posts)
+        _posts = self.render_template('archives/ajax/post.html', posts=posts)
         self.write_json(data=_posts)
         self.finish()
 

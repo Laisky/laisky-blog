@@ -1,24 +1,14 @@
 {% extends 'base.html' %}
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" href="{{ static_url("css/loader.css") }}">
-<link rel="stylesheet" href="{{ static_url("css/archives.css") }}">
-<script>
-    $(function() {
-        prettyImg();
-    });
-
-    function prettyImg() {
-        $("img").addClass('img-rounded');
-        $("img").css("max-height", 600);
-        $("img").css("max-width", 600);
-        $.each($("img"), function(node) {
-            var nd = $(node);
-            var src = nd.prop("src");
-            nd.wrap('<a href="' + src + '"></a>')
-        });
-    }
-</script>
+{% assets filters="less,cssmin", output="assets/p.css",
+          "less/pages/p.less" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+{% endassets %}
+{% assets filters="jsmin", output="assets/p.js",
+          "js/pages/p.js", "js/image.js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
 {% endblock %}
 {% block body %}
 {{ super() }}

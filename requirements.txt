@@ -4,6 +4,9 @@ ipython
 # tools
 bcrypt
 jinja2
+webassets
+cssmin
+jsmin
 
 # db
 pymongo

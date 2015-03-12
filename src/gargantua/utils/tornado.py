@@ -7,6 +7,8 @@ import traceback
 
 import tornado.web
 from jinja2 import Environment, FileSystemLoader
+from webassets import Environment as AssetsEnvironment
+from webassets.ext.jinja2 import AssetsExtension
 
 from ..const import OK, LOG_NAME
 
@@ -32,12 +34,20 @@ class TemplateRendering():
             using-jinja2-as-the-template-engine-for-tornado-web-framework/
     """
     _jinja_env = None
+    _assets_env = None
 
     def render_template(self, template_name, **kw):
         if not self._jinja_env:
             self._jinja_env = Environment(
-                loader=FileSystemLoader(self.settings['template_path'])
+                loader=FileSystemLoader(self.settings['template_path']),
+                extensions=[AssetsExtension]
             )
+        if not self._assets_env:
+            self._assets_env = AssetsEnvironment(
+                self.settings['static_path'],
+                self.settings['static_url_prefix'],
+            )
+            self._jinja_env.assets_environment = self._assets_env
 
         template = self._jinja_env.get_template(template_name)
         content = template.render(kw)
