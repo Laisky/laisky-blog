@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block head %}
 {{ super() }}
 {% assets filters="less,cssmin", output="assets/p.css",
@@ -16,18 +16,7 @@
 <div class="row-fluid">
     <!-- archives -->
     <div id="archives" class="span12">
-        <div id="posts-container" class="post">
-        <h2><a href="/p/{{ post['post_name'] }}">{{ post['post_title'] }}</a></h2>
-            <div class="post-content">
-            <article>
-                {{ post['post_content'] }}
-            </article>
-            </div>
-            <div class="post-tail">
-                <span>comment</span>
-                <span>like</span>
-            </div>
-        </div>
+        {% include "archives/ajax/post.html" %}
     </div>
     <!-- archives -->
 </div>
