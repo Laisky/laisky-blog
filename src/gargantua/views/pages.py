@@ -28,7 +28,7 @@ class PostPage(BaseHandler):
 
         name = urllib.parse.quote(name).lower()
         post = yield self.db.posts.find_one({'post_name': name})
-        self.render('p/index.html', post=post)
+        self.render('p/index.html', posts=[post])
 
 
 class MainPage(BaseHandler):
