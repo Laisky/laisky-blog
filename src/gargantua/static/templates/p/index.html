@@ -2,11 +2,13 @@
 {% block head %}
 {{ super() }}
 {% assets filters="less,cssmin", output="assets/p.css",
-          "less/pages/p.less" %}
+    "less/pages/p.less",
+    "less/post.less" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
 {% endassets %}
 {% assets filters="jsmin", output="assets/p.js",
-          "js/pages/p.js", "js/image.js" %}
+    "js/pages/p.js",
+    "js/image.js" %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
 {% endblock %}
