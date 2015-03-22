@@ -2,11 +2,13 @@
 {% block head %}
 {{ super() }}
 {% assets filters="less,cssmin", output="assets/archives.css",
-          "less/pages/archives.less" %}
+    "less/pages/archives.less",
+    "less/post.less" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
 {% endassets %}
 {% assets filters="jsmin", output="assets/archives.js",
-          "js/pages/archives.js", "js/image.js" %}
+    "js/pages/archives.js",
+    "js/image.js" %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
 {% endblock %}
@@ -16,10 +18,7 @@
 <div class="row-fluid">
     <!-- archives -->
     <div id="archives" class="span10">
-        <div class="post">
-        <p>载入中...</p>
-        {% include "widgets/loader.html" %}
-        </div>
+        {% include "widgets/post.html" %}
     </div>
     <!-- archives -->
 
