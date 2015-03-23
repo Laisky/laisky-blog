@@ -35,6 +35,9 @@ $(function() {
             })
             .done(function(data) {
                 $("#archives").append(data['data']);
+            })
+            .always(function() {
+                $(window).bind('scroll', windowScrollHandler);
             });
     }
 });
