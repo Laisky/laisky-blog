@@ -22,7 +22,6 @@ class ArchivesPage(BaseHandler):
 
         n = int(self.get_argument('n', strip=True, default=5))
         is_full = self.get_argument('is_full', strip=True, default=False)
-        log.debug('get_lastest_posts for n {}, is_full {}'.format(n, is_full))
 
         n = min(n, N_MAX_POSTS)
         cursor = self.db.posts.find({})
