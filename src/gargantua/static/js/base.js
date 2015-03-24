@@ -37,7 +37,7 @@ function getCookie(name) {
 }
 
 
-function getBaseURL() {
+function getBaseUrl() {
     var url = location.href; // entire url including querystring - also: window.location.href;
     var baseURL = url.substring(0, url.indexOf('/', 14));
 
