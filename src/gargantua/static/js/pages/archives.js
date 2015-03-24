@@ -1,6 +1,17 @@
 $(function() {
     $(window).bind("scroll", windowScrollHandler);
+    $(".post-title a").bind("click", setHistory);
     resizeImage();
+
+
+    function setHistory() {
+        var id = $(this).parent().parent().prop("id");
+        var url = $(this).prop("href");
+        history.pushState({}, '', 'archives#' + id);
+        window.location.replace(url);
+        return false;
+    }
+
 
     function windowScrollHandler() {
         console.log("windowScrollHandler");
@@ -24,7 +35,7 @@ $(function() {
     function loadMorePosts() {
         console.log("loadMorePosts");
 
-        // var url = getBaseURL() + "/api/posts/get-lastest-posts-by-name?";
+        // var url = getBaseUrl() + "/api/posts/get-lastest-posts-by-name?";
         var url = "api/posts/get-lastest-posts-by-name";
         var data = {
             "since_name": getLastPostName()
