@@ -8,19 +8,30 @@
 </style>
 <script>
     $(function() {
-        setInterval(function() {
-            changeTimeCount();
-        }, 1000);
+        jumpToUrl('/archives');
+
+
+        function jumpToUrl(url) {
+            url = url || '/archives';
+            timer = setInterval(
+                function() {
+                    changeTimeCount();
+                },
+                1000
+            );
+
+            function changeTimeCount() {
+                var sec = Number($("#count").html());
+                if(sec > 1){
+                    $("#count").html(sec - 1);
+                }else {
+                    clearInterval(timer);
+                    window.location.replace(url);
+                }
+            }
+        }
     });
 
-    function changeTimeCount() {
-        var sec = Number($("#count").html());
-        if(sec > 1){
-            $("#count").html(sec - 1);
-        }else {
-            window.location.replace('/archives');
-        }
-    };
 </script>
 {% endblock %}
 {% block body %}
