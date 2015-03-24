@@ -5,6 +5,7 @@ import urllib
 
 import pymongo
 import tornado
+import html2text
 
 from ..const import LOG_NAME, N_MAX_POSTS
 from ..utils import BaseHandler, debug_wrapper, unquote_fr_mongo
@@ -30,7 +31,9 @@ class ArchivesPage(BaseHandler):
         for docu in (yield cursor.to_list(length=n)):
             docu = unquote_fr_mongo(docu)
             if not is_full:
-                docu['post_content'] = docu['post_content'][: 1000]
+                content = html2text.html2text(docu['post_content'])
+                docu['post_content'] = content[: 1000]
+
             posts.append(docu)
 
         self.render('archives/index.html', posts=posts)

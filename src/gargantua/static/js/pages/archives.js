@@ -5,7 +5,7 @@ $(function() {
     function windowScrollHandler() {
         console.log("windowScrollHandler");
 
-        if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+        if ($(window).scrollTop() + $(window).height() > $(document).height() - 400) {
             $(window).unbind('scroll');
             loadMorePosts();
         }

@@ -4,6 +4,7 @@ import logging
 
 import pymongo
 import tornado
+import html2text
 from bson import ObjectId
 
 from ..utils import debug_wrapper, BaseHandler, unquote_fr_mongo
@@ -45,7 +46,9 @@ class PostsHandler(BaseHandler):
         for docu in (yield cursor.to_list(length=n)):
             docu = unquote_fr_mongo(docu)
             if not is_full:
-                docu['post_content'] = docu['post_content'][: 1000]
+                content = html2text.html2text(docu['post_content'])
+                docu['post_content'] = content[: 1000]
+
             posts.append(docu)
 
         _posts = self.render_template('widgets/post.html', posts=posts)
