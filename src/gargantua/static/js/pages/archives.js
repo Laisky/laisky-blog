@@ -28,6 +28,7 @@ $(function() {
         var lastPost = $("#archives").children().last();
         var href = lastPost.children(".post-title").children().prop("href");
         var postName = href.split("/").pop();
+        // postName = postName.slice(0, postName.indexOf("#"));
 
         return postName;
     }
