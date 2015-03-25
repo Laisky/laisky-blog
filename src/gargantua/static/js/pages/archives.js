@@ -1,6 +1,6 @@
 $(function() {
     $(window).bind("scroll", windowScrollHandler);
-    $(".post-title a").bind("click", setHistory);
+    // $(".post-title a").bind("click", setHistory);
     resizeImage();
 
 

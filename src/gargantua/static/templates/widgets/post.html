@@ -1,7 +1,7 @@
 {% for post in posts %}
     <div id="{{ post._id }}" class="post posts-container">
-    <h2 class="post-title"><a href="/p/{{ post.post_name }}" >{{ post.post_title }}</a></h2>
-    <div class="comment-count"><a href="/p/{{ post.post_name }}#disqus_thread"></a></div>
+    <h2 class="post-title"><a href="/p/{{ post.post_name }}" target="_blank">{{ post.post_title }}</a></h2>
+    <div class="comment-count"><a href="/p/{{ post.post_name }}#disqus_thread" target="_blank"></a></div>
         <div class="post-content">
         <article>
             {{ post.post_content }}
