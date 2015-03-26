@@ -1,7 +1,5 @@
 function resizeImage() {
-    $("img").addClass('img-rounded');
-    $("img").css("max-height", 600);
-    $("img").css("max-width", 600);
+    $(".post-content img").addClass('img-rounded');
     $.each($("img"), function(node) {
         var nd = $(node);
         var src = nd.prop("src");
