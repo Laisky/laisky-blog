@@ -1,10 +1,10 @@
 $(function() {
     updatePageTitle();
-    resizeImage();
-
 
     function updatePageTitle() {
-        var title = $(".post-title a").html();
-        $("head title").html(title);
+        if($(".post").length == 1) {
+            var title = $(".post-title a").html();
+            $("head title").html(title);
+        }
     }
 });

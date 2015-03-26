@@ -23,6 +23,8 @@ class ArchivesPage(BaseHandler):
 
         n = int(self.get_argument('n', strip=True, default=5))
         is_full = self.get_argument('is_full', strip=True, default=False)
+        ajax = self.get_argument('ajax', strip=True, default="html")
+        log.debug('get for n {}, is_full {}, ajax {}'.format(n, is_full, ajax))
 
         n = min(n, N_MAX_POSTS)
         cursor = self.db.posts.find({})
@@ -36,7 +38,11 @@ class ArchivesPage(BaseHandler):
 
             posts.append(docu)
 
-        self.render('archives/index.html', posts=posts)
+        if ajax == 'html':
+            self.render('archives/index.html', posts=posts)
+        elif ajax == 'body':
+            self.render('archives/ajax/body.html', posts=posts)
+
         self.finish()
 
 
