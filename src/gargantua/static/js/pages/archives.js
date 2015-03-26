@@ -2,13 +2,6 @@ $(function() {
     $(window).bind("scroll", windowScrollHandler);
     // $(".post-title a").bind("click", setHistory);
     resizeImage();
-    $(".comment-count a").on("click", disableDisqusClick);
-
-
-    function disableDisqusClick() {
-        return true;
-    }
-
 
     function setHistory() {
         var id = $(this).parent().parent().prop("id");
