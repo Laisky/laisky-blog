@@ -1,14 +1,30 @@
 {% for post in posts %}
     <div id="{{ post._id }}" class="post posts-container">
-    <h2 class="post-title"><a href="p/{{ post.post_name }}" target="_blank">{{ post.post_title }}</a></h2>
+    <h2 class="post-title"><a href="/p/{{ post.post_name }}" target="_blank">{{ post.post_title }}</a></h2>
         <div class="post-content">
         <article>
             {{ post.post_content }}
         </article>
         </div>
         <div class="post-tail">
-            <span>comment</span>
-            <span><i class="icon-star icon-white"></i> like</span>
+            {% if posts|length != 1 %}
+                <a href="/p/{{ post.post_name }}#disqus_thread" target="_blank">0 Comment</a>
+            {% endif %}
+            {% if posts|length == 1 %}
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = 'laisky'; // Required - Replace '<example>' with your forum shortname
+
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            {% endif %}
         </div>
     </div>
 {% endfor %}

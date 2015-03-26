@@ -2,6 +2,12 @@ $(function() {
     $(window).bind("scroll", windowScrollHandler);
     // $(".post-title a").bind("click", setHistory);
     resizeImage();
+    $(".comment-count a").on("click", disableDisqusClick);
+
+
+    function disableDisqusClick() {
+        return true;
+    }
 
 
     function setHistory() {
@@ -28,6 +34,7 @@ $(function() {
         var lastPost = $("#archives").children().last();
         var href = lastPost.children(".post-title").children().prop("href");
         var postName = href.split("/").pop();
+        // postName = postName.slice(0, postName.indexOf("#"));
 
         return postName;
     }
