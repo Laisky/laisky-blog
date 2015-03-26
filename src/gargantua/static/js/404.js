@@ -39,6 +39,7 @@ $(function() {
                 }
 
                 $(".container").html(archives_data);
+                $.globalEval($(".comment-count-js").html());
                 history.pushState({}, '', url);
             }
         }
