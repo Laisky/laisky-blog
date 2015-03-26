@@ -36,13 +36,13 @@ define('dbport', default=DB_PORT, type=int)
 class PageNotFound(BaseHandler):
 
     @tornado.gen.coroutine
-    def get(self, url=''):
-        if url:
-            self.redirect_404()
+    def get(self, url=None):
+        if url is None:
+            self.render('404.html', url=url)
+            self.finish()
             return
 
-        self.render('404.html', url=url)
-        self.finish()
+        self.redirect_404()
 
 
 class Application(tornado.wsgi.WSGIApplication):
