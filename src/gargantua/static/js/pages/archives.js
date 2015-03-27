@@ -3,7 +3,7 @@ $(function() {
 
 
     function windowScrollHandler() {
-        if($(".post").length > 1) {
+        if ($(".post").length > 1) {
             if ($(window).scrollTop() + $(window).height() > $(document).height() - 400) {
                 $(window).unbind("scroll");
                 loadMorePosts();

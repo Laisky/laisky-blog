@@ -3,6 +3,6 @@ function resizeImage() {
     $.each($("img"), function(node) {
         var nd = $(node);
         var src = nd.prop("src");
-        nd.wrap('<a href="' + src + '"></a>')
+        nd.wrap('<a href="' + src + '"></a>');
     });
 }

@@ -17,11 +17,14 @@ $(function() {
 
         var url = '/archives';
         var archives_data = "";
+
         function preLoadArchives() {
-            $.get(url, {"ajax": "body"}, function(data) {})
+            $.get(url, {
+                    "ajax": "body"
+                }, function(data) {})
                 .done(function(data) {
                     archives_data = data;
-                })
+                });
         }
         preLoadArchives();
 
@@ -31,10 +34,10 @@ $(function() {
                 $("#count").html(sec - 1);
             } else {
                 clearInterval(timer);
-                if(!archives_data) {
+                if (!archives_data) {
                     window.setTimeout(function() {
                         changeTimeCount();
-                    }, 1000)
+                    }, 1000);
                     return;
                 }
 
