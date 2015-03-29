@@ -7,21 +7,31 @@ import logging
 from .encryt import generate_passwd, validate_passwd
 from .tornado import debug_wrapper, BaseHandler
 from .mongo import unquote_fr_mongo
+from ..const import LOG_NAME, LOG_PATH
 
 
-__all__ = ['generate_passwd', 'validate_passwd', 'debug_wrapper', 'setup_log',
-           'validate_email', 'validate_mobile', 'BaseHandler',
-           'unquote_fr_mongo']
+log = logging.getLogger(LOG_NAME)
+__all__ = ['generate_passwd', 'validate_passwd', 'validate_email',
+           'validate_mobile',
+           'debug_wrapper', 'setup_log', 'unquote_fr_mongo',
+           'BaseHandler']
 
 
-def setup_log(log_name, log_dir):
+def setup_log():
     _format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    log = logging.getLogger(log_name)
+    formatter = logging.Formatter(_format)
+    # set stdout
     ch = logging.StreamHandler(sys.stdout)
     ch.setLevel(logging.DEBUG)
-    formatter = logging.Formatter(_format)
     ch.setFormatter(formatter)
+    # set log file
+    fh = logging.FileHandler(LOG_PATH)
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(formatter)
+    # log
+    log = logging.getLogger(LOG_NAME)
     log.addHandler(ch)
+    log.addHandler(fh)
 
 
 def validate_email(email):

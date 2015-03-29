@@ -8,7 +8,7 @@ LISTEN_PORT = 27850
 # common
 CWD = pathlib.PurePath(__file__).parents[0]
 LOG_NAME = 'gargantua'
-LOG_PATH = '/var/log/gargantua'
+LOG_PATH = '/tmp/gargantua.log'
 
 # web signal
 OK = 0
@@ -18,7 +18,6 @@ ERROR = 1
 DB_HOST = 'localhost'
 DB_PORT = 27016
 DB_NAME = 'blog'
-
 
 # test
 DB_HOST = 'blog.laisky.com'
