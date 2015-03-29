@@ -18,14 +18,13 @@ import tornado.ioloop
 from tornado.options import define, options
 import motor
 
-from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, \
-    LOG_PATH, LOG_NAME
+from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_NAME
 from .utils import setup_log, BaseHandler
 from .views import PostsHandler, ArchivesPage, PostPage
 
 
 log = logging.getLogger(LOG_NAME)
-setup_log(LOG_NAME, LOG_PATH)
+setup_log()
 define('port', default=LISTEN_PORT, type=int)
 define('debug', default=False, type=bool)
 define('dbname', default=DB_NAME, type=str)
@@ -60,10 +59,10 @@ class Application(tornado.wsgi.WSGIApplication):
         }
         handlers = [
             # -------------- handler --------------
-            ('/archives', ArchivesPage),
-            ('/p/(.*)', PostPage),
+            ('/archives/', ArchivesPage),
+            ('/p/(.*)/', PostPage),
             # ---------------- api ----------------
-            ('/api/posts/(.*)', PostsHandler),
+            ('/api/posts/(.*)/', PostsHandler),
             # ---------------- 404 ----------------
             ('/404.html', PageNotFound),
         ]
