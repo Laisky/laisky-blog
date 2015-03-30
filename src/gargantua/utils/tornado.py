@@ -14,6 +14,8 @@ from ..const import OK, LOG_NAME
 
 
 log = logging.getLogger(LOG_NAME)
+__all__ = ['debug_wrapper',
+           'BaseHandler', 'RouterHandler']
 
 
 def debug_wrapper(func):
@@ -55,6 +57,10 @@ class TemplateRendering():
 
 
 class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
+
+    def get(self, url=None):
+        url = url.strip(' /')
+        super().get(url)
 
     @property
     def db(self):

@@ -8,7 +8,7 @@ LISTEN_PORT = 27850
 # common
 CWD = pathlib.PurePath(__file__).parents[0]
 LOG_NAME = 'gargantua'
-LOG_PATH = '/var/log/gargantua'
+LOG_PATH = '/tmp/gargantua.log'
 
 # web signal
 OK = 0
