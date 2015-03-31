@@ -21,7 +21,7 @@ $(function() {
     }
 
     function loadMorePosts() {
-        var url = "/api/posts/get-lastest-posts-by-name";
+        var url = "/api/posts/get-lastest-posts-by-name/";
         var data = {
             "since_name": getLastPostName()
         };
