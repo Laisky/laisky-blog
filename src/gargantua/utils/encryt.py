@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
-import hashlib
+
+import bcrypt
 
 
-def generate_passwd(passwd, salt=None):
-    salt = salt or os.urandom(256)
-    return hashlib.sha256(salt + passwd.encode()).hexdigest().encode() + salt
+def generate_passwd(passpw):
+    return bcrypt.hashpw(passpw, bcrypt.gensalt())
 
 
-def validat_passwd(passwd, hashed):
-    salt = hashed[-256:]
-    return generate_passwd(passwd, salt) == hashed
+def validate_passwd(passpw, hashed):
+    return bcrypt.hashpw(passpw, hashed) == hashed
