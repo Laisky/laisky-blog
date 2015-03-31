@@ -11,10 +11,8 @@ Home   : https://github.com/Laisky/laisky-blog
 import logging
 from pathlib import Path
 
-import tornado.wsgi
-import tornado.web
-import tornado.gen
-import tornado.ioloop
+import tornado
+from tornado.web import url
 from tornado.options import define, options
 import motor
 
@@ -59,12 +57,12 @@ class Application(tornado.wsgi.WSGIApplication):
         }
         handlers = [
             # -------------- handler --------------
-            ('/archives/', ArchivesPage),
-            ('/p/(.*)/', PostPage),
+            url('/archives/', ArchivesPage, name='post:archives'),
+            url('/p/(.*)/', PostPage, name='post:single'),
             # ---------------- api ----------------
-            ('/api/posts/(.*)/', PostsHandler),
+            url('/api/posts/(.*)/', PostsHandler, name='api:post'),
             # ---------------- 404 ----------------
-            ('/404.html', PageNotFound),
+            url('/404.html', PageNotFound, name='404'),
         ]
         handlers.append(('/(.*)', PageNotFound))
         super(Application, self).__init__(handlers, **settings)
