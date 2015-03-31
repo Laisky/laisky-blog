@@ -40,7 +40,8 @@ class PostsHandler(BaseHandler):
 
         since_id = (yield
                     self.db.posts.find_one({'post_name': since_name}))['_id']
-        cursor = self.db.posts.find({'_id': {'$lt': since_id}})
+        cursor = self.db.posts.find({'_id': {'$lt': since_id},
+                                     'post_password': {'$ne': ''}})
         cursor.sort([('_id', pymongo.DESCENDING)]).limit(n)
         posts = []
         for docu in (yield cursor.to_list(length=n)):
