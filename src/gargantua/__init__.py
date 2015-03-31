@@ -42,7 +42,7 @@ class PageNotFound(BaseHandler):
         self.redirect_404()
 
 
-class Application(tornado.wsgi.WSGIApplication):
+class Application(tornado.web.Application):
 
     def __init__(self):
         settings = {
