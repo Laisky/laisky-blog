@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Laisky's Blog</title>
+        <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.3.1/css/bootstrap.min.css" media="screen">
+        <script src="http://cdn.staticfile.org/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
+        <script src="http://cdn.staticfile.org/twitter-bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+        <link rel="shortcut icon" href="favicon.ico">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        {% assets filters="less,cssmin", output="assets/sites.css",
+                "css/styles/tomorrow.css",
+                "less/widgets/loader.less",
+                "less/base.less",
+                "less/widgets/post.less",
+                "less/pages/archives.less",
+                "less/pages/p.less" %}
+            <link rel="stylesheet" href="{{ ASSET_URL }}" />
+        {% endassets %}
+    {% endblock %}
+</head>
+<body>
+    {% block header %}
+        {% include "header.html" %}
+    {% endblock %}
+
+    <div class="container">
+        {% block container %}
+        {% endblock %}
+    </div>
+
+    {% assets filters="jsmin", output="assets/libs.js",
+            "js/highlight.pack.js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    {% assets filters="jsmin", output="assets/sites.js",
+            "js/base.js",
+            "js/404.js",
+            "js/pages/archives.js",
+            "js/pages/p.js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+</body>
+</html>

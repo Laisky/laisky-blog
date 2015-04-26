@@ -15,7 +15,7 @@ $(function() {
             1000
         );
 
-        var url = '/archives';
+        var url = '/archives/';
         var archives_data = "";
 
         function preLoadArchives() {
