@@ -1,11 +1,4 @@
-$(function() {
-    $(window).resize(set_welcome_in_center);
-    set_welcome_in_center();
-    hljs.initHighlightingOnLoad();
-});
-
-
-function set_welcome_in_center() {
+function setWelcomeToCenter() {
     $("#welcome").css("left", $(window).width() / 2 - 57);
 }
 
@@ -76,3 +69,10 @@ jQuery.postJSON = function(url, args, callback) {
 function getHostUrl() {
     return location.protocol + '//' + location.host;
 }
+
+
+$(function() {
+    $(window).on("resize", setWelcomeToCenter);
+    setWelcomeToCenter();
+    hljs.initHighlightingOnLoad();
+});
