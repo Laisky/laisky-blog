@@ -1,12 +1,3 @@
-function setWelcomeToCenter() {
-    $welcome = $("#welcome");
-    $welcome.css({
-        position: "absolute",
-        left: $(window).width() / 2 - 57
-    });
-}
-
-
 //XmlHttpRequest对象
 function createXmlHttpRequest() {
     if (window.ActiveXObject) { //如果是IE浏览器
@@ -16,6 +7,8 @@ function createXmlHttpRequest() {
     }
 }
 
+
+// IE7 Array.indexOf
 if (!Array.indexOf) {
     Array.prototype.indexOf = function(obj) {
         for (var i = 0; i < this.length; i++) {
@@ -32,6 +25,25 @@ function getCookie(name) {
     var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
     return r ? r[1] : undefined;
 }
+
+
+// navigator.browserInfo
+// http://stackoverflow.com/questions/5916900/how-can-you-detect-the-version-of-a-browser
+navigator.browserInfo = (function(){
+    var ua = navigator.userAgent, tem,
+    M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    if(/trident/i.test(M[1])){
+        tem =  /\brv[ :]+(\d+)/g.exec(ua) || [];
+        return 'IE ' + (tem[1] || '');
+    }
+    if(M[1] === 'Chrome'){
+        tem = ua.match(/\bOPR\/(\d+)/);
+        if(tem != null) return 'Opera ' + tem[1];
+    }
+    M = M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+    if((tem = ua.match(/version\/(\d+)/i)) != null) M.splice(1, 1, tem[1]);
+    return {"name": M[0], "version": M[1]}
+})();
 
 
 function getBaseUrl() {
@@ -70,13 +82,6 @@ jQuery.postJSON = function(url, args, callback) {
 };
 
 
-function getHostUrl() {
-    return location.protocol + '//' + location.host;
-}
-
-
 $(function() {
-    $(window).on("resize", setWelcomeToCenter);
-    setWelcomeToCenter();
     hljs.initHighlightingOnLoad();
 });
