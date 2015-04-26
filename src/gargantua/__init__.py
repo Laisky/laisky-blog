@@ -48,7 +48,7 @@ class Application(tornado.web.Application):
         settings = {
             'static_path': str(Path(CWD, 'static')),
             'static_url_prefix': '/static/',
-            'template_path': str(Path(CWD, 'static', 'templates')),
+            'template_path': str(Path(CWD, 'templates')),
             'cookie_secret': 'XmuwPAt8wHdnik4Xvc3GXmbXLifVmPZYhoc9Tx4x1iZ',
             'login_url': '/login/',
             'xsrf_cookies': True,
