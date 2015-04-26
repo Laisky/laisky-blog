@@ -4,6 +4,7 @@ import os
 import json
 import logging
 import traceback
+import datetime
 
 import tornado.web
 from jinja2 import Environment, FileSystemLoader
@@ -15,7 +16,7 @@ from ..const import OK, LOG_NAME
 
 log = logging.getLogger(LOG_NAME)
 __all__ = ['debug_wrapper',
-           'BaseHandler', 'RouterHandler']
+           'BaseHandler']
 
 
 def debug_wrapper(func):
@@ -44,6 +45,9 @@ class TemplateRendering():
                 loader=FileSystemLoader(self.settings['template_path']),
                 extensions=[AssetsExtension]
             )
+            self._jinja_env.filters['UTC2CST'] = \
+                lambda dt: dt + datetime.timedelta(seconds=28800)
+
         if not self._assets_env:
             self._assets_env = AssetsEnvironment(
                 self.settings['static_path'],
@@ -76,6 +80,12 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
             'msg': msg,
             'data': data
         }))
+
+    def is_ajax(self):
+        return self.request.headers.get('X-Requested-With') == "XMLHttpRequest"
+
+    def is_https(self):
+        return self.request.headers.get('X-Scheme') == "https"
 
     def redirect_404(self):
         self.redirect('/404.html')
