@@ -1,5 +1,9 @@
 function setWelcomeToCenter() {
-    $("#welcome").css("left", $(window).width() / 2 - 57);
+    $welcome = $("#welcome");
+    $welcome.css({
+        position: "absolute",
+        left: $(window).width() / 2 - 57
+    });
 }
 
 
