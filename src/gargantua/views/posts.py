@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
+from math import ceil
 
 import pymongo
 import tornado
@@ -8,13 +9,29 @@ import html2text
 from bson import ObjectId
 
 from ..utils import debug_wrapper, BaseHandler, unquote_fr_mongo
-from ..const import LOG_NAME, N_MAX_POSTS
+from ..const import LOG_NAME, N_POST_PER_PAGE
 
 
 log = logging.getLogger(LOG_NAME)
 
 
-class PostsHandler(BaseHandler):
+class PostsBaseHandler(BaseHandler):
+
+    @tornado.gen.coroutine
+    def prepare(self):
+        super().prepare()
+        cursor = self.db.posts.find()
+        self.post_count = yield cursor.count()
+        self.max_page = ceil(self.post_count / N_POST_PER_PAGE)
+
+    def render_post(self, template_name, **kwargs):
+        kwargs.update({
+            'max_page': self.max_page,
+        })
+        super().render2(template_name, **kwargs)
+
+
+class PostsHandler(PostsBaseHandler):
     """APIs about posts"""
 
     @tornado.web.asynchronous
@@ -31,13 +48,11 @@ class PostsHandler(BaseHandler):
     @debug_wrapper
     def get_lastest_posts_by_name(self):
         since_name = self.get_argument('since_name', strip=True)
-        n = int(self.get_argument('n', strip=True, default=5))
         is_full = self.get_argument('is_full', strip=True, default=False)
-        log.debug('get_lastest_posts for n {}, since_name {}'
-                  .format(n, since_name))
+        log.debug('get_lastest_posts for since_name {}'
+                  .format(since_name))
 
-        n = min(n, N_MAX_POSTS)
-
+        n = N_POST_PER_PAGE
         since_id = (yield
                     self.db.posts.find_one({'post_name': since_name}))['_id']
         cursor = self.db.posts.find({'_id': {'$lt': since_id}})

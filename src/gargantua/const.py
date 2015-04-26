@@ -24,4 +24,4 @@ DB_HOST = 'blog.laisky.com'
 # DB_NAME = 'test'
 
 # posts
-N_MAX_POSTS = 20
+N_POST_PER_PAGE = 10

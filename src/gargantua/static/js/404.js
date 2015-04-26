@@ -15,13 +15,14 @@ $(function() {
             1000
         );
 
-        var url = '/archives/';
+        var url = '/archives/?page=1';
+        var data = {
+            ajax: "body"
+        };
         var archives_data = "";
 
         function preLoadArchives() {
-            $.get(url, {
-                    "ajax": "body"
-                }, function(data) {})
+            $.get(url, data, function(data) {})
                 .done(function(data) {
                     archives_data = data;
                 });

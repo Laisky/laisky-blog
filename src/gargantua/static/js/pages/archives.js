@@ -1,14 +1,16 @@
 $(function() {
-    $(window).bind("scroll", windowScrollHandler);
+    // bindWindowScrollHandler();
 
 
-    function windowScrollHandler() {
-        if ($(".post").length > 1) {
-            if ($(window).scrollTop() + $(window).height() > $(document).height() - 400) {
-                $(window).unbind("scroll");
-                loadMorePosts();
+    function bindWindowScrollHandler() {
+        $(window).on("scroll", function() {
+            if ($(".post").length > 1) {
+                if ($(window).scrollTop() + $(window).height() > $(document).height() - 400) {
+                    $(window).unbind("scroll");
+                    loadMorePosts();
+                }
             }
-        }
+        });
     }
 
     function getLastPostName() {

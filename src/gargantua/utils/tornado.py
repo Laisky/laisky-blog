@@ -80,7 +80,7 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
     def redirect_404(self):
         self.redirect('/404.html')
 
-    def render(self, template_name, **kwargs):
+    def render2(self, template_name, **kwargs):
         """
         This is for making some extra context variables available to
         the template
@@ -95,6 +95,8 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
             'request': self.request,
             'xsrf_token': self.xsrf_token,
             'xsrf_form_html': self.xsrf_form_html,
+            'max': max,
+            'min': min,
         })
         content = self.render_template(template_name, **kwargs)
         self.write(content)
