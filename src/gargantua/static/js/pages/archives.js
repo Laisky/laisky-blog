@@ -1,5 +1,39 @@
 $(function() {
     // bindWindowScrollHandler();
+    bindChangePage();
+
+
+    function bindChangePage() {
+        function updateContainerByPage(page) {
+            var url = '/api/posts/get-post-by-page/?page=' + page;
+            var data = {
+                ajax: "body"
+            };
+            $.get(url, data, function(data) {})
+                .done(function(data) {
+                    $(".container").html(data);
+                    $.globalEval($(".comment-count-js").html());
+                    history.pushState({}, '', '/archives/?page=' + page);
+                });
+        }
+
+        $(document).on("click", "li a.page", function() {
+            var page = $(this).html();
+            updateContainerByPage(page);
+            return false;
+        });
+
+        $(document).on("click", "li a.page-previous, li a.page-next", function() {
+            var page = $(this).data("page");
+            updateContainerByPage(page);
+            return false;
+        });
+
+        // $(document).on("click", "li a.page-next", function() {
+        //     var page = $(this).data("page");
+        //     updateContainerByPage(page);
+        // });
+    }
 
 
     function bindWindowScrollHandler() {
