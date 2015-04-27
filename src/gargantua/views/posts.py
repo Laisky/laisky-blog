@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
-from math import ceil
 
 import pymongo
 import tornado
@@ -15,23 +14,7 @@ from ..const import LOG_NAME, N_POST_PER_PAGE
 log = logging.getLogger(LOG_NAME)
 
 
-class PostsBaseHandler(BaseHandler):
-
-    @tornado.gen.coroutine
-    def prepare(self):
-        super().prepare()
-        cursor = self.db.posts.find()
-        self.post_count = yield cursor.count()
-        self.max_page = ceil(self.post_count / N_POST_PER_PAGE)
-
-    def render_post(self, template_name, **kwargs):
-        kwargs.update({
-            'max_page': self.max_page,
-        })
-        super().render2(template_name, **kwargs)
-
-
-class PostsHandler(PostsBaseHandler):
+class PostsHandler(BaseHandler):
     """APIs about posts"""
 
     @tornado.web.asynchronous
@@ -52,11 +35,11 @@ class PostsHandler(PostsBaseHandler):
         is_full = self.get_argument('is_full', strip=True, default=False)
         log.debug('get_post_by_page for page {}'.format(page))
 
-        skip = (N_POST_PER_PAGE - 1) * N_POST_PER_PAGE
-        cursor = self.db.posts.find() \
-            .sort([('_id', pymongo.DESCENDING)]) \
-            .skip(skip) \
-            .limit(N_POST_PER_PAGE)
+        skip = (page - 1) * N_POST_PER_PAGE
+        cursor = self.db.posts.find()
+        cursor.sort([('_id', pymongo.DESCENDING)]) \
+            .limit(N_POST_PER_PAGE) \
+            .skip(skip)
         posts = []
         while (yield cursor.fetch_next):
             docu = cursor.next_object()
@@ -70,7 +53,8 @@ class PostsHandler(PostsBaseHandler):
 
             posts.append(docu)
 
-        self.render_post('archives/ajax/body.html', posts=posts)
+        self.render_post('archives/ajax/body.html',
+                         posts=posts, current_page=page)
         self.finish()
 
     @tornado.gen.coroutine

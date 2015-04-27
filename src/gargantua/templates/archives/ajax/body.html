@@ -26,7 +26,7 @@
 {% set current_page = current_page or 1 %}
 {% set max_page = max_page or current_page %}
 {% set page_start = max(current_page - 2, 1) %}
-{% set page_end = min(current_page + 2, max_page) %}
+{% set page_end = min(page_start + 4, max_page) %}
 <nav class="archives page-nav">
     <ul class="pagination">
         <li {{ 'class="disabled"' if current_page == 1 else '' }}>
@@ -35,7 +35,7 @@
             </a>
         </li>
         {% for page in range(page_start, page_end + 1) %}
-            <li {{ 'class="active"' if page == current_page else '' }}><a href="/archives/?page={{ page }}">{{ page }}</a></li>
+            <li {{ 'class="active"' if page == current_page else '' }}><a class="page" href="/archives/?page={{ page }}">{{ page }}</a></li>
         {% endfor %}
         <li {{ 'class="disabled"' if current_page == max_page else '' }}>
             <a href="#" aria-label="Next">

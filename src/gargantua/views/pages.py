@@ -23,11 +23,16 @@ class ArchivesPage(BaseHandler):
 
         is_full = self.get_argument('is_full', strip=True, default=False)
         ajax = self.get_argument('ajax', strip=True, default="html")
-        log.debug('get for is_full {}, ajax {}'.format(is_full, ajax))
+        page = int(self.get_argument('page', strip=True))
+        log.debug('get for is_full {}, ajax {}, page {}'
+                  .format(is_full, ajax, page))
 
         n = N_POST_PER_PAGE
-        cursor = self.db.posts.find({})
-        cursor.sort([('_id', pymongo.DESCENDING)]).limit(n)
+        skip = (page - 1) * N_POST_PER_PAGE
+        cursor = self.db.posts.find()
+        cursor.sort([('_id', pymongo.DESCENDING)]) \
+            .limit(N_POST_PER_PAGE) \
+            .skip(skip)
         posts = []
         for docu in (yield cursor.to_list(length=n)):
             if docu['post_password']:
@@ -41,9 +46,11 @@ class ArchivesPage(BaseHandler):
             posts.append(docu)
 
         if ajax == 'html':
-            self.render2('archives/index.html', posts=posts)
+            self.render_post('archives/index.html',
+                             posts=posts, current_page=page)
         elif ajax == 'body':
-            self.render2('archives/ajax/body.html', posts=posts)
+            self.render_post('archives/ajax/body.html',
+                             posts=posts, current_page=page)
 
         self.finish()
 

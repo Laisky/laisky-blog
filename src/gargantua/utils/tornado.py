@@ -5,13 +5,14 @@ import json
 import logging
 import traceback
 import datetime
+from math import ceil
 
 import tornado.web
 from jinja2 import Environment, FileSystemLoader
 from webassets import Environment as AssetsEnvironment
 from webassets.ext.jinja2 import AssetsExtension
 
-from ..const import OK, LOG_NAME
+from ..const import OK, LOG_NAME, N_POST_PER_PAGE
 
 
 log = logging.getLogger(LOG_NAME)
@@ -110,3 +111,18 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
         })
         content = self.render_template(template_name, **kwargs)
         self.write(content)
+
+    @tornado.gen.coroutine
+    def prepare(self):
+        super().prepare()
+        cursor = self.db.posts.find()
+        self.post_count = yield cursor.count()
+        self.max_page = ceil(self.post_count / N_POST_PER_PAGE)
+        log.debug('prepare for post_count {}, max_page {}'
+                  .format(self.post_count, self.max_page))
+
+    def render_post(self, template_name, **kwargs):
+        kwargs.update({
+            'max_page': self.max_page,
+        })
+        self.render2(template_name, **kwargs)
