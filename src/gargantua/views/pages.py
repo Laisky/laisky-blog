@@ -7,7 +7,7 @@ import pymongo
 import tornado
 import html2text
 
-from ..const import LOG_NAME, N_MAX_POSTS
+from ..const import LOG_NAME, N_POST_PER_PAGE
 from ..utils import BaseHandler, debug_wrapper, unquote_fr_mongo
 
 
@@ -21,14 +21,18 @@ class ArchivesPage(BaseHandler):
     def get(self):
         log.info('ArchivesPage GET')
 
-        n = int(self.get_argument('n', strip=True, default=5))
         is_full = self.get_argument('is_full', strip=True, default=False)
         ajax = self.get_argument('ajax', strip=True, default="html")
-        log.debug('get for n {}, is_full {}, ajax {}'.format(n, is_full, ajax))
+        page = int(self.get_argument('page', strip=True))
+        log.debug('get for is_full {}, ajax {}, page {}'
+                  .format(is_full, ajax, page))
 
-        n = min(n, N_MAX_POSTS)
-        cursor = self.db.posts.find({})
-        cursor.sort([('_id', pymongo.DESCENDING)]).limit(n)
+        n = N_POST_PER_PAGE
+        skip = (page - 1) * N_POST_PER_PAGE
+        cursor = self.db.posts.find()
+        cursor.sort([('_id', pymongo.DESCENDING)]) \
+            .limit(N_POST_PER_PAGE) \
+            .skip(skip)
         posts = []
         for docu in (yield cursor.to_list(length=n)):
             if docu['post_password']:
@@ -42,9 +46,11 @@ class ArchivesPage(BaseHandler):
             posts.append(docu)
 
         if ajax == 'html':
-            self.render('archives/index.html', posts=posts)
+            self.render_post('archives/index.html',
+                             posts=posts, current_page=page)
         elif ajax == 'body':
-            self.render('archives/ajax/body.html', posts=posts)
+            self.render_post('archives/ajax/body.html',
+                             posts=posts, current_page=page)
 
         self.finish()
 
@@ -58,7 +64,7 @@ class PostPage(BaseHandler):
 
         name = urllib.parse.quote(name).lower()
         post = yield self.db.posts.find_one({'post_name': name})
-        self.render('p/index.html', posts=[post])
+        self.render2('p/index.html', posts=[post])
 
 
 class MainPage(BaseHandler):

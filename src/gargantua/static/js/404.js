@@ -15,13 +15,14 @@ $(function() {
             1000
         );
 
-        var url = '/archives/';
+        var url = '/api/posts/get-post-by-page/?page=1';
+        var data = {
+            ajax: "body"
+        };
         var archives_data = "";
 
         function preLoadArchives() {
-            $.get(url, {
-                    "ajax": "body"
-                }, function(data) {})
+            $.get(url, data, function(data) {})
                 .done(function(data) {
                     archives_data = data;
                 });
@@ -43,7 +44,7 @@ $(function() {
 
                 $(".container").html(archives_data);
                 $.globalEval($(".comment-count-js").html());
-                history.pushState({}, '', url);
+                history.pushState({}, '', '/archives/?page=1');
             }
         }
     }
