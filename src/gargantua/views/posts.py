@@ -41,8 +41,37 @@ class PostsHandler(PostsBaseHandler):
         router = {
             'get-lastest-posts-by-name': self.get_lastest_posts_by_name,
             'get-post-by-id': self.get_post_by_id,
+            'get-post-by-page': self.get_post_by_page,
         }
         router.get(url, self.redirect_404)()
+
+    @tornado.gen.coroutine
+    @debug_wrapper
+    def get_post_by_page(self):
+        page = int(self.get_argument('page', strip=True))
+        is_full = self.get_argument('is_full', strip=True, default=False)
+        log.debug('get_post_by_page for page {}'.format(page))
+
+        skip = (N_POST_PER_PAGE - 1) * N_POST_PER_PAGE
+        cursor = self.db.posts.find() \
+            .sort([('_id', pymongo.DESCENDING)]) \
+            .skip(skip) \
+            .limit(N_POST_PER_PAGE)
+        posts = []
+        while (yield cursor.fetch_next):
+            docu = cursor.next_object()
+            if docu['post_password']:
+                continue
+
+            docu = unquote_fr_mongo(docu)
+            if not is_full:
+                content = html2text.html2text(docu['post_content'])
+                docu['post_content'] = content[: 1000]
+
+            posts.append(docu)
+
+        self.render_post('archives/ajax/body.html', posts=posts)
+        self.finish()
 
     @tornado.gen.coroutine
     @debug_wrapper
