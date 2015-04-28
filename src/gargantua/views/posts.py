@@ -7,7 +7,8 @@ import tornado
 import html2text
 from bson import ObjectId
 
-from ..utils import debug_wrapper, BaseHandler, unquote_fr_mongo
+from .base import BaseHandler
+from ..utils import debug_wrapper, unquote_fr_mongo
 from ..const import LOG_NAME, N_POST_PER_PAGE
 
 

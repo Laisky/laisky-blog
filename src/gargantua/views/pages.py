@@ -7,8 +7,9 @@ import pymongo
 import tornado
 import html2text
 
+from .base import BaseHandler
 from ..const import LOG_NAME, N_POST_PER_PAGE
-from ..utils import BaseHandler, debug_wrapper, unquote_fr_mongo
+from ..utils import debug_wrapper, unquote_fr_mongo
 
 
 log = logging.getLogger(LOG_NAME)

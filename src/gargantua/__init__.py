@@ -17,8 +17,8 @@ from tornado.options import define, options
 import motor
 
 from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_NAME
-from .utils import setup_log, BaseHandler
-from .views import PostsHandler, ArchivesPage, PostPage
+from .utils import setup_log
+from .views import BaseHandler, PostsHandler, ArchivesPage, PostPage
 
 
 log = logging.getLogger(LOG_NAME)
