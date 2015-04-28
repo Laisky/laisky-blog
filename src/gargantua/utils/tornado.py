@@ -82,9 +82,11 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
             'data': data
         }))
 
+    @property
     def is_ajax(self):
         return self.request.headers.get('X-Requested-With') == "XMLHttpRequest"
 
+    @property
     def is_https(self):
         return self.request.headers.get('X-Scheme') == "https"
 
@@ -108,6 +110,8 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
             'xsrf_form_html': self.xsrf_form_html,
             'max': max,
             'min': min,
+            'is_ajax': self.is_ajax,
+            'is_https': self.is_https,
         })
         content = self.render_template(template_name, **kwargs)
         self.write(content)
