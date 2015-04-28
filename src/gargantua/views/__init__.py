@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from .base import BaseHandler
-from .posts import PostsHandler
-from .pages import PostPage
+from .archives import PostsHandler
+from .post import PostPage
 
 __all__ = ['BaseHandler', 'PostsHandler', 'PostPage']
