@@ -5,7 +5,7 @@ import sys
 import logging
 
 from .encryt import generate_passwd, validate_passwd
-from .tornado import debug_wrapper, BaseHandler
+from .jinja import debug_wrapper, TemplateRendering
 from .mongo import unquote_fr_mongo
 from ..const import LOG_NAME, LOG_PATH
 
@@ -14,7 +14,7 @@ log = logging.getLogger(LOG_NAME)
 __all__ = ['generate_passwd', 'validate_passwd', 'validate_email',
            'validate_mobile',
            'debug_wrapper', 'setup_log', 'unquote_fr_mongo',
-           'BaseHandler']
+           'TemplateRendering']
 
 
 def setup_log():

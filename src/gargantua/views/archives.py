@@ -7,7 +7,8 @@ import tornado
 import html2text
 from bson import ObjectId
 
-from ..utils import debug_wrapper, BaseHandler, unquote_fr_mongo
+from .base import BaseHandler
+from ..utils import debug_wrapper, unquote_fr_mongo
 from ..const import LOG_NAME, N_POST_PER_PAGE
 
 
@@ -22,6 +23,7 @@ class PostsHandler(BaseHandler):
         log.info('PostsHandler get {}'.format(url))
 
         router = {
+            'archives': self.get_post_by_page,
             'get-lastest-posts-by-name': self.get_lastest_posts_by_name,
             'get-post-by-id': self.get_post_by_id,
             'get-post-by-page': self.get_post_by_page,
@@ -31,7 +33,7 @@ class PostsHandler(BaseHandler):
     @tornado.gen.coroutine
     @debug_wrapper
     def get_post_by_page(self):
-        page = int(self.get_argument('page', strip=True))
+        page = int(self.get_argument('page', strip=True, default=1))
         is_full = self.get_argument('is_full', strip=True, default=False)
         log.debug('get_post_by_page for page {}'.format(page))
 
@@ -53,7 +55,7 @@ class PostsHandler(BaseHandler):
 
             posts.append(docu)
 
-        self.render_post('archives/ajax/body.html',
+        self.render_post('archives/index.html',
                          posts=posts, current_page=page)
         self.finish()
 

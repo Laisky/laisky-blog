@@ -3,62 +3,16 @@
 import os
 import json
 import logging
-import traceback
-import datetime
 from math import ceil
 
 import tornado.web
-from jinja2 import Environment, FileSystemLoader
-from webassets import Environment as AssetsEnvironment
-from webassets.ext.jinja2 import AssetsExtension
 
 from ..const import OK, LOG_NAME, N_POST_PER_PAGE
+from ..utils import TemplateRendering
 
 
 log = logging.getLogger(LOG_NAME)
-__all__ = ['debug_wrapper',
-           'BaseHandler']
-
-
-def debug_wrapper(func):
-    def wrapper(*args, **kw):
-        try:
-            yield from func(*args, **kw)
-        except Exception:
-            log.error(traceback.format_exc())
-            raise
-    return wrapper
-
-
-class TemplateRendering():
-    """
-    A simple class to hold methods for rendering templates.
-    Copied from
-        http://bibhas.in/blog/\
-            using-jinja2-as-the-template-engine-for-tornado-web-framework/
-    """
-    _jinja_env = None
-    _assets_env = None
-
-    def render_template(self, template_name, **kw):
-        if not self._jinja_env:
-            self._jinja_env = Environment(
-                loader=FileSystemLoader(self.settings['template_path']),
-                extensions=[AssetsExtension]
-            )
-            self._jinja_env.filters['UTC2CST'] = \
-                lambda dt: dt + datetime.timedelta(seconds=28800)
-
-        if not self._assets_env:
-            self._assets_env = AssetsEnvironment(
-                self.settings['static_path'],
-                self.settings['static_url_prefix'],
-            )
-            self._jinja_env.assets_environment = self._assets_env
-
-        template = self._jinja_env.get_template(template_name)
-        content = template.render(kw)
-        return content
+__all__ = ['BaseHandler']
 
 
 class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
