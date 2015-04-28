@@ -1,38 +1,74 @@
 $(function() {
+    var pageCache = {};
+
+
     // bindWindowScrollHandler();
     bindChangePage();
+    prefetchPage();
+
+
+    function prefetchPage() {
+        // load pages
+        $(".archives.page-nav .page").each(function(idx, ele) {
+            var $ele = $(ele);
+            var page = $ele.html();
+            var url = $ele.attr("href");
+
+            if (!pageCache.hasOwnProperty(page)) {
+                $.get(url, function(data) {})
+                    .done(function(data) {
+                        pageCache[page] = data;
+                    });
+            }
+        });
+    }
 
 
     function bindChangePage() {
         function updateContainerByPage(page) {
-            var url = '/api/posts/get-post-by-page/?page=' + page;
+            var url = '/api/posts/get-post-by-page/';
             var data = {
-                ajax: "body"
+                page: page
             };
             $.get(url, data, function(data) {})
                 .done(function(data) {
                     $(".container").html(data);
                     $.globalEval($(".comment-count-js").html());
                     history.pushState({}, '', '/archives/?page=' + page);
+                    prefetchPage();
                 });
+        }
+
+        function updateContainerByCache(page) {
+            $(".container").html(pageCache[page]);
+            $.globalEval($(".comment-count-js").html());
+            history.pushState({}, '', '/archives/?page=' + page);
+            prefetchPage();
         }
 
         $(document).on("click", "li a.page", function() {
             var page = $(this).html();
-            updateContainerByPage(page);
+
+            if (page in pageCache) {
+                updateContainerByCache(page);
+            } else {
+                updateContainerByPage(page);
+            }
+            window.scrollTo(0, document.body.scrollHeight);
             return false;
         });
 
         $(document).on("click", "li a.page-previous, li a.page-next", function() {
             var page = $(this).data("page");
-            updateContainerByPage(page);
+
+            if (page in pageCache) {
+                updateContainerByCache(page);
+            } else {
+                updateContainerByPage(page);
+            }
+            window.scrollTo(0, document.body.scrollHeight);
             return false;
         });
-
-        // $(document).on("click", "li a.page-next", function() {
-        //     var page = $(this).data("page");
-        //     updateContainerByPage(page);
-        // });
     }
 
 

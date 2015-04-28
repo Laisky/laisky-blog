@@ -2,7 +2,7 @@
 {% set max_page = max_page or current_page %}
 {% set page_start = max(current_page - 2, 1) %}
 {% set page_end = min(page_start + 4, max_page) %}
-<nav class="archives page-nav">
+<nav class="archives page-nav" id="page-nav">
     <ul class="pagination">
         <li {{ 'class="disabled"' if current_page == 1 else '' }}>
             <a aria-label="Previous" class="page-previous" data-page="{{ max(current_page - 1, 1) }}" href="/archives/?page={{ max(current_page - 1, 1) }}">
