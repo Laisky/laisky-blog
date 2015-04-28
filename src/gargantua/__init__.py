@@ -18,7 +18,7 @@ import motor
 
 from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_NAME
 from .utils import setup_log
-from .views import BaseHandler, PostsHandler, ArchivesPage, PostPage
+from .views import BaseHandler, PostsHandler, PostPage
 
 
 log = logging.getLogger(LOG_NAME)
@@ -57,7 +57,7 @@ class Application(tornado.web.Application):
         }
         handlers = [
             # -------------- handler --------------
-            url('/archives/', ArchivesPage, name='post:archives'),
+            url('/(archives)/', PostsHandler, name='post:archives'),
             url('/p/(.*)/', PostPage, name='post:single'),
             # ---------------- api ----------------
             url('/api/posts/(.*)/', PostsHandler, name='api:post'),
