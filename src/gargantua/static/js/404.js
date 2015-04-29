@@ -44,6 +44,7 @@ $(function() {
 
                 $(".container").html(archives_data);
                 $.globalEval($(".comment-count-js").html());
+                loadersCss.initLoaderCss();
                 history.pushState({}, '', '/archives/?page=1');
             }
         }
