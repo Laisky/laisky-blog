@@ -5,6 +5,7 @@ $(function() {
     // bindWindowScrollHandler();
     bindChangePage();
     prefetchPage();
+    loadersCss.initLoaderCss();
 
 
     function prefetchPage() {
