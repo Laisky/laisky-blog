@@ -5,7 +5,6 @@ $(function() {
     // bindWindowScrollHandler();
     bindChangePage();
     prefetchPage();
-    loadersCss.initLoaderCss();
 
 
     function prefetchPage() {
@@ -35,6 +34,7 @@ $(function() {
                 .done(function(data) {
                     $(".container").html(data);
                     $.globalEval($(".comment-count-js").html());
+                    loadersCss.initLoaderCss();
                     history.pushState({}, '', '/archives/?page=' + page);
                     prefetchPage();
                 });
@@ -43,6 +43,7 @@ $(function() {
         function updateContainerByCache(page) {
             $(".container").html(pageCache[page]);
             $.globalEval($(".comment-count-js").html());
+            loadersCss.initLoaderCss();
             history.pushState({}, '', '/archives/?page=' + page);
             prefetchPage();
         }
@@ -55,7 +56,6 @@ $(function() {
             } else {
                 updateContainerByPage(page);
             }
-            loadersCss.initLoaderCss();
             window.scrollTo(0, document.body.scrollHeight);
             return false;
         });
@@ -68,7 +68,6 @@ $(function() {
             } else {
                 updateContainerByPage(page);
             }
-            loadersCss.initLoaderCss();
             window.scrollTo(0, document.body.scrollHeight);
             return false;
         });
