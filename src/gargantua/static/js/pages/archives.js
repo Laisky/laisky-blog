@@ -54,6 +54,7 @@ $(function() {
             } else {
                 updateContainerByPage(page);
             }
+            loadersCss.initLoaderCss();
             window.scrollTo(0, document.body.scrollHeight);
             return false;
         });
@@ -66,6 +67,7 @@ $(function() {
             } else {
                 updateContainerByPage(page);
             }
+            loadersCss.initLoaderCss();
             window.scrollTo(0, document.body.scrollHeight);
             return false;
         });
