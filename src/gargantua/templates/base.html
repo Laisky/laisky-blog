@@ -11,9 +11,13 @@
         <script src="http://cdn.staticfile.org/twitter-bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>
         <link rel="shortcut icon" href="favicon.ico">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        {% assets filters="less,cssmin", output="assets/libs.css",
+                "css/vendor/code-styles/tomorrow.css",
+                "css/vendor/loaders.css" %}
+            <link rel="stylesheet" href="{{ ASSET_URL }}" />
+        {% endassets %}
+
         {% assets filters="less,cssmin", output="assets/sites.css",
-                "css/styles/tomorrow.css",
-                "less/widgets/loader.less",
                 "less/base.less",
                 "less/widgets/post.less",
                 "less/pages/archives.less",
@@ -33,7 +37,8 @@
     </div>
 
     {% assets filters="jsmin", output="assets/libs.js",
-            "js/highlight.pack.js" %}
+            "js/highlight.pack.js",
+            "js/vendor/loaders.css.js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
 
