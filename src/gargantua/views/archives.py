@@ -20,7 +20,7 @@ class PostsHandler(BaseHandler):
 
     @tornado.web.asynchronous
     def get(self, url):
-        log.info('PostsHandler get {}'.format(url))
+        log.info('GET PostsHandler {}'.format(url))
 
         router = {
             'archives': self.get_post_by_page,
