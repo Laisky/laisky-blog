@@ -20,3 +20,8 @@ class PublishHandler(BaseHandler):
 
         self.render2('publish/index.html')
         self.finish()
+
+    @tornado.web.authenticated
+    @tornado.web.asynchronous
+    def post(self):
+        pass
