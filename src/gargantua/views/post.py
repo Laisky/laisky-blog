@@ -18,7 +18,7 @@ class PostPage(BaseHandler):
     @tornado.gen.coroutine
     @debug_wrapper
     def get(self, name):
-        log.info('PostPage GET for name {}'.format(name))
+        log.info('GET PostPage for name {}'.format(name))
 
         name = urllib.parse.quote(name).lower()
         post = yield self.db.posts.find_one({'post_name': name})
