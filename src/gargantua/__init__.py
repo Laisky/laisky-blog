@@ -17,7 +17,7 @@ from tornado.options import define, options
 import motor
 
 from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_NAME
-from .utils import setup_log
+from .utils import setup_log, generate_random_string
 from .views import BaseHandler, PostsHandler, PostPage, PublishHandler
 
 
@@ -49,7 +49,8 @@ class Application(tornado.web.Application):
             'static_path': str(Path(CWD, 'static')),
             'static_url_prefix': '/static/',
             'template_path': str(Path(CWD, 'templates')),
-            'cookie_secret': 'XmuwPAt8wHdnik4Xvc3GXmbXLifVmPZYhoc9Tx4x1iZ',
+            'cookie_secret': generate_random_string(128),
+            'token_secret': generate_random_string(128),
             'login_url': '/login/',
             'xsrf_cookies': True,
             'autoescape': None,

@@ -2,13 +2,16 @@
 # -*- coding: utf-8 -*-
 import os
 import json
+import traceback
 import logging
 from math import ceil
 
-import tornado.web
+import jwt
+from bson import ObjectId
+import tornado
 
 from ..const import OK, LOG_NAME, N_POST_PER_PAGE
-from ..utils import TemplateRendering
+from ..utils import TemplateRendering, validate_token
 
 
 log = logging.getLogger(LOG_NAME)
@@ -43,6 +46,22 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
     @property
     def is_https(self):
         return self.request.headers.get('X-Scheme') == "https"
+
+    @tornado.gen.coroutine
+    def get_current_user(self):
+        try:
+            token = validate_token(self.request.headers['token'])
+            uid = token['uid']
+            expect_token = yield from self.db.users.find_one(
+                {'_id': ObjectId(uid)}
+            )['token']
+            return token == expect_token
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+            err = traceback.format_exc()
+            log.debug('token validate error: {}'.format(err))
+        except Exception:
+            err = traceback.format_exc()
+            log.exception('get_current_user error: {}'.format(err))
 
     def redirect_404(self):
         self.redirect('/404.html')
