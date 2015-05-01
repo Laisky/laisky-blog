@@ -15,6 +15,7 @@ import tornado
 from tornado.web import url
 from tornado.options import define, options
 import motor
+import pymongo
 
 from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_NAME
 from .utils import setup_log, generate_random_string
@@ -76,3 +77,5 @@ class Application(tornado.web.Application):
 
         self.conn = motor.MotorClient(host=options.dbhost, port=options.dbport)
         self.db = self.conn[options.dbname]
+        self.mongo_conn = pymongo.MongoClient(host=options.dbhost, port=options.dbport)
+        self.mongo_db = self.mongo_conn[options.dbname]

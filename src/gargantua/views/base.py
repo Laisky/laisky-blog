@@ -29,6 +29,10 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
         return self.application.db
 
     @property
+    def mongo_db(self):
+        return self.application.mongo_db
+
+    @property
     def ip(self):
         return self.request.headers.get('X-Real-IP', self.request.remote_ip)
 
@@ -47,21 +51,23 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
     def is_https(self):
         return self.request.headers.get('X-Scheme') == "https"
 
-    @tornado.gen.coroutine
     def get_current_user(self):
         try:
-            token = validate_token(self.request.headers['token'])
+            token = validate_token(self.request.headers['Token'])
             uid = token['uid']
-            expect_token = yield from self.db.users.find_one(
+            user_docu = self.mongo_db.users.find_one(
                 {'_id': ObjectId(uid)}
-            )['token']
-            return token == expect_token
+            )
+            expect_token = user_docu['token']
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             err = traceback.format_exc()
             log.debug('token validate error: {}'.format(err))
         except Exception:
             err = traceback.format_exc()
             log.exception('get_current_user error: {}'.format(err))
+        else:
+            if token == expect_token:
+                return user_docu
 
     def redirect_404(self):
         self.redirect('/404.html')
