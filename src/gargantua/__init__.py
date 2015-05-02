@@ -19,7 +19,8 @@ import pymongo
 
 from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_NAME
 from .utils import setup_log, generate_random_string
-from .views import BaseHandler, PostsHandler, PostPage, PublishHandler
+from .views import \
+    BaseHandler, PostsHandler, PostPage, PublishHandler, UserHandler
 
 
 log = logging.getLogger(LOG_NAME)
@@ -62,6 +63,7 @@ class Application(tornado.web.Application):
             url('/(archives)/', PostsHandler, name='post:archives'),
             url('/p/(.*)/', PostPage, name='post:single'),
             url('/publish/', PublishHandler, name='post:publish'),
+            url('/(login)/', UserHandler, name='user:login'),
             # ---------------- api ----------------
             url('/api/posts/(.*)/', PostsHandler, name='api:post'),
             # ---------------- 404 ----------------

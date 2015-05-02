@@ -11,6 +11,9 @@
         <script src="http://cdn.staticfile.org/twitter-bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>
         <link rel="shortcut icon" href="favicon.ico">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        {% block page_css %}
+        {% endblock %}
+
         {% assets filters="less,cssmin", output="assets/libs.css",
                 "css/vendor/code-styles/tomorrow.css",
                 "css/vendor/loaders.css" %}
@@ -21,7 +24,8 @@
                 "less/base.less",
                 "less/widgets/post.less",
                 "less/pages/archives.less",
-                "less/pages/p.less" %}
+                "less/pages/p.less",
+                "less/pages/login.less" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
     {% endblock %}
@@ -35,6 +39,9 @@
         {% block container %}
         {% endblock %}
     </div>
+
+    {% block page_js %}
+    {% endblock %}
 
     {% assets filters="jsmin", output="assets/libs.js",
             "js/highlight.pack.js",

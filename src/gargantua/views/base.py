@@ -55,6 +55,8 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
         try:
             token = validate_token(self.request.headers['Token'])
             uid = token['uid']
+            assert self.get_secure_cookie('uid') == uid
+
             user_docu = self.mongo_db.users.find_one(
                 {'_id': ObjectId(uid)}
             )
