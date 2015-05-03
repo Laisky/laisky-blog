@@ -14,7 +14,7 @@ log = logging.getLogger(LOG_NAME)
 class PublishHandler(BaseHandler):
     """APIs about posts"""
 
-    @tornado.web.asynchronous
+    @tornado.web.authenticated
     def get(self):
         log.info('GET PublishHandler')
 

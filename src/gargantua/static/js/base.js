@@ -46,6 +46,13 @@ navigator.browserInfo = (function(){
 })();
 
 
+if(!String.prototype.getMD5){
+    String.prototype.getMD5 = function(){
+        return SparkMD5.hash(this);
+    };
+}
+
+
 function getBaseUrl() {
     var url = location.href; // entire url including querystring - also: window.location.href;
     var baseURL = url.substring(0, url.indexOf('/', 14));
@@ -68,9 +75,12 @@ function getBaseUrl() {
 }
 
 
+// 方便的 POST JSON 的函数
+// 包含 xsrf 信息
+// 注意链式语法中的 done, fail, always 等接收到的参数是字符串
 jQuery.postJSON = function(url, args, callback) {
     args._xsrf = getCookie("_xsrf");
-    $.ajax({
+    return $.ajax({
         url: url,
         data: $.param(args),
         dataType: "text",
