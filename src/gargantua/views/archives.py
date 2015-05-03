@@ -24,9 +24,9 @@ class PostsHandler(BaseHandler):
 
         router = {
             'archives': self.get_post_by_page,
-            'get-lastest-posts-by-name': self.get_lastest_posts_by_name,
-            'get-post-by-id': self.get_post_by_id,
-            'get-post-by-page': self.get_post_by_page,
+            'api/posts/get-lastest-posts-by-name': self.get_lastest_posts_by_name,
+            'api/posts/get-post-by-id': self.get_post_by_id,
+            'api/posts/get-post-by-page': self.get_post_by_page,
         }
         router.get(url, self.redirect_404)()
 

@@ -1,8 +1,11 @@
 # debug
 ipython
 
-# tools
+# encrypt
+PyJWT
 python-bcrypt
+
+# templates
 jinja2
 webassets
 cssmin
