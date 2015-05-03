@@ -53,13 +53,14 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
 
     def get_current_user(self):
         try:
-            token = validate_token(self.request.headers['Token'])
-            uid = token['uid']
-            assert self.get_secure_cookie('uid') == uid
-
+            uid = self.get_secure_cookie('uid')
             user_docu = self.mongo_db.users.find_one(
                 {'_id': ObjectId(uid)}
             )
+
+            token = validate_token(self.get_secure_cookie('token'), user_docu['password'])
+            assert token['uid'] == uid
+
             expect_token = user_docu['token']
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             err = traceback.format_exc()

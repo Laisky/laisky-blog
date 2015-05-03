@@ -18,4 +18,4 @@ def generate_token(json_, secret):
 
 
 def validate_token(token, secret):
-    return jwt.decode(token, secret, verify=False)  # 服务器重启会导致 secret 失效
+    return jwt.decode(token, secret, verify=True)
