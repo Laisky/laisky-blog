@@ -44,6 +44,9 @@ class UserHandler(BaseHandler):
         passwd = self.get_argument('password')
         log.debug('login_api with email {}, passwd {}'.format(email, passwd))
 
+        self.finish()
+        return
+
         user_docu = (yield self.db.users.find_one({'email': email}))
         if not validate_passwd(passwd, user_docu['password']):
             log.debug('invalidate password')
