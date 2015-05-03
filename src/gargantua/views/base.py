@@ -2,13 +2,16 @@
 # -*- coding: utf-8 -*-
 import os
 import json
+import traceback
 import logging
 from math import ceil
 
-import tornado.web
+import jwt
+from bson import ObjectId
+import tornado
 
 from ..const import OK, LOG_NAME, N_POST_PER_PAGE
-from ..utils import TemplateRendering
+from ..utils import TemplateRendering, validate_token
 
 
 log = logging.getLogger(LOG_NAME)
@@ -24,6 +27,10 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
     @property
     def db(self):
         return self.application.db
+
+    @property
+    def mongo_db(self):
+        return self.application.mongo_db
 
     @property
     def ip(self):
@@ -43,6 +50,34 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
     @property
     def is_https(self):
         return self.request.headers.get('X-Scheme') == "https"
+
+    def get_current_user(self):
+        log.debug('get_current_user')
+
+        try:
+            cli_uid = self.get_secure_cookie('uid').decode()
+            cli_token = self.get_secure_cookie('token').decode()
+
+            user_docu = self.mongo_db.users.find_one(
+                {'_id': ObjectId(cli_uid)}
+            )
+            assert cli_token == user_docu['token']
+
+            token_docu = validate_token(cli_token, user_docu['password'])
+            assert token_docu['uid'] == cli_uid
+
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+            err = traceback.format_exc()
+            log.debug('token validate error: {}'.format(err))
+        except AttributeError:
+            err = traceback.format_exc()
+            log.debug('get_current_user error: {}'.format(err))
+        except Exception:
+            err = traceback.format_exc()
+            log.exception('get_current_user error: {}'.format(err))
+        else:
+            log.debug("authenticated user")
+            return user_docu
 
     def redirect_404(self):
         self.redirect('/404.html')
@@ -66,6 +101,7 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
             'min': min,
             'is_ajax': self.is_ajax,
             'is_https': self.is_https,
+            'current_user': self.get_current_user(),
         })
         content = self.render_template(template_name, **kwargs)
         self.write(content)

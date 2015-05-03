@@ -15,10 +15,12 @@ import tornado
 from tornado.web import url
 from tornado.options import define, options
 import motor
+import pymongo
 
 from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_NAME
-from .utils import setup_log
-from .views import BaseHandler, PostsHandler, PostPage, PublishHandler
+from .utils import setup_log, generate_random_string
+from .views import \
+    BaseHandler, PostsHandler, PostPage, PublishHandler, UserHandler
 
 
 log = logging.getLogger(LOG_NAME)
@@ -49,7 +51,8 @@ class Application(tornado.web.Application):
             'static_path': str(Path(CWD, 'static')),
             'static_url_prefix': '/static/',
             'template_path': str(Path(CWD, 'templates')),
-            'cookie_secret': 'XmuwPAt8wHdnik4Xvc3GXmbXLifVmPZYhoc9Tx4x1iZ',
+            # 'cookie_secret': generate_random_string(128),
+            'cookie_secret': '1234567890',
             'login_url': '/login/',
             'xsrf_cookies': True,
             'autoescape': None,
@@ -60,8 +63,10 @@ class Application(tornado.web.Application):
             url('/(archives)/', PostsHandler, name='post:archives'),
             url('/p/(.*)/', PostPage, name='post:single'),
             url('/publish/', PublishHandler, name='post:publish'),
+            url('/(login)/', UserHandler, name='user:login'),
             # ---------------- api ----------------
-            url('/api/posts/(.*)/', PostsHandler, name='api:post'),
+            url('/(api/posts/.*)/', PostsHandler, name='api:post'),
+            url('/(api/user/.*)/', UserHandler, name='api:user:login'),
             # ---------------- 404 ----------------
             url('/404.html', PageNotFound, name='404'),
         ]
@@ -75,3 +80,5 @@ class Application(tornado.web.Application):
 
         self.conn = motor.MotorClient(host=options.dbhost, port=options.dbport)
         self.db = self.conn[options.dbname]
+        self.mongo_conn = pymongo.MongoClient(host=options.dbhost, port=options.dbport)
+        self.mongo_db = self.mongo_conn[options.dbname]

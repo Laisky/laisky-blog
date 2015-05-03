@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import re
+import random
 import sys
+import string
 import logging
 
-from .encryt import generate_passwd, validate_passwd
+from .encryt import generate_passwd, validate_passwd, generate_token, validate_token
 from .jinja import debug_wrapper, TemplateRendering
 from .mongo import unquote_fr_mongo
 from ..const import LOG_NAME, LOG_PATH
@@ -12,7 +14,7 @@ from ..const import LOG_NAME, LOG_PATH
 
 log = logging.getLogger(LOG_NAME)
 __all__ = ['generate_passwd', 'validate_passwd', 'validate_email',
-           'validate_mobile',
+           'validate_mobile', 'generate_token', 'validate_token',
            'debug_wrapper', 'setup_log', 'unquote_fr_mongo',
            'TemplateRendering']
 
@@ -43,3 +45,8 @@ def validate_email(email):
 def validate_mobile(mobile):
     ippat = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
     return ippat.match(mobile)
+
+
+def generate_random_string(length):
+    alphbet = string.ascii_letters + ''.join([str(i) for i in range(10)])
+    return ''.join([random.choice(alphbet) for i in range(length)])
