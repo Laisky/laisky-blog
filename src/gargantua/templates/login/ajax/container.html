@@ -1,7 +1,10 @@
 <div class="container-fluid login-body">
     <div class="row">
         <div class="login">
-            <form class="form-horizontal" action="/api/user/login/" method="post">
+            <div class="row hint">
+                <p class="hint-text label label-info">请登录</p>
+            </div>
+            <form class="form-horizontal">
                 <div class="form-group">
                     <label for="Email" class="col-sm-2 control-label">Email</label>
                     <div class="col-sm-10">
@@ -18,7 +21,7 @@
                     <div class="col-sm-offset-2 col-sm-10">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" id="keepLoginInput"> Remember me
+                                <input type="checkbox" id="keepLoginInput" checked> Remember me
                             </label>
                         </div>
                     </div>
@@ -26,7 +29,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button type="submit" id="signinBtn" class="btn btn-default">Sign in</button>
-                        <button type="submit" id="signupBtn" class="btn btn-default">Sign Up</button>
+                        <button disabled="true" type="submit" id="signupBtn" class="btn btn-default">Sign Up</button>
                     </div>
                 </div>
             </form>

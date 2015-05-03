@@ -24,9 +24,6 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
         url = url.strip(' /')
         super().get(url)
 
-    def check_xsrf_cookie(self):
-        pass
-
     @property
     def db(self):
         return self.application.db

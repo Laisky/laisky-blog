@@ -4,8 +4,8 @@ import logging
 import tornado
 
 from .base import BaseHandler
-from ..const import LOG_NAME
-from ..utils import debug_wrapper, validate_passwd, generate_token
+from ..const import LOG_NAME, OK, ERROR
+from ..utils import debug_wrapper, validate_passwd, generate_token, validate_email
 
 
 log = logging.getLogger(LOG_NAME)
@@ -46,14 +46,21 @@ class UserHandler(BaseHandler):
         log.debug('login_api with email {}, passwd {}, is_keep_login {}'
                   .format(email, passwd, is_keep_login))
 
-        self.write_json(msg="ok")
-        self.finish()
-        return
+        if not validate_email(email):
+            log.debug("invalidate email: {}".format(email))
+            self.write_json(msg="invalidate email", status=ERROR)
+            self.finish()
+            return
 
         user_docu = (yield self.db.users.find_one({'email': email}))
-        if not validate_passwd(passwd, user_docu['password']):
-            log.debug('invalidate password')
-            self.write_json(msg='Wrong Account or Password')
+        if not user_docu:
+            log.debug('email not existed: {}'.format(email))
+            self.write_json(msg='Wrong Account or Password', status=ERROR)
+            self.finish()
+            return
+        elif not validate_passwd(passwd, user_docu['password']):
+            log.debug('invalidate password: {}'.format(passwd))
+            self.write_json(msg='Wrong Account or Password', status=ERROR)
             self.finish()
             return
 
@@ -62,3 +69,5 @@ class UserHandler(BaseHandler):
         token = generate_token(jwt, user_docu['password'])
         self.set_secure_cookie('uid', uid)
         self.set_secure_cookie('token', token)
+        self.write_json(msg=OK)
+        self.finish()

@@ -3,18 +3,17 @@ $(function() {
 
     // Login form
     function bindLoginHandler() {
-        console.log("bindLoginHandler");
+        // console.log("bindLoginHandler");
 
-        $( ".login-body" ).on("click", "#signinBtn", function() {
-            console.log("click!!!")
-
+        $(".login-body").on("click", "#signinBtn", function() {
             var $emailInput = $("#emailInput");
-            var $passwdInput = $("#passedInput");
+            var $passwdInput = $("#passwdInput");
             var $keepLoginInput = $("#keepLoginInput");
+            var $hintText = $(".login-body .hint .hint-text");
 
-            var email = $emailInput.html();
-            var passwd = $passwdInput.html();
-            var isKeepLogin = $keepLoginInput.checked;
+            var email = $emailInput.val();
+            var passwd = $passwdInput.val().getMD5();
+            var isKeepLogin = $keepLoginInput.prop("checked");
 
             var url = '/api/user/login/';
             var data = {
@@ -24,11 +23,20 @@ $(function() {
             };
 
             $.postJSON(url, data, function(resp) {
-                    console.log("POST" + resp);
-                })
-                .always(function(resp) {
-                    console.log("always");
-                    location.reload();
+                    $hintText.html(resp.msg);
+                    if (resp.status == 0) {
+                        // 登陆成功
+                        $hintText.removeClass('label-warning');
+                        $hintText.addClass("label-success");
+                        $hintText.html("登陆成功，正在跳转");
+                        setTimeout(function() {
+                            location.href = "/archives/?page=1";
+                        }, 1000);
+                        return;
+                    } else {
+                        // 登录失败
+                        $hintText.addClass("label-warning");
+                    }
                 });
 
             return false;
