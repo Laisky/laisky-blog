@@ -16,12 +16,16 @@ class UserHandler(BaseHandler):
         log.info('GET UserHandler {}'.format(url))
 
         router = {
-            'login': self.login,
+            'login': self.login_page,
         }
         router.get(url, self.redirect_404)()
 
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def login(self):
+    # @tornado.gen.coroutine
+    # @debug_wrapper
+    def login_page(self):
         self.render2('login/index.html')
         self.finish()
+
+
+    def login_api(self):
+        pass

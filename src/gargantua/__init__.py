@@ -65,7 +65,8 @@ class Application(tornado.web.Application):
             url('/publish/', PublishHandler, name='post:publish'),
             url('/(login)/', UserHandler, name='user:login'),
             # ---------------- api ----------------
-            url('/api/posts/(.*)/', PostsHandler, name='api:post'),
+            url('/(api/posts/.*)/', PostsHandler, name='api:post'),
+            url('/(api/user/.*)/', UserHandler, name='api:user:login'),
             # ---------------- 404 ----------------
             url('/404.html', PageNotFound, name='404'),
         ]
