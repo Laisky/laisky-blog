@@ -31,6 +31,12 @@ $(function() {
                         $hintText.html("登陆成功，正在跳转");
                         setTimeout(function() {
                             location.href = "/archives/?page=1";
+                            // TODO 还没实现 popStat
+                            // if(history.length == 0) {
+                            //     location.href = "/archives/?page=1";
+                            // }else {
+                            //     history.back();
+                            // }
                         }, 1000);
                         return;
                     } else {

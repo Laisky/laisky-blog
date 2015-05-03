@@ -2,17 +2,25 @@
     <div class="container-fluid">
         <div class="row">
             <h3>文章归档</h3>
-            <div class="loader-inner ball-pulse"></div>
-        </div>
-
-        <div class="row">
-            <h3>管理</h3>
             <div class="loader-inner pacman"></div>
         </div>
 
         <div class="row">
-            <h3>标签</h3>
-            <div class="loader-inner ball-scale-ripple-multiple"></div>
+            <div class="console container-fluid">
+                <h3>管理</h3>
+                {% if current_user %}
+                    <span class="publishBtn">发布</span>
+                {% else %}
+                    <a class="loginBtn" href="/login/">登陆</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="container-fluid">
+                <h3>标签</h3>
+                <div class="loader-inner ball-scale-ripple-multiple"></div>
+            </div>
         </div>
     </div>
 </div>

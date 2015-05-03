@@ -52,25 +52,32 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
         return self.request.headers.get('X-Scheme') == "https"
 
     def get_current_user(self):
+        log.debug('get_current_user')
+
         try:
-            uid = self.get_secure_cookie('uid')
+            cli_uid = self.get_secure_cookie('uid').decode()
+            cli_token = self.get_secure_cookie('token').decode()
+
             user_docu = self.mongo_db.users.find_one(
-                {'_id': ObjectId(uid)}
+                {'_id': ObjectId(cli_uid)}
             )
+            assert cli_token == user_docu['token']
 
-            token = validate_token(self.get_secure_cookie('token'), user_docu['password'])
-            assert token['uid'] == uid
+            token_docu = validate_token(cli_token, user_docu['password'])
+            assert token_docu['uid'] == cli_uid
 
-            expect_token = user_docu['token']
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             err = traceback.format_exc()
             log.debug('token validate error: {}'.format(err))
+        except AttributeError:
+            err = traceback.format_exc()
+            log.debug('get_current_user error: {}'.format(err))
         except Exception:
             err = traceback.format_exc()
             log.exception('get_current_user error: {}'.format(err))
         else:
-            if token == expect_token:
-                return user_docu
+            log.debug("authenticated user")
+            return user_docu
 
     def redirect_404(self):
         self.redirect('/404.html')
@@ -94,6 +101,7 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
             'min': min,
             'is_ajax': self.is_ajax,
             'is_https': self.is_https,
+            'current_user': self.get_current_user(),
         })
         content = self.render_template(template_name, **kwargs)
         self.write(content)

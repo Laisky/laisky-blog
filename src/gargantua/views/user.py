@@ -65,8 +65,13 @@ class UserHandler(BaseHandler):
             return
 
         uid = str(user_docu['_id'])
-        jwt = {'user': uid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30)}
+        jwt = {'uid': uid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30)}
         token = generate_token(jwt, user_docu['password'])
+
+        yield self.db.users.update(
+            {'_id': user_docu['_id']},
+            {'$set': {'token': token, 'last_update': datetime.datetime.utcnow()}})
+
         self.set_secure_cookie('uid', uid)
         self.set_secure_cookie('token', token)
         self.write_json(msg=OK)
