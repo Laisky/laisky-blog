@@ -70,7 +70,7 @@ function getBaseUrl() {
 
 jQuery.postJSON = function(url, args, callback) {
     args._xsrf = getCookie("_xsrf");
-    $.ajax({
+    return $.ajax({
         url: url,
         data: $.param(args),
         dataType: "text",

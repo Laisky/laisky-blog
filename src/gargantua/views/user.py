@@ -42,8 +42,11 @@ class UserHandler(BaseHandler):
 
         email = self.get_argument('email', strip=True)
         passwd = self.get_argument('password')
-        log.debug('login_api with email {}, passwd {}'.format(email, passwd))
+        is_keep_login = self.get_argument('is_keep_login')
+        log.debug('login_api with email {}, passwd {}, is_keep_login {}'
+                  .format(email, passwd, is_keep_login))
 
+        self.write_json(msg="ok")
         self.finish()
         return
 
