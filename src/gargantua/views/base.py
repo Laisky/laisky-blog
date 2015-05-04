@@ -37,11 +37,9 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
         return self.request.headers.get('X-Real-IP', self.request.remote_ip)
 
     def write_json(self, *, status=OK, msg='', data={}):
-        self.write(json.dumps({
-            'status': status,
-            'msg': msg,
-            'data': data
-        }))
+        j = json.dumps({'status': status, 'msg': msg, 'data': data})
+        log.debug('<< {}'.format(j))
+        self.write(j)
 
     @property
     def is_ajax(self):
