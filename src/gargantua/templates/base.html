@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Laisky's Blog</title>
+        <link rel="shortcut icon" href="favicon.ico">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        {% block page_css %}
+        {% endblock %}
+
+        {% assets filters="less,cssmin", output="assets/libs.css",
+                "css/vendor/code-styles/tomorrow.css",
+                "css/vendor/loaders.css",
+                "css/vendor/bootstrap.css" %}
+            <link rel="stylesheet" href="{{ ASSET_URL }}" />
+        {% endassets %}
+
+        {% assets filters="less,cssmin", output="assets/sites.css",
+                "less/base.less",
+                "less/widgets/post.less",
+                "less/pages/archives.less",
+                "less/pages/p.less",
+                "less/pages/login.less" %}
+            <link rel="stylesheet" href="{{ ASSET_URL }}" />
+        {% endassets %}
+    {% endblock %}
+</head>
+<body>
+    {% block header %}
+        {% include "header.html" %}
+    {% endblock %}
+
+    <div class="container">
+        {% block container %}
+        {% endblock %}
+    </div>
+
+    {% block page_js %}
+    {% endblock %}
+
+    {% assets filters="jsmin", output="assets/libs.js",
+            "js/vendor/jquery.min.js",
+            "js/vendor/bootstrap.min.js",
+            "js/vendor/loaders.css.js",
+            "js/highlight.pack.js",
+            "js/vendor/sparkmd5.min.js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    {% assets filters="jsmin", output="assets/sites.js",
+            "js/base.js",
+            "js/404.js",
+            "js/pages/archives.js",
+            "js/pages/p.js",
+            "js/pages/login.js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+</body>
+</html>

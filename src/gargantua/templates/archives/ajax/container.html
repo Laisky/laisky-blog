@@ -1,26 +1,26 @@
 <div class="container-fluid archives-body">
-<div class="row-fluid">
+<div class="row">
     <!-- archives -->
-    <div id="archives" class="span9" data-dom-cache="true" data-role="page">
-        {% include "widgets/post.html" %}
-    </div>
+    {% block archives %}
+        <div id="archives" class="col-xs-9" data-dom-cache="true" data-role="page">
+            {% include "widgets/post.html" %}
+        </div>
+    {% endblock %}
     <!-- archives -->
 
     <!-- navigator -->
-    <div class="span3 navigator">
-        <div>
-            <div class="row-fluid">
-                <nav>
-                    <h3>文章归档</h3>
-                    <p>载入中...</p>
-                    {% include "widgets/loader.html" %}
-                </nav>
-            </div>
-        </div>
-    </div>
+    {% block navbar %}
+        {% include "archives/ajax/navbar.html" %}
+    {% endblock %}
     <!-- navigator -->
 </div>
 </div>
+
+<!-- page navagator in the bottom -->
+{% block pagenav %}
+    {% include "archives/ajax/pagenav.html" %}
+{% endblock %}
+
 <script type="text/javascript" class="comment-count-js">
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'laisky'; // required: replace example with your forum shortname

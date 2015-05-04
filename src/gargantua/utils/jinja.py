@@ -1,19 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
-import json
 import logging
 import traceback
+import datetime
 
-import tornado.web
 from jinja2 import Environment, FileSystemLoader
 from webassets import Environment as AssetsEnvironment
 from webassets.ext.jinja2 import AssetsExtension
 
-from ..const import OK, LOG_NAME
+from ..const import LOG_NAME
 
 
 log = logging.getLogger(LOG_NAME)
+__all__ = ['debug_wrapper', 'TemplateRendering']
 
 
 def debug_wrapper(func):
@@ -42,6 +41,9 @@ class TemplateRendering():
                 loader=FileSystemLoader(self.settings['template_path']),
                 extensions=[AssetsExtension]
             )
+            self._jinja_env.filters['UTC2CST'] = \
+                lambda dt: dt + datetime.timedelta(seconds=28800)
+
         if not self._assets_env:
             self._assets_env = AssetsEnvironment(
                 self.settings['static_path'],
@@ -52,43 +54,3 @@ class TemplateRendering():
         template = self._jinja_env.get_template(template_name)
         content = template.render(kw)
         return content
-
-
-class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
-
-    @property
-    def db(self):
-        return self.application.db
-
-    @property
-    def ip(self):
-        return self.request.headers.get('X-Real-IP', self.request.remote_ip)
-
-    def write_json(self, *, status=OK, msg='', data={}):
-        self.write(json.dumps({
-            'status': status,
-            'msg': msg,
-            'data': data
-        }))
-
-    def redirect_404(self):
-        self.redirect('/404.html')
-
-    def render(self, template_name, **kwargs):
-        """
-        This is for making some extra context variables available to
-        the template
-        """
-        def static_url(path):
-            prefix = self.settings.get('static_url_prefix')
-            return os.path.join(prefix, path)
-
-        kwargs.update({
-            'settings': self.settings,
-            'static_url': static_url,
-            'request': self.request,
-            'xsrf_token': self.xsrf_token,
-            'xsrf_form_html': self.xsrf_form_html,
-        })
-        content = self.render_template(template_name, **kwargs)
-        self.write(content)

@@ -7,8 +7,9 @@ import tornado
 import html2text
 from bson import ObjectId
 
-from ..utils import debug_wrapper, BaseHandler, unquote_fr_mongo
-from ..const import LOG_NAME, N_MAX_POSTS
+from .base import BaseHandler
+from ..utils import debug_wrapper, unquote_fr_mongo
+from ..const import LOG_NAME, N_POST_PER_PAGE
 
 
 log = logging.getLogger(LOG_NAME)
@@ -19,31 +20,63 @@ class PostsHandler(BaseHandler):
 
     @tornado.web.asynchronous
     def get(self, url):
-        log.info('PostsHandler get {}'.format(url))
+        log.info('GET PostsHandler {}'.format(url))
 
         router = {
-            'get-lastest-posts-by-name': self.get_lastest_posts_by_name,
-            'get-post-by-id': self.get_post_by_id,
+            'archives': self.get_post_by_page,
+            'api/posts/get-lastest-posts-by-name': self.get_lastest_posts_by_name,
+            'api/posts/get-post-by-id': self.get_post_by_id,
+            'api/posts/get-post-by-page': self.get_post_by_page,
         }
         router.get(url, self.redirect_404)()
 
     @tornado.gen.coroutine
     @debug_wrapper
+    def get_post_by_page(self):
+        page = int(self.get_argument('page', strip=True, default=1))
+        is_full = self.get_argument('is_full', strip=True, default=False)
+        log.debug('get_post_by_page for page {}'.format(page))
+
+        skip = (page - 1) * N_POST_PER_PAGE
+        cursor = self.db.posts.find()
+        cursor.sort([('_id', pymongo.DESCENDING)]) \
+            .limit(N_POST_PER_PAGE) \
+            .skip(skip)
+        posts = []
+        while (yield cursor.fetch_next):
+            docu = cursor.next_object()
+            if docu['post_password']:
+                continue
+
+            docu = unquote_fr_mongo(docu)
+            if not is_full:
+                content = html2text.html2text(docu['post_content'])
+                docu['post_content'] = content[: 1000]
+
+            posts.append(docu)
+
+        self.render_post('archives/index.html',
+                         posts=posts, current_page=page)
+        self.finish()
+
+    @tornado.gen.coroutine
+    @debug_wrapper
     def get_lastest_posts_by_name(self):
         since_name = self.get_argument('since_name', strip=True)
-        n = int(self.get_argument('n', strip=True, default=5))
         is_full = self.get_argument('is_full', strip=True, default=False)
-        log.debug('get_lastest_posts for n {}, since_name {}'
-                  .format(n, since_name))
+        log.debug('get_lastest_posts for since_name {}'
+                  .format(since_name))
 
-        n = min(n, N_MAX_POSTS)
-
+        n = N_POST_PER_PAGE
         since_id = (yield
                     self.db.posts.find_one({'post_name': since_name}))['_id']
         cursor = self.db.posts.find({'_id': {'$lt': since_id}})
         cursor.sort([('_id', pymongo.DESCENDING)]).limit(n)
         posts = []
         for docu in (yield cursor.to_list(length=n)):
+            if docu['post_password']:
+                continue
+
             docu = unquote_fr_mongo(docu)
             if not is_full:
                 content = html2text.html2text(docu['post_content'])

@@ -8,7 +8,7 @@ LISTEN_PORT = 27850
 # common
 CWD = pathlib.PurePath(__file__).parents[0]
 LOG_NAME = 'gargantua'
-LOG_PATH = '/var/log/gargantua'
+LOG_PATH = '/tmp/gargantua.log'
 
 # web signal
 OK = 0
@@ -24,4 +24,4 @@ DB_HOST = 'blog.laisky.com'
 # DB_NAME = 'test'
 
 # posts
-N_MAX_POSTS = 20
+N_POST_PER_PAGE = 10
