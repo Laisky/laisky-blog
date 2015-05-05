@@ -29,6 +29,7 @@ class PublishHandler(BaseHandler):
     @tornado.gen.coroutine
     @debug_wrapper
     def post(self):
+        log.info('POST PublishHandler')
         post_title = self.get_argument('postTitle', strip=True)
         post_name = self.get_argument('postName', strip=True)
         post_name = urllib.parse.quote(post_name)
