@@ -34,8 +34,10 @@ class PublishHandler(BaseHandler):
         post_name = self.get_argument('postName', strip=True)
         post_name = urllib.parse.quote(post_name)
         post_content = self.get_argument('postContent')
-        log.debug('POST PublishHandler for post_title {}, post_name {}, post_content {}'
-                  .format(post_title, post_name, post_content))
+        post_type = self.get_argument('postType', default='text')
+        log.debug('POST PublishHandler for post_title {}, post_name {}, '
+                  'post_content {}, post_type {}'
+                  .format(post_title, post_name, post_content, post_type))
 
         # check existed
         docu = yield self.db.posts.find_one({'post_name': post_name})
@@ -53,6 +55,7 @@ class PublishHandler(BaseHandler):
             'post_title': post_title,
             'post_name': post_name,
             'post_content': post_content,
+            'post_type': post_type,
         }
         yield self.db.posts.update(
             {'post_name': post_name},
