@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block page_css %}
-        {% assets filters="less,cssmin", output="assets/libs.css",
+        {% assets filters="less,cssmin", output="assets/page.css",
                 "css/vendor/reveal.css" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
@@ -12,15 +12,18 @@
     <div class="row">
         <!-- archives -->
         <div id="archives" class="col-xs-12">
-            {% include "widgets/post.html" %}
+            <!-- {% include "widgets/post.html" %} -->
+            <!-- test -->
+            {% include "p/slide.html" %}
         </div>
         <!-- archives -->
     </div>
     </div>
 {% endblock %}
 
-{% block page_js %}
-    {% assets filters="jsmin", output="assets/libs.js",
+{% block head %}
+    {{ super() }}
+    {% assets filters="jsmin", output="assets/page.js",
             "js/vendor/reveal.js",
             "js/vendor/reveal-head.min.js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
