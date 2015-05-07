@@ -2,7 +2,8 @@
 
 {% block page_css %}
         {% assets filters="less,cssmin", output="assets/page.css",
-                "css/vendor/reveal.css" %}
+                "css/vendor/reveal.css",
+                "css/vendor/reveal-simple.css" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
 {% endblock %}
