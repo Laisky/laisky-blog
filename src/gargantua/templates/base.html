@@ -9,7 +9,7 @@
         <link rel="shortcut icon" href="favicon.ico">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         {% block page_css %}
-        {% endblock %}
+        {% endblock %}<!-- page_css -->
 
         {% assets filters="less,cssmin", output="assets/libs.css",
                 "css/vendor/code-styles/tomorrow.css",
@@ -27,20 +27,20 @@
                 "less/pages/publish.less" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
-    {% endblock %}
+    {% endblock %}<!-- head -->
 </head>
 <body>
     {% block header %}
         {% include "header.html" %}
-    {% endblock %}
+    {% endblock %}<!-- header -->
 
     <div class="container">
         {% block container %}
-        {% endblock %}
+        {% endblock %}<!-- container -->
     </div>
 
     {% block page_js %}
-    {% endblock %}
+    {% endblock %}<!-- page_js -->
 
     {% assets filters="jsmin", output="assets/libs.js",
             "js/vendor/jquery.min.js",
