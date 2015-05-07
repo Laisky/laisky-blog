@@ -1,11 +1,25 @@
 {% extends "base.html" %}
 
+{% set post = posts[0] %}
+
 {% block page_css %}
+    {% if post.post_type == "text" %}
         {% assets filters="less,cssmin", output="assets/page.css",
                 "css/vendor/reveal.css",
-                "css/vendor/reveal-simple.css" %}
+                "css/vendor/reveal-theme/simple.css",
+                "less/pages/archives.less",
+                "css/vendor/font-awesome.css" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
+    {% elif post.post_type == "slide" %}
+        {% assets filters="less,cssmin", output="assets/page.css",
+                "css/vendor/reveal.css",
+                "css/vendor/reveal-theme/simple.css",
+                "less/pages/archives.less",
+                "css/vendor/font-awesome.css" %}
+            <link rel="stylesheet" href="{{ ASSET_URL }}" />
+        {% endassets %}
+    {% endif %}
 {% endblock %}
 
 {% block container %}
@@ -13,20 +27,71 @@
     <div class="row">
         <!-- archives -->
         <div id="archives" class="col-xs-12">
-            <!-- {% include "widgets/post.html" %} -->
-            <!-- test -->
-            {% include "p/slide.html" %}
+            {% if post.post_type == "text" %}
+                {% include "widgets/post.html" %}
+            {% elif post.post_type == "slide" %}
+                {{ post.post_content }}
+            {% endif %}
         </div>
         <!-- archives -->
     </div>
     </div>
 {% endblock %}
 
-{% block head %}
-    {{ super() }}
+{% block page_js %}
     {% assets filters="jsmin", output="assets/page.js",
             "js/vendor/reveal.js",
-            "js/vendor/reveal-head.min.js" %}
+            "js/vendor/reveal-head.min.js",
+            "js/vendor/MathJax.js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
+
+    <script>
+        // Full list of configuration options available here: https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+            // theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+            // transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/none
+            // Optional libraries used to extend on reveal.js
+            dependencies: [
+                { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                { src: '{{ static_url("js/vendor/markdown/marked.js") }}', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                { src: '{{ static_url("js/vendor/markdown/markdown.js") }}', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                { src: '{{ static_url("js/vendor/highlight/highlight.js") }}', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+                { src: '{{ static_url("js/vendor/zoom-js/zoom.js") }}', async: true },
+                { src: '{{ static_url("js/vendor/notes/notes.js") }}', async: true }
+            ]
+        });
+    </script>
+    <!-- Loading mathjax macro -->
+    <!-- Load mathjax -->
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+            "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+        });
+    </script>
+    <!-- End of mathjax configuration -->
+    <script>
+        Reveal.addEventListener( 'slidechanged', function( event ) {
+            window.scrollTo(0,0);
+            MathJax.Hub.Rerender(event.currentSlide);
+        });
+    </script>
 {% endblock %}
