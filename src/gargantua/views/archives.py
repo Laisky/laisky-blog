@@ -45,7 +45,7 @@ class PostsHandler(BaseHandler):
         posts = []
         while (yield cursor.fetch_next):
             docu = cursor.next_object()
-            if docu['post_password']:
+            if docu.get('post_password'):
                 continue
 
             docu = unquote_fr_mongo(docu)
@@ -74,7 +74,7 @@ class PostsHandler(BaseHandler):
         cursor.sort([('_id', pymongo.DESCENDING)]).limit(n)
         posts = []
         for docu in (yield cursor.to_list(length=n)):
-            if docu['post_password']:
+            if docu.get('post_password'):
                 continue
 
             docu = unquote_fr_mongo(docu)
