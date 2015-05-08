@@ -3,6 +3,8 @@
 {% else %}
     {% extends 'base.html' %}
     {% block container %}
-        {% include "login/ajax/container.html" %}
+        <div class="container">
+            {% include "login/ajax/container.html" %}
+        </div>
     {% endblock %}
 {% endif %}

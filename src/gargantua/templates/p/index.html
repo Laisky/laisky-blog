@@ -20,18 +20,23 @@
 {% endblock %}
 
 {% block container %}
-    <div class="container-fluid">
-    <div class="row">
-        <!-- archives -->
-        <div id="archives" class="col-xs-12">
-            {% if post.post_type == "text" %}
-                {% include "widgets/post.html" %}
-            {% elif post.post_type == "slide" %}
-                {{ post.post_content }}
-            {% endif %}
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- archives -->
+                <div id="archives" class="col-xs-12">
+                    {% if post.post_type == "text" %}
+                        {% include "widgets/post.html" %}
+                    {% elif post.post_type == "slide" %}
+                        {{ post.post_content }}
+                    {% endif %}
+                </div>
+                <!-- archives -->
+            </div>
         </div>
-        <!-- archives -->
-    </div>
+        {% if post.post_type == "slide" %}
+            {% include "widgets/comment.html" %}
+        {% endif %}
     </div>
 {% endblock %}
 
@@ -40,7 +45,8 @@
         {% assets filters="jsmin", output="assets/page.js",
                 "js/vendor/reveal.js",
                 "js/vendor/reveal-head.min.js",
-                "js/vendor/MathJax.js" %}
+                "js/vendor/MathJax.js",
+                "js/vendor/require.js" %}
             <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
 
@@ -51,6 +57,7 @@
                 progress: true,
                 history: true,
                 center: true,
+                // mouseWheel: true,
                 transition: 'slide', // none/fade/slide/convex/concave/zoom
                 // theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
                 // transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/none
@@ -91,6 +98,33 @@
                 window.scrollTo(0,0);
                 MathJax.Hub.Rerender(event.currentSlide);
             });
+        </script>
+        <!-- page js -->
+        <script>
+            $(function() {
+                bindSetCommentPos();
+
+                // 移动评论控件的位置
+                function bindSetCommentPos() {
+                    var $container = $("body > .container");
+                    var $comment = $("#disqus_thread");
+                    var moveCommentPosTrigger = null;
+
+                    moveComment();
+
+                    function moveComment() {
+                        $comment.css(
+                            "margin-top",
+                            Number.parseInt($container.css("height")) - Number.parseInt($comment.css("height"))
+                        );
+                    }
+
+                    $( window ).resize(function() {
+                        window.clearTimeout(moveCommentPosTrigger);
+                        moveCommentPosTrigger = window.setTimeout(moveComment(), 500);
+                    });
+                }
+            })
         </script>
     {% endif %}
 {% endblock %}
