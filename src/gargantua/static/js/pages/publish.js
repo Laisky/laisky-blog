@@ -7,19 +7,21 @@ $(function() {
             var $postTitle = $("#postTitleInput");
             var $postName = $("#postNameInput");
             var $postContent = $("#postContentInput");
+            var $postType = $("#postTypeInput");
 
             var url = "/publish/";
             var args = {
                 postTitle: $postTitle.val(),
                 postName: $postName.val(),
-                postContent: $postContent.val()
+                postContent: $postContent.val(),
+                postType: $postType.val()
             };
 
             $.postJSON(url, args, function(resp) {
                 var $hint = $(".hint span");
 
                 $hint.html(resp.msg);
-                if(resp.status == 0) {
+                if (resp.status == 0) {
                     $hint.removeClass('label-info');
                     $hint.removeClass('label-danger');
                     $hint.addClass('label-success');
@@ -27,7 +29,7 @@ $(function() {
                     setTimeout(function() {
                         location.href = "/archives/?page=1";
                     }, 1000);
-                }else {
+                } else {
                     $hint.removeClass('label-info');
                     $hint.addClass('label-danger');
                 }
