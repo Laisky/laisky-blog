@@ -45,7 +45,6 @@
         {% assets filters="jsmin", output="assets/page.js",
                 "js/vendor/reveal.js",
                 "js/vendor/reveal-head.min.js",
-                "js/vendor/MathJax.js",
                 "js/vendor/require.js" %}
             <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
@@ -63,7 +62,7 @@
                 // transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/none
                 // Optional libraries used to extend on reveal.js
                 dependencies: [
-                    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: '{{ static_url("js/vendor/classList.js") }}', condition: function() { return !document.body.classList; } },
                     { src: '{{ static_url("js/vendor/markdown/marked.js") }}', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
                     { src: '{{ static_url("js/vendor/markdown/markdown.js") }}', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
                     { src: '{{ static_url("js/vendor/highlight/highlight.js") }}', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
@@ -75,7 +74,7 @@
         <!-- Loading mathjax macro -->
         <!-- Load mathjax -->
         <!-- MathJax configuration -->
-        <script type="text/x-mathjax-config">
+        <!-- <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
                 tex2jax: {
                     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
@@ -91,7 +90,7 @@
                         linebreaks: { automatic: true }
                     }
             });
-        </script>
+        </script> -->
         <!-- End of mathjax configuration -->
         <script>
             Reveal.addEventListener( 'slidechanged', function( event ) {
@@ -121,7 +120,7 @@
 
                     $( window ).resize(function() {
                         window.clearTimeout(moveCommentPosTrigger);
-                        moveCommentPosTrigger = window.setTimeout(moveComment(), 500);
+                        moveCommentPosTrigger = window.setTimeout(moveComment, 500);
                     });
                 }
             })
