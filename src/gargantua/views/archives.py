@@ -19,8 +19,12 @@ class PostsHandler(BaseHandler):
     """APIs about posts"""
 
     @tornado.web.asynchronous
-    def get(self, url):
+    def get(self, url=None):
         log.info('GET PostsHandler {}'.format(url))
+
+        if not url:
+            self.get_post_by_page()
+            return
 
         router = {
             'archives': self.get_post_by_page,
