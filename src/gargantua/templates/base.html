@@ -33,13 +33,8 @@
         {% include "header.html" %}
     {% endblock %}<!-- header -->
 
-    <div class="container">
-        {% block container %}
-        {% endblock %}<!-- container -->
-    </div>
-
-    {% block page_js %}
-    {% endblock %}<!-- page_js -->
+    {% block container %}
+    {% endblock %}<!-- container -->
 
     {% assets filters="jsmin", output="assets/libs.js",
             "js/vendor/jquery.min.js",
@@ -59,5 +54,8 @@
             "js/pages/publish.js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
+
+    {% block page_js %}
+    {% endblock %}<!-- page_js -->
 </body>
 </html>
