@@ -5,7 +5,7 @@
 {% block page_css %}
     {% if post.post_type == "text" %}
         {% assets filters="less,cssmin", output="assets/page.css",
-                "less/pages/archives.less",
+                "less/pages/archives.less" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
     {% elif post.post_type == "slide" %}
