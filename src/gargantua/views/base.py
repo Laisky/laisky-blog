@@ -37,11 +37,9 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
         return self.request.headers.get('X-Real-IP', self.request.remote_ip)
 
     def write_json(self, *, status=OK, msg='', data={}):
-        self.write(json.dumps({
-            'status': status,
-            'msg': msg,
-            'data': data
-        }))
+        j = json.dumps({'status': status, 'msg': msg, 'data': data})
+        log.debug('<< {}'.format(j))
+        self.write(j)
 
     @property
     def is_ajax(self):
@@ -55,8 +53,14 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
         log.debug('get_current_user')
 
         try:
-            cli_uid = self.get_secure_cookie('uid').decode()
-            cli_token = self.get_secure_cookie('token').decode()
+            cli_uid = self.get_secure_cookie('uid')
+            cli_token = self.get_secure_cookie('token')
+
+            cli_uid = cli_uid and cli_uid.decode()
+            cli_token = cli_token and cli_token.decode()
+
+            if not cli_uid or not cli_token:
+                return
 
             user_docu = self.mongo_db.users.find_one(
                 {'_id': ObjectId(cli_uid)}

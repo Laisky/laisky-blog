@@ -13,7 +13,7 @@ jsmin
 html2text
 
 # db
-pymongo
+pymongo==2.8
 motor
 
 # server
