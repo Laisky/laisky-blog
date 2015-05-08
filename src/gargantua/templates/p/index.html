@@ -1,12 +1,32 @@
 {% extends "base.html" %}
+
+{% block page_css %}
+        {% assets filters="less,cssmin", output="assets/page.css",
+                "css/vendor/reveal.css",
+                "css/vendor/reveal-simple.css" %}
+            <link rel="stylesheet" href="{{ ASSET_URL }}" />
+        {% endassets %}
+{% endblock %}
+
 {% block container %}
-<div class="container-fluid">
-<div class="row">
-    <!-- archives -->
-    <div id="archives" class="col-xs-12">
-        {% include "widgets/post.html" %}
+    <div class="container-fluid">
+    <div class="row">
+        <!-- archives -->
+        <div id="archives" class="col-xs-12">
+            <!-- {% include "widgets/post.html" %} -->
+            <!-- test -->
+            {% include "p/slide.html" %}
+        </div>
+        <!-- archives -->
     </div>
-    <!-- archives -->
-</div>
-</div>
+    </div>
+{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    {% assets filters="jsmin", output="assets/page.js",
+            "js/vendor/reveal.js",
+            "js/vendor/reveal-head.min.js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
 {% endblock %}
