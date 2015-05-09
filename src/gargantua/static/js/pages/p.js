@@ -1,6 +1,7 @@
 $(function() {
     updatePageTitle();
     bindImgClick();
+    hljs.initHighlightingOnLoad();
 
     function updatePageTitle() {
         if ($(".post").length == 1) {
