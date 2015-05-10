@@ -122,14 +122,17 @@ $(function() {
 
     // 键盘方向键的交互
     function bindKeyboardMove() {
-        updatePostCollect();
-        bindKeyboardHandler();
+        if (window.location.pathname.indexOf("/archives/") == 0) {
+            // 只在文章页绑定这一事件
+            updatePostCollect();
+            bindKeyboardHandler();
 
-        function updatePostCollect() {
-            postCollect = [];
-            $("#archives > div").each(function(idx, ele) {
-                postCollect.push($(ele).position()["top"]);
-            });
+            function updatePostCollect() {
+                postCollect = [];
+                $("#archives > div").each(function(idx, ele) {
+                    postCollect.push($(ele).position()["top"]);
+                });
+            }
         }
     }
 
