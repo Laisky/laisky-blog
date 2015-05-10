@@ -1,10 +1,10 @@
 $(function() {
     var pageCache = {};
 
-
     // bindWindowScrollHandler();
     bindChangePage();
     prefetchPage();
+    bindKeyboardMove();
 
 
     function prefetchPage() {
@@ -85,6 +85,7 @@ $(function() {
         });
     }
 
+
     function getLastPostName() {
         var lastPost = $("#archives").children().last();
         var href = lastPost.children(".post-title").children().prop("href");
@@ -93,6 +94,7 @@ $(function() {
 
         return postName;
     }
+
 
     function loadMorePosts() {
         var url = "/api/posts/get-lastest-posts-by-name/";
@@ -109,5 +111,85 @@ $(function() {
             .always(function() {
                 $(window).bind('scroll', windowScrollHandler);
             });
+    }
+
+
+    // 键盘方向键的交互
+    function bindKeyboardMove() {
+        var $body = $("body");
+        var postCollect = [];
+
+        updatePostCollect();
+        bindKeyboardHandler();
+
+        function updatePostCollect() {
+            postCollect = [];
+            $("#archives > div").each(function(idx, ele) {
+                postCollect.push($(ele).position()["top"]);
+            });
+        }
+
+        function getCurrentPostIdx() {
+            var current = getCurrentPostion();
+
+            console.log(current);
+            console.log(postCollect)
+
+            for (var i = postCollect.length; i >= 0; i--) {
+                if (postCollect[i] <= current || i == 0) {
+                    return i;
+                }
+            }
+        }
+
+        function getCurrentPostion() {
+            return $body.scrollTop();
+        }
+
+        function bindKeyboardHandler() {
+            $body.on("keydown", function(e) {
+                if (e.keyCode == 38) {
+                    postMoveHandler("up");
+                } else if (e.keyCode == 40) {
+                    postMoveHandler("down");
+                }
+                return false;
+            })
+        }
+
+
+        function postMoveHandler(direction) {
+            var currentPosition = getCurrentPostion();
+            var currentPostIdx = getCurrentPostIdx();
+            var curentPostPostion = postCollect[currentPostIdx];
+
+
+            if (direction == "up") {
+                if (Math.abs(curentPostPostion - currentPosition) > 10) {
+                    $body.animate({
+                        scrollTop: curentPostPostion
+                    });
+                    return false;
+                }
+
+                if (currentPostIdx == 0) {
+                    return false;
+                }
+
+                // move to forward post
+                $body.animate({
+                    scrollTop: postCollect[currentPostIdx - 1]
+                });
+
+            } else if (direction == "down") {
+                if (currentPostIdx == postCollect.length - 1) {
+                    return false;
+                }
+                // move to next post
+                $body.animate({
+                    scrollTop: postCollect[currentPostIdx + 1]
+                });
+            }
+        }
     }
 });
