@@ -122,7 +122,8 @@ $(function() {
 
     // 键盘方向键的交互
     function bindKeyboardMove() {
-        if (window.location.pathname.indexOf("/archives/") == 0) {
+        var pathname = window.location.pathname;
+        if (pathname == "/" || pathname.indexOf("/archives/") == 0) {
             // 只在文章页绑定这一事件
             updatePostCollect();
             bindKeyboardHandler();
