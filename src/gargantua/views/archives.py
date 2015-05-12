@@ -26,7 +26,6 @@ class PostsHandler(BaseHandler):
             # TODO 临时 fix
             # 应该用 Nginx 实现
             self.redirect('/archives/?page=1')
-            self.finish()
             return
 
         router = {
