@@ -36,6 +36,8 @@ class PageNotFound(BaseHandler):
 
     @tornado.gen.coroutine
     def get(self, url=None):
+        log.debug('GET PageNotFound for url {}'.format(url))
+
         if url is None:
             self.render2('404.html', url=url)
             self.finish()

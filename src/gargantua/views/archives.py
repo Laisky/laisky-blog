@@ -23,7 +23,10 @@ class PostsHandler(BaseHandler):
         log.info('GET PostsHandler {}'.format(url))
 
         if not url:
-            self.get_post_by_page()
+            # TODO 临时 fix
+            # 应该用 Nginx 实现
+            self.redirect('/archives/?page=1')
+            self.finish()
             return
 
         router = {
