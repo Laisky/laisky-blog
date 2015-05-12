@@ -11,9 +11,10 @@ webassets
 cssmin
 jsmin
 html2text
+lxml
 
 # db
-pymongo==2.8
+pymongo==2.7.1  # for motor
 motor
 
 # server
