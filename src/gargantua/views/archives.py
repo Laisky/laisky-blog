@@ -22,12 +22,6 @@ class PostsHandler(BaseHandler):
     def get(self, url=None):
         log.info('GET PostsHandler {}'.format(url))
 
-        if not url:
-            # TODO 临时 fix
-            # 应该用 Nginx 实现
-            self.redirect('/archives/?page=1')
-            return
-
         router = {
             'archives': self.get_post_by_page,
             'api/posts/get-lastest-posts-by-name': self.get_lastest_posts_by_name,
