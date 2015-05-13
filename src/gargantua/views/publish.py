@@ -5,6 +5,7 @@ import urllib
 import datetime
 
 import tornado
+from lxml import etree
 
 from .base import BaseHandler
 from ..utils import debug_wrapper
@@ -47,6 +48,9 @@ class PublishHandler(BaseHandler):
             self.finish()
             return
 
+        if post_type == 'slide':
+            post_content = self.extract_reveal_html(post_content)
+
         docu = {
             'post_author': self.current_user['_id'],
             'post_modified_gmt': datetime.datetime.utcnow(),
@@ -65,3 +69,15 @@ class PublishHandler(BaseHandler):
 
         self.write_json()
         self.finish()
+
+    def extract_reveal_html(self, html):
+        log.debug('extract_reveal_html for html {}'.format(html))
+
+        tree = etree.HTML(html.encode())
+        node = tree.xpath('//div[@class="reveal"]')
+        ret = etree.tostring(node[0]).decode()
+
+        if '{{' in ret:
+            return '{% raw %}' + ret + '{% endraw %}'
+        else:
+            return ret
