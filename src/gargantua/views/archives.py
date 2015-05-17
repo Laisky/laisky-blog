@@ -45,13 +45,20 @@ class PostsHandler(BaseHandler):
         posts = []
         while (yield cursor.fetch_next):
             docu = cursor.next_object()
-            if docu.get('post_password'):
-                continue
+            # if docu.get('post_password'):
+            #     continue
 
             docu = unquote_fr_mongo(docu)
             if not is_full:
-                content = html2text.html2text(docu['post_content'])
-                docu['post_content'] = content[: 1000]
+                if docu.get('post_password'):
+                    docu['post_content'] = """
+                        <div class="preview">
+                            <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                        </div>
+                    """
+                else:
+                    content = html2text.html2text(docu['post_content'])
+                    docu['post_content'] = content[: 1000]
 
             posts.append(docu)
 

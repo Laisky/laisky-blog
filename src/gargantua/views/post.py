@@ -6,7 +6,7 @@ import urllib
 import tornado
 
 from .base import BaseHandler
-from ..const import LOG_NAME
+from ..const import LOG_NAME, ERROR
 from ..utils import debug_wrapper
 
 
@@ -20,22 +20,46 @@ class PostPage(BaseHandler):
     def get(self, name):
         log.info('GET PostPage for name {}'.format(name))
 
-        name = urllib.parse.quote(name).lower()
+        name = self.parse_post_name(name)
         post = yield self.db.posts.find_one({'post_name': name})
         if not post:
             self.redirect_404()
 
+        if post.get('post_password'):
+            cookie_name = self.get_cookie_name(name)
+            cookie = self.get_secure_cookie(cookie_name)
+            log.debug('get cookie {}'.format(cookie))
+            if not cookie or cookie.decode() != str(post['_id']):
+                self.render2('p/auth.html', post_name=post['post_name'])
+                return
+
         post['post_type'] = post.get('post_type', 'text')
         self.render2('p/index.html', posts=[post])
 
-    # # test slides
-    # def get(self, name):
-    #     self.render2('p/index.html')
+    @tornado.gen.coroutine
+    @debug_wrapper
+    def post(self, name):
+        log.info("POST PostPage with name {}".format(name))
 
+        name = self.parse_post_name(name)
+        password = self.get_argument('password', strip=True)
+        log.debug('POST PostPage for name {}, password {}'
+                  .format(name, password))
 
-class MainPage(BaseHandler):
-    pass
+        post = yield self.db.posts.find_one({'post_name': name})
+        if not post:
+            self.write_json(msg='post_name 不存在', status=ERROR)
+            return
+        elif password != post['post_password']:
+            self.write_json(msg='密码错误', status=ERROR)
+            return
 
+        cookie_name = self.get_cookie_name(name)
+        self.set_secure_cookie(cookie_name, str(post['_id']), expires_days=None)
+        self.write_json(msg='ok')
 
-class AboutMe(BaseHandler):
-    pass
+    def parse_post_name(self, name):
+        return urllib.parse.quote(name).lower()
+
+    def get_cookie_name(self, post_name):
+        return 'post.auth.{}'.format(post_name)
