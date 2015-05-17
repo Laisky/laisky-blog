@@ -17,6 +17,7 @@ __all__ = ['debug_wrapper', 'TemplateRendering']
 
 def debug_wrapper(func):
     def wrapper(*args, **kw):
+        log.debug('debug_wrapper for args {}, kw {}'.format(args, kw))
         try:
             yield from func(*args, **kw)
         except Exception:
