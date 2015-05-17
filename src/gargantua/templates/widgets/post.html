@@ -1,5 +1,5 @@
 {% for post in posts %}
-    <div id="{{ post._id }}" class="post posts-container">
+    <div id="{{ post._id }}" class="post post-container">
     <h2 class="post-title"><a href="/p/{{ post.post_name }}/" target="_blank">{{ post.post_title }}</a></h2>
         <div class="post-content">
         <article>
@@ -7,7 +7,8 @@
         </article>
         </div>
         <div class="post-tail">
-            {% if posts|length != 1 %}
+            {% if post.post_password %}
+            {% elif posts|length != 1 %}
                 <a href="/p/{{ post.post_name }}#disqus_thread" target="_blank">0 评论</a>
             {% endif %}
             {% if posts|length == 1 %}
