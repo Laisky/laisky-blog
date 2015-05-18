@@ -70,11 +70,9 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
             token_docu = validate_token(cli_token, user_docu['password'])
             assert token_docu['uid'] == cli_uid
 
-        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
-            err = traceback.format_exc()
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, AssertionError) as err:
             log.debug('token validate error: {}'.format(err))
-        except AttributeError:
-            err = traceback.format_exc()
+        except AttributeError as err:
             log.debug('get_current_user error: {}'.format(err))
         except Exception:
             err = traceback.format_exc()
