@@ -94,4 +94,14 @@ jQuery.postJSON = function(url, args, callback) {
 
 $(function() {
     hljs.initHighlightingOnLoad();
+    // initTopNavbar();
+
+
+    function initTopNavbar() {
+        $(".navbar-top-btns a").each(function(idx, ele) {
+            $(ele).on("click", function(){
+                return false;
+            })
+        });
+    }
 });
