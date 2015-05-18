@@ -29,7 +29,7 @@ class PostPage(BaseHandler):
             cookie_name = self.get_cookie_name(name)
             cookie = self.get_secure_cookie(cookie_name)
             log.debug('get cookie {}'.format(cookie))
-            if not cookie or cookie.decode() != str(post['_id']):
+            if not cookie or cookie.decode() != post['post_password']:
                 self.render2('p/auth.html', post_name=post['post_name'])
                 return
 
@@ -55,7 +55,7 @@ class PostPage(BaseHandler):
             return
 
         cookie_name = self.get_cookie_name(name)
-        self.set_secure_cookie(cookie_name, str(post['_id']), expires_days=None)
+        self.set_secure_cookie(cookie_name, password, expires_days=None)
         self.write_json(msg='ok')
 
     def parse_post_name(self, name):
