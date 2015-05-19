@@ -96,6 +96,10 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
         This is for making some extra context variables available to
         the template
         """
+        content = self.render_template(template_name, **kwargs)
+        self.write(content)
+
+    def render_template(self, template_name, **kwargs):
         def static_url(path):
             prefix = self.settings.get('static_url_prefix')
             return os.path.join(prefix, path)
@@ -112,8 +116,7 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
             'is_https': self.is_https,
             'current_user': self.get_current_user(),
         })
-        content = self.render_template(template_name, **kwargs)
-        self.write(content)
+        return super().render_template(template_name, **kwargs)
 
     @tornado.gen.coroutine
     def prepare(self):
