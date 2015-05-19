@@ -28,6 +28,7 @@ $(function() {
     function initPage() {
         prefetchPage();
         bindKeyboardMove();
+        $.globalEval($(".comment-count-js").html());
     }
 
     function bindChangePage() {
@@ -39,7 +40,6 @@ $(function() {
             $.get(url, data, function(data) {})
                 .done(function(data) {
                     $(".container").html(data);
-                    $.globalEval($(".comment-count-js").html());
                     loadersCss.initLoaderCss();
                     history.pushState({}, '', '/archives/?page=' + page);
                     initPage();
@@ -48,7 +48,6 @@ $(function() {
 
         function updateContainerByCache(page) {
             $(".container").html(pageCache[page]);
-            $.globalEval($(".comment-count-js").html());
             loadersCss.initLoaderCss();
             history.pushState({}, '', '/archives/?page=' + page);
             initPage();

@@ -19,9 +19,13 @@ DB_HOST = 'localhost'
 DB_PORT = 27016
 DB_NAME = 'blog'
 
+# search
+ES_HOST = 'localhost'
+ES_PORT = 17200
+
 # test
 DB_HOST = 'blog.laisky.com'
-# DB_NAME = 'test'
+ES_HOST = 'blog.laisky.com'
 
 # posts
 N_POST_PER_PAGE = 10

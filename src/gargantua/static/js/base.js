@@ -29,25 +29,29 @@ function getCookie(name) {
 
 // navigator.browserInfo
 // http://stackoverflow.com/questions/5916900/how-can-you-detect-the-version-of-a-browser
-navigator.browserInfo = (function(){
-    var ua = navigator.userAgent, tem,
-    M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-    if(/trident/i.test(M[1])){
-        tem =  /\brv[ :]+(\d+)/g.exec(ua) || [];
+navigator.browserInfo = (function() {
+    var ua = navigator.userAgent,
+        tem,
+        M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    if (/trident/i.test(M[1])) {
+        tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
         return 'IE ' + (tem[1] || '');
     }
-    if(M[1] === 'Chrome'){
+    if (M[1] === 'Chrome') {
         tem = ua.match(/\bOPR\/(\d+)/);
-        if(tem != null) return 'Opera ' + tem[1];
+        if (tem != null) return 'Opera ' + tem[1];
     }
-    M = M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
-    if((tem = ua.match(/version\/(\d+)/i)) != null) M.splice(1, 1, tem[1]);
-    return {"name": M[0], "version": M[1]}
+    M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+    if ((tem = ua.match(/version\/(\d+)/i)) != null) M.splice(1, 1, tem[1]);
+    return {
+        "name": M[0],
+        "version": M[1]
+    }
 })();
 
 
-if(!String.prototype.getMD5){
-    String.prototype.getMD5 = function(){
+if (!String.prototype.getMD5) {
+    String.prototype.getMD5 = function() {
         return SparkMD5.hash(this);
     };
 }
@@ -92,6 +96,53 @@ jQuery.postJSON = function(url, args, callback) {
 };
 
 
+var globalFadeLayer = {};
+
 $(function() {
+    var $window = $(window);
+    var $document = $(document);
+
     hljs.initHighlightingOnLoad();
+    // initTopNavbar();
+    initGlobalLoader();
+
+
+    function initGlobalLoader() {
+        var $globalFade = $(".global-fade");
+        var $loader = $(".global-fade .loader-inner");
+        var loaderSize = 50;
+        var loaders = [
+            '<div class="loader-inner ball-scale-ripple-multiple"></div>'
+        ];
+
+        globalFadeLayer.fadeIn = function() {
+            setLoaderIconCenter();
+            $globalFade.fadeIn();
+        };
+        globalFadeLayer.fadeOut = function() {
+            $globalFade.fadeOut(1);
+        }
+
+        function setLoaderIconCenter() {
+            var windowHeight = parseInt($window.height(), 10);
+            var windowWidth = parseInt($window.width(), 10);
+
+            // make sure fade overlay whole document
+            $globalFade.height($document.height());
+            $globalFade.width($document.width());
+
+            // set center
+            $loader.css("margin-left", (windowWidth - loaderSize)/2);
+            $loader.css("margin-top", (windowHeight - loaderSize)/2);
+        }
+    }
+
+
+    function initTopNavbar() {
+        $(".navbar-top-btns a").each(function(idx, ele) {
+            $(ele).on("click", function() {
+                return false;
+            })
+        });
+    }
 });

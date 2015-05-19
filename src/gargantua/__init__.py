@@ -65,6 +65,7 @@ class Application(tornado.web.Application):
             url('/p/(.*)/', PostPage, name='post:single'),
             url('/publish/', PublishHandler, name='post:publish'),
             url('/(login)/', UserHandler, name='user:login'),
+            url('/(search)/', PostsHandler, name='post:search'),
             # ---------------- api ----------------
             url('/(api/posts/.*)/', PostsHandler, name='api:post'),
             url('/(api/user/.*)/', UserHandler, name='api:user:login'),

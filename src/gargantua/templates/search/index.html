@@ -1,0 +1,10 @@
+{% if is_ajax %}
+    {% include "search/ajax/container.html" %}
+{% else %}
+    {% extends 'base.html' %}
+    {% block container %}
+        <div class="container">
+            {% include "search/ajax/container.html" %}
+        </div>
+    {% endblock %}
+{% endif %}
