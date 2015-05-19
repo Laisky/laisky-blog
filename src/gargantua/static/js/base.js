@@ -100,6 +100,7 @@ var globalFadeLayer = {};
 
 $(function() {
     var $window = $(window);
+    var $document = $(document);
 
     hljs.initHighlightingOnLoad();
     // initTopNavbar();
@@ -126,7 +127,11 @@ $(function() {
             var windowHeight = parseInt($window.height(), 10);
             var windowWidth = parseInt($window.width(), 10);
 
-            // set
+            // make sure fade overlay whole document
+            $globalFade.height($document.height());
+            $globalFade.width($document.width());
+
+            // set center
             $loader.css("margin-left", (windowWidth - loaderSize)/2);
             $loader.css("margin-top", (windowHeight - loaderSize)/2);
         }
