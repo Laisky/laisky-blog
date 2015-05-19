@@ -6,9 +6,12 @@ import sys
 import string
 import logging
 
-from .encryt import generate_passwd, validate_passwd, generate_token, validate_token
+from .encryt import (
+    generate_passwd, validate_passwd, generate_token, validate_token,
+)
 from .jinja import debug_wrapper, TemplateRendering
 from .mongo import unquote_fr_mongo
+from .elasticsearch import generate_keyword_search, parse_search_resp
 from ..const import LOG_NAME, LOG_PATH
 
 
@@ -16,7 +19,8 @@ log = logging.getLogger(LOG_NAME)
 __all__ = ['generate_passwd', 'validate_passwd', 'validate_email',
            'validate_mobile', 'generate_token', 'validate_token',
            'debug_wrapper', 'setup_log', 'unquote_fr_mongo',
-           'TemplateRendering']
+           'TemplateRendering',
+           'generate_keyword_search', 'parse_search_resp']
 
 
 def setup_log():

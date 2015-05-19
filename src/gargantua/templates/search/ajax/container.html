@@ -2,24 +2,13 @@
     <div class="row">
         <!-- archives -->
         {% block archives %}
-            <div id="archives" class="col-xs-9" data-dom-cache="true" data-role="page">
+            <div id="archives" class="col-xs-12" data-dom-cache="true" data-role="page">
                 {% include "widgets/post.html" %}
             </div>
         {% endblock %}
         <!-- archives -->
-
-        <!-- navigator -->
-        {% block navbar %}
-            {% include "archives/ajax/navbar.html" %}
-        {% endblock %}
-        <!-- navigator -->
     </div>
 </div>
-
-<!-- page navagator in the bottom -->
-{% block pagenav %}
-    {% include "archives/ajax/pagenav.html" %}
-{% endblock %}
 
 {% block page_js %}
     <script type="text/javascript" class="comment-count-js">
