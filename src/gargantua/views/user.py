@@ -42,7 +42,7 @@ class UserHandler(BaseHandler):
 
         email = self.get_argument('email', strip=True)
         passwd = self.get_argument('password')
-        is_keep_login = self.get_argument('is_keep_login')
+        is_keep_login = self.get_argument('is_keep_login', bool=True)
         log.debug('login_api with email {}, passwd {}, is_keep_login {}'
                   .format(email, passwd, is_keep_login))
 
@@ -72,7 +72,9 @@ class UserHandler(BaseHandler):
             {'_id': user_docu['_id']},
             {'$set': {'token': token, 'last_update': datetime.datetime.utcnow()}})
 
-        self.set_secure_cookie('uid', uid)
-        self.set_secure_cookie('token', token)
+        expires_days = 30 if is_keep_login else None
+        self.set_secure_cookie('uid', uid, expires_days=expires_days)
+        self.set_secure_cookie('token', token, expires_days=expires_days)
+        log.debug('set cookies with uid {}, token {}, expires_days {}'.format(uid, token, expires_days))
         self.write_json(msg=OK)
         self.finish()

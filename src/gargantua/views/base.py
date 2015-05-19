@@ -41,6 +41,13 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
         log.debug('<< {}'.format(j))
         self.write(j)
 
+    def get_argument(self, arg_name, bool=False, *args, **kw):
+        val = super().get_argument(arg_name, *args, **kw)
+        if bool:
+            return False if val in ('false', 'False', False, 0, None) else True
+        else:
+            return val
+
     @property
     def is_ajax(self):
         return self.request.headers.get('X-Requested-With') == "XMLHttpRequest"
