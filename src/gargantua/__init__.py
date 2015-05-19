@@ -53,8 +53,7 @@ class Application(tornado.web.Application):
             'static_path': str(Path(CWD, 'static')),
             'static_url_prefix': '/static/',
             'template_path': str(Path(CWD, 'templates')),
-            # 'cookie_secret': generate_random_string(128),
-            'cookie_secret': '1234567890',
+            'cookie_secret': generate_random_string(50),
             'login_url': '/login/',
             'xsrf_cookies': True,
             'autoescape': None,
@@ -85,3 +84,15 @@ class Application(tornado.web.Application):
         self.db = self.conn[options.dbname]
         self.mongo_conn = pymongo.MongoClient(host=options.dbhost, port=options.dbport)
         self.mongo_db = self.mongo_conn[options.dbname]
+
+        # ensure index
+        # posts
+        # posts_idx = pymongo.IndexModel([('post_name',)], unique=True)
+        # self.mongo_db.posts.create_indexes([posts_idx])
+        self.mongo_db.posts.ensure_index([('post_name', pymongo.ASCENDING)], unique=True)  # PyMongo2.8
+        # users
+        # account_idx = pymongo.IndexModel([('account',)], unique=True)
+        # username_idx = pymongo.IndexModel([('username',)], unique=True)
+        # self.mongo_db.users.create_indexes([account_idx, username_idx])
+        self.mongo_db.users.ensure_index([('account', pymongo.ASCENDING)], unique=True)   # PyMongo2.8
+        self.mongo_db.users.ensure_index([('username', pymongo.ASCENDING)], unique=True)  # PyMongo2.8
