@@ -20,6 +20,7 @@ $(function() {
                 .done(function(resp) {
                     $container.html(resp);
                     $.globalEval($(".comment-count-js").html());
+                    history.pushState({}, '', '/search/?keyword=' + keyword);
                 })
                 .always(function() {
                     globalFadeLayer.fadeOut();
