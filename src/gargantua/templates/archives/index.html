@@ -2,9 +2,25 @@
     {% include "archives/ajax/container.html" %}
 {% else %}
     {% extends 'base.html' %}
+
     {% block container %}
         <div class="container">
             {% include "archives/ajax/container.html" %}
         </div>
+    {% endblock %}
+
+    {% block page_js %}
+        <script type="text/javascript" class="comment-count-js">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'laisky'; // required: replace example with your forum shortname
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var s = document.createElement('script'); s.async = true;
+                s.type = 'text/javascript';
+                s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(s);
+            } ());
+        </script>
     {% endblock %}
 {% endif %}
