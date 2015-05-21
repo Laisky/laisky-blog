@@ -42,7 +42,7 @@ class PostsHandler(BaseHandler):
         keyword = self.get_argument('keyword', strip=True)
         log.debug('GET get_post_by_keyword for keyword {}'.format(keyword))
 
-        url = 'http://{}:{}/posts/post/_search'.format(ES_HOST, ES_PORT)
+        url = 'http://{}:{}/blog/posts/_search'.format(ES_HOST, ES_PORT)
         body = generate_keyword_search(keyword=keyword)
         http = tornado.httpclient.AsyncHTTPClient()
         resp = (yield http.fetch(url, body=body, method='POST')).body.decode()
