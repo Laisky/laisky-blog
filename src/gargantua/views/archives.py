@@ -4,6 +4,7 @@ import logging
 
 import pymongo
 import tornado
+from tornado.options import options
 import tornado.httpclient
 import html2text
 from bson import ObjectId
@@ -12,7 +13,7 @@ from .base import BaseHandler
 from ..utils import (
     debug_wrapper, unquote_fr_mongo, generate_keyword_search, parse_search_resp
 )
-from ..const import LOG_NAME, N_POST_PER_PAGE, ES_HOST, ES_PORT
+from ..const import LOG_NAME, N_POST_PER_PAGE
 
 
 log = logging.getLogger(LOG_NAME)
@@ -42,7 +43,7 @@ class PostsHandler(BaseHandler):
         keyword = self.get_argument('keyword', strip=True)
         log.debug('GET get_post_by_keyword for keyword {}'.format(keyword))
 
-        url = 'http://{}:{}/blog/posts/_search'.format(ES_HOST, ES_PORT)
+        url = 'http://{}:{}/blog/posts/_search'.format(options.eshost, options.esport)
         body = generate_keyword_search(keyword=keyword)
         http = tornado.httpclient.AsyncHTTPClient()
         resp = (yield http.fetch(url, body=body, method='POST')).body.decode()
