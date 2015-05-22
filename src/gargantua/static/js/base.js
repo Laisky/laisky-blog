@@ -118,7 +118,7 @@ $(function() {
         globalFadeLayer.fadeIn = function() {
             setLoaderIconCenter();
             $globalFade.fadeIn();
-            setTimeout(globalFadeLayer.fadeOut(), 10000);
+            setTimeout(globalFadeLayer.fadeOut, 10000);
         };
         globalFadeLayer.fadeOut = function() {
             $globalFade.fadeOut(1);
