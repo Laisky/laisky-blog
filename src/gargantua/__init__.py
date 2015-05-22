@@ -17,7 +17,10 @@ from tornado.options import define, options
 import motor
 import pymongo
 
-from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_NAME
+from .const import (
+    CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_NAME,
+    ES_HOST, ES_PORT
+)
 from .utils import setup_log, generate_random_string
 from .views import \
     BaseHandler, PostsHandler, PostPage, PublishHandler, UserHandler
@@ -30,6 +33,8 @@ define('debug', default=False, type=bool)
 define('dbname', default=DB_NAME, type=str)
 define('dbhost', default=DB_HOST, type=str)
 define('dbport', default=DB_PORT, type=int)
+define('eshost', default=ES_HOST, type=str)
+define('esport', default=ES_PORT, type=int)
 
 
 class PageNotFound(BaseHandler):
