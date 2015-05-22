@@ -15,7 +15,7 @@ lxml
 
 # db
 pymongo==2.8  # for motor
-motor
+motor>=0.4.1
 
 # server
-tornado
+tornado>4.0
