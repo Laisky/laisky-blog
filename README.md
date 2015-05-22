@@ -1,8 +1,8 @@
 Gargantua
----
+===
 Laisky's new blog
 
-Version: 1.0.0
+Version: 1.1.0
 
 ## Description
 
@@ -27,3 +27,12 @@ A simple blog by Python3
 ```sh
 $ sudo make
 ```
+
+## History
+
+- 1.1.0
+    - Search
+- 1.0.0
+    - Simple blog
+- 0.0.1
+    - rescue data from wordpress
