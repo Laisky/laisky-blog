@@ -24,22 +24,48 @@
                 </div>
                 <div class="form-group">
                     <label for="post_content">文章内容</label>
-                    <a class="btn btn-default" data-wysihtml5-command="bold" title="CTRL+B">bold</a>
-                    <a class="btn btn-default" data-wysihtml5-command="italic" title="CTRL+I">italic</a>
-                    <a class="btn btn-default" data-wysihtml5-command="createLink">insert link</a>
-                    <a class="btn btn-default" data-wysihtml5-command="insertImage">insert image</a>
-                    <a class="btn btn-default" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1">h1</a>
-                    <a class="btn btn-default" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">h2</a>
-                    <a class="btn btn-default" data-wysihtml5-command="insertUnorderedList">insertUnorderedList</a>
-                    <a class="btn btn-default" data-wysihtml5-command="insertOrderedList">insertOrderedList</a>
-                    <a class="btn btn-default" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red">red</a>
-                    <a class="btn btn-default" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="green">green</a>
-                    <a class="btn btn-default" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue">blue</a>
-                    <a class="btn btn-default" data-wysihtml5-command="undo">undo</a>
-                    <a class="btn btn-default" data-wysihtml5-command="redo">redo</a>
-                    <a class="btn btn-default" data-wysihtml5-command="insertSpeech">speech</a>
-                    <a class="btn btn-default" data-wysihtml5-action="change_view">switch to html view</a>
-                    <textarea class="form-control" rows="20" placeholder="文章内容" id="postContentInput"></textarea>
+                    <div id="toolbar">
+                        <a class="btn btn-default" data-wysihtml5-command="bold" title="CTRL+B">bold</a>
+                        <a class="btn btn-default" data-wysihtml5-command="italic" title="CTRL+I">italic</a>
+                        <a class="btn btn-default" data-wysihtml5-command="createLink">insert link</a>
+                        <a class="btn btn-default" data-wysihtml5-command="insertImage">insert image</a>
+                        <a class="btn btn-default" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1">h1</a>
+                        <a class="btn btn-default" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">h2</a>
+                        <a class="btn btn-default" data-wysihtml5-command="insertUnorderedList">insertUnorderedList</a>
+                        <a class="btn btn-default" data-wysihtml5-command="insertOrderedList">insertOrderedList</a>
+                        <a class="btn btn-default" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red">red</a>
+                        <a class="btn btn-default" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="green">green</a>
+                        <a class="btn btn-default" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue">blue</a>
+                        <a class="btn btn-default" data-wysihtml5-command="undo">undo</a>
+                        <a class="btn btn-default" data-wysihtml5-command="redo">redo</a>
+                        <a class="btn btn-default" data-wysihtml5-command="insertSpeech">speech</a>
+                        <a class="btn btn-default" data-wysihtml5-action="change_view">switch to html view</a>
+
+                        <div class="wysihtml5-widget" data-wysihtml5-dialog="createLink" style="display: none;">
+                            <label>
+                                Link:
+                                <input data-wysihtml5-dialog-field="href" value="http://">
+                            </label>
+                            <a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+                        </div>
+
+                        <div class="wysihtml5-widget" data-wysihtml5-dialog="insertImage" style="display: none;">
+                            <label>
+                                Image:
+                                <input data-wysihtml5-dialog-field="src" value="http://">
+                            </label>
+                            <label>
+                                Align:
+                                <select data-wysihtml5-dialog-field="className">
+                                    <option value="">default</option>
+                                    <option value="wysiwyg-float-left">left</option>
+                                    <option value="wysiwyg-float-right">right</option>
+                                </select>
+                            </label>
+                            <a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+                        </div>
+                    </div>
+                    <textarea id="textarea" class="form-control" rows="20" placeholder="文章内容" id="postContentInput"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="post_type">文章类型</label>
@@ -52,4 +78,20 @@
             </form>
         </div>
     </div>
+{% endblock %}
+
+{% block page_js %}
+    {% assets filters="jsmin", output="assets/page.js",
+            "js/vendor/wysihtml5/advanced.js",
+            "js/vendor/wysihtml5/wysihtml5-0.4.0pre.min.js",
+            "js/pages/publish.js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    <script>
+        var editor = new wysihtml5.Editor("textarea", {
+            toolbar:        "toolbar",
+            parserRules:    wysihtml5ParserRules
+        });
+    </script>
 {% endblock %}
