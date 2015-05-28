@@ -1,0 +1,12 @@
+<title>Laisky's Blog</title>
+<link>http://blog.laisky.com/archives/</link>
+<description>Blog archives of Laisky.</description>
+{% for post in posts %}
+    <item>
+        <title>{{ post.post_title }}</title>
+        <link>http://blog.laisky.com/p/{{ post.post_name }}/</link>
+        <description>
+            {{ post.post_content }}
+        </description>
+    </item>
+{% endfor %}
