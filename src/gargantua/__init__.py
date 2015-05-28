@@ -22,8 +22,10 @@ from .const import (
     ES_HOST, ES_PORT
 )
 from .utils import setup_log, generate_random_string
-from .views import \
-    BaseHandler, PostsHandler, PostPage, PublishHandler, UserHandler
+from .views import (
+    BaseHandler, PostsHandler, PostPage, PublishHandler, UserHandler,
+    RssHandler
+)
 
 
 log = logging.getLogger(LOG_NAME)
@@ -71,6 +73,8 @@ class Application(tornado.web.Application):
             url('/publish/', PublishHandler, name='post:publish'),
             url('/(login)/', UserHandler, name='user:login'),
             url('/(search)/', PostsHandler, name='post:search'),
+            # ---------------- rss ----------------
+            url('/rss/', RssHandler, name='rss'),
             # ---------------- api ----------------
             url('/(api/posts/.*)/', PostsHandler, name='api:post'),
             url('/(api/user/.*)/', UserHandler, name='api:user:login'),
