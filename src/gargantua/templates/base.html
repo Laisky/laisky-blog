@@ -22,8 +22,7 @@
                 "less/base.less",
                 "less/widgets/post.less",
                 "less/pages/archives.less",
-                "less/pages/login.less",
-                "less/pages/publish.less" %}
+                "less/pages/login.less" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
     {% endblock %}<!-- head -->
@@ -54,12 +53,13 @@
             "js/pages/archives.js",
             "js/pages/p.js",
             "js/pages/login.js",
-            "js/pages/publish.js",
             "js/pages/search.js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
 
-    {% block page_js %}
-    {% endblock %}<!-- page_js -->
+    <div class="pagejs">
+        {% block page_js %}
+        {% endblock %}<!-- page_js -->
+    </div>
 </body>
 </html>
