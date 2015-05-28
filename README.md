@@ -30,9 +30,8 @@ $ sudo make
 
 ## History
 
-- 1.1.0
-    - Search
-- 1.0.0
-    - Simple blog
-- 0.0.1
-    - rescue data from wordpress
+- 2.0(Working Now)
+    - 1.1.1 Rich HTML Editor
+    - 1.1.0 Search
+- 1.0.0 Simple blog
+- 0.0.1 rescue data from wordpress
