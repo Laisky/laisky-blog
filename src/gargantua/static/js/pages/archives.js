@@ -108,7 +108,7 @@ $(function() {
         };
 
         $.getJSON(url, data, function(data) {
-                console.log(data['status']);
+                // console.log(data['status']);
             })
             .done(function(data) {
                 $("#archives").append(data['data']);
@@ -172,7 +172,7 @@ $(function() {
 
 
     function postMoveHandler(direction) {
-        console.log("postMoveHandler for direction " + direction);
+        // console.log("postMoveHandler for direction " + direction);
 
         var currentPosition = getCurrentPostion();
         var currentPostIdx = getCurrentPostIdx();
