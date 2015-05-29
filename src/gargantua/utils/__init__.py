@@ -37,7 +37,7 @@ def setup_log():
     # log
     log = logging.getLogger(LOG_NAME)
     log.addHandler(ch)
-    log.addHandler(fh)
+    # log.addHandler(fh)
 
 
 def validate_email(email):
