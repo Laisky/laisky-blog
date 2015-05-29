@@ -31,6 +31,7 @@ class PostPage(BaseHandler):
             log.debug('get cookie {}'.format(cookie))
             if not cookie or cookie.decode() != post['post_password']:
                 self.render2('p/auth.html', post_name=post['post_name'])
+                self.set_status(202, 'Need password.')
                 return
 
         post['post_type'] = post.get('post_type', 'text')
@@ -48,9 +49,11 @@ class PostPage(BaseHandler):
 
         post = yield self.db.posts.find_one({'post_name': name})
         if not post:
+            self.set_status(202, 'Post name not exists.')
             self.write_json(msg='post_name 不存在', status=ERROR)
             return
         elif password != post['post_password']:
+            self.set_status(202, 'Password wrong.')
             self.write_json(msg='密码错误', status=ERROR)
             return
 
