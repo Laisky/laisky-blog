@@ -26,7 +26,6 @@ class PublishHandler(BaseHandler):
         self.finish()
 
     @tornado.web.authenticated
-    @tornado.web.asynchronous
     @tornado.gen.coroutine
     @debug_wrapper
     def post(self):
@@ -68,7 +67,6 @@ class PublishHandler(BaseHandler):
         )
 
         self.write_json()
-        self.finish()
 
     def extract_reveal_html(self, html):
         log.debug('extract_reveal_html for html {}'.format(html))
