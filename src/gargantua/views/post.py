@@ -24,6 +24,7 @@ class PostPage(BaseHandler):
         post = yield self.db.posts.find_one({'post_name': name})
         if not post:
             self.redirect_404()
+            return
 
         if post.get('post_password'):
             cookie_name = self.get_cookie_name(name)
