@@ -7,8 +7,9 @@ import logging
 from math import ceil
 
 import jwt
-from bson import ObjectId
 import tornado
+from bson import ObjectId
+from raven.contrib.tornado import SentryMixin
 
 from ..const import OK, LOG_NAME, N_POST_PER_PAGE
 from ..utils import TemplateRendering, validate_token
@@ -18,7 +19,7 @@ log = logging.getLogger(LOG_NAME)
 __all__ = ['BaseHandler']
 
 
-class BaseHandler(tornado.web.RequestHandler, TemplateRendering):
+class BaseHandler(tornado.web.RequestHandler, TemplateRendering, SentryMixin):
 
     def get(self, url=None):
         url = url.strip(' /')

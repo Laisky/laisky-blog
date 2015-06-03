@@ -12,14 +12,15 @@ import logging
 from pathlib import Path
 
 import tornado
-from tornado.web import url
-from tornado.options import define, options
 import motor
 import pymongo
+from tornado.web import url
+from tornado.options import define, options
+from raven.contrib.tornado import AsyncSentryClient
 
 from .const import (
     CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_NAME,
-    ES_HOST, ES_PORT
+    ES_HOST, ES_PORT, SENTRY_HOST, SENTRY_PORT, SENTRY_NAME
 )
 from .utils import setup_log, generate_random_string
 from .views import (
@@ -85,6 +86,14 @@ class Application(tornado.web.Application):
         handlers.append(('/(.*)', PageNotFound))
         super(Application, self).__init__(handlers, **settings)
         self.setup_db()
+        self.setup_sentry()
+
+    def setup_sentry(self):
+        self.sentry_client = AsyncSentryClient(
+            'http://065cdc322de04db9b17ae4b23f1fcbfa:e5c86516380b46c3b2334ecf15ae1fa2'
+            '@{sentry_host}:{sentry_port}/{sentry_name}'
+            .format(sentry_host=SENTRY_HOST, sentry_port=SENTRY_PORT, sentry_name=SENTRY_NAME)
+        )
 
     def setup_db(self):
         log.debug('connect dabase at {}:{}'

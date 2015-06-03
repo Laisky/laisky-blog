@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import pathlib
 
+
 # server
 LISTEN_PORT = 27850
 
@@ -23,9 +24,16 @@ DB_NAME = 'blog'
 ES_HOST = 'localhost'
 ES_PORT = 17200
 
-# test
-DB_HOST = 'blog.laisky.com'
-ES_HOST = 'blog.laisky.com'
-
 # posts
 N_POST_PER_PAGE = 10
+
+# sentry
+SENTRY_HOST = 'localhost'
+SENTRY_PORT = 9000
+SENTRY_NAME = '2'
+
+# test
+
+DB_HOST = 'laisky.com'
+ES_HOST = 'laisky.com'
+SENTRY_HOST = 'laisky.com'
