@@ -84,19 +84,21 @@ class Application(tornado.web.Application):
             url('/404.html', PageNotFound, name='404'),
         ]
         handlers.append(('/(.*)', PageNotFound))
-        super(Application, self).__init__(handlers, **settings)
         self.setup_db()
         self.setup_sentry()
+        super(Application, self).__init__(handlers, **settings)
 
     def setup_sentry(self):
-        self.sentry_client = AsyncSentryClient(
+        dsn = (
             'http://065cdc322de04db9b17ae4b23f1fcbfa:e5c86516380b46c3b2334ecf15ae1fa2'
             '@{sentry_host}:{sentry_port}/{sentry_name}'
             .format(sentry_host=SENTRY_HOST, sentry_port=SENTRY_PORT, sentry_name=SENTRY_NAME)
         )
+        log.debug('setup_sentry with dsn: {}'.format(dsn))
+        self.sentry_client = AsyncSentryClient(dsn)
 
     def setup_db(self):
-        log.debug('connect dabase at {}:{}'
+        log.debug('connect database at {}:{}'
                   .format(options.dbhost, options.dbport))
 
         self.conn = motor.MotorClient(host=options.dbhost, port=options.dbport)
