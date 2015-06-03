@@ -6,8 +6,6 @@ import sys
 import string
 import logging
 
-from raven.handlers.logging import SentryHandler
-
 from .encryt import (
     generate_passwd, validate_passwd, generate_token, validate_token,
 )
@@ -39,20 +37,12 @@ def setup_log():
     fh = logging.FileHandler(LOG_PATH)
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
-    # sentry handler
-    sh = SentryHandler(
-        'http://065cdc322de04db9b17ae4b23f1fcbfa:e5c86516380b46c3b2334ecf15ae1fa2'
-        '@{sentry_host}:{sentry_port}/{sentry_name}'
-        .format(sentry_host=SENTRY_HOST, sentry_port=SENTRY_PORT, sentry_name=SENTRY_NAME)
-    )
-    sh.setLevel(logging.DEBUG)
-    fh.setFormatter(formatter)
     # log
     log = logging.getLogger(LOG_NAME)
     log.setLevel(logging.DEBUG)
-    # log.addHandler(ch)
-    log.addHandler(sh)
-    # log.addHandler(fh)
+    log.addHandler(ch)
+    # log.addHandler(sh)
+    log.addHandler(fh)
 
 
 def validate_email(email):
