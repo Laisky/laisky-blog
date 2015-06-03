@@ -17,6 +17,7 @@ import pymongo
 from tornado.web import url
 from tornado.options import define, options
 from raven.contrib.tornado import AsyncSentryClient
+from raven.handlers.logging import SentryHandler
 
 from .const import (
     CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_NAME,
@@ -38,6 +39,8 @@ define('dbhost', default=DB_HOST, type=str)
 define('dbport', default=DB_PORT, type=int)
 define('eshost', default=ES_HOST, type=str)
 define('esport', default=ES_PORT, type=int)
+define('sentry_host', default=SENTRY_HOST, type=str)
+define('sentry_port', default=SENTRY_PORT, type=int)
 
 
 class PageNotFound(BaseHandler):
@@ -91,11 +94,18 @@ class Application(tornado.web.Application):
     def setup_sentry(self):
         dsn = (
             'http://065cdc322de04db9b17ae4b23f1fcbfa:e5c86516380b46c3b2334ecf15ae1fa2'
-            '@{sentry_host}:{sentry_port}/{sentry_name}'
-            .format(sentry_host=SENTRY_HOST, sentry_port=SENTRY_PORT, sentry_name=SENTRY_NAME)
+            '@{sentry_host}:{sentry_port}/{sentry_name}?timeout=10'
+            .format(sentry_host=options.sentry_host,
+                    sentry_port=options.sentry_port,
+                    sentry_name=SENTRY_NAME)
         )
         log.debug('setup_sentry with dsn: {}'.format(dsn))
         self.sentry_client = AsyncSentryClient(dsn)
+
+        # sentry handler
+        sh = SentryHandler(dsn)
+        sh.setLevel(logging.DEBUG)
+        log.addHandler(sh)
 
     def setup_db(self):
         log.debug('connect database at {}:{}'
