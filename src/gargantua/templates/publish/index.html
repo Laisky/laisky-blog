@@ -65,7 +65,7 @@
                             <a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
                         </div>
                     </div>
-                    <textarea id="textarea" class="form-control" rows="20" placeholder="文章内容" id="postContentInput"></textarea>
+                    <textarea class="form-control" rows="20" placeholder="文章内容" id="postContentInput"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="post_type">文章类型</label>
@@ -89,7 +89,7 @@
     {% endassets %}
 
     <script>
-        var editor = new wysihtml5.Editor("textarea", {
+        var editor = new wysihtml5.Editor("postContentInput", {
             toolbar:        "toolbar",
             parserRules:    wysihtml5ParserRules
         });
