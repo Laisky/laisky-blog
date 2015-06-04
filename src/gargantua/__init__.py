@@ -104,7 +104,7 @@ class Application(tornado.web.Application):
 
         # sentry handler
         sh = SentryHandler(dsn)
-        sh.setLevel(logging.DEBUG)
+        sh.setLevel(logging.ERROR)
         log.addHandler(sh)
 
     def setup_db(self):
