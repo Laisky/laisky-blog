@@ -1,33 +1,41 @@
 @charset: 'UTF-8';
 
+
+@background_color: rgb(245, 245, 245);
+@link_color: rgb(27, 65, 135);
+@post_content_color: rgb(50, 50, 45);
+@post_title_color: rgb(85, 50, 62);
+
+
 .post {
-    background-color: rgba(40, 41, 35, 0.8);
+    background-color: @background_color;
     width: 90%;
     max-width: 900px;
     padding: 20px;
     position: relative;
-    border: 2px solid;
+    border: 2px solid @background_color;
     border-radius: 25px;
     margin-bottom: 15px;
 
     .post-title {
         text-align: center;
+        font-weight: bolder;
 
         a {
-            color: rgb(246, 247, 208);
+            color: @post_title_color;
         }
     }
     .post-content {
         line-height: 150%;
         font-size: 1.2em;
-        color: white;
+        color: @post_content_color;
 
         img {
             max-height: 600px;
             max-width: 600px;
         }
         a {
-            color: rgb(246, 247, 208);
+            color: @link_color;
         }
         blockquote {
             font: inherit;
@@ -35,7 +43,7 @@
         }
         pre {
             color: black;
-            background-color: white;
+            background-color: @post_content_color;
             font-family: inherit;
             span {
             font-family: inherit;
@@ -54,15 +62,16 @@
         text-align: right;
         margin-right: 30px;
 
+        > span {
+            margin-left: 50px;
+        }
+
         a {
-            color: #f6f7d0;
+            color: @post_content_color;
             margin-left: 150px;
         }
     }
     .icon-star {
         margin-top: 0px;
-    }
-    .post-tail > span {
-        margin-left: 50px;
     }
 }
