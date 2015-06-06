@@ -1,5 +1,12 @@
 @charset: "UTF-8";
 
+// 和 post 的配色保持一致
+@import "../widgets/post.less";
+@nav-bgd-clr: @post-bgd-clr;
+@nav-link-clr: @link-clr;
+@nav-cnt-clr: @post-cnt-clr;
+@nav-title-clr: @post-title-clr;
+
 body {
     #archives {
         div.post-container {
@@ -16,7 +23,7 @@ body {
     }
     .navigator {
         a {
-            color: #f6f7d0;
+            color: @nav-link-clr;
             text-decoration: underline;
         }
         .container-fluid {
@@ -27,14 +34,14 @@ body {
                 min-height: 100px;
                 padding: 10px;
                 margin-bottom: 10px;
-                background-color: rgba(40, 41, 35, 0.8);
-                border: 2px solid;
+                background-color: @nav-bgd-clr;
+                border: 2px solid @nav-bgd-clr;
                 border-radius: 10px;
 
                 h1,
                 h2,
                 h3 {
-                    color: #f6f7d0;
+                    color: @nav-title-clr;
                     margin-top: 0px;
                     text-align: center;
                 }

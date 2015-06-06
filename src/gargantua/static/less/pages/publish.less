@@ -1,27 +1,26 @@
+@charset: "UTF-8";
+
+// 和 post 的配色保持一致
+@import "../widgets/post.less";
+@bgd-clr: @post-bgd-clr;
+@cnt-clr: @post-cnt-clr;
+@title-clr: @post-title-clr;
+
 .publish-body {
+    padding: 10px;
+    background-color: @bgd-clr;
+    border-radius: 4px;
+
     form {
+        color: @cnt-clr;
         .form-group {
             label {
-                color: yellow;
+                color: @title-clr;
                 font-weight: normal;
             }
-        }
 
-        #toolbar {
-            a.btn {
-                float: left;
-                padding: 2px;
-            }
-
-            .wysihtml5-widget {
-                clear: left;
-                a {
-                    color: yellow;
-                    cursor: pointer;
-                }
-                input {
-                    color: black;
-                }
+            #postTypeInput {
+                max-width: 400px;
             }
         }
     }
