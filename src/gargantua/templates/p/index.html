@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block page_css %}
-    {% if post.post_type == "text" %}
+    {% if post.post_type in ("text", "markdown")  %}
         {% assets filters="less,cssmin", output="assets/page.css",
                 "less/pages/archives.less",
                 "css/vendor/markdown.css" %}
@@ -31,7 +31,7 @@
             <div class="row">
                 <!-- archives -->
                 <div id="archives" class="col-xs-12">
-                    {% if post.post_type == "text" %}
+                    {% if post.post_type in ("text", "markdown") %}
                         {% include "widgets/post.html" %}
                     {% elif post.post_type == "slide" %}
                         {{ post.post_content }}
