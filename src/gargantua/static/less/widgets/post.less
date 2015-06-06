@@ -1,19 +1,19 @@
 @charset: 'UTF-8';
 
 
-@background_color: rgb(245, 245, 245);
-@link_color: rgb(27, 65, 135);
-@post_content_color: rgb(50, 50, 45);
-@post_title_color: rgb(85, 50, 62);
+@bgd-clr: rgb(245, 245, 245);
+@link-clr: rgb(27, 65, 135);
+@post-cnt-clr: rgb(50, 50, 45);
+@post-title-clr: rgb(85, 50, 62);
 
 
 .post {
-    background-color: @background_color;
+    background-color: @bgd-clr;
     width: 90%;
     max-width: 900px;
     padding: 20px;
     position: relative;
-    border: 2px solid @background_color;
+    border: 2px solid @bgd-clr;
     border-radius: 25px;
     margin-bottom: 15px;
 
@@ -22,20 +22,20 @@
         font-weight: bolder;
 
         a {
-            color: @post_title_color;
+            color: @post-title-clr;
         }
     }
     .post-content {
         line-height: 150%;
         font-size: 1.2em;
-        color: @post_content_color;
+        color: @post-cnt-clr;
 
         img {
             max-height: 600px;
             max-width: 600px;
         }
         a {
-            color: @link_color;
+            color: @link-clr;
         }
         blockquote {
             font: inherit;
@@ -43,7 +43,7 @@
         }
         pre {
             color: black;
-            background-color: @post_content_color;
+            background-color: @post-cnt-clr;
             font-family: inherit;
             span {
             font-family: inherit;
@@ -67,7 +67,7 @@
         }
 
         a {
-            color: @post_content_color;
+            color: @post-cnt-clr;
             margin-left: 150px;
         }
     }
