@@ -12,18 +12,18 @@ from .encryt import (
 from .jinja import debug_wrapper, TemplateRendering
 from .mongo import unquote_fr_mongo
 from .elasticsearch import generate_keyword_search, parse_search_resp
-from ..const import (
-    LOG_NAME, LOG_PATH,
-    SENTRY_HOST, SENTRY_PORT, SENTRY_NAME
-)
+from .markdown import render_md_to_html
+from ..const import LOG_NAME, LOG_PATH
 
 
 log = logging.getLogger(LOG_NAME)
-__all__ = ['generate_passwd', 'validate_passwd', 'validate_email',
-           'validate_mobile', 'generate_token', 'validate_token',
-           'debug_wrapper', 'setup_log', 'unquote_fr_mongo',
-           'TemplateRendering',
-           'generate_keyword_search', 'parse_search_resp']
+__all__ = [
+    'generate_passwd', 'validate_passwd', 'validate_email',
+    'validate_mobile', 'generate_token', 'validate_token',
+    'debug_wrapper', 'setup_log', 'unquote_fr_mongo',
+    'TemplateRendering', 'render_md_to_html',
+    'generate_keyword_search', 'parse_search_resp',
+]
 
 
 def setup_log():

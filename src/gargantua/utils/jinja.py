@@ -4,8 +4,6 @@ import logging
 import traceback
 import datetime
 
-import tornado
-
 from jinja2 import Environment, FileSystemLoader
 from webassets import Environment as AssetsEnvironment
 from webassets.ext.jinja2 import AssetsExtension
