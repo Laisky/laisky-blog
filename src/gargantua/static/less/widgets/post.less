@@ -1,19 +1,19 @@
 @charset: 'UTF-8';
 
 
-@bgd-clr: rgb(245, 245, 245);
+@post-bgd-clr: rgb(245, 245, 245);
 @link-clr: rgb(27, 65, 135);
 @post-cnt-clr: rgb(50, 50, 45);
 @post-title-clr: rgb(85, 50, 62);
 
 
 .post {
-    background-color: @bgd-clr;
+    background-color: @post-bgd-clr;
     width: 90%;
     max-width: 900px;
     padding: 20px;
     position: relative;
-    border: 2px solid @bgd-clr;
+    border: 2px solid @post-bgd-clr;
     border-radius: 25px;
     margin-bottom: 15px;
 
@@ -42,8 +42,8 @@
             margin: 20px;
         }
         pre {
-            color: black;
-            background-color: @post-cnt-clr;
+            color: @post-cnt-clr;
+            background-color: @post-bgd-clr;
             font-family: inherit;
             span {
             font-family: inherit;
@@ -51,7 +51,7 @@
             }
         }
         code {
-            color: black;
+            color: @post-cnt-clr;
 
             span {
                 font-family: inherit;
