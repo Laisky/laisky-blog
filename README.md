@@ -31,6 +31,7 @@ $ sudo make
 ## History
 
 - 2.0(Working Now)
+    - 1.3.0 Markdown
     - 1.2.0 Sentry
     - 1.1.2 RSS
     - 1.1.1 Rich HTML Editor

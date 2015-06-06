@@ -12,6 +12,7 @@ cssmin
 jsmin
 html2text
 lxml
+markdown2
 
 # db
 pymongo==2.8  # for motor
