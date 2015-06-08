@@ -52,6 +52,7 @@ class PublishHandler(BaseHandler):
             post_content = self.extract_reveal_html(post_content)
         elif post_type == 'markdown':
             # renfer github flavor markdown to html
+            post_markdown = post_content
             post_content = render_md_to_html(post_content)
         else:
             log.debug('unknown post_type: {}'.format(post_type))
@@ -67,6 +68,11 @@ class PublishHandler(BaseHandler):
             'post_content': post_content,
             'post_type': post_type,
         }
+        if post_type == 'markdown':
+            docu.update({
+                'post_markdown': post_markdown,
+            })
+
         yield self.db.posts.update(
             {'post_name': post_name},
             {'$set': docu},
