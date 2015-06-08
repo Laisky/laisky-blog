@@ -1,0 +1,22 @@
+{% extends "publish/index.html" %}
+
+{% block page_variable %}
+    {% set action_url = "/amend/" %}
+    {% set is_editable = False %}
+{% endblock %}
+
+{% block post_type_options %}
+    {{ super() }}
+    {% if post.post_type == "markdown" %}
+        <option value="markdown">markdown</option>
+    {% elif post.post_type == "slide" %}
+        <option value="slide">slide</option>
+    {% endif %}
+{% endblock %}
+
+{% block page_js %}
+    {% assets filters="jsmin", output="assets/page.js",
+            "js/pages/publish.js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+{% endblock %}

@@ -7,7 +7,7 @@
         </article>
         </div>
         <div class="post-tail">
-            <a href="/edit/?post-name={{ post.post_name }}" target="_blank">Edit</a>
+            <a href="/amend/?post-name={{ post.post_name }}" target="_blank">Edit</a>
             {% if post.post_password %}
             {% elif posts|length != 1 %}
                 <a href="/p/{{ post.post_name }}/#disqus_thread" data-disqus-identifier="{{ post.post_name }}" target="_blank">0 评论</a>
