@@ -75,6 +75,7 @@ class Application(tornado.web.Application):
             url('/(archives)/', PostsHandler, name='post:archives'),
             url('/p/(.*)/', PostPage, name='post:single'),
             url('/publish/', PublishHandler, name='post:publish'),
+            url('/edit/', PublishHandler, name='post:edit'),
             url('/(login)/', UserHandler, name='user:login'),
             url('/(search)/', PostsHandler, name='post:search'),
             # ---------------- rss ----------------

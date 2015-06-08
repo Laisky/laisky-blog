@@ -13,22 +13,22 @@
             <div class="row hint">
                 <span class="label label-info">发布新文章</span>
             </div>
-            <form id="publishForm">
+            <form id="publishForm" action="/publish/" method="POST">
                 <div class="form-group">
                     <label for="post_title">文章标题</label>
-                    <input type="text" class="form-control" id="postTitleInput" placeholder="文章标题">
+                    <input type="text" class="form-control" id="postTitleInput" placeholder="文章标题" name="postTitle">
                 </div>
                 <div class="form-group">
                     <label for="post_name">文章链接</label>
-                    <input type="text" class="form-control" id="postNameInput" placeholder="文章链接  'one-more-tineone-more-chance'">
+                    <input type="text" name="postName" class="form-control" id="postNameInput" placeholder="文章链接  'one-more-tineone-more-chance'">
                 </div>
                 <div class="form-group">
                     <label for="post_content">文章内容</label>
-                    <textarea class="form-control" rows="20" placeholder="文章内容" id="postContentInput"></textarea>
+                    <textarea class="form-control" name="postContent" rows="20" placeholder="文章内容" id="postContentInput"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="post_type">文章类型</label>
-                    <select class="form-control" id="postTypeInput">
+                    <select class="form-control" id="postTypeInput" name="postType">
                         <option value="markdown">markdown</option>
                         <option value="slide">slide</option>
                     </select>
