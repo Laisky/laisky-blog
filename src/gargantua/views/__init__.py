@@ -7,8 +7,9 @@ from .post import PostPage
 from .publish import PublishHandler
 from .user import UserHandler
 from .rss import RssHandler
+from .amend import AmendHandler
 
 __all__ = ['BaseHandler', 'PostsHandler', 'PostPage',
            'UserHandler',
-           'PublishHandler',
+           'PublishHandler', 'AmendHandler',
            'RssHandler']
