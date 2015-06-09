@@ -32,9 +32,10 @@ $ sudo make
 
 - 2.0(Working Now)
     - 1.3.0 Markdown
+        - 1.3.1 Markdown Editor
     - 1.2.0 Sentry
-    - 1.1.2 RSS
-    - 1.1.1 Rich HTML Editor
     - 1.1.0 Search
+    - 1.1.1 Rich HTML Editor
+    - 1.1.2 RSS
 - 1.0.0 Simple blog
 - 0.0.1 rescue data from wordpress

@@ -13,22 +13,22 @@
             <div class="row hint">
                 <span class="label label-info">发布新文章</span>
             </div>
-            <form id="publishForm" action="/publish/" method="POST">
+            <form id="publishForm" action="/amend/" method="POST">
                 <div class="form-group">
                     <label for="post_title">文章标题</label>
-                    <input type="text" class="form-control" id="postTitleInput" placeholder="文章标题" name="postTitle" >
+                    <input type="text" class="form-control" id="postTitleInput" disabled="true" placeholder="文章标题" name="postTitle" value="{{ post.post_title }}">
                 </div>
                 <div class="form-group">
                     <label for="post_name">文章链接</label>
-                    <input type="text" name="postName" class="form-control" id="postNameInput" placeholder="文章链接  'one-more-tineone-more-chance'" >
+                    <input type="text" name="postName" class="form-control" id="postNameInput" disabled="true" placeholder="文章链接  'one-more-tineone-more-chance'" value="{{ post.post_name }}">
                 </div>
                 <div class="form-group">
                     <label for="post_content">文章内容</label>
-                    <textarea class="form-control" name="postContent" rows="20" placeholder="文章内容" id="postContentInput"></textarea>
+                    <textarea class="form-control" name="postContent" rows="20" placeholder="文章内容" id="postContentInput">{{ post.post_markdown if post.post_type == "markdown" else post.post_content }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="post_type">文章类型</label>
-                    <select class="form-control" id="postTypeInput" name="postType" >
+                    <select class="form-control" id="postTypeInput" name="postType" disabled="true" value="{{ post.post_type }}">
                         <option value="markdown">markdown</option>
                         <option value="slide">slide</option>
                     </select>
@@ -41,7 +41,7 @@
 
 {% block page_js %}
     {% assets filters="jsmin", output="assets/page.js",
-            "js/pages/publish.js" %}
+            "js/pages/amend.js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
 {% endblock %}
