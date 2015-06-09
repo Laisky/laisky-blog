@@ -42,7 +42,7 @@ def setup_log():
     log.setLevel(logging.DEBUG)
     log.addHandler(ch)
     # log.addHandler(sh)
-    log.addHandler(fh)
+    # log.addHandler(fh)
 
 
 def validate_email(email):
