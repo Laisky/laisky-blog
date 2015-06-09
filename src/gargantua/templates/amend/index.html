@@ -40,4 +40,8 @@
 {% endblock %}
 
 {% block page_js %}
+    {% assets filters="jsmin", output="assets/page.js",
+            "js/pages/amend.js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
 {% endblock %}

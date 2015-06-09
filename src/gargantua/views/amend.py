@@ -18,7 +18,7 @@ log = logging.getLogger(LOG_NAME)
 class AmendHandler(BaseHandler):
     """APIs about posts"""
 
-    # @tornado.web.authenticated
+    @tornado.web.authenticated
     @tornado.gen.coroutine
     @debug_wrapper
     def get(self):
