@@ -26,7 +26,7 @@ from .const import (
 from .utils import setup_log, generate_random_string
 from .views import (
     BaseHandler, PostsHandler, PostPage, PublishHandler, UserHandler,
-    RssHandler
+    RssHandler, AmendHandler
 )
 
 
@@ -75,7 +75,7 @@ class Application(tornado.web.Application):
             url('/(archives)/', PostsHandler, name='post:archives'),
             url('/p/(.*)/', PostPage, name='post:single'),
             url('/publish/', PublishHandler, name='post:publish'),
-            url('/amend/', PublishHandler, name='post:amend'),
+            url('/amend/', AmendHandler, name='post:amend'),
             url('/(login)/', UserHandler, name='user:login'),
             url('/(search)/', PostsHandler, name='post:search'),
             # ---------------- rss ----------------
