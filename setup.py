@@ -12,4 +12,8 @@ setup(name='gargantua',
       packages=find_packages('src'),
       package_dir={'': 'src'},
       include_package_data=True,
-      install_requires=requires)
+      install_requires=requires,
+      entry_points="""\
+      [console_scripts]
+      run_gargantua=gargantua.__main__:main
+      """)
