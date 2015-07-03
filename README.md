@@ -2,7 +2,7 @@ Gargantua
 ===
 Laisky's new blog
 
-Version: 1.3.1
+Version: 1.4rc
 
 ## Description
 
@@ -31,6 +31,7 @@ $ sudo make
 ## History
 
 - 2.0(Working Now)
+    - 1.4rc Profile
     - 1.3.0 Markdown
         - 1.3.1 Markdown Editor
     - 1.2.0 Sentry
