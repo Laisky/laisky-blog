@@ -139,11 +139,11 @@ $(function() {
     }
 
 
-    function initTopNavbar() {
-        $(".navbar-top-btns a").each(function(idx, ele) {
-            $(ele).on("click", function() {
-                return false;
-            })
-        });
-    }
+    // function initTopNavbar() {
+    //     $(".navbar-top-btns a").each(function(idx, ele) {
+    //         $(ele).on("click", function() {
+    //             return false;
+    //         })
+    //     });
+    // }
 });

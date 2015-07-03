@@ -38,7 +38,8 @@ def setup_log():
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
     # log
-    log = logging.getLogger(LOG_NAME)
+    logging.getLogger(LOG_NAME).setLevel(logging.DEBUG)
+    log = logging.getLogger()
     log.setLevel(logging.DEBUG)
     log.addHandler(ch)
     # log.addHandler(sh)

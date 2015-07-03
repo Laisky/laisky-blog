@@ -6,7 +6,7 @@ import tornado.httpserver
 import tornado.options as opt
 from tornado.options import options
 
-from . import Application
+from .app import Application
 from .const import LOG_NAME
 
 
