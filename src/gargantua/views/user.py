@@ -19,6 +19,7 @@ class UserHandler(BaseHandler):
 
         router = {
             'login': self.login_page,
+            'profile': self.profile,
         }
         router.get(url, self.redirect_404)()
 
@@ -34,6 +35,11 @@ class UserHandler(BaseHandler):
     def login_page(self):
         log.debug('login_page')
         self.render2('login/index.html')
+        self.finish()
+
+    def profile(self):
+        user = self.current_user
+        self.render2('profile/index.html', current_app='profile')
         self.finish()
 
     @tornado.gen.coroutine
