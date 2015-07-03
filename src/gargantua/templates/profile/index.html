@@ -1,17 +1,11 @@
-{% extends "base.html" %}
+{% if is_ajax %}
+    {% include "profile/ajax/container.html" %}
+{% else %}
+    {% extends "base.html" %}
 
-{% block page_css %}
-    {% assets filters="less,cssmin", output="assets/page.css",
-            "less/pages/profile.less" %}
-        <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %}
-{% endblock %}
-
-
-{% block container %}
-    <div class="container">
-        <div class="row">
-            <h1>我超懒！根本没写！</h1>
+    {% block container %}
+        <div class="container">
+            {% include "profile/ajax/container.html" %}
         </div>
-    </div>
-{% endblock %}
+    {% endblock %}
+{% endif %}
