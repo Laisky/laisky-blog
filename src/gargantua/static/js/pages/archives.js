@@ -1,11 +1,37 @@
 $(function() {
     var $body = $("body");
+    var $container = $("body > .container");
     var pageCache = {};
     var postCollect = [];
 
     // bindWindowScrollHandler();
     bindChangePage();
     initPage();
+    bindChangeApp();
+
+
+    function bindChangeApp() {
+        $(".navbar.navbar-fixed-top").on("click", "#bs-example-navbar-collapse-1 .apps a", changeAppHandler);
+
+        function changeAppHandler() {
+            var $this = $(this);
+            var url = $this.attr("href");
+
+            // load
+            $.get(url, function(resp) {})
+                .done(function(resp) {
+                    $container.html(resp);
+                    $(".nav.apps li").each(function(i, ele) {
+                        $(ele).removeClass('active');
+                    });
+                    console.log($this.parent());
+                    $this.parent().addClass('active');
+                    history.pushState({}, '', url);
+                    initPage();
+                })
+            return false;
+        }
+    }
 
 
     function prefetchPage() {
@@ -39,7 +65,7 @@ $(function() {
             };
             $.get(url, data, function(data) {})
                 .done(function(data) {
-                    $(".container").html(data);
+                    $container.html(data);
                     loadersCss.initLoaderCss();
                     history.pushState({}, '', '/archives/?page=' + page);
                     initPage();
@@ -47,7 +73,7 @@ $(function() {
         }
 
         function updateContainerByCache(page) {
-            $(".container").html(pageCache[page]);
+            $container.html(pageCache[page]);
             loadersCss.initLoaderCss();
             history.pushState({}, '', '/archives/?page=' + page);
             initPage();
