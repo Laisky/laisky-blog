@@ -133,17 +133,8 @@ $(function() {
             $globalFade.width($document.width());
 
             // set center
-            $loader.css("margin-left", (windowWidth - loaderSize)/2);
-            $loader.css("margin-top", (windowHeight - loaderSize)/2);
+            $loader.css("margin-left", (windowWidth - loaderSize) / 2);
+            $loader.css("margin-top", (windowHeight - loaderSize) / 2);
         }
     }
-
-
-    // function initTopNavbar() {
-    //     $(".navbar-top-btns a").each(function(idx, ele) {
-    //         $(ele).on("click", function() {
-    //             return false;
-    //         })
-    //     });
-    // }
 });

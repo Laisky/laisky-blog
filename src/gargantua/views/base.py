@@ -105,9 +105,10 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering, SentryMixin):
             prefix = self.settings.get('static_url_prefix')
             return os.path.join(prefix, path)
 
-        kwargs.update({
+        _kwargs = ({
             'settings': self.settings,
             'static_url': static_url,
+            'reverse_url': self.reverse_url,
             'request': self.request,
             'xsrf_token': self.xsrf_token,
             'xsrf_form_html': self.xsrf_form_html,
@@ -115,9 +116,11 @@ class BaseHandler(tornado.web.RequestHandler, TemplateRendering, SentryMixin):
             'min': min,
             'is_ajax': self.is_ajax,
             'is_https': self.is_https,
-            'current_user': self.get_current_user(),
+            'current_user': self.current_user,
+            'current_app': 'blog',
         })
-        return super().render_template(template_name, **kwargs)
+        _kwargs.update(kwargs)
+        return super().render_template(template_name, **_kwargs)
 
     @tornado.gen.coroutine
     def prepare(self):

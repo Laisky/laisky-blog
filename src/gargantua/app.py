@@ -72,20 +72,21 @@ class Application(tornado.web.Application):
         }
         handlers = [
             # -------------- handler --------------
-            url('/(archives)/', PostsHandler, name='post:archives'),
-            url('/p/(.*)/', PostPage, name='post:single'),
-            url('/publish/', PublishHandler, name='post:publish'),
-            url('/amend/', AmendHandler, name='post:amend'),
-            url('/(login)/', UserHandler, name='user:login'),
-            url('/(search)/', PostsHandler, name='post:search'),
+            url(r'^/(archives)/$', PostsHandler, name='post:archives'),
+            url(r'^/p/(.*)/$', PostPage, name='post:single'),
+            url(r'^/publish/$', PublishHandler, name='post:publish'),
+            url(r'^/amend/$', AmendHandler, name='post:amend'),
+            url(r'^/(login)/$', UserHandler, name='user:login'),
+            url(r'^/(search)/$', PostsHandler, name='post:search'),
+            url(r'^/(profile)/$', UserHandler, name='user:profile'),
             # ---------------- rss ----------------
-            url('/rss/', RssHandler, name='rss'),
+            url(r'^/rss/$', RssHandler, name='rss'),
             # ---------------- api ----------------
-            url('/(api/posts/.*)/', PostsHandler, name='api:post'),
-            url('/(api/user/.*)/', UserHandler, name='api:user:login'),
+            url(r'^/(api/posts/.*)/$', PostsHandler, name='api:post'),
+            url(r'^/(api/user/.*)/$', UserHandler, name='api:user:login'),
             # ---------------- 404 ----------------
-            url('/', PostsHandler, name='root'),
-            url('/404.html', PageNotFound, name='404'),
+            url(r'^/$', PostsHandler, name='root'),
+            url(r'^/404.html$', PageNotFound, name='404'),
         ]
         handlers.append(('/(.*)', PageNotFound))
         self.setup_db()

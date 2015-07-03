@@ -7,16 +7,17 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/archives/">Laisky</a>
+            <a class="navbar-brand" href="{{ reverse_url('post:archives', 'archives') }}">Laisky</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/archives/">Blog</a></li>
+                <li {{ 'class="active"' if current_app =='blog' else '' }}><a href="{{ reverse_url('post:archives', 'archives') }}">Blog</a></li>
+                <li {{ 'class=active' if current_app =='profile' else '' }}><a href="/profile/">AboutMe</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="/rss/" target="_blank"><span class="rss glyphicon glyphicon-th-list" aria-hidden="true"></span></a>
+                    <a href="{{ reverse_url('rss') }}" target="_blank"><span class="rss glyphicon glyphicon-th-list" aria-hidden="true"></span></a>
                 </li>
                 <form class="navbar-form navbar-right nav-bar-search" role="search">
                     <div class="form-group">
