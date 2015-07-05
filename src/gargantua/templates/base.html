@@ -40,6 +40,10 @@
     {% block container %}
     {% endblock %}<!-- container -->
 
+    {% block footer %}
+        {% include "footer.html" %}
+    {% endblock %}
+
     {% assets filters="jsmin", output="assets/libs.js",
             "js/vendor/jquery.min.js",
             "js/vendor/bootstrap.min.js",
