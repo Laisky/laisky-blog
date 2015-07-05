@@ -51,7 +51,7 @@ class PostsHandler(BaseHandler):
         log.debug('get resp from elasticsearch: {}'.format(resp))
         posts = parse_search_resp(resp)
         for docu in posts:
-            docu['post_modified_gmt'] = datetime.strptime('%Y-%m-%dT%H:%M.%SZ').timestamp() * 1000
+            docu['post_modified_gmt'] = datetime.datetime.strptime('%Y-%m-%dT%H:%M.%SZ').timestamp() * 1000
             docu['post_content'] = self.shortly_content(docu['post_content'], length=200)
 
         self.render_post('search/index.html', posts=posts)
