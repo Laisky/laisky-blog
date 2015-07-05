@@ -42,8 +42,11 @@ class TemplateRendering():
                 loader=FileSystemLoader(self.settings['template_path']),
                 extensions=[AssetsExtension]
             )
-            self._jinja_env.filters['UTC2CST'] = \
-                lambda dt: dt + datetime.timedelta(seconds=28800)
+            self._jinja_env.filters.update({
+                'utc2cst': lambda dt: dt + datetime.timedelta(hours=8),
+                'jstime2py': lambda ts: datetime.datetime.fromtimestamp(ts / 1000),
+                'time_format': lambda dt: datetime.datetime.strftime(dt, '%Y/%m/%d %H:%M:%S'),
+            })
 
         if not self._assets_env:
             self._assets_env = AssetsEnvironment(
