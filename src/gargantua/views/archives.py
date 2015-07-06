@@ -53,7 +53,7 @@ class PostsHandler(BaseHandler):
         for docu in posts:
             docu['post_modified_gmt'] = datetime.datetime.strptime(
                 docu['post_modified_gmt'], '%Y-%m-%dT%H:%M:%S.%fZ'
-            ).timestamp() * 1000
+            )
             docu['post_content'] = self.shortly_content(docu['post_content'], length=200)
 
         self.render_post('search/index.html', posts=posts)

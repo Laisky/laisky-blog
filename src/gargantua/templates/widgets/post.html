@@ -3,7 +3,7 @@
     <h2 class="post-title"><a href="/p/{{ post.post_name }}/" target="_blank">{{ post.post_title }}</a></h2>
     <div class="post-modified">
         <span>编辑于：</span>
-        <span>{{ post.post_modified_gmt | jstime2py | utc2cst | time_format }}</span>
+        <span>{{ post.post_modified_gmt | utc2cst | time_format }}</span>
     </div>
         <div class="post-content">
         <article>

@@ -7,7 +7,7 @@ import tornado
 
 from .base import BaseHandler
 from ..const import LOG_NAME, ERROR
-from ..utils import debug_wrapper, unquote_fr_mongo
+from ..utils import debug_wrapper
 
 
 log = logging.getLogger(LOG_NAME)
@@ -35,7 +35,6 @@ class PostPage(BaseHandler):
                 self.set_status(202, 'Need password.')
                 return
 
-        post = unquote_fr_mongo(post)
         post['post_type'] = post.get('post_type', 'text')
         self.render2('p/index.html', posts=[post])
 
