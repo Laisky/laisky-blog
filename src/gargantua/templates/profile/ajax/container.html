@@ -1,5 +1,9 @@
+{% set post = {'name': 'profile'} %}
 <div class="container-fluid profile">
-    <div class="row">
+    <div class="row profile-container">
         <h1>我超懒！根本没写！</h1>
+    </div>
+    <div class="row profile-comment">
+        {% include "widgets/comment.html" %}
     </div>
 </div>
