@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
+import datetime
 import pymongo
 import tornado
 from tornado.options import options
@@ -50,6 +51,9 @@ class PostsHandler(BaseHandler):
         log.debug('get resp from elasticsearch: {}'.format(resp))
         posts = parse_search_resp(resp)
         for docu in posts:
+            docu['post_modified_gmt'] = datetime.datetime.strptime(
+                docu['post_modified_gmt'], '%Y-%m-%dT%H:%M:%S.%fZ'
+            ).timestamp() * 1000
             docu['post_content'] = self.shortly_content(docu['post_content'], length=200)
 
         self.render_post('search/index.html', posts=posts)
