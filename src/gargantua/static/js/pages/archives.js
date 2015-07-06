@@ -2,6 +2,7 @@ $(function() {
     var $body = $("body");
     var $container = $("body > .container");
     var pageCache = {};
+    var appCache = {};
     var postCollect = [];
 
     // bindWindowScrollHandler();
@@ -11,25 +12,40 @@ $(function() {
 
 
     function bindChangeApp() {
+        $(".navbar.navbar-fixed-top").off("click", "#bs-example-navbar-collapse-1 .apps a", changeAppHandler);
         $(".navbar.navbar-fixed-top").on("click", "#bs-example-navbar-collapse-1 .apps a", changeAppHandler);
 
         function changeAppHandler() {
             var $this = $(this);
             var url = $this.attr("href");
 
+            globalFadeLayer.fadeIn();
+
+            if (url in appCache) {
+                // console.log("app cache");
+                changeApp($this, appCache[url]);
+                return false;
+            }
+
             // load
             $.get(url, function(resp) {})
                 .done(function(resp) {
-                    $container.html(resp);
-                    $(".nav.apps li").each(function(i, ele) {
-                        $(ele).removeClass('active');
-                    });
-                    console.log($this.parent());
-                    $this.parent().addClass('active');
-                    history.pushState({}, '', url);
-                    initPage();
+                    changeApp($this, resp);
+                    appCache[url] = resp;
                 })
             return false;
+
+            function changeApp($app, container) {
+                $container.html(container);
+                $(".nav.apps li").each(function(i, ele) {
+                    $(ele).removeClass('active');
+                });
+                // console.log($app.parent());
+                $app.parent().addClass('active');
+                history.pushState({}, '', url);
+                globalFadeLayer.fadeOut();
+                initPage();
+            }
         }
     }
 
