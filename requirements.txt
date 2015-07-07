@@ -23,3 +23,6 @@ tornado>4.0
 
 # profile
 raven
+
+# nlp
+jieba
