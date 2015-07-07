@@ -2,7 +2,7 @@ Gargantua
 ===
 Laisky's new blog
 
-Version: 1.5.1
+Version: 1.6
 
 ## Description
 
@@ -31,6 +31,7 @@ $ sudo make
 ## History
 
 - 2.0(Working Now)
+    - 1.6 Tags
     - 1.5 Tracking
         - 1.5.1 Profile Cache
     - 1.4rc Profile

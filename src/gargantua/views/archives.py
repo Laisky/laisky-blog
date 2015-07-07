@@ -93,8 +93,14 @@ class PostsHandler(BaseHandler):
 
             posts.append(docu)
 
+        # tags
+        tags = (yield self.db.statistics.find_one(
+            {'types': 'keyword'},
+            {'keywords': 1}
+        ))['keywords']
+
         self.render_post('archives/index.html',
-                         posts=posts, current_page=page)
+                         posts=posts, current_page=page, tags=tags)
         self.finish()
 
     @tornado.gen.coroutine
