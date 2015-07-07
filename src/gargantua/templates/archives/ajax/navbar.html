@@ -25,10 +25,12 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row tags">
             <div class="container-fluid">
                 <h3>标签</h3>
-                <div class="loader-inner pacman"></div>
+                    {% for tag in tags %}
+                        <a href="/search/?keyword={{ tag }}" target="_blank"><span class="label label-info">{{ tag }}</span></a>
+                    {% endfor %}
             </div>
         </div>
     </div>

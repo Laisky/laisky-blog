@@ -18,6 +18,7 @@ def main():
     db.statistics.update(
         {'types': 'keyword'},
         {'$set': {
+            'types': 'keyword',
             'keywords': keywords,
             'modified_at_gmt': datetime.datetime.utcnow()
         }}, upsert=True
