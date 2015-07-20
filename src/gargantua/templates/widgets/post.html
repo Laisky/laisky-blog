@@ -6,7 +6,7 @@
         <span>{{ post.post_modified_gmt | utc2cst | time_format }}</span>
     </div>
         <div class="post-content">
-        <article>
+        <article class="{{ 'markdown-body' if post.post_type == 'markdown' else '' }}">
             {{ post.post_content }}
         </article>
         </div>
