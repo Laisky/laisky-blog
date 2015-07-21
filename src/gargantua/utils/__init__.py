@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 import re
 import random
+import datetime
 import sys
 import string
 import logging
+
+import pytz
 
 from .encryt import (
     generate_passwd, validate_passwd, generate_token, validate_token,
@@ -24,6 +27,11 @@ __all__ = [
     'TemplateRendering', 'render_md_to_html',
     'generate_keyword_search', 'parse_search_resp',
 ]
+tz = pytz.timezone('utc')
+
+
+def utcnow():
+    return datetime.datetime.utcnow().replace(tzinfo=tz)
 
 
 def setup_log():

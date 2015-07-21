@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 import logging
 import urllib
-import datetime
 
 import tornado
 from lxml import etree
 
 from .base import BaseHandler
-from ..utils import debug_wrapper, render_md_to_html
+from ..utils import debug_wrapper, render_md_to_html, utcnow
 from ..const import LOG_NAME, ERROR
 
 
@@ -60,7 +59,8 @@ class PublishHandler(BaseHandler):
 
         docu = {
             'post_author': self.current_user['_id'],
-            'post_modified_gmt': datetime.datetime.utcnow(),
+            'post_created_at': utcnow(),
+            'post_modified_gmt': utcnow(),
             'post_status': 'publish',
             'comment_status': 'open',
             'post_title': post_title,
