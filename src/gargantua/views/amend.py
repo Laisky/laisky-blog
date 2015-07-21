@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 import logging
 import urllib
-import datetime
 
 import tornado
 from lxml import etree
 
 from .base import BaseHandler
-from ..utils import debug_wrapper, render_md_to_html, unquote_fr_mongo
+from ..utils import debug_wrapper, render_md_to_html, unquote_fr_mongo, utcnow
 from ..const import LOG_NAME
 
 
@@ -70,7 +69,7 @@ class AmendHandler(BaseHandler):
 
         docu = {
             # 'post_author': self.current_user['_id'],
-            'post_modified_gmt': datetime.datetime.utcnow(),
+            'post_modified_gmt': utcnow(),
             # 'post_status': 'publish',
             # 'comment_status': 'open',
             'post_title': post_title,

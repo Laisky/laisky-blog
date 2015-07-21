@@ -5,7 +5,10 @@ import tornado
 
 from .base import BaseHandler
 from ..const import LOG_NAME, OK, ERROR
-from ..utils import debug_wrapper, validate_passwd, generate_token, validate_email
+from ..utils import (
+    debug_wrapper, validate_passwd, generate_token,
+    validate_email, utcnow
+)
 
 
 log = logging.getLogger(LOG_NAME)
@@ -38,7 +41,6 @@ class UserHandler(BaseHandler):
         self.finish()
 
     def profile(self):
-        user = self.current_user
         self.render2('profile/index.html', current_app='profile')
         self.finish()
 
@@ -71,12 +73,12 @@ class UserHandler(BaseHandler):
             return
 
         uid = str(user_docu['_id'])
-        jwt = {'uid': uid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30)}
+        jwt = {'uid': uid, 'exp': utcnow() + datetime.timedelta(days=30)}
         token = generate_token(jwt, user_docu['password'])
 
         yield self.db.users.update(
             {'_id': user_docu['_id']},
-            {'$set': {'token': token, 'last_update': datetime.datetime.utcnow()}})
+            {'$set': {'token': token, 'last_update': utcnow()}})
 
         expires_days = 30 if is_keep_login else None
         self.set_secure_cookie('uid', uid, expires_days=expires_days)
