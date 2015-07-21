@@ -26,11 +26,6 @@ def debug_wrapper(func):
     return wrapper
 
 
-def utc2cst(dt):
-    log.debug('utc2cst for dt {}'.format(dt))
-    return dt + datetime.timedelta(hours=8)
-
-
 class TemplateRendering():
     """
     A simple class to hold methods for rendering templates.
@@ -48,7 +43,7 @@ class TemplateRendering():
                 extensions=[AssetsExtension]
             )
             self._jinja_env.filters.update({
-                'utc2cst': utc2cst,
+                'utc2cst': lambda dt: dt + datetime.timedelta(hours=8),
                 'jstime2py': lambda ts: datetime.datetime.fromtimestamp(ts / 1000),
                 'time_format': lambda dt: datetime.datetime.strftime(dt, '%Y/%m/%d %H:%M:%S'),
             })
