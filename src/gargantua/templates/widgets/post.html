@@ -2,7 +2,7 @@
     <div id="{{ post.post_name }}" class="post post-container">
     <h2 class="post-title"><a href="/p/{{ post.post_name }}/" target="_blank">{{ post.post_title }}</a></h2>
     <div class="post-modified">
-        <span>创建于：</span>
+        <span>发布于：</span>
         <span>{{ post.post_created_at | utc2cst | time_format }}</span>
     </div>
         <div class="post-content">
