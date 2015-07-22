@@ -92,7 +92,7 @@ class PostsHandler(BaseHandler):
                     """
                 else:
                     content = html2text.html2text(docu['post_content'])
-                    docu['post_content'] = content[: 1000]
+                    docu['post_content'] = content[: 500]
 
             posts.append(docu)
 
