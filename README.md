@@ -2,7 +2,8 @@ Gargantua
 ===
 Laisky's new blog
 
-Version: 1.6
+Version:
+1.6.1 pytz _Tue Jul 21 10:21:22 2015_
 
 ## Description
 
@@ -31,4 +32,4 @@ $ sudo make
 ## Versions
 
 [versions log](https://github.com/Laisky/laisky-blog/blob/master/docs/versions.md)
-1.6.1 pytz _Tue Jul 21 10:21:22 2015_
+
