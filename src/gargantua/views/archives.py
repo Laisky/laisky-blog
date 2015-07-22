@@ -54,6 +54,9 @@ class PostsHandler(BaseHandler):
             docu['post_modified_gmt'] = datetime.datetime.strptime(
                 docu['post_modified_gmt'], '%Y-%m-%dT%H:%M:%S.%fZ'
             )
+            docu['post_created_at'] = datetime.datetime.strptime(
+                docu['post_created_at'], '%Y-%m-%dT%H:%M:%S.%fZ'
+            )
             docu['post_content'] = self.shortly_content(docu['post_content'], length=200)
 
         self.render_post('search/index.html', posts=posts)
