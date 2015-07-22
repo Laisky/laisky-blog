@@ -8,6 +8,7 @@ from tornado.options import options
 
 from .app import Application
 from .const import LOG_NAME
+from .tasks import setup_tasks
 
 
 log = logging.getLogger(LOG_NAME)
@@ -24,7 +25,9 @@ def main():
         log.setLevel(logging.DEBUG)
     else:
         log.info('start application in normal mode')
-    tornado.ioloop.IOLoop.instance().start()
+    ioloop = tornado.ioloop.IOLoop.instance()
+    setup_tasks(ioloop)
+    ioloop.start()
 
 if __name__ == '__main__':
     main()
