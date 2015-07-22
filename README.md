@@ -3,7 +3,7 @@ Gargantua
 Laisky's new blog
 
 Version:
-1.6.1 pytz _Tue Jul 21 10:21:22 2015_
+1.7 tags _Wed Jul 22 22:25:21 2015_
 
 ## Description
 
