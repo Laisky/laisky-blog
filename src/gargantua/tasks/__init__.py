@@ -1,11 +1,11 @@
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
 
 import tornado.ioloop
 
 from .keyword import bind_task as bind_keyword_task
 
 
-executor = ProcessPoolExecutor(max_workers=2)
+executor = ThreadPoolExecutor(max_workers=2)
 
 
 def setup_tasks(ioloop=False):
