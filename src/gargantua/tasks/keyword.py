@@ -21,12 +21,12 @@ N_CHINESE_KEYWORDS = 30
 N_ENGLISH_KEYWORDS = 20
 
 
-def bind_task(ioloop):
+def bind_task(ioloop, executor):
     def callback(*args, **kw):
         when = ioloop.time() + 60 * 60
         log.debug('add new task load_keywords at {}'.format(when))
         log.info('Run task load_keywords')
-        load_keywords(*args, **kw)
+        executor.submit(load_keywords, *args, **kw)
         ioloop.call_at(when, callback, *args, **kw)
 
     when = ioloop.time() + 10
