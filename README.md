@@ -3,7 +3,7 @@ Gargantua
 Laisky's new blog
 
 Version:
-1.7 tags _Wed Jul 22 22:25:21 2015_
+1.7.1 async tasks _Thu Jul 23 10:23:24 2015_
 
 ## Description
 
