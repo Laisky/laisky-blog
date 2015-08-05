@@ -33,3 +33,6 @@ class BaseApiHandler(tornado.web.RequestHandler,
 
     def plaintext_content(self, content):
         return html2text.html2text(content)
+
+    def hyperlink_postname(self, post_name):
+        return 'http://blog.laisky.com/api/p/{}/'.format(post_name)

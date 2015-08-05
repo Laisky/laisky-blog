@@ -18,16 +18,24 @@ class PostApiHandler(BaseApiHandler):
 
     def parse_docu(self, docu, truncate=None, plaintext=False):
         content = docu['post_content']
-        if plaintext:
-            content = self.plaintext_content(content)
-        if truncate:
-            content = self.truncate_content(content, truncate)
+        if docu.get('post_password'):
+            content = ''
+        else:
+            if plaintext:
+                content = self.plaintext_content(content)
+            if truncate:
+                content = self.truncate_content(content, truncate)
 
         return {
             'post_title': docu['post_title'],
+            'link': self.hyperlink_postname(docu['post_name']),
             'post_name': docu['post_name'],
             'post_content': content,
-            'post_created_at': convert_dt(docu['post_created_at'])
+            'post_id': str(docu['_id']),
+            'post_author': str(docu['post_author']),
+            'post_modified_gmt': convert_dt(docu['post_modified_gmt']),
+            'post_created_at': convert_dt(docu['post_created_at']),
+            'post_status': docu['post_status'],
         }
 
     @tornado.web.asynchronous
