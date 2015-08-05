@@ -5,7 +5,8 @@ import tornado
 import html2text
 
 from gargantua.const import LOG_NAME
-from gargantua.utils import AuthHandlerMixin, DbHandlerMixin, WebHandlerMixin
+from gargantua.utils import AuthHandlerMixin, DbHandlerMixin, \
+    WebHandlerMixin, HttpErrorMixin
 
 
 logger = logging.getLogger(LOG_NAME)
@@ -14,7 +15,8 @@ logger = logging.getLogger(LOG_NAME)
 class BaseApiHandler(tornado.web.RequestHandler,
                      AuthHandlerMixin,
                      DbHandlerMixin,
-                     WebHandlerMixin):
+                     WebHandlerMixin,
+                     HttpErrorMixin):
 
     def rest_write(self, data):
         # TODO 根据 meta 来返回 HTML， JSON 和 XML

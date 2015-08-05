@@ -2,15 +2,15 @@ import logging
 
 import pymongo
 import tornado
+from bson import ObjectId
 
-from gargantua.utils import debug_wrapper, utc2cst, dt2timestamp
+from gargantua.utils import debug_wrapper, utc2cst, dt2timestamp, \
+    is_objectid
 from gargantua.const import LOG_NAME
 from .base import BaseApiHandler
 
 
 logger = logging.getLogger(LOG_NAME)
-
-
 convert_dt = lambda dt: dt2timestamp(utc2cst(dt))
 
 
@@ -39,13 +39,25 @@ class PostApiHandler(BaseApiHandler):
         }
 
     @tornado.web.asynchronous
-    def get(self, post_name=None):
-        if not post_name:
-            self.retrieve()
+    def get(self, pid=None):
+        if not pid:
+            self.list()
+        else:
+            self.retrieve(pid)
 
     @tornado.gen.coroutine
     @debug_wrapper
-    def retrieve(self):
+    def retrieve(self, pid):
+        if is_objectid(pid):
+            docu = yield self.db.posts.find_one({'_id': ObjectId(pid)})
+        else:
+            docu = yield self.db.posts.find_one({'post_name': pid})
+
+        pass
+
+    @tornado.gen.coroutine
+    @debug_wrapper
+    def list(self):
         try:
             sort = self.get_argument('sort', default='des', strip=True)
             limit = int(self.get_argument('limit', default='15', strip=True))
@@ -58,7 +70,7 @@ class PostApiHandler(BaseApiHandler):
             assert(plaintext in ['true', 'false'])
             assert(truncate >= 0)
         except (ValueError, AssertionError):
-            self.write_error(403, 'Arguments Error!')
+            self.http_400_bad_request('Arguments Error!')
             return
         else:
             plaintext = plaintext == 'true'

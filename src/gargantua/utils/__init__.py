@@ -13,7 +13,7 @@ from .encryt import generate_passwd, validate_passwd, \
     generate_token, validate_token
 from .jinja import TemplateRendering
 from .tornado import debug_wrapper, \
-    DbHandlerMixin, WebHandlerMixin, AuthHandlerMixin
+    DbHandlerMixin, WebHandlerMixin, AuthHandlerMixin, HttpErrorMixin
 from .mongo import unquote_fr_mongo
 from .elasticsearch import generate_keyword_search, parse_search_resp
 from .markdown import render_md_to_html
@@ -28,8 +28,14 @@ __all__ = [
     'TemplateRendering', 'render_md_to_html',
     'generate_keyword_search', 'parse_search_resp',
     'DbHandlerMixin', 'WebHandlerMixin', 'AuthHandlerMixin',
+    'HttpErrorMixin',
 ]
+
 tz = pytz.timezone('utc')
+oid_regex = re.compile(r'[a-z0-9]{24}')
+
+
+is_objectid = lambda s: oid_regex.fullmatch(s)
 
 
 def utcnow():

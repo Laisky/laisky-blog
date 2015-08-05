@@ -13,7 +13,8 @@ from gargantua.const import LOG_NAME, OK
 
 log = logging.getLogger(LOG_NAME)
 __all__ = [
-    'debug_wrapper', 'DbHandlerMixin', 'WebHandlerMixin', 'AuthHandlerMixin'
+    'debug_wrapper', 'DbHandlerMixin', 'WebHandlerMixin', 'AuthHandlerMixin',
+    'HttpErrorMixin', 'HttpErrorMixin',
 ]
 
 
@@ -102,3 +103,111 @@ class AuthHandlerMixin():
         else:
             log.debug("authenticated user")
             return user_docu
+
+
+class HttpErrorMixin():
+
+    def http_400_bad_request(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=400)
+
+    def http_401_unauthorized(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=401)
+
+    def http_402_payment_required(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=402)
+
+    def http_403_forbidden(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=403)
+
+    def http_404_not_found(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=404)
+
+    def http_405_method_not_allowed(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=405)
+
+    def http_406_not_acceptable(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=406)
+
+    def http_407_proxy_authentication_required(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=407)
+
+    def http_408_request_timeout(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=408)
+
+    def http_409_conflict(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=409)
+
+    def http_410_gone(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=410)
+
+    def http_411_length_required(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=411)
+
+    def http_412_precondition_failed(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=412)
+
+    def http_413_request_entity_too_large(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=413)
+
+    def http_414_request_uri_too_long(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=414)
+
+    def http_415_unsupported_media_type(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=415)
+
+    def http_416_requested_range_not_satisfiable(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=416)
+
+    def http_417_expectation_failed(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=417)
+
+    def http_428_precondition_required(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=428)
+
+    def http_429_too_many_requests(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=429)
+
+    def http_431_request_header_fields_too_large(self, msg=None):
+        self._reason = msg
+        return self.write_error(status_code=431)
+
+    def http_500_internal_server_error(self):
+        return self.write_error(status_code=500)
+
+    def http_501_not_implemented(self):
+        return self.write_error(status_code=501)
+
+    def http_502_bad_gateway(self):
+        return self.write_error(status_code=502)
+
+    def http_503_service_unavailable(self):
+        return self.write_error(status_code=503)
+
+    def http_504_gateway_timeout(self):
+        return self.write_error(status_code=504)
+
+    def http_505_http_version_not_supported(self):
+        return self.write_error(status_code=505)
+
+    def http_511_network_authentication_required(self):
+        return self.write_error(status_code=511)
