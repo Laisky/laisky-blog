@@ -53,7 +53,8 @@ class PostApiHandler(BaseApiHandler):
         else:
             docu = yield self.db.posts.find_one({'post_name': pid})
 
-        pass
+        parsed_docu = self.parse_docu(docu)
+        self.rest_write(parsed_docu)
 
     @tornado.gen.coroutine
     @debug_wrapper
