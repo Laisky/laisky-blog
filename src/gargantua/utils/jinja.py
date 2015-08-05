@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
-import traceback
 import datetime
 
 from jinja2 import Environment, FileSystemLoader
@@ -12,18 +11,7 @@ from ..const import LOG_NAME
 
 
 log = logging.getLogger(LOG_NAME)
-__all__ = ['debug_wrapper', 'TemplateRendering']
-
-
-def debug_wrapper(func):
-    def wrapper(*args, **kw):
-        log.debug('debug_wrapper for args {}, kw {}'.format(args, kw))
-        try:
-            yield from func(*args, **kw)
-        except Exception:
-            log.error(traceback.format_exc())
-            raise
-    return wrapper
+__all__ = ['TemplateRendering']
 
 
 class TemplateRendering():
