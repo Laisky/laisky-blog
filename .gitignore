@@ -59,6 +59,17 @@ target/
 # koala
 koala-config.json
 
+# pyenv
+/venv
+/active
+
+# test
+/data
+/notebook
+
+# ctags
+/.tags
+
 # webassets
 .webassets-cache/
 assets/
