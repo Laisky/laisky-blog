@@ -36,6 +36,14 @@ def utcnow():
     return datetime.datetime.utcnow().replace(tzinfo=tz)
 
 
+def utc2cst(dt):
+    return dt + datetime.timedelta(hours=8)
+
+
+def dt2timestamp(dt):
+    return dt.timestamp()
+
+
 def setup_log():
     _format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     formatter = logging.Formatter(_format)
@@ -70,3 +78,13 @@ def validate_mobile(mobile):
 def generate_random_string(length):
     alphbet = string.ascii_letters + ''.join([str(i) for i in range(10)])
     return ''.join([random.choice(alphbet) for i in range(length)])
+
+
+def singleton(cls, *args, **kw):
+    instances = {}
+
+    def _singleton():
+        if cls not in instances:
+            instances[cls] = cls(*args, **kw)
+        return instances[cls]
+    return _singleton

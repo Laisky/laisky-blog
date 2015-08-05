@@ -19,15 +19,13 @@ from tornado.options import define, options
 from raven.contrib.tornado import AsyncSentryClient
 from raven.handlers.logging import SentryHandler
 
-from .const import (
-    CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_NAME,
+from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, \
+    DB_NAME, LOG_NAME, \
     ES_HOST, ES_PORT, SENTRY_HOST, SENTRY_PORT, SENTRY_NAME
-)
 from .utils import setup_log, generate_random_string
-from .views import (
-    BaseHandler, PostsHandler, PostPage, PublishHandler, UserHandler,
-    RssHandler, AmendHandler
-)
+from .views import BaseHandler, PostsHandler, PostPage, \
+    PublishHandler, UserHandler, RssHandler, AmendHandler
+from .apis import PostApiHandler
 
 
 log = logging.getLogger(LOG_NAME)
@@ -81,9 +79,11 @@ class Application(tornado.web.Application):
             url(r'^/(profile)/$', UserHandler, name='user:profile'),
             # ---------------- rss ----------------
             url(r'^/rss.xml$', RssHandler, name='rss'),
-            # ---------------- api ----------------
+            # ---------------- old api ----------------
             url(r'^/(api/posts/.*)/$', PostsHandler, name='api:post'),
             url(r'^/(api/user/.*)/$', UserHandler, name='api:user:login'),
+            # ---------------- rest api ----------------
+            url(r'^/api/p/([a-zA-Z]+)?/?$', PostApiHandler, name='rest:post'),
             # ---------------- 404 ----------------
             url(r'^/$', PostsHandler, name='root'),
             url(r'^/404.html$', PageNotFound, name='404'),
