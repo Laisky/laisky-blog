@@ -29,6 +29,7 @@ __all__ = [
     'generate_keyword_search', 'parse_search_resp',
     'DbHandlerMixin', 'WebHandlerMixin', 'AuthHandlerMixin',
     'HttpErrorMixin',
+    'utc2cst_timestamp', 'utcnow', 'utc2cst', 'dt2timestamp',
 ]
 
 tz = pytz.timezone('utc')
@@ -48,6 +49,10 @@ def utc2cst(dt):
 
 def dt2timestamp(dt):
     return dt.timestamp()
+
+
+def utc2cst_timestamp(dt):
+    return dt2timestamp(utc2cst(dt))
 
 
 def setup_log():

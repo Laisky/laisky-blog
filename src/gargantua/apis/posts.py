@@ -4,14 +4,13 @@ import pymongo
 import tornado
 from bson import ObjectId
 
-from gargantua.utils import debug_wrapper, utc2cst, dt2timestamp, \
-    is_objectid
+from gargantua.utils import debug_wrapper, \
+    is_objectid, utc2cst_timestamp
 from gargantua.const import LOG_NAME
 from .base import BaseApiHandler
 
 
 logger = logging.getLogger(LOG_NAME)
-convert_dt = lambda dt: dt2timestamp(utc2cst(dt))
 
 
 class PostApiHandler(BaseApiHandler):
@@ -33,8 +32,8 @@ class PostApiHandler(BaseApiHandler):
             'post_content': content,
             'post_id': str(docu['_id']),
             'post_author': str(docu['post_author']),
-            'post_modified_gmt': convert_dt(docu['post_modified_gmt']),
-            'post_created_at': convert_dt(docu['post_created_at']),
+            'post_modified_gmt': utc2cst_timestamp(docu['post_modified_gmt']),
+            'post_created_at': utc2cst_timestamp(docu['post_created_at']),
             'post_status': docu['post_status'],
         }
 
