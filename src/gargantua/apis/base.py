@@ -4,6 +4,7 @@ import urllib
 
 import tornado
 import html2text
+import dicttoxml
 
 from gargantua.const import LOG_NAME
 from gargantua.utils import AuthHandlerMixin, DbHandlerMixin, \
@@ -28,6 +29,7 @@ class BaseApiHandler(tornado.web.RequestHandler,
             'plain/text': self.write_json,
             'application/x-www-form-urlencoded': self.write_encoded,
             'text/html': self.write_html,
+            'application/xml': self.write_xml,
         }
 
     def _get_resp_method(self):
@@ -53,8 +55,14 @@ class BaseApiHandler(tornado.web.RequestHandler,
             .format(list(_accept_map.keys()), self.accept)
         )
 
+    def write_xml(self, data):
+        resp = dicttoxml.dicttoxml(data)
+        self.set_header('Content-Type', 'application/xml; charset=utf-8')
+        self.write(resp)
+
     def write_html(self, data):
         resp = json.dumps(data, sort_keys=True, indent=4)
+        self.set_header('Content-Type', 'text/html; charset=utf-8')
         self.render2('widgets/rest_response.html', response=resp)
 
     def write_json(self, data):
