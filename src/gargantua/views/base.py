@@ -8,8 +8,8 @@ import tornado
 from raven.contrib.tornado import SentryMixin
 
 from gargantua.const import LOG_NAME, N_POST_PER_PAGE
-from gargantua.utils import TemplateRendering, \
-    DbHandlerMixin, WebHandlerMixin, AuthHandlerMixin
+from gargantua.utils import DbHandlerMixin, WebHandlerMixin, \
+    AuthHandlerMixin, JinjaMixin
 
 
 log = logging.getLogger(LOG_NAME)
@@ -17,7 +17,7 @@ __all__ = ['BaseHandler']
 
 
 class BaseHandler(tornado.web.RequestHandler,
-                  TemplateRendering,
+                  JinjaMixin,
                   SentryMixin,
                   DbHandlerMixin,
                   WebHandlerMixin,
@@ -26,36 +26,6 @@ class BaseHandler(tornado.web.RequestHandler,
     def get(self, url=None):
         url = url.strip(' /')
         super().get(url)
-
-    def render2(self, template_name, **kwargs):
-        """
-        This is for making some extra context variables available to
-        the template
-        """
-        content = self.render_template(template_name, **kwargs)
-        self.write(content)
-
-    def render_template(self, template_name, **kwargs):
-        def static_url(path):
-            prefix = self.settings.get('static_url_prefix')
-            return os.path.join(prefix, path)
-
-        _kwargs = ({
-            'settings': self.settings,
-            'static_url': static_url,
-            'reverse_url': self.reverse_url,
-            'request': self.request,
-            'xsrf_token': self.xsrf_token,
-            'xsrf_form_html': self.xsrf_form_html,
-            'max': max,
-            'min': min,
-            'is_ajax': self.is_ajax,
-            'is_https': self.is_https,
-            'current_user': self.current_user,
-            'current_app': 'blog',
-        })
-        _kwargs.update(kwargs)
-        return super().render_template(template_name, **_kwargs)
 
     @tornado.gen.coroutine
     def prepare(self):

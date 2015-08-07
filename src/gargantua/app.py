@@ -90,7 +90,9 @@ class Application(tornado.web.Application):
         ]
         handlers.append(('/(.*)', PageNotFound))
         self.setup_db()
-        self.setup_sentry()
+        if not options.debug:
+            self.setup_sentry()
+
         super(Application, self).__init__(handlers, **settings)
 
     def setup_sentry(self):

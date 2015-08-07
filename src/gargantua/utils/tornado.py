@@ -3,18 +3,22 @@
 import logging
 import json
 import traceback
+import os
+import re
+from collections import namedtuple
 
 import jwt
 from bson import ObjectId
 
 from gargantua.utils import validate_token
 from gargantua.const import LOG_NAME, OK
+from .jinja import TemplateRendering
 
 
 log = logging.getLogger(LOG_NAME)
 __all__ = [
     'debug_wrapper', 'DbHandlerMixin', 'WebHandlerMixin', 'AuthHandlerMixin',
-    'HttpErrorMixin', 'HttpErrorMixin',
+    'HttpErrorMixin', 'HttpErrorMixin', 'JinjaMixin', 'RFCMixin',
 ]
 
 
@@ -70,6 +74,32 @@ class WebHandlerMixin():
         self.redirect('/404.html')
 
 
+class RFCMixin():
+
+    """http://www.ietf.org/rfc/rfc2616.txt"""
+
+    Accept = namedtuple('accept', ['name', 'quality', 'level'])
+    ACC_NAME_REGX = re.compile('([a-z\*]+\/[a-z\*\-]+)')
+    ACC_Q_REGX = re.compile('q=([0-9.]+)')
+    ACC_LEVEL_REGX = re.compile('level=([0-9.]+)')
+
+    def _parse_accept(self, accept):
+        extract = lambda regx, s: regx.findall(s) or ['0']
+        t = extract(self.ACC_NAME_REGX, accept)[0]
+        q = float(extract(self.ACC_Q_REGX, accept)[0])
+        l = float(extract(self.ACC_LEVEL_REGX, accept)[0])
+        return self.Accept(name=t, quality=q, level=l)
+
+    @property
+    def accept(self):
+        # IEFT RFC-2616 p.100
+        raw_accepts = self.request.headers.get('Accept', '').split(',')
+        accepts = [self._parse_accept(a) for a in raw_accepts]
+        parsed_accepts = sorted(accepts, key=lambda ac: ac.quality, reverse=True)
+        log.debug('Requests Accepts: {}'.format(parsed_accepts))
+        return parsed_accepts
+
+
 class AuthHandlerMixin():
 
     def get_current_user(self):
@@ -103,6 +133,39 @@ class AuthHandlerMixin():
         else:
             log.debug("authenticated user")
             return user_docu
+
+
+class JinjaMixin(TemplateRendering):
+
+    def render2(self, template_name, **kwargs):
+        """
+        This is for making some extra context variables available to
+        the template
+        """
+        content = self.render_template(template_name, **kwargs)
+        self.write(content)
+
+    def render_template(self, template_name, **kwargs):
+        def static_url(path):
+            prefix = self.settings.get('static_url_prefix')
+            return os.path.join(prefix, path)
+
+        _kwargs = ({
+            'settings': self.settings,
+            'static_url': static_url,
+            'reverse_url': self.reverse_url,
+            'request': self.request,
+            'xsrf_token': self.xsrf_token,
+            'xsrf_form_html': self.xsrf_form_html,
+            'max': max,
+            'min': min,
+            'is_ajax': self.is_ajax,
+            'is_https': self.is_https,
+            'current_user': self.current_user,
+            'current_app': 'blog',
+        })
+        _kwargs.update(kwargs)
+        return super().render_template(template_name, **_kwargs)
 
 
 class HttpErrorMixin():

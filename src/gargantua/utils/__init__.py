@@ -13,7 +13,8 @@ from .encryt import generate_passwd, validate_passwd, \
     generate_token, validate_token
 from .jinja import TemplateRendering
 from .tornado import debug_wrapper, \
-    DbHandlerMixin, WebHandlerMixin, AuthHandlerMixin, HttpErrorMixin
+    DbHandlerMixin, WebHandlerMixin, AuthHandlerMixin, HttpErrorMixin, \
+    JinjaMixin, RFCMixin
 from .mongo import unquote_fr_mongo
 from .elasticsearch import generate_keyword_search, parse_search_resp
 from .markdown import render_md_to_html
@@ -28,7 +29,7 @@ __all__ = [
     'TemplateRendering', 'render_md_to_html',
     'generate_keyword_search', 'parse_search_resp',
     'DbHandlerMixin', 'WebHandlerMixin', 'AuthHandlerMixin',
-    'HttpErrorMixin',
+    'HttpErrorMixin', 'JinjaMixin', 'RFCMixin',
     'utc2cst_timestamp', 'utcnow', 'utc2cst', 'dt2timestamp',
 ]
 
