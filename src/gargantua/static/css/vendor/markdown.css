@@ -275,10 +275,10 @@
   margin-bottom: 16px;
 }
 .markdown-body hr {
-  height: 4px;
+  height: 6px;
   padding: 0;
   margin: 16px 0;
-  background-color: #e7e7e7;
+  background-color: #D4D2D2;
   border: 0 none;
 }
 .markdown-body ul,
