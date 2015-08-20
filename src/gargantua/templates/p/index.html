@@ -27,10 +27,10 @@
 {% block container %}
     {% include "widgets/dialog.html" %}
     <div class="container">
-        <div class="container-fluid">
+        <div class="container-fluid post-body">
             <div class="row">
                 <!-- archives -->
-                <div id="archives" class="col-xs-12">
+                <div class="archives" id="archives" class="col-xs-12">
                     {% if post.post_type in ("text", "markdown") %}
                         {% include "widgets/post.html" %}
                     {% elif post.post_type == "slide" %}

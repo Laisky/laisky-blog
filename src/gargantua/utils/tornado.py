@@ -28,7 +28,15 @@ def debug_wrapper(func):
         try:
             yield from func(*args, **kw)
         except Exception:
-            log.error(traceback.format_exc())
+            self = args[0]
+            err_msg = {
+                'msg': traceback.format_exc(),
+                'uri': self.request.uri,
+                'version': self.request.version,
+                'headers': self.request.headers,
+                'cookies': self.request.cookies
+            }
+            log.error(json.dumps(err_msg, indent=4, sort_keys=True))
             raise
     return wrapper
 
