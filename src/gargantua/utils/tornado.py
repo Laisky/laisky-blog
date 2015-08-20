@@ -34,7 +34,8 @@ def debug_wrapper(func):
                 'uri': self.request.uri,
                 'version': self.request.version,
                 'headers': self.request.headers,
-                'cookies': self.request.cookies
+                'cookies': self.request.cookies,
+                'remote_ip': self.ip,
             }
             log.error(json.dumps(err_msg, indent=4, sort_keys=True))
             raise
