@@ -3,7 +3,7 @@ Gargantua
 Laisky's new blog
 
 Version:
-1.7.1 async tasks _Thu Jul 23 10:23:24 2015_
+1.7.2 more error message _Thu Aug 20 08:39:50 2015_
 
 ## Description
 
