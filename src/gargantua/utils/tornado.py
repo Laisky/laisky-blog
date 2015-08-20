@@ -30,14 +30,15 @@ def debug_wrapper(func):
         except Exception:
             self = args[0]
             err_msg = {
-                'msg': traceback.format_exc(),
                 'uri': self.request.uri,
                 'version': self.request.version,
                 'headers': self.request.headers,
                 'cookies': self.request.cookies,
-                'remote_ip': self.ip,
             }
-            log.error(json.dumps(err_msg, indent=4, sort_keys=True))
+            log.error('{}\n-----\n{}'.format(
+                traceback.format_exc(),
+                json.dumps(err_msg, indent=4, sort_keys=True),
+            ))
             raise
     return wrapper
 
