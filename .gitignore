@@ -73,6 +73,3 @@ koala-config.json
 # webassets
 .webassets-cache/
 assets/
-
-# bower
-/bower_components
