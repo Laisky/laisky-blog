@@ -1,0 +1,26 @@
+{
+  "name": "gargantua",
+  "version": "1.7.2",
+  "homepage": "https://github.com/Laisky/laisky-blog",
+  "authors": [
+    "Laisky <ppcelery@gmail.com>"
+  ],
+  "description": "Simple blog project.",
+  "keywords": [
+    "blog",
+    "python"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "loaders.css": "~0.1.1",
+    "jquery": "~2.1.4"
+  }
+}
