@@ -1,0 +1,61 @@
+/* line 4, ../sass/base.scss */
+html {
+  height: 100%;
+  min-height: 600px;
+}
+
+/* line 9, ../sass/base.scss */
+body {
+  height: 100%;
+  font-family: "Helvetica Neue", "Helvetica", "Microsoft YaHei", "Segoe UI", "Arial", "freesans", "sans-serif";
+  background: url(http://laisky-blog.qiniudn.com/background-1500x844.jpg) repeat fixed 0 0;
+  background-attachment: fixed;
+}
+/* line 15, ../sass/base.scss */
+body > .container {
+  margin-top: 40px;
+}
+
+/* line 21, ../sass/base.scss */
+.navbar-fixed-top {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* line 27, ../sass/base.scss */
+.loader-inner.pacman {
+  margin-left: 30px;
+}
+/* line 31, ../sass/base.scss */
+.loader-inner.ball-scale-ripple-multiple {
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
+/* line 38, ../sass/base.scss */
+.vertical-align {
+  position: relative;
+  top: 50%;
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+/* line 44, ../sass/base.scss */
+.global-fade {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background-color: rgba(40, 41, 35, 0.8);
+  display: none;
+}
+
+/* line 55, ../sass/base.scss */
+.container,
+.container-fluid {
+  padding: 0px;
+}
