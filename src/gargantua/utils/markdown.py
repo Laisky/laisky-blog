@@ -5,5 +5,5 @@ import markdown2
 
 
 def render_md_to_html(content):
-    html = markdown2.markdown(content, extras=['fenced-code-blocks', 'footnotes'])
+    html = markdown2.markdown(content, extras=['fenced-code-blocks', 'footnotes', 'tables'])
     return '<div class="highlight">{}</div>'.format(html)
