@@ -20,12 +20,12 @@
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
 
-        {% assets filters="less,cssmin", output="assets/sites.css",
+        {% assets filters="cssmin", output="assets/sites.css",
                 "stylesheets/base.css",
                 "stylesheets/pages/archives.css",
                 "stylesheets/pages/profile.css",
                 "stylesheets/widgets/post.css",
-                "less/widgets/dialog.less",
+                "stylesheets/widgets/dialog.css",
                 "stylesheets/pages/login.css" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
