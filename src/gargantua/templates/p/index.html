@@ -25,6 +25,9 @@
 {% block container %}
     {% include "widgets/dialog.html" %}
     <div class="container">
+    {% if post.post_type == 'slide' %}
+        <div class="slide-container">
+    {% endif %}
         <div class="container-fluid post-body">
             <div class="row">
                 <!-- archives -->
@@ -41,6 +44,9 @@
         {% if post.post_type == "slide" %}
             {% include "widgets/comment.html" %}
         {% endif %}
+    {% if post.post_type == 'slide' %}
+        </div>
+    {% endif %}
     </div>
 {% endblock %}
 

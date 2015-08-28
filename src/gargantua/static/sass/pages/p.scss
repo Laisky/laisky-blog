@@ -1,5 +1,29 @@
-.post-content {
-    .reveal {
+@import "compass/css3/box-shadow";
+@import "compass/css3/border-radius";
+@import "compass/css3/transform";
+@import "compass/utilities/general/min";
+
+.post {
+    .archives {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+}
+
+body {
+    overflow: auto;
+
+    > .container {
+        @include min-height(90%);
+        @include border-radius(10px);
+        background-color: rgba(40, 41, 35, 0.8);
+    }
+
+}
+
+.post-body {
+    .reveal.slide {
         font-size: 160%;
         background-color: white;
 
@@ -31,7 +55,7 @@
         }
 
         div.slides {
-            -webkit-transform: translate(-50%, -50%) !important;
+            @include translate(-50%, -50%);
             height: auto !important;
             text-align: left;
             zoom: 0.7 !important;
@@ -42,7 +66,7 @@
                     max-height: 600px;
                     max-width: 600px;
                     border: 0px solid black;
-                    box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+                    @include box-shadow(0 0 10px rgba(0, 0, 0, 0));
                 }
 
                 i {
@@ -100,7 +124,7 @@
                     margin: 0px;
                     font-family: monospace, sans-serif;
                     font-size: 80%;
-                    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+                    @include box-shadow(0px 0px 0px rgba(0, 0, 0, 0));
                     background: #f8f8f8;
 
                     code span,
@@ -443,23 +467,23 @@
 
         }
 
-    }
+        aside.controls {
+            div.navigate-left {
+                border-right-color: yellow;
+            }
 
-    aside.controls {
-        div.navigate-left {
-            border-right-color: yellow;
-        }
+            div.navigate-right {
+                border-left-color: yellow;
+            }
 
-        div.navigate-right {
-            border-left-color: yellow;
-        }
+            div.navigate-up {
+                border-bottom-color: yellow;
+            }
 
-        div.navigate-up {
-            border-bottom-color: yellow;
-        }
+            div.navigate-down {
+                border-top-color: yellow;
+            }
 
-        div.navigate-down {
-            border-top-color: yellow;
         }
 
     }

@@ -1,3 +1,4 @@
+@import "compass/css3/border-radius";
 @import "../themes/default.scss";
 $bgd-clr: $post-bgd-clr;
 $cnt-clr: $post-cnt-clr;
@@ -6,7 +7,7 @@ $title-clr: $post-title-clr;
 .publish-body {
     margin: 10px;
     background-color: $bgd-clr;
-    border-radius: 4px;
+    @include border-radius(4px);
 
     form {
         color: $cnt-clr;
