@@ -1,23 +1,21 @@
 {% extends "base.html" %}
 
-{% set post = posts[0] %}
-
 {% block title %}
     <title>{{ post.post_title }}</title>
 {% endblock %}
 
 {% block page_css %}
     {% if post.post_type in ("text", "markdown")  %}
-        {% assets filters="less,cssmin", output="assets/page.css",
-                "less/pages/archives.less",
+        {% assets filters="cssmin", output="assets/page.css",
+                "stylesheets/pages/archives.css",
                 "css/vendor/markdown.css" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
     {% elif post.post_type == "slide" %}
-        {% assets filters="less,cssmin", output="assets/page.css",
+        {% assets filters="cssmin", output="assets/page.css",
                 "css/vendor/reveal.css",
                 "css/vendor/reveal-theme/simple.css",
-                "less/pages/p.less",
+                "stylesheets/pages/p.css",
                 "css/vendor/font-awesome.css" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
@@ -27,6 +25,9 @@
 {% block container %}
     {% include "widgets/dialog.html" %}
     <div class="container">
+    {% if post.post_type == 'slide' %}
+        <div class="slide-container">
+    {% endif %}
         <div class="container-fluid post-body">
             <div class="row">
                 <!-- archives -->
@@ -43,6 +44,9 @@
         {% if post.post_type == "slide" %}
             {% include "widgets/comment.html" %}
         {% endif %}
+    {% if post.post_type == 'slide' %}
+        </div>
+    {% endif %}
     </div>
 {% endblock %}
 

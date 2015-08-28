@@ -1,0 +1,22 @@
+@import "compass/css3/border-radius";
+@import "../themes/default.scss";
+
+.login-body {
+    max-width: 600px;
+    min-height: 240px;
+    padding: 20px;
+    margin: 20px auto;
+    background: $post-bgd-clr;
+    @include border-radius(10px);
+
+    .hint {
+        text-align: center;
+        margin-bottom: 10px;
+
+        .hint-text {
+            font-size: 1em;
+        }
+
+    }
+
+}

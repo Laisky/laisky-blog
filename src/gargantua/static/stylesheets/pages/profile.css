@@ -1,0 +1,18 @@
+/* line 5, ../../sass/pages/profile.scss */
+body {
+  padding: 20px;
+}
+/* line 8, ../../sass/pages/profile.scss */
+body > .container .container-fluid.profile {
+  text-align: center;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  width: 100%;
+  min-height: 600px;
+  background-color: whitesmoke;
+}
+/* line 15, ../../sass/pages/profile.scss */
+body > .container .container-fluid.profile .profile-container {
+  min-height: 400px;
+}
