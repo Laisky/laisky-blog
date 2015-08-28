@@ -3,7 +3,7 @@ Gargantua
 Laisky's new blog
 
 Version:
-1.7.2 more error message _Thu Aug 20 08:39:50 2015_
+1.7.3 用 SASS & Compass 重写 CSS _Fri Aug 28 15:41:47 2015_
 
 ## Description
 
