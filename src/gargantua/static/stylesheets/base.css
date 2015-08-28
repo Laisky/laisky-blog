@@ -17,22 +17,28 @@ body > .container {
 }
 
 /* line 21, ../sass/base.scss */
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+/* line 26, ../sass/base.scss */
 .navbar-fixed-top {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-/* line 27, ../sass/base.scss */
+/* line 32, ../sass/base.scss */
 .loader-inner.pacman {
   margin-left: 30px;
 }
-/* line 31, ../sass/base.scss */
+/* line 36, ../sass/base.scss */
 .loader-inner.ball-scale-ripple-multiple {
   margin-top: 30px;
   margin-left: 30px;
 }
 
-/* line 38, ../sass/base.scss */
+/* line 43, ../sass/base.scss */
 .vertical-align {
   position: relative;
   top: 50%;
@@ -42,7 +48,7 @@ body > .container {
   transform: translateY(-50%);
 }
 
-/* line 44, ../sass/base.scss */
+/* line 49, ../sass/base.scss */
 .global-fade {
   position: absolute;
   top: 0px;
@@ -54,7 +60,7 @@ body > .container {
   display: none;
 }
 
-/* line 55, ../sass/base.scss */
+/* line 60, ../sass/base.scss */
 .container,
 .container-fluid {
   padding: 0px;

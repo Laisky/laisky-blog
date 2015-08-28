@@ -1,0 +1,59 @@
+/* line 8, ../../sass/pages/archives.scss */
+body > .container {
+  background-color: #F1F1F1;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* line 17, ../../sass/pages/archives.scss */
+.navigator a {
+  color: #1b4187;
+  text-decoration: underline;
+}
+/* line 22, ../../sass/pages/archives.scss */
+.navigator .container-fluid {
+  position: relative;
+}
+/* line 25, ../../sass/pages/archives.scss */
+.navigator .container-fluid .profile {
+  text-align: center;
+}
+/* line 28, ../../sass/pages/archives.scss */
+.navigator .container-fluid .profile img {
+  max-width: 60px;
+  max-height: 60px;
+}
+/* line 33, ../../sass/pages/archives.scss */
+.navigator .container-fluid .profile a {
+  display: block;
+}
+/* line 39, ../../sass/pages/archives.scss */
+.navigator .container-fluid > .row {
+  min-height: 100px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: whitesmoke;
+  border: 2px solid whitesmoke;
+  border-radius: 10px;
+}
+/* line 47, ../../sass/pages/archives.scss */
+.navigator .container-fluid > .row h1,
+.navigator .container-fluid > .row h2,
+.navigator .container-fluid > .row h3 {
+  color: #55323e;
+  margin-top: 0px;
+  text-align: center;
+}
+/* line 56, ../../sass/pages/archives.scss */
+.navigator .container-fluid > .row.tags a {
+  text-decoration: none;
+}
+/* line 59, ../../sass/pages/archives.scss */
+.navigator .container-fluid > .row.tags a .label {
+  padding: 0.2em 0.3em 0.2em 0.2em;
+}
+
+/* line 73, ../../sass/pages/archives.scss */
+.archives.page-nav {
+  text-align: center;
+}
