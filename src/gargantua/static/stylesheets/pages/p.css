@@ -1,0 +1,454 @@
+/* line 2, ../../sass/pages/p.scss */
+.post-content .reveal {
+  font-size: 160%;
+  background-color: white;
+}
+/* line 6, ../../sass/pages/p.scss */
+.post-content .reveal h1,
+.post-content .reveal h2,
+.post-content .reveal h3 {
+  font-size: 1.5em;
+  color: white;
+}
+/* line 13, ../../sass/pages/p.scss */
+.post-content .reveal p,
+.post-content .reveal li,
+.post-content .reveal pre,
+.post-content .reveal h4,
+.post-content .reveal h5 {
+  color: white;
+}
+/* line 21, ../../sass/pages/p.scss */
+.post-content .reveal a {
+  color: #f6f7d0;
+}
+/* line 25, ../../sass/pages/p.scss */
+.post-content .reveal img {
+  cursor: pointer;
+}
+/* line 29, ../../sass/pages/p.scss */
+.post-content .reveal .progress {
+  position: static;
+}
+/* line 33, ../../sass/pages/p.scss */
+.post-content .reveal div.slides {
+  -webkit-transform: translate(-50%, -50%) !important;
+  height: auto !important;
+  text-align: left;
+  zoom: 0.7 !important;
+  left: 50%;
+}
+/* line 41, ../../sass/pages/p.scss */
+.post-content .reveal div.slides section img {
+  max-height: 600px;
+  max-width: 600px;
+  border: 0px solid black;
+  box-shadow: 0 0 10px transparent;
+}
+/* line 48, ../../sass/pages/p.scss */
+.post-content .reveal div.slides section i {
+  font-style: normal;
+  font-family: FontAwesome;
+  font-size: 2em;
+}
+/* line 56, ../../sass/pages/p.scss */
+.post-content .reveal div.slides .fade {
+  opacity: 1;
+}
+/* line 60, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div.input_area {
+  padding: 0.06em;
+}
+/* line 64, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div.code_cell {
+  background-color: transparent;
+}
+/* line 68, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div.prompt {
+  width: 11ex;
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace, sans-serif;
+  font-size: 80%;
+  text-align: right;
+}
+/* line 77, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div.output_area pre {
+  font-family: monospace, sans-serif;
+  font-size: 80%;
+}
+/* line 82, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div.output_prompt {
+  /* 5px right shift to account for margin in parent container */
+  margin: 5px 5px 0 0;
+}
+/* line 88, ../../sass/pages/p.scss */
+.post-content .reveal div.slides .rendered_html p {
+  text-align: inherit;
+}
+/* line 92, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div {
+  color: black;
+  padding: 0px;
+}
+/* line 96, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre {
+  color: black;
+  width: inherit;
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace, sans-serif;
+  font-size: 80%;
+  box-shadow: 0px 0px 0px transparent;
+  background: #f8f8f8;
+  /* Comment */
+  /* Error */
+  /* Keyword */
+  /* Operator */
+  /* Comment.Multiline */
+  /* Comment.Preproc */
+  /* Comment.Single */
+  /* Comment.Special */
+  /* Generic.Deleted */
+  /* Generic.Emph */
+  /* Generic.Error */
+  /* Generic.Heading */
+  /* Generic.Inserted */
+  /* Generic.Output */
+  /* Generic.Prompt */
+  /* Generic.Strong */
+  /* Generic.Subheading */
+  /* Generic.Traceback */
+  /* Keyword.Constant */
+  /* Keyword.Declaration */
+  /* Keyword.Namespace */
+  /* Keyword.Pseudo */
+  /* Keyword.Reserved */
+  /* Keyword.Type */
+  /* Literal.Number */
+  /* Literal.String */
+  /* Name.Attribute */
+  /* Name.Builtin */
+  /* Name.Class */
+  /* Name.Constant */
+  /* Name.Decorator */
+  /* Name.Entity */
+  /* Name.Exception */
+  /* Name.Function */
+  /* Name.Label */
+  /* Name.Namespace */
+  /* Name.Tag */
+  /* Name.Variable */
+  /* Operator.Word */
+  /* Text.Whitespace */
+  /* Literal.Number.Bin */
+  /* Literal.Number.Float */
+  /* Literal.Number.Hex */
+  /* Literal.Number.Integer */
+  /* Literal.Number.Oct */
+  /* Literal.String.Backtick */
+  /* Literal.String.Char */
+  /* Literal.String.Doc */
+  /* Literal.String.Double */
+  /* Literal.String.Escape */
+  /* Literal.String.Heredoc */
+  /* Literal.String.Interpol */
+  /* Literal.String.Other */
+  /* Literal.String.Regex */
+  /* Literal.String.Single */
+  /* Literal.String.Symbol */
+  /* Name.Builtin.Pseudo */
+  /* Name.Variable.Class */
+  /* Name.Variable.Global */
+  /* Name.Variable.Instance */
+}
+/* line 106, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre code span,
+.post-content .reveal div.slides div pre span {
+  color: black;
+}
+/* line 111, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .hll {
+  background-color: #ffffcc;
+}
+/* line 115, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .c {
+  color: #408080;
+  font-style: italic;
+}
+/* line 121, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .err {
+  border: 1px solid #FF0000;
+}
+/* line 126, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .k {
+  color: #008000;
+  font-weight: bold;
+}
+/* line 132, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .o {
+  color: #666666;
+}
+/* line 137, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .cm {
+  color: #408080;
+  font-style: italic;
+}
+/* line 143, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .cp {
+  color: #BC7A00;
+}
+/* line 148, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .c1 {
+  color: #408080;
+  font-style: italic;
+}
+/* line 154, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .cs {
+  color: #408080;
+  font-style: italic;
+}
+/* line 160, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .gd {
+  color: #A00000;
+}
+/* line 165, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .ge {
+  font-style: italic;
+}
+/* line 170, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .gr {
+  color: #FF0000;
+}
+/* line 175, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .gh {
+  color: #000080;
+  font-weight: bold;
+}
+/* line 181, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .gi {
+  color: #00A000;
+}
+/* line 186, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .go {
+  color: #888888;
+}
+/* line 191, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .gp {
+  color: #000080;
+  font-weight: bold;
+}
+/* line 197, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .gs {
+  font-weight: bold;
+}
+/* line 202, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .gu {
+  color: #800080;
+  font-weight: bold;
+}
+/* line 208, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .gt {
+  color: #0044DD;
+}
+/* line 213, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .kc {
+  color: #008000;
+  font-weight: bold;
+}
+/* line 219, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .kd {
+  color: #008000;
+  font-weight: bold;
+}
+/* line 225, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .kn {
+  color: #008000;
+  font-weight: bold;
+}
+/* line 231, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .kp {
+  color: #008000;
+}
+/* line 236, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .kr {
+  color: #008000;
+  font-weight: bold;
+}
+/* line 242, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .kt {
+  color: #B00040;
+}
+/* line 247, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .m {
+  color: #666666;
+}
+/* line 252, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .s {
+  color: #BA2121;
+}
+/* line 257, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .na {
+  color: #7D9029;
+}
+/* line 262, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .nb {
+  color: #008000;
+}
+/* line 267, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .nc {
+  color: #0000FF;
+  font-weight: bold;
+}
+/* line 273, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .no {
+  color: #880000;
+}
+/* line 278, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .nd {
+  color: #AA22FF;
+}
+/* line 283, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .ni {
+  color: #999999;
+  font-weight: bold;
+}
+/* line 289, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .ne {
+  color: #D2413A;
+  font-weight: bold;
+}
+/* line 295, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .nf {
+  color: #0000FF;
+}
+/* line 300, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .nl {
+  color: #A0A000;
+}
+/* line 305, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .nn {
+  color: #0000FF;
+  font-weight: bold;
+}
+/* line 311, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .nt {
+  color: #008000;
+  font-weight: bold;
+}
+/* line 317, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .nv {
+  color: #19177C;
+}
+/* line 322, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .ow {
+  color: #AA22FF;
+  font-weight: bold;
+}
+/* line 328, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .w {
+  color: #bbbbbb;
+}
+/* line 333, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .mb {
+  color: #666666;
+}
+/* line 338, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .mf {
+  color: #666666;
+}
+/* line 343, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .mh {
+  color: #666666;
+}
+/* line 348, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .mi {
+  color: #666666;
+}
+/* line 353, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .mo {
+  color: #666666;
+}
+/* line 358, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .sb {
+  color: #BA2121;
+}
+/* line 363, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .sc {
+  color: #BA2121;
+}
+/* line 368, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .sd {
+  color: #BA2121;
+  font-style: italic;
+}
+/* line 374, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .s2 {
+  color: #BA2121;
+}
+/* line 379, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .se {
+  color: #BB6622;
+  font-weight: bold;
+}
+/* line 385, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .sh {
+  color: #BA2121;
+}
+/* line 390, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .si {
+  color: #BB6688;
+  font-weight: bold;
+}
+/* line 396, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .sx {
+  color: #008000;
+}
+/* line 401, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .sr {
+  color: #BB6688;
+}
+/* line 406, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .s1 {
+  color: #BA2121;
+}
+/* line 411, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .ss {
+  color: #19177C;
+}
+/* line 416, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .bp {
+  color: #008000;
+}
+/* line 421, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .vc {
+  color: #19177C;
+}
+/* line 426, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .vg {
+  color: #19177C;
+}
+/* line 431, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .vi {
+  color: #19177C;
+}
+/* line 436, ../../sass/pages/p.scss */
+.post-content .reveal div.slides div pre .il {
+  color: #666666;
+}
+/* line 449, ../../sass/pages/p.scss */
+.post-content aside.controls div.navigate-left {
+  border-right-color: yellow;
+}
+/* line 453, ../../sass/pages/p.scss */
+.post-content aside.controls div.navigate-right {
+  border-left-color: yellow;
+}
+/* line 457, ../../sass/pages/p.scss */
+.post-content aside.controls div.navigate-up {
+  border-bottom-color: yellow;
+}
+/* line 461, ../../sass/pages/p.scss */
+.post-content aside.controls div.navigate-down {
+  border-top-color: yellow;
+}
