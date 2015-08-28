@@ -1,0 +1,91 @@
+/* line 4, ../../sass/widgets/post.scss */
+.post.post-container {
+  background-color: whitesmoke;
+  padding: 20px;
+  position: relative;
+  border: 2px solid whitesmoke;
+  -moz-border-radius: 25px;
+  -webkit-border-radius: 25px;
+  border-radius: 25px;
+  margin-bottom: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* line 14, ../../sass/widgets/post.scss */
+.post.post-container .post-title {
+  text-align: center;
+  font-weight: bolder;
+}
+/* line 18, ../../sass/widgets/post.scss */
+.post.post-container .post-title a {
+  color: #55323e;
+}
+/* line 24, ../../sass/widgets/post.scss */
+.post.post-container .post-modified {
+  color: black;
+  text-align: right;
+  margin-bottom: 10px;
+  margin-top: -10px;
+}
+/* line 31, ../../sass/widgets/post.scss */
+.post.post-container .post-content {
+  line-height: 150%;
+  font-size: 1.2em;
+  color: #32322d;
+}
+/* line 36, ../../sass/widgets/post.scss */
+.post.post-container .post-content .codehilite {
+  margin-bottom: 16px;
+}
+/* line 40, ../../sass/widgets/post.scss */
+.post.post-container .post-content img {
+  display: block;
+  cursor: pointer;
+  max-height: 600px;
+  max-width: 600px;
+}
+/* line 47, ../../sass/widgets/post.scss */
+.post.post-container .post-content a {
+  color: #1b4187;
+}
+/* line 51, ../../sass/widgets/post.scss */
+.post.post-container .post-content blockquote {
+  font: inherit;
+  margin: 20px;
+}
+/* line 56, ../../sass/widgets/post.scss */
+.post.post-container .post-content pre {
+  color: #32322d;
+  background-color: whitesmoke;
+  font-family: inherit;
+}
+/* line 61, ../../sass/widgets/post.scss */
+.post.post-container .post-content pre span {
+  font-family: inherit;
+}
+/* line 67, ../../sass/widgets/post.scss */
+.post.post-container .post-content code {
+  color: #32322d;
+}
+/* line 70, ../../sass/widgets/post.scss */
+.post.post-container .post-content code span {
+  font-family: inherit;
+}
+/* line 78, ../../sass/widgets/post.scss */
+.post.post-container .post-tail {
+  text-align: right;
+  margin-right: 30px;
+}
+/* line 82, ../../sass/widgets/post.scss */
+.post.post-container .post-tail > span {
+  margin-left: 50px;
+}
+/* line 86, ../../sass/widgets/post.scss */
+.post.post-container .post-tail a {
+  color: #32322d;
+  margin-left: 30px;
+}
+/* line 93, ../../sass/widgets/post.scss */
+.post.post-container .icon-star {
+  margin-top: 0px;
+}
