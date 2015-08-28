@@ -1,5 +1,6 @@
 @import "compass/utilities/general/min";
 @import "compass/css3/transform";
+@import "compass/css3/background-size";
 
 html {
     height: 100%;
@@ -8,8 +9,10 @@ html {
 
 body {
     height: 100%;
+    overflow: auto;
     font-family: "Helvetica Neue", "Helvetica", "Microsoft YaHei", "Segoe UI", "Arial", "freesans", "sans-serif";
-    background: url(http://laisky-blog.qiniudn.com/background-1500x844.jpg) repeat fixed 0 0;
+    background-image: url(http://laisky-blog.qiniudn.com/background-1500x844.jpg);
+    @include background-size(100% 100%);
     background-attachment: fixed;
 
     > .container {
