@@ -2,7 +2,7 @@
 
 {% block page_css %}
     {% assets filters="less,cssmin", output="assets/page.css",
-            "less/pages/publish.less" %}
+            "stylesheets/pages/publish.css" %}
         <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %}
 {% endblock %}
