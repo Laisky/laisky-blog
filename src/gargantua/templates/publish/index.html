@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block page_css %}
-    {% assets filters="less,cssmin", output="assets/page.css",
+    {% assets filters="cssmin", output="assets/page.css",
             "stylesheets/pages/publish.css" %}
         <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %}

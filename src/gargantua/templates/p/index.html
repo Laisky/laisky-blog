@@ -6,13 +6,13 @@
 
 {% block page_css %}
     {% if post.post_type in ("text", "markdown")  %}
-        {% assets filters="less,cssmin", output="assets/page.css",
-                "less/pages/archives.less",
+        {% assets filters="cssmin", output="assets/page.css",
+                "stylesheets/pages/archives.css",
                 "css/vendor/markdown.css" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
     {% elif post.post_type == "slide" %}
-        {% assets filters="less,cssmin", output="assets/page.css",
+        {% assets filters="cssmin", output="assets/page.css",
                 "css/vendor/reveal.css",
                 "css/vendor/reveal-theme/simple.css",
                 "stylesheets/pages/p.css",
