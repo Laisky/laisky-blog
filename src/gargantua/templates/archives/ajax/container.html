@@ -3,7 +3,9 @@
         <!-- archives -->
         {% block archives %}
             <div id="archives" class="col-xs-9" data-dom-cache="true" data-role="page">
-                {% include "widgets/post.html" %}
+                {% for post in posts %}
+                    {% include "widgets/post.html" %}
+                {% endfor %}
             </div>
         {% endblock %}
         <!-- archives -->

@@ -13,20 +13,20 @@
         {% block page_css %}
         {% endblock %}<!-- page_css -->
 
-        {% assets filters="less,cssmin", output="assets/libs.css",
+        {% assets filters="cssmin", output="assets/libs.css",
                 "css/vendor/code-styles/tomorrow.css",
                 "css/vendor/loaders.css",
                 "css/vendor/bootstrap.css" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
 
-        {% assets filters="less,cssmin", output="assets/sites.css",
-                "less/base.less",
-                "less/widgets/post.less",
-                "less/widgets/dialog.less",
-                "less/pages/archives.less",
-                "less/pages/profile.less",
-                "less/pages/login.less" %}
+        {% assets filters="cssmin", output="assets/sites.css",
+                "stylesheets/base.css",
+                "stylesheets/pages/archives.css",
+                "stylesheets/pages/profile.css",
+                "stylesheets/widgets/post.css",
+                "stylesheets/widgets/dialog.css",
+                "stylesheets/pages/login.css" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
     {% endblock %}<!-- head -->

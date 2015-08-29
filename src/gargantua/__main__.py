@@ -26,7 +26,10 @@ def main():
     else:
         log.info('start application in normal mode')
     ioloop = tornado.ioloop.IOLoop.instance()
-    setup_tasks(ioloop)
+
+    if not options.debug:
+        setup_tasks(ioloop)
+
     ioloop.start()
 
 if __name__ == '__main__':
