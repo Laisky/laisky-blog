@@ -18,7 +18,7 @@ body {
 }
 /* line 18, ../sass/base.scss */
 body > .container {
-  width: 900px;
+  max-width: 900px;
   margin-top: 40px;
 }
 
