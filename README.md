@@ -17,9 +17,10 @@ A simple blog by Python3
     - MongoDB3.0 wiredTiger
     - Nginx
     - Elasticsearch
+    - Sentry
 
 - Frontend
-    - CSS3 / LESS
+    - SASS / Compass
     - JavaScript / jQuery
     - Bootstrap3
 
