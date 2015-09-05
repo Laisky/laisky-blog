@@ -5,7 +5,7 @@ $nav-link-clr: $link-clr;
 $nav-cnt-clr: $post-cnt-clr;
 $nav-title-clr: $post-title-clr;
 
-.archives-body {
+.archives-body, .post-body {
     @include border-radius(10px);
     margin-bottom: 10px;
     background-color: #F1F1F1;
