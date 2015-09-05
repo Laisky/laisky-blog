@@ -21,6 +21,7 @@ log = logging.getLogger(LOG_NAME)
 
 
 class PostsHandler(BaseHandler):
+
     """APIs about posts"""
 
     @tornado.web.asynchronous

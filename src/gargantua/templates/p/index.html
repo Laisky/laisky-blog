@@ -32,7 +32,11 @@
         <div class="container-fluid post-body">
             <div class="row">
                 <!-- archives -->
-                <article class="archives col-xs-12 col-sm-10" id="archives">
+                {% if post.post_menu %}
+                    <article class="archives col-sm-10" id="archives" data-spy="scroll" data-target=".menu-nav">
+                {% else %}
+                    <article class="archives col-sm-12" id="archives">
+                {% endif %}
                     {% if post.post_type in ("text", "markdown") %}
                         {% include "widgets/post.html" %}
                     {% elif post.post_type == "slide" %}
@@ -40,26 +44,11 @@
                     {% endif %}
                 </article>
                 <!-- archives -->
-                <nav class="menu-nav col-sm-2">
-                    <ul class="nav affix-top" data-spy="affix">
-                    <li><a href="#安装">安装</a>
-                    </li>
-                    <li><a href="#概述">概述</a>
-                    </li>
-                    <li><a href="#准备工作 &amp; Models">准备工作 &amp; Models</a>
-                    </li>
-                    <li><a href="#Serializers">Serializers</a>
-                    </li>
-                    <li><a href="#ViewSet">ViewSet</a>
-                    </li>
-                    <li><a href="#Premissions">Premissions</a>
-                    </li>
-                    <li><a href="#urls &amp; routers">urls &amp; routers</a>
-                    </li>
-                    <li><a href="#Reference">Reference</a>
-                    </li>
-                    </ul>
-                </nav>
+                {% if post.post_menu %}
+                    <nav class="menu-nav col-sm-2">
+                        {{ post.post_menu }}
+                    </nav>
+                {% endif %}
             </div>
         </div>
         {% if post.post_type == "slide" %}

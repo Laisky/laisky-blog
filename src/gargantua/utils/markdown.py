@@ -7,7 +7,7 @@ from collections import OrderedDict
 import markdown2
 
 
-TITLE_REG = re.compile(r'<(h[123]).+>(.+)</\1>')
+TITLE_REG = re.compile(r'<(h[23]).{0,}>(.+)</\1>')
 
 
 def render_md_to_html(content, is_extract_menu=False):
@@ -18,7 +18,8 @@ def render_md_to_html(content, is_extract_menu=False):
         title_menu = TitleMenu()
         for level, title in TITLE_REG.findall(_s):
             title_menu.add_title(level, title)
-            return _s, title_menu.render()
+
+        return _s, title_menu.render()
     else:
         return _s
 
@@ -42,6 +43,9 @@ class TitleMenu():
             self.title_tree[self.last_key].append(title)
 
     def render(self):
+        if not len(self.title_tree):
+            return ''
+
         menu_content = ''
         for title, content in self.title_tree.items():
             if not content:
