@@ -3,7 +3,7 @@ Gargantua
 Laisky's new blog
 
 Version:
-1.7.3 用 SASS & Compass 重写 CSS _Fri Aug 28 15:41:47 2015_
+1.8.0dev 增加文章目录 _Sun Sep  6 09:11:33 2015_
 
 ## Description
 

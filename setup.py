@@ -8,7 +8,7 @@ requires = [str(i.req) for i in parse_requirements('requirements.txt',
             if i.req is not None]
 
 setup(name='gargantua',
-      version='1.7.3',
+      version='1.8.0dev',
       packages=find_packages('src'),
       package_dir={'': 'src'},
       include_package_data=True,
