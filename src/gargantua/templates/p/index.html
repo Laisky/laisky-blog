@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "p/base.html" %}
 
 {% block title %}
     <title>{{ post.post_title }}</title>
@@ -33,9 +33,9 @@
             <div class="row">
                 <!-- archives -->
                 {% if post.post_menu %}
-                    <article class="archives col-sm-10" id="archives" data-spy="scroll" data-target=".menu-nav">
+                    <article class="archives col-xs-12 col-sm-10" id="archives">
                 {% else %}
-                    <article class="archives col-sm-12" id="archives">
+                    <article class="archives col-sm-12 col-xs-12" id="archives">
                 {% endif %}
                     {% if post.post_type in ("text", "markdown") %}
                         {% include "widgets/post.html" %}
@@ -45,7 +45,7 @@
                 </article>
                 <!-- archives -->
                 {% if post.post_menu %}
-                    <nav class="menu-nav col-sm-2">
+                    <nav class="menu-nav col-sm-2 hidden-xs">
                         {{ post.post_menu }}
                     </nav>
                 {% endif %}
