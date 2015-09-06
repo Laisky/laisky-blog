@@ -1,35 +1,44 @@
-/* line 7, ../../sass/pages/p.scss */
-.post .archives {
+/* line 5, ../../sass/pages/p.scss */
+.post-body .archives {
   padding-left: 0px;
   padding-right: 0px;
 }
 
-/* line 14, ../../sass/pages/p.scss */
-body {
-  overflow: auto;
+/* line 13, ../../sass/pages/p.scss */
+.menu-nav > ul > li > a {
+  padding-left: 0px;
+  padding-top: 0px;
 }
-/* line 17, ../../sass/pages/p.scss */
-body > .container {
-  min-height: 90%;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-  background-color: rgba(40, 41, 35, 0.8);
+/* line 18, ../../sass/pages/p.scss */
+.menu-nav li.active > a {
+  background-color: lightgrey;
+}
+/* line 22, ../../sass/pages/p.scss */
+.menu-nav .nav .nav {
+  display: none;
+}
+/* line 26, ../../sass/pages/p.scss */
+.menu-nav .nav li.active nav {
+  display: block;
+}
+/* line 30, ../../sass/pages/p.scss */
+.menu-nav .nav .active .nav {
+  display: block;
 }
 
-/* line 26, ../../sass/pages/p.scss */
+/* line 37, ../../sass/pages/p.scss */
 .post-body .reveal.slide {
   font-size: 160%;
   background-color: white;
 }
-/* line 30, ../../sass/pages/p.scss */
+/* line 41, ../../sass/pages/p.scss */
 .post-body .reveal.slide h1,
 .post-body .reveal.slide h2,
 .post-body .reveal.slide h3 {
   font-size: 1.5em;
   color: white;
 }
-/* line 37, ../../sass/pages/p.scss */
+/* line 48, ../../sass/pages/p.scss */
 .post-body .reveal.slide p,
 .post-body .reveal.slide li,
 .post-body .reveal.slide pre,
@@ -37,19 +46,19 @@ body > .container {
 .post-body .reveal.slide h5 {
   color: white;
 }
-/* line 45, ../../sass/pages/p.scss */
+/* line 56, ../../sass/pages/p.scss */
 .post-body .reveal.slide a {
   color: #f6f7d0;
 }
-/* line 49, ../../sass/pages/p.scss */
+/* line 60, ../../sass/pages/p.scss */
 .post-body .reveal.slide img {
   cursor: pointer;
 }
-/* line 53, ../../sass/pages/p.scss */
+/* line 64, ../../sass/pages/p.scss */
 .post-body .reveal.slide .progress {
   position: static;
 }
-/* line 57, ../../sass/pages/p.scss */
+/* line 68, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides {
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
@@ -60,7 +69,7 @@ body > .container {
   zoom: 0.7 !important;
   left: 50%;
 }
-/* line 65, ../../sass/pages/p.scss */
+/* line 76, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides section img {
   max-height: 600px;
   max-width: 600px;
@@ -69,25 +78,25 @@ body > .container {
   -webkit-box-shadow: 0 0 10px transparent;
   box-shadow: 0 0 10px transparent;
 }
-/* line 72, ../../sass/pages/p.scss */
+/* line 83, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides section i {
   font-style: normal;
   font-family: FontAwesome;
   font-size: 2em;
 }
-/* line 80, ../../sass/pages/p.scss */
+/* line 91, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides .fade {
   opacity: 1;
 }
-/* line 84, ../../sass/pages/p.scss */
+/* line 95, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div.input_area {
   padding: 0.06em;
 }
-/* line 88, ../../sass/pages/p.scss */
+/* line 99, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div.code_cell {
   background-color: transparent;
 }
-/* line 92, ../../sass/pages/p.scss */
+/* line 103, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div.prompt {
   width: 11ex;
   padding: 0.4em;
@@ -96,26 +105,26 @@ body > .container {
   font-size: 80%;
   text-align: right;
 }
-/* line 101, ../../sass/pages/p.scss */
+/* line 112, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div.output_area pre {
   font-family: monospace, sans-serif;
   font-size: 80%;
 }
-/* line 106, ../../sass/pages/p.scss */
+/* line 117, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div.output_prompt {
   /* 5px right shift to account for margin in parent container */
   margin: 5px 5px 0 0;
 }
-/* line 112, ../../sass/pages/p.scss */
+/* line 123, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides .rendered_html p {
   text-align: inherit;
 }
-/* line 116, ../../sass/pages/p.scss */
+/* line 127, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div {
   color: black;
   padding: 0px;
 }
-/* line 120, ../../sass/pages/p.scss */
+/* line 131, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre {
   color: black;
   width: inherit;
@@ -188,293 +197,293 @@ body > .container {
   /* Name.Variable.Global */
   /* Name.Variable.Instance */
 }
-/* line 130, ../../sass/pages/p.scss */
+/* line 141, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre code span,
 .post-body .reveal.slide div.slides div pre span {
   color: black;
 }
-/* line 135, ../../sass/pages/p.scss */
+/* line 146, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .hll {
   background-color: #ffffcc;
 }
-/* line 139, ../../sass/pages/p.scss */
+/* line 150, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .c {
   color: #408080;
   font-style: italic;
 }
-/* line 145, ../../sass/pages/p.scss */
+/* line 156, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .err {
   border: 1px solid #FF0000;
 }
-/* line 150, ../../sass/pages/p.scss */
+/* line 161, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .k {
   color: #008000;
   font-weight: bold;
 }
-/* line 156, ../../sass/pages/p.scss */
+/* line 167, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .o {
   color: #666666;
 }
-/* line 161, ../../sass/pages/p.scss */
+/* line 172, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .cm {
   color: #408080;
   font-style: italic;
 }
-/* line 167, ../../sass/pages/p.scss */
+/* line 178, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .cp {
   color: #BC7A00;
 }
-/* line 172, ../../sass/pages/p.scss */
+/* line 183, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .c1 {
   color: #408080;
   font-style: italic;
 }
-/* line 178, ../../sass/pages/p.scss */
+/* line 189, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .cs {
   color: #408080;
   font-style: italic;
 }
-/* line 184, ../../sass/pages/p.scss */
+/* line 195, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .gd {
   color: #A00000;
 }
-/* line 189, ../../sass/pages/p.scss */
+/* line 200, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .ge {
   font-style: italic;
 }
-/* line 194, ../../sass/pages/p.scss */
+/* line 205, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .gr {
   color: #FF0000;
 }
-/* line 199, ../../sass/pages/p.scss */
+/* line 210, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .gh {
   color: #000080;
   font-weight: bold;
 }
-/* line 205, ../../sass/pages/p.scss */
+/* line 216, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .gi {
   color: #00A000;
 }
-/* line 210, ../../sass/pages/p.scss */
+/* line 221, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .go {
   color: #888888;
 }
-/* line 215, ../../sass/pages/p.scss */
+/* line 226, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .gp {
   color: #000080;
   font-weight: bold;
 }
-/* line 221, ../../sass/pages/p.scss */
+/* line 232, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .gs {
   font-weight: bold;
 }
-/* line 226, ../../sass/pages/p.scss */
+/* line 237, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .gu {
   color: #800080;
   font-weight: bold;
 }
-/* line 232, ../../sass/pages/p.scss */
+/* line 243, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .gt {
   color: #0044DD;
 }
-/* line 237, ../../sass/pages/p.scss */
+/* line 248, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .kc {
   color: #008000;
   font-weight: bold;
 }
-/* line 243, ../../sass/pages/p.scss */
+/* line 254, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .kd {
   color: #008000;
   font-weight: bold;
 }
-/* line 249, ../../sass/pages/p.scss */
+/* line 260, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .kn {
   color: #008000;
   font-weight: bold;
 }
-/* line 255, ../../sass/pages/p.scss */
+/* line 266, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .kp {
   color: #008000;
 }
-/* line 260, ../../sass/pages/p.scss */
+/* line 271, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .kr {
   color: #008000;
   font-weight: bold;
 }
-/* line 266, ../../sass/pages/p.scss */
+/* line 277, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .kt {
   color: #B00040;
 }
-/* line 271, ../../sass/pages/p.scss */
+/* line 282, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .m {
   color: #666666;
 }
-/* line 276, ../../sass/pages/p.scss */
+/* line 287, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .s {
   color: #BA2121;
 }
-/* line 281, ../../sass/pages/p.scss */
+/* line 292, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .na {
   color: #7D9029;
 }
-/* line 286, ../../sass/pages/p.scss */
+/* line 297, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .nb {
   color: #008000;
 }
-/* line 291, ../../sass/pages/p.scss */
+/* line 302, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .nc {
   color: #0000FF;
   font-weight: bold;
 }
-/* line 297, ../../sass/pages/p.scss */
+/* line 308, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .no {
   color: #880000;
 }
-/* line 302, ../../sass/pages/p.scss */
+/* line 313, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .nd {
   color: #AA22FF;
 }
-/* line 307, ../../sass/pages/p.scss */
+/* line 318, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .ni {
   color: #999999;
   font-weight: bold;
 }
-/* line 313, ../../sass/pages/p.scss */
+/* line 324, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .ne {
   color: #D2413A;
   font-weight: bold;
 }
-/* line 319, ../../sass/pages/p.scss */
+/* line 330, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .nf {
   color: #0000FF;
 }
-/* line 324, ../../sass/pages/p.scss */
+/* line 335, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .nl {
   color: #A0A000;
 }
-/* line 329, ../../sass/pages/p.scss */
+/* line 340, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .nn {
   color: #0000FF;
   font-weight: bold;
 }
-/* line 335, ../../sass/pages/p.scss */
+/* line 346, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .nt {
   color: #008000;
   font-weight: bold;
 }
-/* line 341, ../../sass/pages/p.scss */
+/* line 352, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .nv {
   color: #19177C;
 }
-/* line 346, ../../sass/pages/p.scss */
+/* line 357, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .ow {
   color: #AA22FF;
   font-weight: bold;
 }
-/* line 352, ../../sass/pages/p.scss */
+/* line 363, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .w {
   color: #bbbbbb;
 }
-/* line 357, ../../sass/pages/p.scss */
+/* line 368, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .mb {
   color: #666666;
 }
-/* line 362, ../../sass/pages/p.scss */
+/* line 373, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .mf {
   color: #666666;
 }
-/* line 367, ../../sass/pages/p.scss */
+/* line 378, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .mh {
   color: #666666;
 }
-/* line 372, ../../sass/pages/p.scss */
+/* line 383, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .mi {
   color: #666666;
 }
-/* line 377, ../../sass/pages/p.scss */
+/* line 388, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .mo {
   color: #666666;
 }
-/* line 382, ../../sass/pages/p.scss */
+/* line 393, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .sb {
   color: #BA2121;
 }
-/* line 387, ../../sass/pages/p.scss */
+/* line 398, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .sc {
   color: #BA2121;
 }
-/* line 392, ../../sass/pages/p.scss */
+/* line 403, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .sd {
   color: #BA2121;
   font-style: italic;
 }
-/* line 398, ../../sass/pages/p.scss */
+/* line 409, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .s2 {
   color: #BA2121;
 }
-/* line 403, ../../sass/pages/p.scss */
+/* line 414, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .se {
   color: #BB6622;
   font-weight: bold;
 }
-/* line 409, ../../sass/pages/p.scss */
+/* line 420, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .sh {
   color: #BA2121;
 }
-/* line 414, ../../sass/pages/p.scss */
+/* line 425, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .si {
   color: #BB6688;
   font-weight: bold;
 }
-/* line 420, ../../sass/pages/p.scss */
+/* line 431, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .sx {
   color: #008000;
 }
-/* line 425, ../../sass/pages/p.scss */
+/* line 436, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .sr {
   color: #BB6688;
 }
-/* line 430, ../../sass/pages/p.scss */
+/* line 441, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .s1 {
   color: #BA2121;
 }
-/* line 435, ../../sass/pages/p.scss */
+/* line 446, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .ss {
   color: #19177C;
 }
-/* line 440, ../../sass/pages/p.scss */
+/* line 451, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .bp {
   color: #008000;
 }
-/* line 445, ../../sass/pages/p.scss */
+/* line 456, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .vc {
   color: #19177C;
 }
-/* line 450, ../../sass/pages/p.scss */
+/* line 461, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .vg {
   color: #19177C;
 }
-/* line 455, ../../sass/pages/p.scss */
+/* line 466, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .vi {
   color: #19177C;
 }
-/* line 460, ../../sass/pages/p.scss */
+/* line 471, ../../sass/pages/p.scss */
 .post-body .reveal.slide div.slides div pre .il {
   color: #666666;
 }
-/* line 471, ../../sass/pages/p.scss */
+/* line 482, ../../sass/pages/p.scss */
 .post-body .reveal.slide aside.controls div.navigate-left {
   border-right-color: yellow;
 }
-/* line 475, ../../sass/pages/p.scss */
+/* line 486, ../../sass/pages/p.scss */
 .post-body .reveal.slide aside.controls div.navigate-right {
   border-left-color: yellow;
 }
-/* line 479, ../../sass/pages/p.scss */
+/* line 490, ../../sass/pages/p.scss */
 .post-body .reveal.slide aside.controls div.navigate-up {
   border-bottom-color: yellow;
 }
-/* line 483, ../../sass/pages/p.scss */
+/* line 494, ../../sass/pages/p.scss */
 .post-body .reveal.slide aside.controls div.navigate-down {
   border-top-color: yellow;
 }

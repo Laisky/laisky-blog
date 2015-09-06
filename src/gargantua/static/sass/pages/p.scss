@@ -1,9 +1,7 @@
 @import "compass/css3/box-shadow";
-@import "compass/css3/border-radius";
 @import "compass/css3/transform";
-@import "compass/utilities/general/min";
 
-.post {
+.post-body {
     .archives {
         padding-left: 0px;
         padding-right: 0px;
@@ -11,13 +9,26 @@
 
 }
 
-body {
-    overflow: auto;
+.menu-nav {
+    > ul >li > a {
+        padding-left: 0px;
+        padding-top: 0px;
+    }
 
-    > .container {
-        @include min-height(90%);
-        @include border-radius(10px);
-        background-color: rgba(40, 41, 35, 0.8);
+    li.active > a {
+        background-color: lightgrey;
+    }
+
+    .nav .nav {
+        display: none;
+    }
+
+    .nav li.active nav {
+        display: block;
+    }
+
+    .nav .active .nav {
+        display: block;
     }
 
 }

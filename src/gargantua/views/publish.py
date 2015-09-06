@@ -15,6 +15,7 @@ log = logging.getLogger(LOG_NAME)
 
 
 class PublishHandler(BaseHandler):
+
     """APIs about posts"""
 
     @tornado.web.authenticated
@@ -52,7 +53,7 @@ class PublishHandler(BaseHandler):
         elif post_type == 'markdown':
             # renfer github flavor markdown to html
             post_markdown = post_content
-            post_content = render_md_to_html(post_content)
+            post_content, post_menu = render_md_to_html(post_content, is_extract_menu=True)
         else:
             log.debug('unknown post_type: {}'.format(post_type))
             raise tornado.httpclient.HTTPError(406)
@@ -67,6 +68,7 @@ class PublishHandler(BaseHandler):
             'post_name': post_name,
             'post_content': post_content,
             'post_type': post_type,
+            'post_menu': post_menu,
         }
         if post_type == 'markdown':
             docu.update({
