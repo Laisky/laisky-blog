@@ -1,40 +1,7 @@
-<!doctype html>
-<html lang="en">
-{% block head %}
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block title %}
-        <title>Laisky's Blog</title>
-    {% endblock %}
-    <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    {% block page_css %}
-    {% endblock %}<!-- page_css -->
-
-    {% assets filters="cssmin", output="assets/libs.css",
-            "css/vendor/code-styles/tomorrow.css",
-            "css/vendor/loaders.css",
-            "css/vendor/bootstrap.css" %}
-        <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %}
-
-    {% assets filters="cssmin", output="assets/sites.css",
-            "stylesheets/base.css",
-            "stylesheets/pages/archives.css",
-            "stylesheets/pages/profile.css",
-            "stylesheets/widgets/post.css",
-            "stylesheets/widgets/dialog.css",
-            "stylesheets/pages/login.css" %}
-        <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %}
-</head>
-{% endblock %}<!-- head -->
-
+{% extends "base.html" %}
 
 {% block body %}
-<body>
+<body data-spy="scroll" data-target=".menu-nav">
     {% block header %}
         {% include "header.html" %}
     {% endblock %}<!-- header -->
@@ -91,5 +58,3 @@
     </script>
 </body>
 {% endblock %}
-
-</html>

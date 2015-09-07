@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "p/base.html" %}
 
 {% block title %}
     <title>{{ post.post_title }}</title>
@@ -8,6 +8,7 @@
     {% if post.post_type in ("text", "markdown")  %}
         {% assets filters="cssmin", output="assets/page.css",
                 "stylesheets/pages/archives.css",
+                "stylesheets/pages/p.css",
                 "css/vendor/markdown.css" %}
             <link rel="stylesheet" href="{{ ASSET_URL }}" />
         {% endassets %}
@@ -31,14 +32,23 @@
         <div class="container-fluid post-body">
             <div class="row">
                 <!-- archives -->
-                <div class="archives" id="archives" class="col-xs-12">
+                {% if post.post_menu %}
+                    <article class="archives col-xs-12 col-sm-10" id="archives">
+                {% else %}
+                    <article class="archives col-sm-12 col-xs-12" id="archives">
+                {% endif %}
                     {% if post.post_type in ("text", "markdown") %}
                         {% include "widgets/post.html" %}
                     {% elif post.post_type == "slide" %}
                         {{ post.post_content }}
                     {% endif %}
-                </div>
+                </article>
                 <!-- archives -->
+                {% if post.post_menu %}
+                    <nav class="menu-nav col-sm-2 hidden-xs">
+                        {{ post.post_menu }}
+                    </nav>
+                {% endif %}
             </div>
         </div>
         {% if post.post_type == "slide" %}
