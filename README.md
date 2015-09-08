@@ -3,8 +3,9 @@ Gargantua
 
 > Do not go gentle into that good night, Rage, rage against the dying of the light.
 
-|![](http://7xjvpy.dl1.z0.glb.clouddn.com/gargantua.jpg)|
+| ![](http://7xjvpy.dl1.z0.glb.clouddn.com/gargantua.jpg) |
 |:--:|
+| Laisky's New Blog |
 
 ## Deploy
 
