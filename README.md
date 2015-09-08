@@ -1,9 +1,16 @@
 Gargantua
 ===
-Laisky's new blog
 
-Version:
-1.8.0dev 增加文章目录 _Sun Sep  6 09:11:33 2015_
+> Do not go gentle into that good night, Rage, rage against the dying of the light.
+
+|![](http://7xjvpy.dl1.z0.glb.clouddn.com/gargantua.jpg)|
+|:--:|
+
+## Deploy
+
+```sh
+$ sudo make
+```
 
 ## Description
 
@@ -24,11 +31,6 @@ A simple blog by Python3
     - JavaScript / jQuery
     - Bootstrap3
 
-## Deploy
-
-```sh
-$ sudo make
-```
 
 ## Versions
 
