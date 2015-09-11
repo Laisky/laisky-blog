@@ -1,4 +1,7 @@
 $(function() {
+    var $container = $('body > .container');
+
+
     jumpOutOf404();
 
 
@@ -42,7 +45,7 @@ $(function() {
                     return;
                 }
 
-                $(".container").html(archives_data);
+                $container.html(archives_data);
                 $.globalEval($(".comment-count-js").html());
                 loadersCss.initLoaderCss();
                 history.pushState({}, '', '/archives/?page=1');
