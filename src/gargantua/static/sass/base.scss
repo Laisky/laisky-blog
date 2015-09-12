@@ -22,6 +22,33 @@ body {
 
 }
 
+.navbar {
+    .gsc-control-cse {
+        padding: 0px;
+        height: inherit;
+        position: relative;
+        top: 3px;
+        background-color: inherit;
+        border-color: transparent;
+
+        td {
+            background-color: inherit;
+        }
+
+        .gsc-control-wrapper-cse {
+            width: 200px;
+        }
+
+        .gsc-search-button {
+            input[type=image] {
+            }
+
+        }
+
+    }
+
+}
+
 .row {
     margin-left: 0px;
     margin-right: 0px;
