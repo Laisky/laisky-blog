@@ -2,18 +2,14 @@
 # -*- coding: utf-8 -*-
 import logging
 
-import datetime
 import pymongo
 import tornado
-from tornado.options import options
 import tornado.httpclient
 import html2text
 from bson import ObjectId
 
 from .base import BaseHandler
-from ..utils import (
-    debug_wrapper, unquote_fr_mongo, generate_keyword_search, parse_search_resp
-)
+from ..utils import debug_wrapper, unquote_fr_mongo
 from ..const import LOG_NAME, N_POST_PER_PAGE
 
 
