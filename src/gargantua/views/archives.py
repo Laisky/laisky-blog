@@ -37,31 +37,14 @@ class PostsHandler(BaseHandler):
         }
         router.get(url, self.redirect_404)()
 
-    @tornado.gen.coroutine
-    @debug_wrapper
     def get_post_by_keyword(self):
         log.info('GET get_post_by_keyword')
 
         keyword = self.get_argument('keyword', strip=True)
         log.debug('GET get_post_by_keyword for keyword {}'.format(keyword))
 
-        url = 'http://{}:{}/blog/posts/_search'.format(options.eshost, options.esport)
-        body = generate_keyword_search(keyword=keyword)
-        http = tornado.httpclient.AsyncHTTPClient()
-        resp = (yield http.fetch(url, body=body, method='POST')).body.decode()
-        log.debug('get resp from elasticsearch: {}'.format(resp))
-        posts = parse_search_resp(resp)
-        for docu in posts:
-            docu['post_modified_gmt'] = datetime.datetime.strptime(
-                docu['post_modified_gmt'], '%Y-%m-%dT%H:%M:%S.%fZ'
-            )
-            docu['post_created_at'] = datetime.datetime.strptime(
-                docu['post_created_at'], '%Y-%m-%dT%H:%M:%S.%fZ'
-            )
-            docu['post_content'] = self.shortly_content(docu['post_content'], length=200)
-
-        self.render_post('search/index.html', posts=posts)
-        self.finish()
+        q = 'https://cse.google.com/cse/publicurl?cx=004733495569415005684:-c6y46kjqva&q={keyword}'
+        self.redirect(q.format(keyword=keyword, permanent=True))
 
     @tornado.gen.coroutine
     @debug_wrapper
