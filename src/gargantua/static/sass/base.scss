@@ -22,6 +22,10 @@ body {
 
 }
 
+.navbar-right {
+    padding-left: 0px;
+}
+
 .navbar {
     .gsc-control-cse {
         padding: 0px;
@@ -36,13 +40,11 @@ body {
         }
 
         .gsc-control-wrapper-cse {
-            width: 200px;
+            width: 150px;
         }
 
         .gsc-search-button {
-            input[type=image] {
-            }
-
+            display: none;
         }
 
     }
