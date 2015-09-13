@@ -12,6 +12,11 @@ $nav-title-clr: $post-title-clr;
     background-color: #F1F1F1;
 }
 
+.tag {
+    cursor: pointer;
+    padding: 0.2em 0.3em 0.2em 0.3em;
+}
+
 .navigator {
     a {
         color: $nav-link-clr;
@@ -49,18 +54,6 @@ $nav-title-clr: $post-title-clr;
                 color: $nav-title-clr;
                 margin-top: 0px;
                 text-align: center;
-            }
-
-            &.tags {
-                a {
-                    text-decoration: none;
-
-                    .label {
-                        padding: 0.2em 0.3em 0.2em 0.2em;
-                    }
-
-                }
-
             }
 
         }

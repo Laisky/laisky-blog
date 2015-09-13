@@ -22,6 +22,35 @@ body {
 
 }
 
+.navbar-right {
+    padding-left: 0px;
+}
+
+.navbar {
+    .gsc-control-cse {
+        padding: 0px;
+        height: inherit;
+        position: relative;
+        top: 3px;
+        background-color: inherit;
+        border-color: transparent;
+
+        td {
+            background-color: inherit;
+        }
+
+        .gsc-control-wrapper-cse {
+            width: 150px;
+        }
+
+        .gsc-search-button {
+            display: none;
+        }
+
+    }
+
+}
+
 .row {
     margin-left: 0px;
     margin-right: 0px;
