@@ -36,7 +36,7 @@ class PostPage(BaseHandler):
                 return
 
         post['post_type'] = post.get('post_type', 'text')
-        self.render2('p/index.html', posts=[post])
+        self.render2('p/index.html', post=post)
 
     @tornado.gen.coroutine
     @debug_wrapper

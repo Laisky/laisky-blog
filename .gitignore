@@ -73,3 +73,6 @@ koala-config.json
 # webassets
 .webassets-cache/
 assets/
+
+# sass
+.sass-cache/

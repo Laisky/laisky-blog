@@ -2,10 +2,14 @@
 
 | Version | Description | Date |
 |:--:|:--:|:--:|
-| 1.7.2 | more error message | _Thu Aug 20 08:39:50 2015_ |
-| 1.7.1 | async tasks | _Thu Jul 23 10:23:24 2015_ |
-| 1.7 | tags | _Wed Jul 22 22:25:21 2015_ |
-| 1.6.1 | pytz | _Tue Jul 21 10:21:22 2015_ |
+| 1.9.1 | 对 viewhandler 参数错误不再报警 |Tue Sep 15 08:33:16 2015 |
+| 1.9 | 用 Google Custom Search Engine 替换 ElasticSearch | Sun Sep 13 20:18:27 2015 |
+| 1.8.0dev | 增加文章目录 | Sun Sep  6 09:11:33 2015 |
+| 1.7.3 | 用 SASS & Compass 重写 CSS | Fri Aug 28 15:41:47 2015 |
+| 1.7.2 | more error message | Thu Aug 20 08:39:50 2015 |
+| 1.7.1 | async tasks | Thu Jul 23 10:23:24 2015 |
+| 1.7 | tags | Wed Jul 22 22:25:21 2015 |
+| 1.6.1 | pytz | Tue Jul 21 10:21:22 2015 |
 | 1.6 | Tags ||
 | 1.5 | Tracking ||
 | 1.5.1 | Profile Cache ||

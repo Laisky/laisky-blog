@@ -1,0 +1,20 @@
+/* line 4, ../../sass/pages/login.scss */
+.login-body {
+  max-width: 600px;
+  min-height: 240px;
+  padding: 20px;
+  margin: 20px auto;
+  background: whitesmoke;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+/* line 12, ../../sass/pages/login.scss */
+.login-body .hint {
+  text-align: center;
+  margin-bottom: 10px;
+}
+/* line 16, ../../sass/pages/login.scss */
+.login-body .hint .hint-text {
+  font-size: 1em;
+}

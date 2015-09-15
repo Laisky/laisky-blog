@@ -1,6 +1,8 @@
+var searchInSite;
+
 $(function() {
-    var $body = $("body");
-    var $container = $("body > .container");
+    var $body = $('body');
+    var $container = $('body > .container');
     var pageCache = {};
     var appCache = {};
     var postCollect = [];
@@ -9,20 +11,44 @@ $(function() {
     bindChangePage();
     initPage();
     bindChangeApp();
+    bindSearchInSite();
+    bindTagSearch();
+
+
+    function bindSearchInSite() {
+        searchInSite = function(query) {
+            if (!google || !google.search.cse.element.getElement('post_search')) return;
+            google.search.cse.element.getElement('post_search').execute(query);
+        }
+    }
+
+
+    function bindTagSearch() {
+        $container.off('click', '.search', tagSearchHandler);
+        $container.on('click', '.search', tagSearchHandler);
+
+        function tagSearchHandler() {
+            var $this = $(this);
+            var query = $this.data('query');
+            if (!query) return;
+            searchInSite(query);
+            return false;
+        }
+    }
 
 
     function bindChangeApp() {
-        $(".navbar.navbar-fixed-top").off("click", "#bs-example-navbar-collapse-1 .apps a", changeAppHandler);
-        $(".navbar.navbar-fixed-top").on("click", "#bs-example-navbar-collapse-1 .apps a", changeAppHandler);
+        $('.navbar.navbar-fixed-top').off('click', '#bs-example-navbar-collapse-1 .apps a', changeAppHandler);
+        $('.navbar.navbar-fixed-top').on('click', '#bs-example-navbar-collapse-1 .apps a', changeAppHandler);
 
         function changeAppHandler() {
             var $this = $(this);
-            var url = $this.attr("href");
+            var url = $this.attr('href');
 
             globalFadeLayer.fadeIn();
 
             if (url in appCache) {
-                // console.log("app cache");
+                // console.log('app cache');
                 changeApp($this, appCache[url]);
                 return false;
             }
@@ -37,7 +63,7 @@ $(function() {
 
             function changeApp($app, container) {
                 $container.html(container);
-                $(".nav.apps li").each(function(i, ele) {
+                $('.nav.apps li').each(function(i, ele) {
                     $(ele).removeClass('active');
                 });
                 // console.log($app.parent());
@@ -52,10 +78,10 @@ $(function() {
 
     function prefetchPage() {
         // load pages
-        $(".archives.page-nav .page").each(function(idx, ele) {
+        $('.archives.page-nav .page').each(function(idx, ele) {
             var $ele = $(ele);
             var page = $ele.html();
-            var url = $ele.attr("href");
+            var url = $ele.attr('href');
 
             if (!pageCache.hasOwnProperty(page)) {
                 $.get(url, function(data) {})
@@ -70,7 +96,7 @@ $(function() {
     function initPage() {
         prefetchPage();
         bindKeyboardMove();
-        $.globalEval($(".comment-count-js").html());
+        $.globalEval($('.comment-count-js').html());
     }
 
     function bindChangePage() {
@@ -95,7 +121,7 @@ $(function() {
             initPage();
         }
 
-        $(document).on("click", "li a.page", function() {
+        $(document).on('click', 'li a.page', function() {
             var page = $(this).html();
 
             if (page in pageCache) {
@@ -107,8 +133,8 @@ $(function() {
             return false;
         });
 
-        $(document).on("click", "li a.page-previous, li a.page-next", function() {
-            var page = $(this).data("page");
+        $(document).on('click', 'li a.page-previous, li a.page-next', function() {
+            var page = $(this).data('page');
 
             if (page in pageCache) {
                 updateContainerByCache(page);
@@ -122,10 +148,10 @@ $(function() {
 
 
     function bindWindowScrollHandler() {
-        $(window).on("scroll", function() {
-            if ($(".post").length > 1) {
+        $(window).on('scroll', function() {
+            if ($('.post').length > 1) {
                 if ($(window).scrollTop() + $(window).height() > $(document).height() - 400) {
-                    $(window).unbind("scroll");
+                    $(window).unbind('scroll');
                     loadMorePosts();
                 }
             }
@@ -134,26 +160,26 @@ $(function() {
 
 
     function getLastPostName() {
-        var lastPost = $("#archives").children().last();
-        var href = lastPost.children(".post-title").children().prop("href");
-        var postName = href.split("/").pop();
-        // postName = postName.slice(0, postName.indexOf("#"));
+        var lastPost = $('#archives').children().last();
+        var href = lastPost.children('.post-title').children().prop('href');
+        var postName = href.split('/').pop();
+        // postName = postName.slice(0, postName.indexOf('#'));
 
         return postName;
     }
 
 
     function loadMorePosts() {
-        var url = "/api/posts/get-lastest-posts-by-name/";
+        var url = '/api/posts/get-lastest-posts-by-name/';
         var data = {
-            "since_name": getLastPostName()
+            'since_name': getLastPostName()
         };
 
         $.getJSON(url, data, function(data) {
                 // console.log(data['status']);
             })
             .done(function(data) {
-                $("#archives").append(data['data']);
+                $('#archives').append(data['data']);
             })
             .always(function() {
                 $(window).bind('scroll', windowScrollHandler);
@@ -164,15 +190,15 @@ $(function() {
     // 键盘方向键的交互
     function bindKeyboardMove() {
         var pathname = window.location.pathname;
-        if (pathname == "/" || pathname.indexOf("/archives/") == 0) {
+        if (pathname == '/' || pathname.indexOf('/archives/') == 0) {
             // 只在文章页绑定这一事件
             updatePostCollect();
             bindKeyboardHandler();
 
             function updatePostCollect() {
                 postCollect = [];
-                $("#archives > div").each(function(idx, ele) {
-                    postCollect.push($(ele).position()["top"]);
+                $('#archives > div').each(function(idx, ele) {
+                    postCollect.push($(ele).position()['top']);
                 });
             }
         }
@@ -196,32 +222,32 @@ $(function() {
 
 
     function bindKeyboardHandler() {
-        $body.off("keydown", keybordHandler);
-        $body.on("keydown", keybordHandler);
+        $body.off('keydown', keybordHandler);
+        $body.on('keydown', keybordHandler);
 
     }
 
 
     function keybordHandler(e) {
         if (e.keyCode == 38) {
-            postMoveHandler("up");
+            postMoveHandler('up');
             return false;
         } else if (e.keyCode == 40) {
-            postMoveHandler("down");
+            postMoveHandler('down');
             return false;
         }
     }
 
 
     function postMoveHandler(direction) {
-        // console.log("postMoveHandler for direction " + direction);
+        // console.log('postMoveHandler for direction ' + direction);
 
         var currentPosition = getCurrentPostion();
         var currentPostIdx = getCurrentPostIdx();
         var curentPostPostion = postCollect[currentPostIdx];
 
 
-        if (direction == "up") {
+        if (direction == 'up') {
             if (Math.abs(curentPostPostion - currentPosition) > 10) {
                 $body.animate({
                     scrollTop: curentPostPostion
@@ -238,7 +264,7 @@ $(function() {
                 scrollTop: postCollect[currentPostIdx - 1]
             }, 200);
 
-        } else if (direction == "down") {
+        } else if (direction == 'down') {
             if (currentPostIdx == postCollect.length - 1) {
                 return false;
             }

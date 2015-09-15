@@ -1,14 +1,12 @@
-@charset: 'UTF-8';
-@import "../themes/default.less";
+@import "compass/css3/border-radius";
+@import "../themes/default.scss";
 
 .post.post-container {
-    background-color: @post-bgd-clr;
-    // width: 90%;
-    max-width: 900px;
-    padding: 20px;
+    background-color: $post-bgd-clr;
+    padding: 10px;
     position: relative;
-    border: 2px solid @post-bgd-clr;
-    border-radius: 25px;
+    border: 2px solid $post-bgd-clr;
+    @include border-radius(25px);
     margin-bottom: 15px;
     margin-left: auto;
     margin-right: auto;
@@ -18,7 +16,7 @@
         font-weight: bolder;
 
         a {
-            color: @post-title-clr;
+            color: $post-title-clr;
         }
 
     }
@@ -33,20 +31,21 @@
     .post-content {
         line-height: 150%;
         font-size: 1.2em;
-        color: @post-cnt-clr;
+        color: $post-cnt-clr;
 
         .codehilite {
             margin-bottom: 16px;
         }
 
         img {
+            display: block;
             cursor: pointer;
             max-height: 600px;
             max-width: 600px;
         }
 
         a {
-            color: @link-clr;
+            color: $link-clr;
         }
 
         blockquote {
@@ -55,8 +54,8 @@
         }
 
         pre {
-            color: @post-cnt-clr;
-            background-color: @post-bgd-clr;
+            color: $post-cnt-clr;
+            background-color: $post-bgd-clr;
             font-family: inherit;
 
             span {
@@ -66,7 +65,7 @@
         }
 
         code {
-            color: @post-cnt-clr;
+            color: $post-cnt-clr;
 
             span {
                 font-family: inherit;
@@ -85,7 +84,7 @@
         }
 
         a {
-            color: @post-cnt-clr;
+            color: $post-cnt-clr;
             margin-left: 30px;
         }
 

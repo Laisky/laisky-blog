@@ -2,18 +2,14 @@
 # -*- coding: utf-8 -*-
 import logging
 
-import datetime
 import pymongo
 import tornado
-from tornado.options import options
 import tornado.httpclient
 import html2text
 from bson import ObjectId
 
 from .base import BaseHandler
-from ..utils import (
-    debug_wrapper, unquote_fr_mongo, generate_keyword_search, parse_search_resp
-)
+from ..utils import debug_wrapper, unquote_fr_mongo
 from ..const import LOG_NAME, N_POST_PER_PAGE
 
 
@@ -21,6 +17,7 @@ log = logging.getLogger(LOG_NAME)
 
 
 class PostsHandler(BaseHandler):
+
     """APIs about posts"""
 
     @tornado.web.asynchronous
@@ -36,40 +33,27 @@ class PostsHandler(BaseHandler):
         }
         router.get(url, self.redirect_404)()
 
-    @tornado.gen.coroutine
-    @debug_wrapper
     def get_post_by_keyword(self):
         log.info('GET get_post_by_keyword')
 
         keyword = self.get_argument('keyword', strip=True)
         log.debug('GET get_post_by_keyword for keyword {}'.format(keyword))
 
-        url = 'http://{}:{}/blog/posts/_search'.format(options.eshost, options.esport)
-        body = generate_keyword_search(keyword=keyword)
-        http = tornado.httpclient.AsyncHTTPClient()
-        resp = (yield http.fetch(url, body=body, method='POST')).body.decode()
-        log.debug('get resp from elasticsearch: {}'.format(resp))
-        posts = parse_search_resp(resp)
-        for docu in posts:
-            docu['post_modified_gmt'] = datetime.datetime.strptime(
-                docu['post_modified_gmt'], '%Y-%m-%dT%H:%M:%S.%fZ'
-            )
-            docu['post_created_at'] = datetime.datetime.strptime(
-                docu['post_created_at'], '%Y-%m-%dT%H:%M:%S.%fZ'
-            )
-            docu['post_content'] = self.shortly_content(docu['post_content'], length=200)
-
-        self.render_post('search/index.html', posts=posts)
-        self.finish()
+        q = 'https://cse.google.com/cse/publicurl?cx=004733495569415005684:-c6y46kjqva&q={keyword}'
+        self.redirect(q.format(keyword=keyword, permanent=True))
 
     @tornado.gen.coroutine
     @debug_wrapper
     def get_post_by_page(self):
         log.info('GET get_post_by_page')
 
-        page = int(self.get_argument('page', strip=True, default=1))
-        is_full = self.get_argument('is_full', strip=True, default=False)
-        log.debug('get_post_by_page for page {}'.format(page))
+        try:
+            page = int(self.get_argument('page', strip=True, default=1))
+            is_full = self.get_argument('is_full', strip=True, default=False)
+        except ValueError:
+            pass
+        else:
+            log.debug('get_post_by_page for page {}'.format(page))
 
         skip = (page - 1) * N_POST_PER_PAGE
         cursor = self.db.posts.find()
@@ -109,10 +93,14 @@ class PostsHandler(BaseHandler):
     @tornado.gen.coroutine
     @debug_wrapper
     def get_lastest_posts_by_name(self):
-        since_name = self.get_argument('since_name', strip=True)
-        is_full = self.get_argument('is_full', strip=True, default=False)
-        log.debug('get_lastest_posts for since_name {}'
-                  .format(since_name))
+        try:
+            since_name = self.get_argument('since_name', strip=True)
+            is_full = self.get_argument('is_full', strip=True, default=False)
+        except ValueError:
+            pass
+        else:
+            log.debug('get_lastest_posts for since_name {}'
+                      .format(since_name))
 
         n = N_POST_PER_PAGE
         since_id = (yield
@@ -140,9 +128,13 @@ class PostsHandler(BaseHandler):
     @tornado.gen.coroutine
     @debug_wrapper
     def get_post_by_id(self):
-        is_full = self.get_argument('is_full', strip=True, default=False)
-        _id = self.get_argument('id', strip=True)
-        log.debug('get_post_by_id for _id {}, is_full {}'.format(_id, is_full))
+        try:
+            is_full = self.get_argument('is_full', strip=True, default=False)
+            _id = self.get_argument('id', strip=True)
+        except ValueError:
+            pass
+        else:
+            log.debug('get_post_by_id for _id {}, is_full {}'.format(_id, is_full))
 
         docu = yield self.db.posts.find_one({'_id': ObjectId(_id)})
         if docu:

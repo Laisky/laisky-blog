@@ -1,0 +1,67 @@
+@import "compass/css3/border-radius";
+@import "../themes/default.scss";
+$nav-bgd-clr: $post-bgd-clr;
+$nav-link-clr: $link-clr;
+$nav-cnt-clr: $post-cnt-clr;
+$nav-title-clr: $post-title-clr;
+
+.archives-body,
+.post-body {
+    @include border-radius(10px);
+    margin-bottom: 10px;
+    background-color: #F1F1F1;
+}
+
+.tag {
+    cursor: pointer;
+    padding: 0.2em 0.3em 0.2em 0.3em;
+}
+
+.navigator {
+    a {
+        color: $nav-link-clr;
+        text-decoration: underline;
+    }
+
+    .container-fluid {
+        position: relative;
+
+        .profile {
+            text-align: center;
+
+            img {
+                max-width: 60px;
+                max-height: 60px;
+            }
+
+            a {
+                display: block;
+            }
+
+        }
+
+        > .row {
+            min-height: 100px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: $nav-bgd-clr;
+            border: 2px solid $nav-bgd-clr;
+            border-radius: 10px;
+
+            h1,
+            h2,
+            h3 {
+                color: $nav-title-clr;
+                margin-top: 0px;
+                text-align: center;
+            }
+
+        }
+
+    }
+
+}
+
+.archives.page-nav {
+    text-align: center;
+}
