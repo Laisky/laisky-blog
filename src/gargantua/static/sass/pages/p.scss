@@ -10,9 +10,15 @@
 }
 
 .menu-nav {
-    > ul >li > a {
-        padding-left: 0px;
-        padding-top: 0px;
+    > ul {
+        max-width: 100px;
+        overflow: hidden;
+
+        >li > a {
+            padding-left: 0px;
+            padding-top: 0px;
+        }
+
     }
 
     li.active > a {
