@@ -33,8 +33,16 @@ SENTRY_HOST = 'localhost'
 SENTRY_PORT = 9000
 SENTRY_NAME = '2'
 
-# test
+# mail
+MAIL_HOST = 'smtp.gmail.com'
+MAIL_PORT = 587
+MAIL_SUBJECT = 'Gargantua Error'
+FROM_ADDR = 'gargantua@laisky.com'
+TO_ADDRS = ('ppcelery@gmail.com',)
+MAIL_USERNAME = 'ppcelery@gmail.com'
+MAIL_PASSWD = '123456'
 
+# test
 DB_HOST = 'laisky.com'
 ES_HOST = 'laisky.com'
 SENTRY_HOST = 'laisky.com'
