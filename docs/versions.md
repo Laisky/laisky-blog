@@ -2,6 +2,7 @@
 
 | Version | Description | Date |
 |:--:|:--:|:--:|
+| 1.9.3 | 用 SMTPHandler 取代 Sentry | Mon Sep 21 08:24:26 2015 |
 | 1.9.1 | 对 viewhandler 参数错误不再报警 |Tue Sep 15 08:33:16 2015 |
 | 1.9 | 用 Google Custom Search Engine 替换 ElasticSearch | Sun Sep 13 20:18:27 2015 |
 | 1.8.0dev | 增加文章目录 | Sun Sep  6 09:11:33 2015 |

@@ -16,29 +16,28 @@ import motor
 import pymongo
 from tornado.web import url
 from tornado.options import define, options
-from raven.contrib.tornado import AsyncSentryClient
-from raven.handlers.logging import SentryHandler
 
-from .const import CWD, DB_HOST, DB_PORT, LISTEN_PORT, \
-    DB_NAME, LOG_NAME, \
-    ES_HOST, ES_PORT, SENTRY_HOST, SENTRY_PORT, SENTRY_NAME
-from .utils import setup_log, generate_random_string
-from .views import BaseHandler, PostsHandler, PostPage, \
+from gargantua.const import CWD, LISTEN_PORT, LOG_NAME, \
+    DB_HOST, DB_PORT, DB_NAME, \
+    MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWD, FROM_ADDR, TO_ADDRS, MAIL_SUBJECT
+from gargantua.utils import setup_log, generate_random_string
+from gargantua.views import BaseHandler, PostsHandler, PostPage, \
     PublishHandler, UserHandler, RssHandler, AmendHandler
-from .apis import PostApiHandler
+from gargantua.apis import PostApiHandler
 
 
-log = logging.getLogger(LOG_NAME)
-setup_log()
+# settings
 define('port', default=LISTEN_PORT, type=int)
 define('debug', default=False, type=bool)
+# database
 define('dbname', default=DB_NAME, type=str)
 define('dbhost', default=DB_HOST, type=str)
 define('dbport', default=DB_PORT, type=int)
-define('eshost', default=ES_HOST, type=str)
-define('esport', default=ES_PORT, type=int)
-define('sentry_host', default=SENTRY_HOST, type=str)
-define('sentry_port', default=SENTRY_PORT, type=int)
+# mail
+define('mail_passwd', default=MAIL_PASSWD, type=str)
+
+log = logging.getLogger(LOG_NAME)
+setup_log()
 
 
 class PageNotFound(BaseHandler):
@@ -91,25 +90,20 @@ class Application(tornado.web.Application):
         handlers.append(('/(.*)', PageNotFound))
         self.setup_db()
         if not options.debug:
-            self.setup_sentry()
+            self.setup_mail_handler()
 
         super(Application, self).__init__(handlers, **settings)
 
-    def setup_sentry(self):
-        dsn = (
-            'http://065cdc322de04db9b17ae4b23f1fcbfa:e5c86516380b46c3b2334ecf15ae1fa2'
-            '@{sentry_host}:{sentry_port}/{sentry_name}?timeout=10'
-            .format(sentry_host=options.sentry_host,
-                    sentry_port=options.sentry_port,
-                    sentry_name=SENTRY_NAME)
-        )
-        log.debug('setup_sentry with dsn: {}'.format(dsn))
-        self.sentry_client = AsyncSentryClient(dsn)
-
-        # sentry handler
-        sh = SentryHandler(dsn)
-        sh.setLevel(logging.ERROR)
-        log.addHandler(sh)
+    def setup_mail_handler(self):
+        # set mail handler
+        mh = LogMailHandler(mailhost=(MAIL_HOST, MAIL_PORT),
+                            fromaddr=FROM_ADDR,
+                            toaddrs=TO_ADDRS,
+                            credentials=(MAIL_USERNAME, options.mail_passwd),
+                            subject=MAIL_SUBJECT)
+        mh.setFormatter(LogMailFormatter())
+        mh.setLevel(logging.ERROR)
+        log.addHandler(mh)
 
     def setup_db(self):
         log.debug('connect database at {}:{}'
