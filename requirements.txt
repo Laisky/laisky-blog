@@ -21,8 +21,5 @@ motor>=0.4.1
 # server
 tornado>4.0
 
-# profile
-raven
-
 # nlp
 jieba

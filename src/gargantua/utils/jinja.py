@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
-import traceback
 import datetime
-import json
 
 from jinja2 import Environment, FileSystemLoader
 from webassets import Environment as AssetsEnvironment
@@ -13,28 +11,7 @@ from ..const import LOG_NAME
 
 
 log = logging.getLogger(LOG_NAME)
-__all__ = ['debug_wrapper', 'TemplateRendering']
-
-
-def debug_wrapper(func):
-    def wrapper(*args, **kw):
-        log.debug('debug_wrapper for args {}, kw {}'.format(args, kw))
-        try:
-            yield from func(*args, **kw)
-        except Exception:
-            self = args[0]
-            err_msg = {
-                'uri': self.request.uri,
-                'version': self.request.version,
-                'headers': self.request.headers,
-                'cookies': self.request.cookies,
-            }
-            log.error('{}\n-----\n{}'.format(
-                json.dumps(err_msg, indent=4, sort_keys=True),
-                traceback.format_exc(),
-            ))
-            raise
-    return wrapper
+__all__ = ['TemplateRendering']
 
 
 class TemplateRendering():
