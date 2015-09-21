@@ -9,10 +9,13 @@ import logging
 import pytz
 
 from gargantua.const import LOG_NAME, LOG_PATH
-from .encryt import generate_passwd, validate_passwd, generate_token, validate_token
-from .jinja import debug_wrapper, TemplateRendering
+from .encryt import generate_passwd, validate_passwd, \
+    generate_token, validate_token
+from .jinja import TemplateRendering
+from .tornado import debug_wrapper, \
+    DbHandlerMixin, WebHandlerMixin, AuthHandlerMixin, HttpErrorMixin, \
+    JinjaMixin, RFCMixin
 from .mongo import unquote_fr_mongo
-from .elasticsearch import generate_keyword_search, parse_search_resp
 from .markdown import render_md_to_html
 
 
@@ -23,12 +26,32 @@ __all__ = [
     'debug_wrapper', 'setup_log', 'unquote_fr_mongo',
     'TemplateRendering', 'render_md_to_html',
     'generate_keyword_search', 'parse_search_resp',
+    'DbHandlerMixin', 'WebHandlerMixin', 'AuthHandlerMixin',
+    'HttpErrorMixin', 'JinjaMixin', 'RFCMixin',
+    'utc2cst_timestamp', 'utcnow', 'utc2cst', 'dt2timestamp',
 ]
+
 tz = pytz.timezone('utc')
+oid_regex = re.compile(r'[a-z0-9]{24}')
+
+
+is_objectid = lambda s: oid_regex.fullmatch(s)
 
 
 def utcnow():
     return datetime.datetime.utcnow().replace(tzinfo=tz)
+
+
+def utc2cst(dt):
+    return dt + datetime.timedelta(hours=8)
+
+
+def dt2timestamp(dt):
+    return dt.timestamp()
+
+
+def utc2cst_timestamp(dt):
+    return dt2timestamp(utc2cst(dt))
 
 
 def setup_log():
@@ -64,3 +87,13 @@ def validate_mobile(mobile):
 def generate_random_string(length):
     alphbet = string.ascii_letters + ''.join([str(i) for i in range(10)])
     return ''.join([random.choice(alphbet) for i in range(length)])
+
+
+def singleton(cls, *args, **kw):
+    instances = {}
+
+    def _singleton():
+        if cls not in instances:
+            instances[cls] = cls(*args, **kw)
+        return instances[cls]
+    return _singleton
