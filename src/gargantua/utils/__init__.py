@@ -47,7 +47,6 @@ def setup_log():
     log = logging.getLogger()
     log.setLevel(logging.DEBUG)
     # log.addHandler(ch)
-    # log.addHandler(sh)
     # log.addHandler(fh)
 
 
