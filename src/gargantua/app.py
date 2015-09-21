@@ -99,7 +99,7 @@ class Application(tornado.web.Application):
         ]
         handlers.append(('/(.*)', PageNotFound))
         self.setup_db()
-        # self.setup_sentry()
+        self.setup_sentry()
         self.setup_mail_handler()
         super(Application, self).__init__(handlers, **settings)
 
@@ -111,7 +111,7 @@ class Application(tornado.web.Application):
                             credentials=(MAIL_USERNAME, options.mail_passwd),
                             subject=MAIL_SUBJECT)
         mh.setFormatter(LogMailFormatter())
-        mh.setLevel(logging.INFO)
+        mh.setLevel(logging.ERROR)
         log.addHandler(mh)
 
     def setup_sentry(self):

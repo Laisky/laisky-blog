@@ -33,42 +33,17 @@ class LogMailFormatter(logging.Formatter):
         print('format record: {}'.format(record))
         return '<p>{}</p>'.format('</p><p>'.join(record.msg.split('\n')))
 
-        # return logging.Formatter.format(self, _r)
-
-
-def test_func():
-    import time
-    time.sleep(5)
-    return time.time()
-
-def callback(future):
-    print('yeyeye: {}'.format(future.result()))
-
-
 
 class LogMailHandler(logging.handlers.SMTPHandler):
 
     def emit(self, record):
-        """
-        self.mailhost
-        self.mailport
-        self.username
-        self.password
-        self.fromaddr
-        self.toaddrs
-        self.subject
-        """
-        # import pdb
-        # pdb.set_trace()
-        print('mail content: {}'.format(self.format(record)))
-        delay_task(test_func)
-        # delay_task(send_mail,
-        #            mailhost=self.mailhost,
-        #            mailport=self.mailport,
-        #            username=self.username,
-        #            passwd=self.password,
-        #            fromaddr=self.fromaddr,
-        #            toaddrs=self.toaddrs,
-        #            subject=self.subject,
-        #            content=record
-        #            )
+        delay_task(send_mail,
+                   mailhost=self.mailhost,
+                   mailport=self.mailport,
+                   username=self.username,
+                   passwd=self.password,
+                   fromaddr=self.fromaddr,
+                   toaddrs=self.toaddrs,
+                   subject=self.subject,
+                   content=record
+                   )
