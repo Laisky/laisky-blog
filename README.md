@@ -2,7 +2,8 @@ Gargantua
 ===
 
 [![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg)]()
-[![Crates.io](https://img.shields.io/badge/version-v1.9.4-blue.svg)]()
+[![Crates.io](https://img.shields.io/badge/version-v1.9.5-blue.svg)]()
+[![Build Status](https://travis-ci.org/Laisky/laisky-blog.svg?branch=master)](https://travis-ci.org/Laisky/laisky-blog)
 
 > Do not go gentle into that good night, Rage, rage against the dying of the light.
 
