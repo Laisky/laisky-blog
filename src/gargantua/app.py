@@ -17,16 +17,13 @@ import pymongo
 from tornado.web import url
 from tornado.options import define, options
 
-from gargantua.libs import LogMailFormatter, LogMailHandler
-from .const import (
-    CWD, DB_HOST, DB_PORT, LISTEN_PORT, DB_NAME, LOG_NAME,
-    MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWD, FROM_ADDR, TO_ADDRS, MAIL_SUBJECT,
-)
-from .utils import setup_log, generate_random_string
-from .views import (
-    BaseHandler, PostsHandler, PostPage, PublishHandler, UserHandler,
-    RssHandler, AmendHandler
-)
+from gargantua.const import CWD, LISTEN_PORT, LOG_NAME, \
+    DB_HOST, DB_PORT, DB_NAME, \
+    MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWD, FROM_ADDR, TO_ADDRS, MAIL_SUBJECT
+from gargantua.utils import setup_log, generate_random_string
+from gargantua.views import BaseHandler, PostsHandler, PostPage, \
+    PublishHandler, UserHandler, RssHandler, AmendHandler
+from gargantua.apis import PostApiHandler
 
 
 # settings
@@ -81,16 +78,20 @@ class Application(tornado.web.Application):
             url(r'^/(profile)/$', UserHandler, name='user:profile'),
             # ---------------- rss ----------------
             url(r'^/rss.xml$', RssHandler, name='rss'),
-            # ---------------- api ----------------
+            # ---------------- old api ----------------
             url(r'^/(api/posts/.*)/$', PostsHandler, name='api:post'),
             url(r'^/(api/user/.*)/$', UserHandler, name='api:user:login'),
+            # ---------------- rest api ----------------
+            url(r'^/api/p/([a-zA-Z]+)?/?$', PostApiHandler, name='rest:post'),
             # ---------------- 404 ----------------
             url(r'^/$', PostsHandler, name='root'),
             url(r'^/404.html$', PageNotFound, name='404'),
         ]
         handlers.append(('/(.*)', PageNotFound))
         self.setup_db()
-        self.setup_mail_handler()
+        if not options.debug:
+            self.setup_mail_handler()
+
         super(Application, self).__init__(handlers, **settings)
 
     def setup_mail_handler(self):
