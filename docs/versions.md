@@ -2,6 +2,7 @@
 
 | Version | Description | Date |
 |:--:|:--:|:--:|
+| 1.9.6 | bugfix: 更新老文章时也更新 post_type | Fri Oct 23 17:18:45 2015 |
 | 1.9.5 | 增加 travis | Thu Oct 22 16:17:34 2015 |
 | 1.9.4 | RESTful 代码在后台上线 | Mon Sep 21 09:24:25 2015 |
 | 1.9.3 | 用 SMTPHandler 取代 Sentry | Mon Sep 21 08:24:26 2015 |
