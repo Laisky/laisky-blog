@@ -75,7 +75,7 @@ class AmendHandler(BaseHandler):
             'post_title': post_title,
             # 'post_name': post_name,
             'post_content': post_content,
-            # 'post_type': post_type,
+            'post_type': post_type,
             'post_menu': post_menu,
         }
         if post_type == 'markdown':
