@@ -5,4 +5,4 @@ all:
 	chmod -R 777 /srv/gargantua
 
 nose:
-	nosetests -vs tests
+	nosetests -vs --logging-level=DEBUG --with-coverage --cover-package=gargantua tests

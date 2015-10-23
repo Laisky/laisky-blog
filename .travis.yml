@@ -4,4 +4,4 @@ python:
 # command to install dependencies
 install: "pip install -r requirements.txt"
 # command to run tests
-script: nosetests -vs tests/
+script: nosetests -vs --logging-level=DEBUG -e test_blog_page tests
