@@ -5,12 +5,12 @@ import jwt
 import bcrypt
 
 
-def generate_passwd(passpw):
-    return bcrypt.hashpw(passpw, bcrypt.gensalt())
+def generate_passwd(passwd):
+    return bcrypt.hashpw(passwd, bcrypt.gensalt())
 
 
-def validate_passwd(passpw, hashed):
-    return bcrypt.hashpw(passpw, hashed) == hashed
+def validate_passwd(passwd, hashed):
+    return bcrypt.hashpw(passwd, hashed) == hashed
 
 
 def generate_token(json_, secret):
