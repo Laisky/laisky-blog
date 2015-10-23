@@ -3,3 +3,6 @@ all:
 	mkdir -p /srv/gargantua/uploads
 	chmod -R 777 /var/log/gargantua
 	chmod -R 777 /srv/gargantua
+
+nose:
+	nosetests -vs tests
