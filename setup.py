@@ -17,3 +17,4 @@ setup(name='gargantua',
       [console_scripts]
       run_gargantua=gargantua.__main__:main
       """)
+
