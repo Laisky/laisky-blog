@@ -30,3 +30,4 @@ jieba
 
 # test
 nose
+coverage
