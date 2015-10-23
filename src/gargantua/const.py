@@ -43,6 +43,4 @@ MAIL_USERNAME = 'ppcelery@gmail.com'
 MAIL_PASSWD = '123456'
 
 # test
-DB_HOST = 'laisky.com'
-ES_HOST = 'laisky.com'
-SENTRY_HOST = 'laisky.com'
+DB_PORT = 27017
