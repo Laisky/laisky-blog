@@ -24,6 +24,7 @@ from gargantua.utils import setup_log, generate_random_string
 from gargantua.views import BaseHandler, PostsHandler, PostPage, \
     PublishHandler, UserHandler, RssHandler, AmendHandler
 from gargantua.apis import PostApiHandler
+from gargantua.libs import LogMailHandler, LogMailFormatter
 
 
 # settings
