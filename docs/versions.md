@@ -2,6 +2,7 @@
 
 | Version | Description | Date |
 |:--:|:--:|:--:|
+| 1.9.8 | 修复一个 views 的继承错误 | Tue Oct 27 17:37:32 2015 |
 | 1.9.7 | 增加单元测试 | Fri Oct 23 17:20:17 2015 |
 | 1.9.6 | bugfix: 更新老文章时也更新 post_type | Fri Oct 23 17:18:45 2015 |
 | 1.9.5 | 增加 travis | Thu Oct 22 16:17:34 2015 |
