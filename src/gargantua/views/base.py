@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
 import logging
 from math import ceil
 
@@ -16,12 +15,12 @@ log = logging.getLogger(LOG_NAME)
 __all__ = ['BaseHandler']
 
 
-class BaseHandler(tornado.web.RequestHandler,
+class BaseHandler(WebHandlerMixin,
                   JinjaMixin,
                   SentryMixin,
                   DbHandlerMixin,
-                  WebHandlerMixin,
-                  AuthHandlerMixin,):
+                  AuthHandlerMixin,
+                  tornado.web.RequestHandler,):
 
     def get(self, url=None):
         url = url.strip(' /')
