@@ -4,7 +4,6 @@ import logging
 from math import ceil
 
 import tornado
-from raven.contrib.tornado import SentryMixin
 
 from gargantua.const import LOG_NAME, N_POST_PER_PAGE
 from gargantua.utils import DbHandlerMixin, WebHandlerMixin, \
@@ -17,7 +16,6 @@ __all__ = ['BaseHandler']
 
 class BaseHandler(WebHandlerMixin,
                   JinjaMixin,
-                  SentryMixin,
                   DbHandlerMixin,
                   AuthHandlerMixin,
                   tornado.web.RequestHandler,):
