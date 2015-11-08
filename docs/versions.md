@@ -2,6 +2,7 @@
 
 | Version | Description | Date |
 |:--:|:--:|:--:|
+| 1.9.9 | 美化了文章 CSS | Sun Nov  8 01:41:22 2015 UTC |
 | 1.9.8 | 修复一个 views 的继承错误 | Tue Oct 27 17:37:32 2015 |
 | 1.9.7 | 增加单元测试 | Fri Oct 23 17:20:17 2015 |
 | 1.9.6 | bugfix: 更新老文章时也更新 post_type | Fri Oct 23 17:18:45 2015 |
