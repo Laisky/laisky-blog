@@ -31,11 +31,6 @@ $(function() {
                     $hintText.html("登陆成功，正在跳转");
                     setTimeout(function() {
                         var redirectTo = QueryString['next'];
-                        if(redirectTo.startsWith('/amend/?post-name=')) {
-                            var postName = redirectTo.substring(18);
-                            var redirectTo = '/p/' + postName + '/';
-                        }
-
                         location.href = redirectTo;
                         // TODO 还没实现 popStat
                         // if(history.length == 0) {
