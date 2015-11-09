@@ -41,6 +41,3 @@ FROM_ADDR = 'gargantua@laisky.com'
 TO_ADDRS = ('ppcelery@gmail.com',)
 MAIL_USERNAME = 'ppcelery@gmail.com'
 MAIL_PASSWD = '123456'
-
-# test
-DB_PORT = 27017
