@@ -52,6 +52,7 @@ class AmendHandler(BaseHandler):
         docu = yield self.db.posts.find_one({'post_name': post_name})
 
         # author authorized
+        post_menu = None
         if docu['post_author'] != self.current_user['_id']:
             log.warning('Unauthorized amend.')
             raise tornado.httpclient.HTTPError(401, 'Only owner can amend their post.')
@@ -94,7 +95,7 @@ class AmendHandler(BaseHandler):
     def extract_reveal_html(self, html):
         log.debug('extract_reveal_html for html {}'.format(html))
 
-        tree = etree.HTML(html.encode())
+        tree = etree.HTML(html)
         node = tree.xpath('//div[@class="reveal"]')
         ret = etree.tostring(node[0]).decode()
 

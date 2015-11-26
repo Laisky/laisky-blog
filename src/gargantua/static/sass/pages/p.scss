@@ -1,5 +1,6 @@
 @import "compass/css3/box-shadow";
 @import "compass/css3/transform";
+@import "../themes/default.scss";
 
 .post-body {
     .archives {
@@ -52,7 +53,7 @@
         h2,
         h3 {
             font-size: 1.5em;
-            color: white;
+            color: $post-cnt-clr;
         }
 
         p,
@@ -60,7 +61,7 @@
         pre,
         h4,
         h5 {
-            color: white;
+            color: $post-cnt-clr;
         }
 
         a {
