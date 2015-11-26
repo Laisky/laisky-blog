@@ -1,12 +1,13 @@
-/* line 4, ../../sass/widgets/slide.scss */
+/* line 5, ../../sass/widgets/slide.scss */
 body {
   overflow: auto;
 }
-/* line 7, ../../sass/widgets/slide.scss */
+/* line 8, ../../sass/widgets/slide.scss */
 body > .container {
   min-height: 90%;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  background-color: rgba(40, 41, 35, 0.8);
+  background-color: whitesmoke;
+  padding: 20px;
 }
