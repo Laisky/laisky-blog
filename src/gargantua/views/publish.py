@@ -40,6 +40,7 @@ class PublishHandler(BaseHandler):
                   .format(post_title, post_name, post_content, post_type))
 
         # check existed
+        post_menu = None
         docu = yield self.db.posts.find_one({'post_name': post_name})
         if docu:
             log.debug('post name existed!')
@@ -86,7 +87,7 @@ class PublishHandler(BaseHandler):
     def extract_reveal_html(self, html):
         log.debug('extract_reveal_html for html {}'.format(html))
 
-        tree = etree.HTML(html.encode())
+        tree = etree.HTML(html)
         node = tree.xpath('//div[@class="reveal"]')
         ret = etree.tostring(node[0]).decode()
 

@@ -1,5 +1,6 @@
 @import "compass/utilities/general/min";
 @import "compass/css3/border-radius";
+@import "../themes/default.scss";
 
 body {
     overflow: auto;
@@ -7,7 +8,8 @@ body {
     > .container {
         @include min-height(90%);
         @include border-radius(10px);
-        background-color: rgba(40, 41, 35, 0.8);
+        background-color: $post-bgd-clr;
+        padding: 20px;
     }
 
 }
