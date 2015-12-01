@@ -1,7 +1,7 @@
 - 3.0(on development)
 
 | Version | Description | Date |
-|:--:|:--:|:--:|
+|:--:|:--|:--|
 | 2.0.1 | 修复 amend 和 post 发布 slide 时的 bug | Thu Nov 26 05:53:16 2015 UTC |
 | 2.0.2 | 修复 slide 的 color | Thu Nov 26 06:03:17 2015 UTC |
 
@@ -9,7 +9,7 @@
 - 2.0
 
 | Version | Description | Date |
-|:--:|:--:|:--:|
+|:--:|:--|:--|
 | 2.0.0 | jump to the "next" after login | Sun Nov  8 05:00:13 2015 UTC |
 | 1.9.9 | 美化了文章 CSS | Sun Nov  8 01:41:22 2015 UTC |
 | 1.9.8 | 修复一个 views 的继承错误 | Tue Oct 27 17:37:32 2015 |
