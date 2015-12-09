@@ -2,6 +2,7 @@
 
 | Version | Description | Date |
 |:--:|:--|:--|
+| 2.0.3 | #68 文章标题可编辑 | Wed Dec  9 14:33:02 2015 UTC |
 | 2.0.1 | 修复 amend 和 post 发布 slide 时的 bug | Thu Nov 26 05:53:16 2015 UTC |
 | 2.0.2 | 修复 slide 的 color | Thu Nov 26 06:03:17 2015 UTC |
 
