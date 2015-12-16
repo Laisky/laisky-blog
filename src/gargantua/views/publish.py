@@ -87,7 +87,7 @@ class PublishHandler(BaseHandler):
     def extract_reveal_html(self, html):
         log.debug('extract_reveal_html for html {}'.format(html))
 
-        tree = etree.HTML(html.encode('utf-8'))
+        tree = etree.HTML(html)
         node = tree.xpath('//div[@class="reveal"]')
         ret = etree.tostring(node[0], encoding='unicode')
 
