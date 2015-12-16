@@ -95,7 +95,7 @@ class AmendHandler(BaseHandler):
     def extract_reveal_html(self, html):
         log.debug('extract_reveal_html for html {}'.format(html))
 
-        tree = etree.HTML(html)
+        tree = etree.HTML(html.encode('utf-8'))
         node = tree.xpath('//div[@class="reveal"]')
         ret = etree.tostring(node[0]).decode()
 
