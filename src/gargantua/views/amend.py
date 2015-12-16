@@ -97,7 +97,7 @@ class AmendHandler(BaseHandler):
 
         tree = etree.HTML(html.encode('utf-8'))
         node = tree.xpath('//div[@class="reveal"]')
-        ret = etree.tostring(node[0]).decode()
+        ret = etree.tostring(node[0], encoding='unicode')
 
         if '{{' in ret:
             return '{% raw %}' + ret + '{% endraw %}'
