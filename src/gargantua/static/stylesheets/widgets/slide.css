@@ -11,3 +11,7 @@ body > .container {
   background-color: whitesmoke;
   padding: 20px;
 }
+/* line 14, ../../sass/widgets/slide.scss */
+body > .container p {
+  margin-bottom: 10px;
+}
