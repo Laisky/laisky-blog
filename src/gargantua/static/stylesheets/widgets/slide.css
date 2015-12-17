@@ -24,15 +24,11 @@ body > .container {
   margin-left: 40px;
 }
 /* line 29, ../../sass/widgets/slide.scss */
-.reveal p, .reveal ul {
+.reveal p,
+.reveal ul {
   margin-bottom: 10px;
 }
-/* line 33, ../../sass/widgets/slide.scss */
+/* line 34, ../../sass/widgets/slide.scss */
 .reveal strong {
   font-weight: bolder;
-}
-/* line 37, ../../sass/widgets/slide.scss */
-.reveal img {
-  max-height: 600px;
-  max-width: 600px;
 }
