@@ -11,7 +11,28 @@ body > .container {
   background-color: whitesmoke;
   padding: 20px;
 }
-/* line 14, ../../sass/widgets/slide.scss */
-body > .container p {
+
+/* line 18, ../../sass/widgets/slide.scss */
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4 {
+  margin-bottom: 30px;
+}
+/* line 25, ../../sass/widgets/slide.scss */
+.reveal li {
+  margin-left: 40px;
+}
+/* line 29, ../../sass/widgets/slide.scss */
+.reveal p, .reveal ul {
   margin-bottom: 10px;
+}
+/* line 33, ../../sass/widgets/slide.scss */
+.reveal strong {
+  font-weight: bolder;
+}
+/* line 37, ../../sass/widgets/slide.scss */
+.reveal img {
+  max-height: 600px;
+  max-width: 600px;
 }
