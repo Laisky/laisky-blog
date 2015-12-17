@@ -10,10 +10,33 @@ body {
         @include border-radius(10px);
         background-color: $post-bgd-clr;
         padding: 20px;
+    }
 
-        p {
-            margin-bottom: 10px;
-        }
+}
+
+.reveal {
+    h1,
+    h2,
+    h3,
+    h4 {
+        margin-bottom: 30px;
+    }
+
+    li {
+        margin-left: 40px;
+    }
+
+    p, ul {
+        margin-bottom: 10px;
+    }
+
+    strong {
+        font-weight: bolder;
+    }
+
+    img {
+        max-height: 600px;
+        max-width: 600px;
     }
 
 }
