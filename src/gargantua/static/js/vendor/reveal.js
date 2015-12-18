@@ -5,6 +5,12 @@
  *
  * Copyright (C) 2015 Hakim El Hattab, http://hakim.se
  */
+
+/**
+ * Edit at Fri Dec 18 02:17:29 2015 UTC by Laisky
+ * fix bug on Safari
+ */
+
 (function(root, factory) {
 	if (typeof define === 'function' && define.amd) {
 		// AMD. Register as an anonymous module.
@@ -1486,11 +1492,14 @@
 				}
 				// Apply scale transform as a fallback
 				else {
-					dom.slides.style.left = '50%';
-					dom.slides.style.top = '50%';
-					dom.slides.style.bottom = 'auto';
-					dom.slides.style.right = 'auto';
-					transformElement(dom.slides, 'translate(-50%, -50%) scale(' + scale + ')');
+					// not work on Safari.
+					// I write correct css on hand.
+					//
+					// dom.slides.style.left = '50%';
+					// dom.slides.style.top = '50%';
+					// dom.slides.style.bottom = 'auto';
+					// dom.slides.style.right = 'auto';
+					// transformElement(dom.slides, 'translate(-50%, -50%) scale(' + scale + ')');
 				}
 			}
 
