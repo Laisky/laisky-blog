@@ -1,4 +1,3 @@
-
 .post-body {
     .archives {
         padding-left: 0px;
@@ -11,6 +10,10 @@
     > .nav {
         max-width: 100px;
         overflow: hidden;
+    }
+
+    > .nav li:hover .nav {
+        display: block;
     }
 
     .nav li a {
