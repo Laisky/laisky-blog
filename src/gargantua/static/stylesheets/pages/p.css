@@ -10,27 +10,31 @@
   overflow: hidden;
 }
 /* line 16, ../../sass/pages/p.scss */
+.menu-nav > .nav li:hover .nav {
+  display: block;
+}
+/* line 20, ../../sass/pages/p.scss */
 .menu-nav .nav li a {
   font-size: 0.8em;
   padding: 2px;
 }
-/* line 21, ../../sass/pages/p.scss */
+/* line 25, ../../sass/pages/p.scss */
 .menu-nav li.active > a {
   background-color: lightgrey;
 }
-/* line 25, ../../sass/pages/p.scss */
+/* line 29, ../../sass/pages/p.scss */
 .menu-nav .nav .nav {
   display: none;
 }
-/* line 28, ../../sass/pages/p.scss */
+/* line 32, ../../sass/pages/p.scss */
 .menu-nav .nav .nav li {
   margin-left: 10px;
 }
-/* line 34, ../../sass/pages/p.scss */
+/* line 38, ../../sass/pages/p.scss */
 .menu-nav .nav li.active nav {
   display: block;
 }
-/* line 38, ../../sass/pages/p.scss */
+/* line 42, ../../sass/pages/p.scss */
 .menu-nav .nav .active .nav {
   display: block;
 }
