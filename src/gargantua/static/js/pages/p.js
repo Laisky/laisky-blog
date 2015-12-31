@@ -2,7 +2,7 @@ $(function() {
     updatePageTitle();
     bindImgClick();
     bindPostAuth();
-    hljs.initHighlightingOnLoad();
+    // hljs.initHighlightingOnLoad();
 
 
     function bindPostAuth() {
