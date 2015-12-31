@@ -130,7 +130,7 @@ $(function() {
     var $window = $(window);
     var $document = $(document);
 
-    hljs.initHighlightingOnLoad();
+    // hljs.initHighlightingOnLoad();
     // initTopNavbar();
     initGlobalLoader();
 
