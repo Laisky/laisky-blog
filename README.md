@@ -39,5 +39,5 @@ A simple blog by Python3
 
 ## CHANGELOG
 
-[CHANGELOG.md](//CHANGELOG.md)
+[CHANGELOG.md](https://github.com/Laisky/laisky-blog/blob/master/CHANGELOG.md)
 
