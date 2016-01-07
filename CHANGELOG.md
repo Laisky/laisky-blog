@@ -4,12 +4,6 @@
 
 
 
-<a name="1.0.0"></a>
-# [1.0.0](https://github.com/Laisky/laisky-blog/compare/2.0.5...v1.0.0) (2016-01-07)
-
-
-
-
 <a name="2.0.5"></a>
 ## [2.0.5](https://github.com/Laisky/laisky-blog/compare/1.9.9...2.0.5) (2015-12-18)
 
