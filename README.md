@@ -37,7 +37,7 @@ A simple blog by Python3
     - Bootstrap3
 
 
-## Versions
+## CHANGELOG
 
-[versions log](https://github.com/Laisky/laisky-blog/blob/master/docs/versions.md)
+[CHANGELOG.md](//CHANGELOG.md)
 
