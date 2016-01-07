@@ -2,7 +2,7 @@ Gargantua
 ===
 
 [![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg)]()
-[![Crates.io](https://img.shields.io/badge/version-v2.0.5-blue.svg)]()
+[![Crates.io](https://img.shields.io/badge/version-v2.1-blue.svg)]()
 [![Build Status](https://travis-ci.org/Laisky/laisky-blog.svg?branch=master)](https://travis-ci.org/Laisky/laisky-blog)
 
 > Do not go gentle into that good night, Rage, rage against the dying of the light.
@@ -37,7 +37,7 @@ A simple blog by Python3
     - Bootstrap3
 
 
-## Versions
+## CHANGELOG
 
-[versions log](https://github.com/Laisky/laisky-blog/blob/master/docs/versions.md)
+[CHANGELOG.md](//CHANGELOG.md)
 
