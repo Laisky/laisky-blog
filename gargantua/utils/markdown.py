@@ -7,21 +7,49 @@ from collections import OrderedDict
 import markdown2
 
 
-TITLE_REG = re.compile(r'<(h[23]).{0,}>(.+)</\1>')
+TITLE_REG = re.compile(r'(<(h[23]).{0,}>(.+)</\2>)')
+CHINESE_SERIAL = {
+    '0': '〇',
+    '1': '一',
+    '2': '二',
+    '3': '三',
+    '4': '四',
+    '5': '五',
+    '6': '六',
+    '7': '七',
+    '8': '八',
+    '9': '九',
+}
+
+
+def convert2chn_serial(number):
+    return ''.join(map(lambda n: CHINESE_SERIAL[n], str(int(number))))
 
 
 def render_md_to_html(content, is_extract_menu=False):
     html = markdown2.markdown(content, extras=['fenced-code-blocks', 'footnotes', 'tables'])
-    _s = '<div class="highlight">{}</div>'.format(html)
-    _s = TITLE_REG.sub(r'<\1 id="\2">\2</\1>', _s)
+    html = '<div class="highlight">{}</div>'.format(html)
+    html = TITLE_REG.sub(r'<\2 id="\3">\3</\2>', html)
+    h2_count = h3_count = 1
     if is_extract_menu:
         title_menu = TitleMenu()
-        for level, title in TITLE_REG.findall(_s):
+        for cont, level, title in TITLE_REG.findall(html):
             title_menu.add_title(level, title)
+            if level == 'h2':  # 给 h2 添加中文序号
+                serial = convert2chn_serial(h2_count)
+                h2_count += 1
+                h3_count = 1
+            elif level == 'h3':  # 给 h3 添加序号
+                serial = '{}'.format(h3_count)
+                h3_count += 1
 
-        return _s, title_menu.render()
+            new_title = '<{level} id="{title}">{serial}、{title}</{level}>'\
+                .format(level=level, title=title, serial=serial)
+            html = html.replace(cont, new_title)
+
+        return html, title_menu.render()
     else:
-        return _s
+        return html
 
 
 class TitleMenu():
