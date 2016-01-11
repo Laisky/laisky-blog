@@ -1,6 +1,8 @@
 Gargantua
 ===
 
+[![Join the chat at https://gitter.im/Laisky/laisky-blog](https://badges.gitter.im/Laisky/laisky-blog.svg)](https://gitter.im/Laisky/laisky-blog?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg)]()
 [![Build Status](https://travis-ci.org/Laisky/laisky-blog.svg?branch=master)](https://travis-ci.org/Laisky/laisky-blog)
 [![Crates.io](https://img.shields.io/badge/version-v2.1-blue.svg)]()
