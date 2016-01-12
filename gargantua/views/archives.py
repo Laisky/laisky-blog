@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """View about any articles.
+有关文章的一切
 """
 
 import urllib
@@ -110,7 +111,7 @@ class PostsHandler(BaseHandler):
             logger.debug('get cookie {}'.format(cookie))
             if not cookie or cookie.decode() != post['post_password']:
                 self.render2('archives/ajax/auth.html', post_name=post['post_name'])
-                raise self.http_401_unauthorized('Need password.')
+                return
 
         post['post_type'] = post.get('post_type', 'text')
         self.render2('archives/article.html', post=post)

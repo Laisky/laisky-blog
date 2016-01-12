@@ -1,11 +1,11 @@
 var searchInSite;
 
 $(function() {
-    var $body = $('body');
-    var $container = $('body > .container');
-    var pageCache = {};
-    var appCache = {};
-    var postCollect = [];
+    var $body = $('body'),
+        $container = $('body > .container'),
+        pageCache = {},
+        appCache = {},
+        postCollect = [];
 
     // bindWindowScrollHandler();
     bindChangePage();
