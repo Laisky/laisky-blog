@@ -9,28 +9,7 @@ from ..utils import debug_wrapper, logger
 
 class PostPage(BaseHandler):
 
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def get(self, name):
-        logger.info('GET PostPage for name {}'.format(name))
 
-        name = self.parse_post_name(name)
-        post = yield self.db.posts.find_one({'post_name': name})
-        if not post:
-            self.redirect_404()
-            return
-
-        if post.get('post_password'):
-            cookie_name = self.get_cookie_name(name)
-            cookie = self.get_secure_cookie(cookie_name)
-            logger.debug('get cookie {}'.format(cookie))
-            if not cookie or cookie.decode() != post['post_password']:
-                self.render2('p/auth.html', post_name=post['post_name'])
-                self.set_status(202, 'Need password.')
-                return
-
-        post['post_type'] = post.get('post_type', 'text')
-        self.render2('p/index.html', post=post)
 
     @tornado.gen.coroutine
     @debug_wrapper

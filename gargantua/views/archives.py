@@ -31,8 +31,6 @@ class PostsHandler(BaseHandler):
             'search': self.get_post_by_keyword,      # 按关键词搜索
             'publish': self.get_new_post,            # 发表新文章
             'p': self.get_post_by_name,              # 单篇文章的页面
-            'api/posts/get-lastest-posts-by-name': self.get_lastest_posts_by_name,
-            'api/posts/get-post-by-id': self.get_post_by_id,
             'api/posts/get-post-by-page': self.get_post_by_page,
         }
         router.get(url, self.redirect_404)(*args, **kw)
@@ -133,8 +131,7 @@ class PostsHandler(BaseHandler):
                         </div>
                     """
                 else:
-                    content = html2text.html2text(docu['post_content'])
-                    docu['post_content'] = content[: 500]
+                    docu['post_content'] = self.shortly_content(docu['post_content'], 500)
 
             posts.append(docu)
 
@@ -146,38 +143,6 @@ class PostsHandler(BaseHandler):
 
         self.render_post('archives/archives.html',
                          posts=posts, current_page=page, tags=tags)
-        self.finish()
-
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def get_lastest_posts_by_name(self):
-        try:
-            since_name = self.get_argument('since_name', strip=True)
-            is_full = self.get_argument('is_full', strip=True, default=False)
-        except ValueError:
-            pass
-        else:
-            logger.debug('get_lastest_posts for since_name {}'
-                         .format(since_name))
-
-        n = N_POST_PER_PAGE
-        since_id = (yield
-                    self.db.posts.find_one({'post_name': since_name}))['_id']
-        cursor = self.db.posts.find({'_id': {'$lt': since_id}})
-        cursor.sort([('_id', pymongo.DESCENDING)]).limit(n)
-        posts = []
-        for docu in (yield cursor.to_list(length=n)):
-            if docu.get('post_password'):
-                continue
-
-            docu = unquote_fr_mongo(docu)
-            if not is_full:
-                docu['post_content'] = self.shortly_content(docu['post_content'])
-
-            posts.append(docu)
-
-        _posts = self.render_template('widgets/post.html', posts=posts)
-        self.write_json(data=_posts)
         self.finish()
 
     def shortly_content(self, content, length=1000):
