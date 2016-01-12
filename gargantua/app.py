@@ -20,7 +20,7 @@ from gargantua.const import CWD, LISTEN_PORT, LOG_NAME, \
     DB_HOST, DB_PORT, DB_NAME, \
     MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWD, FROM_ADDR, TO_ADDRS, MAIL_SUBJECT
 from gargantua.utils import setup_log, generate_random_string
-from gargantua.views import BaseHandler, PostsHandler, PostPage, \
+from gargantua.views import BaseHandler, PostsHandler, \
     UserHandler, RssHandler, AmendHandler
 from gargantua.apis import PostApiHandler
 from gargantua.libs import LogMailHandler, LogMailFormatter

@@ -13,6 +13,7 @@ $(function() {
                 password = $(".post-auth-body .passwdInput").val();
 
             $.postJSON(url, {
+                name: postName,
                 password: password
             }, function(resp) {
                 if (resp.status != 0) {

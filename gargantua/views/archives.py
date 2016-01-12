@@ -14,7 +14,7 @@ from bson import ObjectId
 
 from .base import BaseHandler
 from ..utils import debug_wrapper, unquote_fr_mongo, logger
-from ..const import N_POST_PER_PAGE
+from ..const import N_POST_PER_PAGE, ERROR
 from ..models import ArticlesModel
 
 
@@ -35,11 +35,14 @@ class PostsHandler(BaseHandler):
         }
         router.get(url, self.redirect_404)(*args, **kw)
 
-    @tornado.web.authenticated
-    def post(self):
-        """Post new article
-        """
-        pass
+    @tornado.web.asynchronous
+    def post(self, url=None, *args, **kw):
+        logger.info('POST PostsHandler {}'.format(url))
+
+        router = {
+            'api/posts/post-article-password', self.post_article_password,
+        }
+        router.get(url, self.redirect_404)(*args, **kw)
 
     @tornado.web.authenticated
     def patch(self):
@@ -52,6 +55,31 @@ class PostsHandler(BaseHandler):
         """Delete existed article
         """
         pass
+
+    @tornado.web.authenticated
+    def post_article_password(self):
+        """Validate locked article.
+        """
+        logger.info("post_article_password")
+
+        name = self.parse_post_name(self.get_argument('name', default='', strip=True))
+        password = self.get_argument('password', strip=True)
+        logger.debug('post_article_password for name {}, password {}'
+                     .format(name, password))
+
+        post = yield ArticlesModel.get({'post_name': name})
+        if not post:
+            self.set_status(202, 'Post name not exists.')
+            self.write_json(msg='post_name 不存在', status=ERROR)
+            return
+        elif password != post['post_password']:
+            self.set_status(202, 'Password wrong.')
+            self.write_json(msg='密码错误', status=ERROR)
+            return
+
+        cookie_name = self.get_cookie_name(name)
+        self.set_secure_cookie(cookie_name, password, expires_days=None)
+        self.write_json(msg='ok')
 
     def parse_post_name(self, name):
         return urllib.parse.quote(name).lower()
