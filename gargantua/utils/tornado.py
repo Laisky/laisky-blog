@@ -180,6 +180,9 @@ class JinjaMixin(TemplateRendering):
 
 class HttpErrorMixin():
 
+    """Raise Http Error with status code
+    """
+
     def http_400_bad_request(self, msg=None):
         self._reason = msg
         return self.write_error(status_code=400)

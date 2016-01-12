@@ -10,14 +10,9 @@ class ArticlesModel(BaseBlogModel):
 
     __collection__ = 'posts'
 
-    @tornado.gen.croutine
+    @tornado.gen.coroutine
     def create_new_post_id(self):
         pass
-
-    @classmethod
-    @tornado.gen.coroutine
-    def load_post_by_name(self, name):
-
 
 
 class ArticleBufferModel(BaseBlogModel):

@@ -71,7 +71,7 @@ class Application(tornado.web.Application):
         handlers = [
             # -------------- handler --------------
             url(r'^/(archives)/$', PostsHandler, name='post:archives'),
-            url(r'^/p/(.*)/$', PostPage, name='post:single'),
+            url(r'^/(p)/(.*)/$', PostsHandler, name='post:single'),
             url(r'^/(publish)/$', PostsHandler, name='post:publish'),
             url(r'^/amend/$', AmendHandler, name='post:amend'),
             url(r'^/(login)/$', UserHandler, name='user:login'),
@@ -83,7 +83,7 @@ class Application(tornado.web.Application):
             url(r'^/(api/posts/.*)/$', PostsHandler, name='api:post'),
             url(r'^/(api/user/.*)/$', UserHandler, name='api:user:login'),
             # ---------------- rest api ----------------
-            url(r'^/api/p/([a-zA-Z]+)?/?$', PostApiHandler, name='rest:post'),
+            url(r'^/api/v2/p/([a-zA-Z]+)?/?$', PostApiHandler, name='rest:post'),
             # ---------------- 404 ----------------
             url(r'^/$', PostsHandler, name='root'),
             url(r'^/404.html$', PageNotFound, name='404'),

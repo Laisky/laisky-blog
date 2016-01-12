@@ -30,6 +30,14 @@ class BaseModel:
     def collection(self):
         return self.get_collection()
 
+    @property
+    def mongo_db(self):
+        return self.get_mongo_db()
+
+    @property
+    def mongo_collection(self):
+        return self.get_mongo_collection()
+
     @classmethod
     def get_conn(cls):
         assert getattr(cls, '_CONNECTION'), '_CONNECTION not defined!'
@@ -50,14 +58,6 @@ class BaseModel:
         assert hasattr(cls, '__collection__'), '__collection__ not defined!'
         return cls.get_db()[cls.__collection__]
 
-    @property
-    def mongo_db(self):
-        return self.get_mongo_db()
-
-    @property
-    def mongo_collection(self):
-        return self.get_mongo_collection()
-
     @classmethod
     def get_mongo_db(cls):
         assert hasattr(cls, '__db__'), '__db__ not defined!'
@@ -67,6 +67,14 @@ class BaseModel:
     def get_mongo_collection(cls):
         assert hasattr(cls, '__collection__'), '__collection__ not defined!'
         return cls.get_db()[cls.__collection__]
+
+    @classmethod
+    def filter(cls, query):
+        return cls.get_collection().find(query)
+
+    @classmethod
+    def get(cls, query):
+        return cls.get_collection().find_one(query)
 
 
 class BaseBlogModel(BaseModel):
