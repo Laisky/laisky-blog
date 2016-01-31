@@ -73,7 +73,7 @@ class Application(tornado.web.Application):
             url(r'^/(archives)/$', PostsHandler, name='post:archives'),
             url(r'^/(p)/(.*)/$', PostsHandler, name='post:single'),
             url(r'^/(publish)/$', PostsHandler, name='post:publish'),
-            url(r'^/amend/$', AmendHandler, name='post:amend'),
+            url(r'^/(amend)/$', PostsHandler, name='post:amend'),
             url(r'^/(login)/$', UserHandler, name='user:login'),
             url(r'^/(search)/$', PostsHandler, name='post:search'),
             url(r'^/(profile)/$', UserHandler, name='user:profile'),
