@@ -30,10 +30,10 @@ def debug_wrapper(func):
         except Exception:
             self = args[0]
             err_msg = {
-                'uri': self.request.uri,
-                'version': self.request.version,
-                'headers': self.request.headers,
-                'cookies': self.request.cookies,
+                'uri': str(self.request.uri),
+                'version': str(self.request.version),
+                'headers': str(self.request.headers),
+                'cookies': str(self.request.cookies),
             }
             log.error('{}\n-----\n{}'.format(
                 traceback.format_exc(),

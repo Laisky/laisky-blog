@@ -75,10 +75,15 @@ class PostsHandler(BaseHandler, ArticleMixin):
         router.get(url, self.redirect_404)(*args, **kw)
 
     @tornado.web.authenticated
-    def patch(self):
+    @tornado.web.asynchronous
+    def patch(self, url):
         """Update existed article
         """
-        pass
+        logger.info('PATCH PostsHandler for url {}'.format(url))
+        router = {
+            'amend': self.patch_article,
+        }
+        router.get(url)()
 
     @tornado.web.authenticated
     def delete(self):
@@ -92,7 +97,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
     def get_amend_post(self):
         post_name = self.get_argument('post-name', strip=True)
         post_name = urllib.parse.quote(post_name)
-        logger.debug('get_amend_post with post_name {}'.format(post_name))
+        logger.info('get_amend_post with post_name {}'.format(post_name))
 
         post = yield self.db.posts.find_one({'post_name': post_name})
         post = unquote_fr_mongo(post)
@@ -159,24 +164,53 @@ class PostsHandler(BaseHandler, ArticleMixin):
     @tornado.web.authenticated
     @tornado.gen.coroutine
     @debug_wrapper
-    def post_new_article(self):
-        """Create new article."""
-        logger.info('POST PublishHandler')
+    def patch_article(self):
+        """Update article."""
+        logger.info('patch_article')
         try:
-            post_docu = self.validate_post(create_new=True)
+            post_docu = self.validate_post(create_new=False)
         except PostValidatorError as err:
-            self.http_406_not_acceptable(err.message)
+            self.http_400_bad_request(err.message)
             self.finish()
             return
 
-        yield self.db.posts.update(
-            {'post_name': post_docu['post_name']},
-            {'$set': post_docu},
-            upsert=True
-        )
+        try:
+            yield self.db.posts.update(
+                {'post_name': post_docu['post_name']},
+                {'$set': post_docu},
+            )
+        except Exception as err:
+            logger.exception(err)
+            self.http_400_bad_request(err.message)
+        else:
+            self.write_json(msg='amend article {}'
+                            .format(post_docu['post_name']))
+        finally:
+            self.finish()
 
-        self.write_json()
-        self.finish()
+    @tornado.web.authenticated
+    @tornado.gen.coroutine
+    @debug_wrapper
+    def post_new_article(self):
+        """Create new article."""
+        logger.info('post_new_article')
+        try:
+            post_docu = self.validate_post(create_new=True)
+        except PostValidatorError as err:
+            self.http_400_bad_request(err.message)
+            self.finish()
+            return
+
+        try:
+            yield self.db.posts.insert(post_docu)
+        except Exception as err:
+            logger.exception(err)
+            self.http_400_bad_request(err.message)
+        else:
+            self.write_json(msg='post new article {}'
+                            .format(post_docu['post_name']))
+        finally:
+            self.finish()
 
     @tornado.web.authenticated
     def post_article_password(self):

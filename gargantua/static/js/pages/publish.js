@@ -41,4 +41,4 @@ $(function() {
 
         return false;
     }
-})
+});
