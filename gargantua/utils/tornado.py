@@ -11,7 +11,7 @@ import jwt
 from bson import ObjectId
 
 from gargantua.utils import validate_token
-from gargantua.const import LOG_NAME, OK
+from gargantua.settings import LOG_NAME, OK
 from .jinja import TemplateRendering
 
 
@@ -27,19 +27,18 @@ def debug_wrapper(func):
         log.debug('debug_wrapper for args {}, kw {}'.format(args, kw))
         try:
             yield from func(*args, **kw)
-        except Exception:
+        except Exception as err:
             self = args[0]
             err_msg = {
-                'uri': self.request.uri,
-                'version': self.request.version,
-                'headers': self.request.headers,
-                'cookies': self.request.cookies,
+                'uri': str(self.request.uri),
+                'version': str(self.request.version),
+                'headers': str(self.request.headers),
+                'cookies': str(self.request.cookies),
             }
             log.error('{}\n-----\n{}'.format(
                 traceback.format_exc(),
                 json.dumps(err_msg, indent=4, sort_keys=True),
             ))
-            raise
     return wrapper
 
 
@@ -179,6 +178,9 @@ class JinjaMixin(TemplateRendering):
 
 
 class HttpErrorMixin():
+
+    """Raise Http Error with status code
+    """
 
     def http_400_bad_request(self, msg=None):
         self._reason = msg
