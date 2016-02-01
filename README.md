@@ -13,30 +13,41 @@ Gargantua
 |:--:|
 | Laisky's New Blog |
 
+
 ## Deploy
+
+### Git
 
 ```sh
 $ sudo make
 ```
 
+### Docker
+
+```sh
+$ sudo docker run ppcelery/laisky-blog
+```
+
+
 ## Description
 
 A simple blog by Python3
 
-## Infrastructure
 
-- Backend
-    - Python3
-        - tornado
-    - MongoDB3.0 wiredTiger
-    - Nginx
-    - Elasticsearch
-    - Sentry
+## Technology Stack
 
-- Frontend
-    - SASS / Compass
-    - JavaScript / jQuery
-    - Bootstrap3
+    - Backend
+        - Python3
+            - tornado
+        - MongoDB3.0 wiredTiger
+        - Nginx
+        - Elasticsearch
+        - Sentry
+
+    - Frontend
+        - SASS / Compass
+        - JavaScript / jQuery
+        - Bootstrap3
 
 
 ## CHANGELOG
