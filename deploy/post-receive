@@ -1,0 +1,12 @@
+#!/bin/sh
+# .git/hooks/post-receive
+unset $(git rev-parse --local-env-vars)
+
+cd /home/laisky/repo/laisky-blog/
+git stash
+git pull
+
+# script
+sudo supervisorctl restart gargantua
+. ./active
+make nose

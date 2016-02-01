@@ -1,10 +1,21 @@
-<a name="2.1.0"></a>
-# [2.1.0](https://github.com/Laisky/laisky-blog/compare/2.0.5...v2.1.0) (2016-01-07)
+<a name="2.1.3"></a>
+## [2.1.3](https://github.com/Laisky/laisky-blog/compare/2.1.2...v2.1.3) (2016-02-01)
+
+
+### Performance Improvements
+
+* 2.1.3 ([c1b9771](https://github.com/Laisky/laisky-blog/commit/c1b9771))
+
+
+
+<a name="2.1.2"></a>
+## [2.1.2](https://github.com/Laisky/laisky-blog/compare/2.0.5...2.1.2) (2016-02-01)
 
 
 ### Features
 
 * add chinese title serial number #72 ([f42a618](https://github.com/Laisky/laisky-blog/commit/f42a618))
+* add chinese title serial number #72 ([8288017](https://github.com/Laisky/laisky-blog/commit/8288017))
 
 
 
