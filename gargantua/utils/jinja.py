@@ -7,7 +7,7 @@ from jinja2 import Environment, FileSystemLoader
 from webassets import Environment as AssetsEnvironment
 from webassets.ext.jinja2 import AssetsExtension
 
-from ..const import LOG_NAME
+from ..settings import LOG_NAME
 
 
 log = logging.getLogger(LOG_NAME)

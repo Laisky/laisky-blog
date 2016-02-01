@@ -8,7 +8,7 @@ import logging
 
 import pytz
 
-from gargantua.const import LOG_NAME, LOG_PATH
+from gargantua.settings import LOG_NAME, LOG_PATH
 from .encryt import generate_passwd, validate_passwd, \
     generate_token, validate_token
 from .jinja import TemplateRendering
@@ -25,13 +25,15 @@ __all__ = [
     'validate_mobile', 'generate_token', 'validate_token',
     'debug_wrapper', 'setup_log', 'unquote_fr_mongo',
     'TemplateRendering', 'render_md_to_html',
-    'generate_keyword_search', 'parse_search_resp',
     'DbHandlerMixin', 'WebHandlerMixin', 'AuthHandlerMixin',
     'HttpErrorMixin', 'JinjaMixin', 'RFCMixin',
     'utc2cst_timestamp', 'utcnow', 'utc2cst', 'dt2timestamp',
+    'UTC', 'CST'
 ]
 
 tz = pytz.timezone('utc')
+UTC = tz
+CST = pytz.timezone('Asia/Shanghai')
 oid_regex = re.compile(r'[a-z0-9]{24}')
 
 

@@ -12,7 +12,7 @@ from tornado.options import options
 import pymongo
 import jieba.analyse
 
-from ..const import LOG_NAME
+from ..settings import LOG_NAME
 from ..utils import utcnow
 
 

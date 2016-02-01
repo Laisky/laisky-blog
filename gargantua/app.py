@@ -12,19 +12,18 @@ import logging
 from pathlib import Path
 
 import tornado
-import motor
 import pymongo
 from tornado.web import url
 from tornado.options import define, options
 
-from gargantua.const import CWD, LISTEN_PORT, LOG_NAME, \
+from gargantua.settings import CWD, LISTEN_PORT, LOG_NAME, \
     DB_HOST, DB_PORT, DB_NAME, \
     MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWD, FROM_ADDR, TO_ADDRS, MAIL_SUBJECT
 from gargantua.utils import setup_log, generate_random_string
-from gargantua.views import BaseHandler, PostsHandler, PostPage, \
-    PublishHandler, UserHandler, RssHandler, AmendHandler
+from gargantua.views import BaseHandler, PostsHandler, UserHandler
 from gargantua.apis import PostApiHandler
 from gargantua.libs import LogMailHandler, LogMailFormatter
+from gargantua.models import BaseBlogModel
 
 
 # settings
@@ -71,19 +70,19 @@ class Application(tornado.web.Application):
         handlers = [
             # -------------- handler --------------
             url(r'^/(archives)/$', PostsHandler, name='post:archives'),
-            url(r'^/p/(.*)/$', PostPage, name='post:single'),
-            url(r'^/publish/$', PublishHandler, name='post:publish'),
-            url(r'^/amend/$', AmendHandler, name='post:amend'),
+            url(r'^/(p)/(.*)/$', PostsHandler, name='post:single'),
+            url(r'^/(publish)/$', PostsHandler, name='post:publish'),
+            url(r'^/(amend)/$', PostsHandler, name='post:amend'),
             url(r'^/(login)/$', UserHandler, name='user:login'),
             url(r'^/(search)/$', PostsHandler, name='post:search'),
             url(r'^/(profile)/$', UserHandler, name='user:profile'),
             # ---------------- rss ----------------
-            url(r'^/rss.xml$', RssHandler, name='rss'),
+            url(r'^/(rss)/$', PostsHandler, name='post:rss'),
             # ---------------- old api ----------------
             url(r'^/(api/posts/.*)/$', PostsHandler, name='api:post'),
             url(r'^/(api/user/.*)/$', UserHandler, name='api:user:login'),
             # ---------------- rest api ----------------
-            url(r'^/api/p/([a-zA-Z]+)?/?$', PostApiHandler, name='rest:post'),
+            url(r'^/api/v2/p/([a-zA-Z]+)?/?$', PostApiHandler, name='rest:post'),
             # ---------------- 404 ----------------
             url(r'^/$', PostsHandler, name='root'),
             url(r'^/404.html$', PageNotFound, name='404'),
@@ -110,10 +109,11 @@ class Application(tornado.web.Application):
         log.debug('connect database at {}:{}'
                   .format(options.dbhost, options.dbport))
 
-        self.conn = motor.MotorClient(host=options.dbhost, port=options.dbport)
-        self.db = self.conn[options.dbname]
-        self.mongo_conn = pymongo.MongoClient(host=options.dbhost, port=options.dbport)
-        self.mongo_db = self.mongo_conn[options.dbname]
+        model = BaseBlogModel(host=options.dbhost, port=options.dbport)
+        self.conn = model.conn
+        self.db = model.db
+        self.mongo_conn = model.mongo_conn
+        self.mongo_db = model.mongo_db
 
         # ensure index
         # posts

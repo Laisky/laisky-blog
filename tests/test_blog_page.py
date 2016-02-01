@@ -2,6 +2,7 @@ from urllib.parse import urlparse
 
 from tornado.testing import AsyncHTTPTestCase
 from tornado.ioloop import IOLoop
+from tornado.options import options
 
 from gargantua.app import Application
 
@@ -12,6 +13,9 @@ GA_ID = 'UA-65521906-1'
 class GargantuaTestCase(AsyncHTTPTestCase):
 
     def get_app(self):
+        options.debug = True
+        options.dbhost = 'localhost'
+        options.dbport = 27017
         self.app = Application()
         return self.app
 

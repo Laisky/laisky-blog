@@ -22,15 +22,18 @@ class TestMarkdown(TestCase):
 
 class TestEncrypt(TestCase):
 
+    def generate_random(self):
+        return ''.join([random.choice(ascii_lowercase) for _ in range(15)])
+
     def test_bcrypt(self):
-        passwd = ''.join([random.choice(ascii_lowercase) for _ in range(15)])
+        passwd = self.generate_random()
         wrong = passwd[:-1] + '0'
         hashed = generate_passwd(passwd)
         self.assertTrue(validate_passwd(passwd, hashed))
         self.assertFalse(validate_passwd(wrong, hashed))
 
     def test_jwt(self):
-        passwd = ''.join([random.choice(ascii_lowercase) for _ in range(15)])
+        passwd = self.generate_random()
         wrong = passwd[:-1] + '0'
         j = {'username': 'laisky'}
         token = generate_token(j, passwd)

@@ -3,13 +3,10 @@
 
 from .base import BaseHandler
 from .archives import PostsHandler
-from .posts import PostPage
-from .publish import PublishHandler
 from .user import UserHandler
-from .rss import RssHandler
-from .amend import AmendHandler
 
-__all__ = ['BaseHandler', 'PostsHandler', 'PostPage',
-           'UserHandler',
-           'PublishHandler', 'AmendHandler',
-           'RssHandler']
+
+__all__ = [
+    'BaseHandler', 'PostsHandler',
+    'UserHandler',
+]
