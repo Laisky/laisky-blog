@@ -6,7 +6,7 @@ from bson import ObjectId
 
 from gargantua.utils import debug_wrapper, \
     is_objectid, utc2cst_timestamp
-from gargantua.const import LOG_NAME
+from gargantua.settings import LOG_NAME
 from .base import BaseApiHandler
 
 

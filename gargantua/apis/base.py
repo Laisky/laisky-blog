@@ -6,7 +6,7 @@ import tornado
 import html2text
 import dicttoxml
 
-from gargantua.const import LOG_NAME
+from gargantua.settings import LOG_NAME
 from gargantua.utils import AuthHandlerMixin, DbHandlerMixin, \
     WebHandlerMixin, HttpErrorMixin, JinjaMixin, RFCMixin
 

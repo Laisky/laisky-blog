@@ -11,7 +11,7 @@ import jwt
 from bson import ObjectId
 
 from gargantua.utils import validate_token
-from gargantua.const import LOG_NAME, OK
+from gargantua.settings import LOG_NAME, OK
 from .jinja import TemplateRendering
 
 
@@ -27,7 +27,7 @@ def debug_wrapper(func):
         log.debug('debug_wrapper for args {}, kw {}'.format(args, kw))
         try:
             yield from func(*args, **kw)
-        except Exception:
+        except Exception as err:
             self = args[0]
             err_msg = {
                 'uri': str(self.request.uri),
@@ -39,7 +39,6 @@ def debug_wrapper(func):
                 traceback.format_exc(),
                 json.dumps(err_msg, indent=4, sort_keys=True),
             ))
-            raise
     return wrapper
 
 

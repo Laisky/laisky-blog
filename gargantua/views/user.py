@@ -1,24 +1,18 @@
 import datetime
-import logging
 
 import tornado
 
 from .base import BaseHandler
-from ..const import LOG_NAME, OK, ERROR
-from ..utils import (
-    debug_wrapper, validate_passwd, generate_token,
-    validate_email, utcnow
-)
-
-
-log = logging.getLogger(LOG_NAME)
+from gargantua.settings import OK, ERROR
+from gargantua.utils import debug_wrapper, validate_passwd, generate_token, \
+    validate_email, utcnow, logger
 
 
 class UserHandler(BaseHandler):
 
     @tornado.web.asynchronous
     def get(self, url):
-        log.info('GET UserHandler {}'.format(url))
+        logger.info('GET UserHandler {}'.format(url))
 
         router = {
             'login': self.login_page,
@@ -28,7 +22,7 @@ class UserHandler(BaseHandler):
 
     @tornado.web.asynchronous
     def post(self, url):
-        log.info('POST UserHandler {}'.format(url))
+        logger.info('POST UserHandler {}'.format(url))
 
         router = {
             'api/user/login': self.login_api,
@@ -36,7 +30,7 @@ class UserHandler(BaseHandler):
         router.get(url, self.redirect_404)()
 
     def login_page(self):
-        log.debug('login_page')
+        logger.debug('login_page')
         self.render2('login/index.html')
         self.finish()
 
@@ -51,23 +45,23 @@ class UserHandler(BaseHandler):
         email = self.get_argument('email', strip=True)
         passwd = self.get_argument('password')
         is_keep_login = self.get_argument('is_keep_login', bool=True)
-        log.debug('login_api with email {}, passwd {}, is_keep_login {}'
-                  .format(email, passwd, is_keep_login))
+        logger.debug('login_api with email {}, passwd {}, is_keep_login {}'
+                     .format(email, passwd, is_keep_login))
 
         if not validate_email(email):
-            log.debug("invalidate email: {}".format(email))
+            logger.debug("invalidate email: {}".format(email))
             self.write_json(msg="invalidate email", status=ERROR)
             self.finish()
             return
 
         user_docu = (yield self.db.users.find_one({'email': email}))
         if not user_docu:
-            log.debug('email not existed: {}'.format(email))
+            logger.debug('email not existed: {}'.format(email))
             self.write_json(msg='Wrong Account or Password', status=ERROR)
             self.finish()
             return
         elif not validate_passwd(passwd, user_docu['password']):
-            log.debug('invalidate password: {}'.format(passwd))
+            logger.debug('invalidate password: {}'.format(passwd))
             self.write_json(msg='Wrong Account or Password', status=ERROR)
             self.finish()
             return
@@ -83,6 +77,6 @@ class UserHandler(BaseHandler):
         expires_days = 30 if is_keep_login else None
         self.set_secure_cookie('uid', uid, expires_days=expires_days)
         self.set_secure_cookie('token', token, expires_days=expires_days)
-        log.debug('set cookies with uid {}, token {}, expires_days {}'.format(uid, token, expires_days))
+        logger.debug('set cookies with uid {}, token {}, expires_days {}'.format(uid, token, expires_days))
         self.write_json(msg=OK)
         self.finish()

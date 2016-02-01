@@ -16,12 +16,11 @@ import pymongo
 from tornado.web import url
 from tornado.options import define, options
 
-from gargantua.const import CWD, LISTEN_PORT, LOG_NAME, \
+from gargantua.settings import CWD, LISTEN_PORT, LOG_NAME, \
     DB_HOST, DB_PORT, DB_NAME, \
     MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWD, FROM_ADDR, TO_ADDRS, MAIL_SUBJECT
 from gargantua.utils import setup_log, generate_random_string
-from gargantua.views import BaseHandler, PostsHandler, \
-    UserHandler, RssHandler, AmendHandler
+from gargantua.views import BaseHandler, PostsHandler, UserHandler
 from gargantua.apis import PostApiHandler
 from gargantua.libs import LogMailHandler, LogMailFormatter
 from gargantua.models import BaseBlogModel
@@ -78,7 +77,7 @@ class Application(tornado.web.Application):
             url(r'^/(search)/$', PostsHandler, name='post:search'),
             url(r'^/(profile)/$', UserHandler, name='user:profile'),
             # ---------------- rss ----------------
-            url(r'^/rss.xml$', RssHandler, name='rss'),
+            url(r'^/(rss)/$', PostsHandler, name='post:rss'),
             # ---------------- old api ----------------
             url(r'^/(api/posts/.*)/$', PostsHandler, name='api:post'),
             url(r'^/(api/user/.*)/$', UserHandler, name='api:user:login'),

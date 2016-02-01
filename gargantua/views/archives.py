@@ -16,7 +16,7 @@ from lxml import etree
 
 from gargantua.utils import debug_wrapper, unquote_fr_mongo, logger, \
     render_md_to_html, utcnow
-from gargantua.const import N_POST_PER_PAGE, ERROR
+from gargantua.settings import N_POST_PER_PAGE, ERROR
 from gargantua.models import ArticlesModel
 from .base import BaseHandler
 from .exceptions import PostValidatorError
@@ -59,7 +59,8 @@ class PostsHandler(BaseHandler, ArticleMixin):
             'search': self.get_post_by_keyword,      # 按关键词搜索
             'publish': self.get_new_post,            # 发表新文章
             'p': self.get_post_by_name,              # 单篇文章的页面
-            'amend': self.get_amend_post,   # 编辑文章
+            'amend': self.get_amend_post,            # 编辑文章
+            'rss': self.get_rss,                     # 获取订阅
             'api/posts/get-post-by-page': self.get_post_by_page,
         }
         router.get(url, self.redirect_404)(*args, **kw)
@@ -90,6 +91,23 @@ class PostsHandler(BaseHandler, ArticleMixin):
         """Delete existed article
         """
         pass
+
+    @tornado.gen.coroutine
+    @debug_wrapper
+    def get_rss(self):
+        cursor = self.db.posts.find()
+        cursor.sort([('_id', pymongo.DESCENDING)]) \
+
+        posts = []
+        while (yield cursor.fetch_next):
+            docu = cursor.next_object()
+            if docu.get('post_password'):
+                continue
+
+            posts.append(unquote_fr_mongo(docu))
+
+        self.render_post('rss.html', posts=posts)
+        self.finish()
 
     @tornado.web.authenticated
     @tornado.gen.coroutine

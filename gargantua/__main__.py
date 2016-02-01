@@ -7,11 +7,8 @@ import tornado.options as opt
 from tornado.options import options
 
 from .app import Application
-from .const import LOG_NAME
 from .tasks import setup_tasks
-
-
-log = logging.getLogger(LOG_NAME)
+from .utils import logger
 
 
 def main():
@@ -21,10 +18,10 @@ def main():
     http_server.listen(options.port)
 
     if options.debug:
-        log.info('start application in debug mode')
-        log.setLevel(logging.DEBUG)
+        logger.info('start application in debug mode')
+        logger.setLevel(logging.DEBUG)
     else:
-        log.info('start application in normal mode')
+        logger.info('start application in normal mode')
     ioloop = tornado.ioloop.IOLoop.instance()
 
     if not options.debug:

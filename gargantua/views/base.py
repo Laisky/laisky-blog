@@ -4,7 +4,7 @@ from math import ceil
 
 import tornado
 
-from gargantua.const import N_POST_PER_PAGE
+from gargantua.settings import N_POST_PER_PAGE
 from gargantua.utils import DbHandlerMixin, WebHandlerMixin, \
     AuthHandlerMixin, JinjaMixin, logger, HttpErrorMixin
 

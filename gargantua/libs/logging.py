@@ -5,10 +5,7 @@ import logging
 import logging.handlers
 
 from gargantua.tasks import delay_task
-from gargantua.const import LOG_NAME
-
-
-log = logging.getLogger(LOG_NAME)
+from gargantua.utils import logger
 
 
 def send_mail(mailhost, mailport, username, passwd,
@@ -30,20 +27,20 @@ def send_mail(mailhost, mailport, username, passwd,
 class LogMailFormatter(logging.Formatter):
 
     def format(self, record):
-        print('format record: {}'.format(record))
         return '<p>{}</p>'.format('</p><p>'.join(record.msg.split('\n')))
 
 
 class LogMailHandler(logging.handlers.SMTPHandler):
 
     def emit(self, record):
+        logger.debug('delay_task for record {}'.format(record))
         delay_task(send_mail,
                    mailhost=self.mailhost,
                    mailport=self.mailport,
                    username=self.username,
                    passwd=self.password,
-                   fromaddr=self.fromaddr,
-                   toaddrs=self.toaddrs,
+                   from_addr=self.fromaddr,
+                   to_addrs=self.toaddrs,
                    subject=self.subject,
                    content=record
                    )

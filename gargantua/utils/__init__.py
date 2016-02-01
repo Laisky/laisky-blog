@@ -8,7 +8,7 @@ import logging
 
 import pytz
 
-from gargantua.const import LOG_NAME, LOG_PATH
+from gargantua.settings import LOG_NAME, LOG_PATH
 from .encryt import generate_passwd, validate_passwd, \
     generate_token, validate_token
 from .jinja import TemplateRendering
