@@ -1,10 +1,11 @@
 <a name="2.1.3"></a>
-## [2.1.3](https://github.com/Laisky/laisky-blog/compare/2.1.2...v2.1.3) (2016-02-01)
+## [2.1.3](https://github.com/Laisky/laisky-blog/compare/2.1.2...v2.1.3) (2016-02-02)
 
 
 ### Performance Improvements
 
 * 2.1.3 ([c1b9771](https://github.com/Laisky/laisky-blog/commit/c1b9771))
+* Use ngx-check to support loadbalance ([94047eb](https://github.com/Laisky/laisky-blog/commit/94047eb)), closes [#80](https://github.com/Laisky/laisky-blog/issues/80)
 
 
 
