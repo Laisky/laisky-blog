@@ -3,7 +3,7 @@ Gargantua
 
 [![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg)]()
 [![Build Status](https://travis-ci.org/Laisky/laisky-blog.svg?branch=master)](https://travis-ci.org/Laisky/laisky-blog)
-[![Crates.io](https://img.shields.io/badge/version-v2.1.4-blue.svg)]()
+[![Crates.io](https://img.shields.io/badge/version-v2.1.5-blue.svg)]()
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Gitter](https://badges.gitter.im/Laisky/laisky-blog.svg)](https://gitter.im/Laisky/laisky-blog?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
@@ -23,6 +23,8 @@ $ sudo make
 ```
 
 ### Docker
+
+[![](https://badge.imagelayers.io/ppcelery/laisky-blog:latest.svg)](https://imagelayers.io/?images=ppcelery/laisky-blog:latest 'Get your own badge on imagelayers.io')
 
 ```sh
 $ sudo docker run ppcelery/laisky-blog

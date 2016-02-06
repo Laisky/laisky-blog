@@ -8,11 +8,12 @@ RUN \
     mkdir /www && \
     git clone https://github.com/Laisky/laisky-blog.git /root/www/gargantua
 
+# Define working directory.
+WORKDIR /root/www/gargantua
 
 # packages
 RUN \
     pip install --upgrade pip && \
-    cd /root/www/gargantua && \
     pip install --upgrade -r requirements.txt
 
 # install gargantua
@@ -21,9 +22,6 @@ RUN \
 
 # Set environment variables.
 ENV HOME /root
-
-# Define working directory.
-WORKDIR /root
 
 # Define default command.
 CMD ["/root/.pyenv/shims/python", "-m", "gargantua"]
