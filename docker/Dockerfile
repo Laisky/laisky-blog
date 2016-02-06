@@ -1,18 +1,23 @@
 # build Gragantua
 
-FROM ppcelery/dockerfile-python
+FROM python:3.4
 MAINTAINER "ppcelery@gmail.com"
 
-# install pyenv
+# clone source code from git
 RUN \
-    source /root/.bashrc && \
     mkdir /www && \
-    git clone https://github.com/Laisky/laisky-blog.git /root/www/gargantua && \
-    pyenv global 3.4.1 && \
+    git clone https://github.com/Laisky/laisky-blog.git /root/www/gargantua
+
+
+# packages
+RUN \
     pip install --upgrade pip && \
     cd /root/www/gargantua && \
-    pip install --upgrade -r requirements.txt && \
-    python setup.py develop
+    pip install --upgrade -r requirements.txt
+
+# install gargantua
+RUN \
+    python setup.py install
 
 # Set environment variables.
 ENV HOME /root
