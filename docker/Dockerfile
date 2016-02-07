@@ -24,4 +24,4 @@ RUN \
 ENV HOME /root
 
 # Define default command.
-CMD ["/root/.pyenv/shims/python", "-m", "gargantua"]
+CMD ["python", "-m", "gargantua"]
