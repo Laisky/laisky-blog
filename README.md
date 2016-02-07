@@ -27,7 +27,12 @@ $ sudo make
 [![](https://badge.imagelayers.io/ppcelery/laisky-blog:latest.svg)](https://imagelayers.io/?images=ppcelery/laisky-blog:latest 'Get your own badge on imagelayers.io')
 
 ```sh
-$ sudo docker run ppcelery/laisky-blog
+$ sudo docker run ppcelery/laisky-blog \
+    python -m gargantua \
+    --dbhost=mongo32 \
+    --dbport=27017 \
+    --debug=false \
+    --mail_passwd=YOUR_GMAIL_PASSWORD
 ```
 
 
