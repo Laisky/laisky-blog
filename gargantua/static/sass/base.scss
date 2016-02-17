@@ -10,7 +10,8 @@ html {
 
 body {
     height: 100%;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     font-family: "Helvetica Neue", "Helvetica", "Microsoft YaHei", "Segoe UI", "Arial", "freesans", "sans-serif";
     background-image: url(http://laisky-blog.qiniudn.com/background-1500x844.jpg);
     @include background-size(100% 100%);

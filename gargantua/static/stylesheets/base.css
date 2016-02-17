@@ -8,7 +8,8 @@ html {
 /* line 11, ../sass/base.scss */
 body {
   height: 100%;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   font-family: "Helvetica Neue", "Helvetica", "Microsoft YaHei", "Segoe UI", "Arial", "freesans", "sans-serif";
   background-image: url(http://laisky-blog.qiniudn.com/background-1500x844.jpg);
   -moz-background-size: 100% 100%;
@@ -17,18 +18,18 @@ body {
   background-size: 100% 100%;
   background-attachment: fixed;
 }
-/* line 19, ../sass/base.scss */
+/* line 20, ../sass/base.scss */
 body > .container {
   max-width: 900px;
   margin-top: 40px;
 }
 
-/* line 26, ../sass/base.scss */
+/* line 27, ../sass/base.scss */
 .navbar-right {
   padding-left: 0px;
 }
 
-/* line 31, ../sass/base.scss */
+/* line 32, ../sass/base.scss */
 .navbar .gsc-control-cse {
   padding: 0px;
   height: inherit;
@@ -37,42 +38,42 @@ body > .container {
   background-color: inherit;
   border-color: transparent;
 }
-/* line 39, ../sass/base.scss */
+/* line 40, ../sass/base.scss */
 .navbar .gsc-control-cse td {
   background-color: inherit;
 }
-/* line 43, ../sass/base.scss */
+/* line 44, ../sass/base.scss */
 .navbar .gsc-control-cse .gsc-control-wrapper-cse {
   width: 150px;
 }
-/* line 47, ../sass/base.scss */
+/* line 48, ../sass/base.scss */
 .navbar .gsc-control-cse .gsc-search-button {
   display: none;
 }
 
-/* line 55, ../sass/base.scss */
+/* line 56, ../sass/base.scss */
 .row {
   margin-left: 0px;
   margin-right: 0px;
 }
 
-/* line 60, ../sass/base.scss */
+/* line 61, ../sass/base.scss */
 .navbar-fixed-top {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-/* line 66, ../sass/base.scss */
+/* line 67, ../sass/base.scss */
 .loader-inner.pacman {
   margin-left: 30px;
 }
-/* line 70, ../sass/base.scss */
+/* line 71, ../sass/base.scss */
 .loader-inner.ball-scale-ripple-multiple {
   margin-top: 30px;
   margin-left: 30px;
 }
 
-/* line 77, ../sass/base.scss */
+/* line 78, ../sass/base.scss */
 .vertical-align {
   position: relative;
   top: 50%;
@@ -82,7 +83,7 @@ body > .container {
   transform: translateY(-50%);
 }
 
-/* line 83, ../sass/base.scss */
+/* line 84, ../sass/base.scss */
 .global-fade {
   position: absolute;
   top: 0px;
@@ -94,7 +95,7 @@ body > .container {
   display: none;
 }
 
-/* line 94, ../sass/base.scss */
+/* line 95, ../sass/base.scss */
 .container,
 .container-fluid {
   padding: 0px;
