@@ -1,0 +1,45 @@
+influxdb:
+  image: tutum/influxdb:0.8.8
+  log_driver: syslog
+  ports:
+    - 27283:8083
+    - 27286:8086
+    - 27215:2015
+  volumes:
+    - /var/lib/influxdb:/data
+  environment:
+    - GRAPHITE_BINDING=':2015'
+    - ADMIN_USER="ppcelery"
+    - GRAPHITE_DB="my_db"
+    - GRAPHITE_template="tag1.tag2.tag3.measurement*"
+    - GRAPHITE_PROTOCOL="udp"
+    - PRE_CREATE_DB="my_db;cadvisor"
+    - INFLUXDB_INIT_PWD=<INFLUX_DB_INIT_PASSWORD>
+
+grafana:
+  image: grafana/grafana
+  log_driver: syslog
+  ports:
+    - 27230:3000
+  volumes:
+    - /etc/grafana:/etc/grafana
+    - /var/lib/grafana:/var/lib/grafana
+  environment:
+    - GF_SECURITY_ADMIN_USER=ppcelery
+    - GF_SECURITY_ADMIN_PASSWORD=<GRAFANA_ADMIN_PASSWORD
+
+cadvisor:
+  image: google/cadvisor
+  command: -storage_driver=influxdb  \
+    -storage_driver_db=cadvisor  \
+    -storage_driver_host=influxdb:8086 \
+    -storage_driver_user=root  \
+    -storage_driver_password=<INFLUXDB_PASSOWRD>
+  log_driver: syslog
+  links:
+    - influxdb:influxdb
+  volumes:
+    - /:/rootfs:ro
+    - /sys:/sys:ro
+    - /var/lib/docker:/var/lib/docker:ro
+    - /var/run:/var/run
