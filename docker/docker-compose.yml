@@ -1,21 +1,29 @@
 mongodb:
   image: mongo:3.2
+  container_name: mongodb
   log_driver: syslog
+  log_opt:
+    tag: mongodb
+  expose:
+    - "27017"
   ports:
     - 27016:27017
   volumes:
     - /var/lib/mongodb:/data/db
-  log_opt:
-    tag: mongodb
 
 gargantua:
-  image: ppcelery/laisky-blog:latest
-  links: mongo32:mongo32
+  image: ppcelery/laisky-blog
+  container_name: gargantua
+  log_driver: syslog
+  log_opt:
+    tag: gargantua
+  links:
+    - mongodb:mongodb
   ports:
-    - 27850:27850
-  command: python -m gargantua \
-    --port=27850
-    --dbhost=mongo32 \
+    - 27851:27850
+  command: \
+    --port=27850 \
+    --dbhost=mongodb \
     --dbport=27017 \
     --debug=false \
     --mail_passwd=YOUR_GMAIL_PASSWORD
