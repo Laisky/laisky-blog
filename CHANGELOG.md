@@ -1,72 +1,266 @@
-<a name="2.1.6"></a>
-## [2.1.6](https://github.com/Laisky/laisky-blog/compare/2.1.2...v2.1.6) (2016-02-19)
-
-
-### Bug Fixes
-
-* fix body css overflow ([2f58206](https://github.com/Laisky/laisky-blog/commit/2f58206))
-* fix css overflow ([86f9233](https://github.com/Laisky/laisky-blog/commit/86f9233))
-
-### Performance Improvements
-
-* 2.1.3 ([c1b9771](https://github.com/Laisky/laisky-blog/commit/c1b9771))
-* change docker from python:3.4 ([94022ee](https://github.com/Laisky/laisky-blog/commit/94022ee))
-* Use ngx-check to support loadbalance ([6aaa29f](https://github.com/Laisky/laisky-blog/commit/6aaa29f)), closes [#80](https://github.com/Laisky/laisky-blog/issues/80)
-
-
-
-<a name="2.1.2"></a>
-## [2.1.2](https://github.com/Laisky/laisky-blog/compare/2.0.5...2.1.2) (2016-02-01)
-
-
-### Features
-
-* add chinese title serial number #72 ([f42a618](https://github.com/Laisky/laisky-blog/commit/f42a618))
-* add chinese title serial number #72 ([8288017](https://github.com/Laisky/laisky-blog/commit/8288017))
-
-
-
-<a name="2.0.5"></a>
-## [2.0.5](https://github.com/Laisky/laisky-blog/compare/1.9.9...2.0.5) (2015-12-18)
-
-
-
-
-<a name="1.9.9"></a>
-## [1.9.9](https://github.com/Laisky/laisky-blog/compare/1.8.1...1.9.9) (2015-11-08)
-
-
-
-
-<a name="1.8.1"></a>
-## [1.8.1](https://github.com/Laisky/laisky-blog/compare/1.7.3...1.8.1) (2015-09-15)
-
-
-
-
-<a name="1.7.3"></a>
-## [1.7.3](https://github.com/Laisky/laisky-blog/compare/1.5.1...1.7.3) (2015-08-29)
-
-
-
-
-<a name="1.5.1"></a>
-## [1.5.1](https://github.com/Laisky/laisky-blog/compare/1.0.0...1.5.1) (2015-07-06)
-
-
-
-
-<a name="1.0.0"></a>
-# [1.0.0](https://github.com/Laisky/laisky-blog/compare/839ed7f...1.0.0) (2015-05-17)
-
-
-### Bug Fixes
-
-* backgroun no-repeat ([839ed7f](https://github.com/Laisky/laisky-blog/commit/839ed7f))
-* background fixed ([2cc7a97](https://github.com/Laisky/laisky-blog/commit/2cc7a97))
-* normal p page do not link reveal.css ([4c812e0](https://github.com/Laisky/laisky-blog/commit/4c812e0))
-* normal page do not load reveal.js ([256ef95](https://github.com/Laisky/laisky-blog/commit/256ef95))
-* 增加 slide 评论 ([510ef8f](https://github.com/Laisky/laisky-blog/commit/510ef8f))
-
-
-
+       
+*CURRENT*
+---
+    
+- 2016-02-26 (Laisky) chore: update docker files -> [view commit](https://github.com/Laisky/laisky-blog/commit/056776cba08b5be33dba9cea85ca43dc7675a0a9)
+- 2016-02-17 (Laisky) 2.1.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/12d3ef613a8241cf48e47e83444991a76c34b3b8)
+- 2016-02-17 (Laisky) 2.1.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f66e6a15990f9e50a1f25aa12b4815df07dcc3a)
+- 2016-02-06 (Laisky) 2.1.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3e80d0ba5265a2d8447882db2cf11a09c3834d8e)
+- 2016-02-02 (Laisky) 2.1.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/7b88cb93b4439af66c43ee662b06171a7aa86eda)
+- 2016-02-01 (Laisky) 2.1.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/06b448d1e314bcf77c138fd42545fb8e70c081c1)
+- 2016-02-01 (Laisky) perf: 2.1.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/c1b9771e9b1bd3bce8ee14495f2b4477161885c3)    
+       
+*2.1.2*
+---
+    
+- 2016-02-01 (Laisky) refactor: refactory ugly code -> [view commit](https://github.com/Laisky/laisky-blog/commit/d79a2e3d3f8df1e04a0b8c7592fd4b178c93616b)
+- 2016-01-11 (Laisky) docs: add gitter -> [view commit](https://github.com/Laisky/laisky-blog/commit/5401e70cc8bd5ec838269f4693dca43e88a53ab5)
+- 2016-01-10 (Laisky) style: change indent -> [view commit](https://github.com/Laisky/laisky-blog/commit/da8e4c4c376ca0df63031179e64ada9be006755f)
+- 2016-01-07 (Laisky) style: fix requirements -> [view commit](https://github.com/Laisky/laisky-blog/commit/b4c098dc9c1887934b3e8c90c533fab8ad9e8e11)
+- 2016-01-07 (Laisky) docs: add commitizen logo -> [view commit](https://github.com/Laisky/laisky-blog/commit/dafddaf448e3fe1d1b2802c0e484384d410404af)
+- 2016-01-07 (Laisky) docs: fix docs -> [view commit](https://github.com/Laisky/laisky-blog/commit/47a6a09d39590611056951aae19275321a708a01)
+- 2016-01-07 (Laisky) docs: 2.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6f29e04af4b334f984156e8fa0559b7665f42779)
+- 2016-01-07 (Laisky) feat: add chinese title serial number #72 -> [view commit](https://github.com/Laisky/laisky-blog/commit/f42a6184a07925b4ecf9d000e2ecd98c5b2d22a0)
+- 2016-01-07 (Laisky) feat: add chinese title serial number #72 -> [view commit](https://github.com/Laisky/laisky-blog/commit/82880171b4fe9d543d44695b4625581eb9aa34ef)
+- 2016-01-07 (Laisky) docs: fix readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/2ba2449fce06fde5cfa6a01330b2bd94b8d4815b)
+- 2016-01-07 (Laisky) style: fix package.json -> [view commit](https://github.com/Laisky/laisky-blog/commit/72f9ab9594784eed95d22fd2943097d53bbd4aeb)
+- 2016-01-07 (Laisky) docs: + change log -> [view commit](https://github.com/Laisky/laisky-blog/commit/69f2cdf7ca363d9b93b732386c9d54c017086736)
+- 2016-01-07 (Laisky) refactor: move gargantua project to root dir -> [view commit](https://github.com/Laisky/laisky-blog/commit/3c152a0eb6e3f3005cce4cf3258d7bd8ca6fdf73)
+- 2016-01-07 (Laisky) docs: add pbr & commitizen -> [view commit](https://github.com/Laisky/laisky-blog/commit/0a2533fb6265b387dff23e50d225cef25973ce75)
+- 2016-01-07 (Laisky) + #73 pbr -> [view commit](https://github.com/Laisky/laisky-blog/commit/b45f22ce08e24d18031ec10eb57eecedfa99c6aa)
+- 2015-12-31 (Laisky) - highlightjs -> [view commit](https://github.com/Laisky/laisky-blog/commit/4b948aa2c67aca613e85656409e3d49ec4107364)
+- 2015-12-31 (Laisky) - highlightjs -> [view commit](https://github.com/Laisky/laisky-blog/commit/65f82651a446148062fbf86a620be9a79fa04876)
+- 2015-12-19 (Laisky) * post menu hover 自动展开 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ee5e0762fa705700a756a069883a86519061bddf)    
+       
+*2.0.5*
+---
+    
+- 2015-12-18 (Laisky) 2.0.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/70d778ef43f8762c9c0291ab77f284ed588902ae)
+- 2015-12-18 (Laisky) * #64 改写 reveal.js，修复了一个 safari 下的bug -> [view commit](https://github.com/Laisky/laisky-blog/commit/1295fee265e6935b596b926593b8f929e650d2b1)
+- 2015-12-18 (Laisky) * fix reveal.js error on safari -> [view commit](https://github.com/Laisky/laisky-blog/commit/f21e9cfce73227b94bdaf47796c4485f15fc7343)
+- 2015-12-17 (Laisky) * fix slide font css -> [view commit](https://github.com/Laisky/laisky-blog/commit/d0c4d18241f9f5779b1c0f29797be2a74d2ef229)
+- 2015-12-17 (Laisky) 2.0.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1c9ac7d4686649134d315b551567a97850a2f665)
+- 2015-12-17 (Laisky) * 实在不知道是什么鬼 -> [view commit](https://github.com/Laisky/laisky-blog/commit/c13c72b589719bb759814aa325187a29e693ee7a)
+- 2015-12-17 (Laisky) Revert "* fix: 有 js 文件没有以 ; 结尾" -> [view commit](https://github.com/Laisky/laisky-blog/commit/57a2b61e504af7174fa94d468b73211fdc425a95)
+- 2015-12-17 (Laisky) * 进一步美化 slide 的 css -> [view commit](https://github.com/Laisky/laisky-blog/commit/f0bd9473b8816ffa10ddfe5030643992e6842108)
+- 2015-12-17 (Laisky) * fix: 有 js 文件没有以 ; 结尾 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ef1179e081ae5511e9946b804f500a77879be7e2)
+- 2015-12-16 (Laisky) * fix slide p -> [view commit](https://github.com/Laisky/laisky-blog/commit/6915c725c7163e14c807716f5a401f90a855ee29)
+- 2015-12-16 (Laisky) * fix charset -> [view commit](https://github.com/Laisky/laisky-blog/commit/1b95e026d69870b2f7cfbcbb6ef18944e44d8806)
+- 2015-12-16 (Laisky) * fix charset -> [view commit](https://github.com/Laisky/laisky-blog/commit/f497af55bef667e8ac4d233e90f42608032c62ad)
+- 2015-12-16 (Laisky) * fix slide encoding -> [view commit](https://github.com/Laisky/laisky-blog/commit/a3f155e9203ea4391e89b40851c24ac575424120)
+- 2015-12-13 (Laisky) * javascript async -> [view commit](https://github.com/Laisky/laisky-blog/commit/75599b392ab915718088f1944e2be70081a0d7f8)
+- 2015-12-09 (Laisky) 2.0.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/d8cf1d37c342a43e16c621d0b0acc45039403742)
+- 2015-12-09 (Laisky) 2.0.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3ebeb283fc8eb5ee8c173e726d87e9cdf366dc59)
+- 2015-12-09 (Laisky) * #68 post title editable -> [view commit](https://github.com/Laisky/laisky-blog/commit/d6cf3a3e7790a336560d29cfe174b65001128fdb)
+- 2015-12-01 (Laisky.Cai) * fix versions-log format -> [view commit](https://github.com/Laisky/laisky-blog/commit/03892a4824d578095656bef12427974a9264af31)
+- 2015-11-26 (Laisky) * fix slide link color -> [view commit](https://github.com/Laisky/laisky-blog/commit/35f377379219ae7da46e0219a12fccf6c4be7b8b)
+- 2015-11-26 (Laisky) 2.0.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/718ed1dab63c0a4d6a1fd4772ed9230c1042ed64)
+- 2015-11-26 (Laisky) * bugfix slide 的颜色和amend有bug -> [view commit](https://github.com/Laisky/laisky-blog/commit/7ad132887b43eca9827541daf0adb4500162413f)
+- 2015-11-09 (Laisky) * 测试数据库端口为 27016 -> [view commit](https://github.com/Laisky/laisky-blog/commit/e89f70c5113a7d1bb1e5fa001f6435552e642dd5)
+- 2015-11-09 (Laisky) * fix 美化 post menu -> [view commit](https://github.com/Laisky/laisky-blog/commit/50d387b3d1bcdd75d4e1f1193b68a3c5bd6b41dd)
+- 2015-11-08 (Laisky) * fix redirect -> [view commit](https://github.com/Laisky/laisky-blog/commit/736aa0f39b9c387b94dafa26fa844edf20fd7b25)
+- 2015-11-08 (Laisky) 2.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/dc476928520df29779ba35666b6df625cb86ed36)
+- 2015-11-08 (Laisky) * #67 登陆后自动跳转到 next -> [view commit](https://github.com/Laisky/laisky-blog/commit/ed0f86dd20427df49aaf027f39025bf7321cd6a6)    
+       
+*1.9.9*
+---
+    
+- 2015-11-08 (Laisky) * fix: 美化文章 CSS -> [view commit](https://github.com/Laisky/laisky-blog/commit/f2eb6faa9d5be617305044f2be9bfd9e3a4a6e43)
+- 2015-11-01 (Laisky) * fix: remove maven -> [view commit](https://github.com/Laisky/laisky-blog/commit/31c37aff3c86b0a471161f575f7889faa466ec79)
+- 2015-10-27 (Laisky) 1.9.8 -> [view commit](https://github.com/Laisky/laisky-blog/commit/5c780652a6f05eae57719bcaee06a14929ab1a24)
+- 2015-10-27 (Laisky) * fix: BaseRequestHandler 调整一下继承顺序 -> [view commit](https://github.com/Laisky/laisky-blog/commit/5cc0779244465147a0d6eee7e76325903cbd859c)
+- 2015-10-23 (Laisky) 1.9.7 -> [view commit](https://github.com/Laisky/laisky-blog/commit/9fcea1274ee66a770558bf8438f78064ce290427)
+- 2015-10-23 (Laisky) 1.9.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/c7ea1e1c0f7207ab210e414f033866d8ad185201)
+- 2015-10-23 (Laisky) 1.9.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/e7a100c3789239ec3fd4443dd99f76df7a5ca622)
+- 2015-10-23 (Laisky) * #65 修复 post type   - 更新老的文章的时候，同步更新 post_type -> [view commit](https://github.com/Laisky/laisky-blog/commit/caf4a82e2e2b726ec4e9f0e90e3db94093520a52)
+- 2015-10-23 (Laisky) * 增加覆盖测试 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3dee67897f02222097766d0dd69240a001e82f1f)
+- 2015-10-23 (Laisky) * 总算把单元测试调通了 -> [view commit](https://github.com/Laisky/laisky-blog/commit/5b8111f876edf4a7e2a0cfca734d61c0cf89ce01)
+- 2015-10-23 (Laisky) * test githooks -> [view commit](https://github.com/Laisky/laisky-blog/commit/a320893227aa8006eb126d9343f1e90f6d921934)
+- 2015-10-23 (Laisky) * fix: 依赖 -> [view commit](https://github.com/Laisky/laisky-blog/commit/fcf8f2894d218bc1ab72b1690d37614a91da9f01)
+- 2015-10-23 (Laisky) * fix: dicttoxml -> [view commit](https://github.com/Laisky/laisky-blog/commit/208bf54c534623c44640f72e8eed3c8d46424cfb)
+- 2015-10-23 (Laisky) * #62 增加 utils 的测试 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b48a535b3420c6bd37780fa55364bc23a67d1859)
+- 2015-10-22 (Laisky) * #62 stash -> [view commit](https://github.com/Laisky/laisky-blog/commit/09e08e1004e3dde1dbbb731a8c864196f7fd6e77)
+- 2015-10-22 (Laisky) 1.9.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/9d09dca51e3182de7e47652baa78d4aa4f1ffb72)
+- 2015-10-22 (Laisky) * #62 用线上地址 -> [view commit](https://github.com/Laisky/laisky-blog/commit/4590749ba41b907c75abdc2be1002e377a1e22f5)
+- 2015-10-22 (Laisky) + #62 travis init   - 增加一个首页的 unittest   - 增加 travis 的脚本 -> [view commit](https://github.com/Laisky/laisky-blog/commit/65218f4719b819fbcee7cfe6933c20a81b58e9a6)
+- 2015-09-21 (Laisky) * fix readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/b344ed5d61f0747439bc3e490d93fea9edde62e5)
+- 2015-09-21 (Laisky) + license -> [view commit](https://github.com/Laisky/laisky-blog/commit/82777bc485882b864ece40c21fb862c905d82aab)
+- 2015-09-21 (Laisky) 1.9.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/0c27e53f717d4fc6f08955b7271b24a7cc72ee1a)
+- 2015-09-21 (Laisky) - remove sentry -> [view commit](https://github.com/Laisky/laisky-blog/commit/c4851c8a8f723a5dcfd7585544f06e37a4f782c8)
+- 2015-09-21 (Laisky) 1.9.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1b110a35a4d2230ff10afd1b5cbee25c19ad9688)
+- 2015-09-21 (Laisky) * #66: mail handler 和 sentry handler 都上线 -> [view commit](https://github.com/Laisky/laisky-blog/commit/4fb5a96d0f5ec32469706f6c2805e8921b307d03)
+- 2015-09-21 (Laisky) + #66: 增加 mail handler -> [view commit](https://github.com/Laisky/laisky-blog/commit/b7905fda4d14aad42c764821e466356bb2fc26f2)
+- 2015-09-16 (Laisky) * fix menubar width -> [view commit](https://github.com/Laisky/laisky-blog/commit/36e644276f79c0fc284bf08c78e01d8cb8c5f856)
+- 2015-08-07 (Laisky) #42 clean -> [view commit](https://github.com/Laisky/laisky-blog/commit/7c53b702110597e47001371248f31fe41259913c)
+- 2015-08-07 (Laisky) #42 增加 application/xml 的支持 -> [view commit](https://github.com/Laisky/laisky-blog/commit/0bd0e449bb76715a8bdbb3cc9f4235e3cf845e69)
+- 2015-08-07 (Laisky) #42 大规模的重写了 RESTful 的 Response   - 实现了 text/palin   - text/html   - */*   - application/json   - urlencode -> [view commit](https://github.com/Laisky/laisky-blog/commit/fa8b6d65f4d42d166c699942623f06c8cb24581b)
+- 2015-08-05 (Laisky) #42 整理整理 -> [view commit](https://github.com/Laisky/laisky-blog/commit/d167c7e7735019719fac0e2da516bccb267c6e48)
+- 2015-08-05 (Laisky) #42 完成 postapihandler -> [view commit](https://github.com/Laisky/laisky-blog/commit/092fbea2c676cbc6eee1803a86a866a78112e0d1)
+- 2015-08-05 (Laisky) #42 增加 HttpErrorMixin -> [view commit](https://github.com/Laisky/laisky-blog/commit/7461469fac261617db01f39d1e7575312c499871)
+- 2015-08-05 (Laisky) #42 完善了 post 的内容 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6736c4279589a8b5cd342a56b1364e183a8a7602)
+- 2015-08-05 (Laisky) #42 posts get api ok   - 完成了 /p/，包括 skip, list 等参数 -> [view commit](https://github.com/Laisky/laisky-blog/commit/95de718eb864ec1190dc31e61a3fd75d7ace4a84)
+- 2015-08-05 (Laisky) #42 顺手fix一个 AuthHandlerMixin 的bug -> [view commit](https://github.com/Laisky/laisky-blog/commit/f023ad92b767d1d60734d620a0656b5baa46e36e)
+- 2015-08-05 (Laisky) #42 重构了大量 mixin -> [view commit](https://github.com/Laisky/laisky-blog/commit/1b1bcd3baee8838e4de6e402903e6153c0a7ab68)    
+       
+*1.8.1*
+---
+    
+- 2015-09-15 (Laisky) * viewhandler 的错误不再发邮件报警 -> [view commit](https://github.com/Laisky/laisky-blog/commit/473d6898c66cadf35b455f561c6c6476d15564aa)
+- 2015-09-14 (Laisky) simple profile -> [view commit](https://github.com/Laisky/laisky-blog/commit/50fb0aa89ef294dccaed2aaa6bb64ef6c965efd4)
+- 2015-09-13 (Laisky) * fix: slide 页面漏了一个 CSS -> [view commit](https://github.com/Laisky/laisky-blog/commit/f3f1594428a23cfa515d2b58c68627dabec7cb89)
+- 2015-09-13 (Laisky) clean -> [view commit](https://github.com/Laisky/laisky-blog/commit/c235df2a53a6960659feb004e037950c21ba9bcc)
+- 2015-09-13 (Laisky) 1.9 -> [view commit](https://github.com/Laisky/laisky-blog/commit/0f9caea5abdc3b9fb2f2244a10391edd1d173c14)
+- 2015-09-13 (Laisky) * #63 把 /search redirect 到 cse -> [view commit](https://github.com/Laisky/laisky-blog/commit/92d28cab1f600fca987e4990fd00601b5885a2f9)
+- 2015-09-13 (Laisky) + #63 tags 切换为 Google 搜搜   - 点击 .search 时，会搜索 data-query 字段 -> [view commit](https://github.com/Laisky/laisky-blog/commit/16b9c9ff02f82b960c24489551b4da4f14c70017)
+- 2015-09-13 (Laisky) * #63 搜索替换为 GoogleSearch -> [view commit](https://github.com/Laisky/laisky-blog/commit/b37641aeb1020c2665f9a2a6ce8174465a9e97db)
+- 2015-09-12 (Laisky) + #63 Google Custom Search -> [view commit](https://github.com/Laisky/laisky-blog/commit/8a7fee3ec8628b280b910065399e3223c1569738)
+- 2015-09-11 (Laisky) * Fix 404 CSS -> [view commit](https://github.com/Laisky/laisky-blog/commit/dd0eaacefb4a074795866356c98e0e6fdda080ba)
+- 2015-09-08 (Laisky) * fix readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/532739182ba09c5dc7d5b907d92e46783309cd19)
+- 2015-09-08 (Laisky) * fix readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/0f663aa02f55ccde02413051cec9afff41e7f406)
+- 2015-09-06 (Laisky) 1.8.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/9a3c35c9d9d4e2a0074b2c42e40c62e34b0670be)
+- 2015-09-06 (Laisky) * #60 前后端调通 -> [view commit](https://github.com/Laisky/laisky-blog/commit/061f977e7ebad01c5204068a621716add1336942)
+- 2015-09-05 (Laisky) * #60 后端姑且调通，前端还有一大堆问题 -> [view commit](https://github.com/Laisky/laisky-blog/commit/d4aef2b683f15861526cdf0d4e8d28d8a5114c67)
+- 2015-09-05 (Laisky) * #60 fix css -> [view commit](https://github.com/Laisky/laisky-blog/commit/3be0f55bff836e27550ae1d18291a3b9e2f3073b)
+- 2015-09-05 (Laisky) * #60 前端样式ok -> [view commit](https://github.com/Laisky/laisky-blog/commit/d3977fd6d8f0170af3b7f3f1ec0bae9217118c73)
+- 2015-09-02 (Laisky) + #60 增加后台提取目录的代码 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ddbcde48e29f4792ddbc4700edd2ed11085b63e7)
+- 2015-09-02 (Laisky) * #60 精简 markdown -> [view commit](https://github.com/Laisky/laisky-blog/commit/15d6d27735627a471872a4b1300fd36d46196d4a)
+- 2015-08-31 (Laisky) + #60 自动给 title 添加 id -> [view commit](https://github.com/Laisky/laisky-blog/commit/33c3acacd8b7a3572d5d26945d0d1807427c596d)
+- 2015-08-30 (Laisky) * fix rss   - 之前的 rss xml 格式都是错的…… -> [view commit](https://github.com/Laisky/laisky-blog/commit/85061cf2daf3b458b2cf5138e6a03fba49af93e7)
+- 2015-08-29 (Laisky) * fix archives   - xs 时隐藏侧栏   - sm 时显示侧栏 -> [view commit](https://github.com/Laisky/laisky-blog/commit/0bf04fba4af41bd4160bc35eda9a0c00599234f8)    
+       
+*1.7.3*
+---
+    
+- 2015-08-28 (Laisky) * update readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/f234df436570743cb4feeea8e6258041eb95d563)
+- 2015-08-28 (Laisky) + 1.7.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/4d2f4102b7535f254122fc486edb05dc64c2c7cb)
+- 2015-08-28 (Laisky) - #57 remove less -> [view commit](https://github.com/Laisky/laisky-blog/commit/cb55b67c22a75fe6ea68438a366195dde66d3a83)
+- 2015-08-28 (Laisky) + #57 dialog.scss -> [view commit](https://github.com/Laisky/laisky-blog/commit/20b82763bd5974488d5e853e423f3dba6d535eaa)
+- 2015-08-28 (Laisky) + #57 post.scss -> [view commit](https://github.com/Laisky/laisky-blog/commit/ceb98b3c84514ab869699aa23ca8f84407de82b8)
+- 2015-08-28 (Laisky) * #57 debug 模式不启动 task -> [view commit](https://github.com/Laisky/laisky-blog/commit/46376aee13a6f365df7afe5e5acf09ac5c82488f)
+- 2015-08-28 (Laisky) + #57 p.sass 解决了 slide -> [view commit](https://github.com/Laisky/laisky-blog/commit/69ca607885cd54201ce677df5d57231fe79fb502)
+- 2015-08-28 (Laisky) * #57 fix searc page -> [view commit](https://github.com/Laisky/laisky-blog/commit/4df18f78d3e972b8e9737cc267ea5835643e32e1)
+- 2015-08-28 (Laisky) + #57 publish.scss -> [view commit](https://github.com/Laisky/laisky-blog/commit/259db82b7539d07825bdf8c32afada23005cad4d)
+- 2015-08-28 (Laisky) + #57 login.scss -> [view commit](https://github.com/Laisky/laisky-blog/commit/e81cd933460c586b900d9fcc01506fafcc579a6e)
+- 2015-08-28 (Laisky) + #57 p.scss -> [view commit](https://github.com/Laisky/laisky-blog/commit/49fd94f8446f7e4430446637ca24d214d789a85e)
+- 2015-08-28 (Laisky) * #57 设置 container 最大宽度为 900px -> [view commit](https://github.com/Laisky/laisky-blog/commit/e7f398ebf0ebbeb3fed7327d545e420698ebc186)
+- 2015-08-28 (Laisky) * #57 将背景图片改为拉伸 -> [view commit](https://github.com/Laisky/laisky-blog/commit/448b1fe1ae2cb661ee593a84e6323d31d35e13ff)
+- 2015-08-28 (Laisky) + #57 archives   - 用 sass 改写   - 修复了一些 css   - 修复了模板 -> [view commit](https://github.com/Laisky/laisky-blog/commit/e91d96c556f8e464d658c61b6125d9ac6af5a5b4)
+- 2015-08-27 (Laisky) + #57 sass base.css -> [view commit](https://github.com/Laisky/laisky-blog/commit/71d220333c57e76e1b70cc07cad0adb32c15c807)
+- 2015-08-27 (Laisky) Revert "+ #57 bower init" -> [view commit](https://github.com/Laisky/laisky-blog/commit/3b27f69c68979269fea728281a2029157980e740)
+- 2015-08-27 (Laisky) + #57 bower init -> [view commit](https://github.com/Laisky/laisky-blog/commit/61d0fd6a69553c7102dcf5c80e0be647b3334584)
+- 2015-08-27 (Laisky) * hotfix: table -> [view commit](https://github.com/Laisky/laisky-blog/commit/5b1a49f916eeacca748bea965909f8a90342a2de)
+- 2015-08-25 (Laisky) * 修改了首页的 CSS -> [view commit](https://github.com/Laisky/laisky-blog/commit/5b10c9190259f0c0d99be37e582e5236a3f134d1)
+- 2015-08-20 (Laisky) 1.7.2 更多的错误信息 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3da84547afc36668dc1a111d2968534ac3a6d583)
+- 2015-08-20 (Laisky) 1.7.2 更多的错误信息 -> [view commit](https://github.com/Laisky/laisky-blog/commit/5c1ab11babe05e1d0128d4882ab5b219e9919d02)
+- 2015-08-20 (Laisky) 1.7.2 更多的错误信息 -> [view commit](https://github.com/Laisky/laisky-blog/commit/58e098eb762b1eb100c786dd6428ed8dbc1ce4ae)
+- 2015-08-15 (Laisky) 改一改 post 的 css -> [view commit](https://github.com/Laisky/laisky-blog/commit/82ba79a7c3ad654abbfb21f0e577515aa7250e1b)
+- 2015-08-06 (Laisky) fix 前端 CSS，padding 太多了 -> [view commit](https://github.com/Laisky/laisky-blog/commit/0e6463d55b182caf8398784b7913f9b6a5b38df9)
+- 2015-08-05 (Laisky) update gitignore -> [view commit](https://github.com/Laisky/laisky-blog/commit/343f8abae54f9bf5223efaba0d854f3f4a680484)
+- 2015-08-05 (Laisky) task 太频繁 -> [view commit](https://github.com/Laisky/laisky-blog/commit/cb5b10f9252e9704ead65b90b6792349158cf314)
+- 2015-07-28 (Laisky) fix tss entry -> [view commit](https://github.com/Laisky/laisky-blog/commit/7a61f2937a6e76ed92f955bce3da2a2ff537670a)
+- 2015-07-24 (Laisky) #55 fix img center -> [view commit](https://github.com/Laisky/laisky-blog/commit/ece23e436ff588001e9a469c16b6070e12f878cf)
+- 2015-07-23 (Laisky) fix -> [view commit](https://github.com/Laisky/laisky-blog/commit/0729cbed9e840bf5d3c98efe4f7e10b69674b6ad)
+- 2015-07-23 (Laisky) 1,7,1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/77bacf667318d2eb83aaf5b6d9fd50c71fffd995)
+- 2015-07-23 (Laisky) #59 worker -> [view commit](https://github.com/Laisky/laisky-blog/commit/f5d2528a217b67d95e17653c7e3982fd8c1bb462)
+- 2015-07-23 (Laisky) use ga replace baidu -> [view commit](https://github.com/Laisky/laisky-blog/commit/dcf5b5e470ed9a42e6a7bd6656780c06a43dc0d6)
+- 2015-07-23 (Laisky) GA -> [view commit](https://github.com/Laisky/laisky-blog/commit/76cbb0109675aca57b3d7e7dcae3d069c0c41560)
+- 2015-07-22 (Laisky) short -> [view commit](https://github.com/Laisky/laisky-blog/commit/cda7ecc8d61218f8ab5cb95678d9f56540f44a94)
+- 2015-07-22 (Laisky) 1.7 -> [view commit](https://github.com/Laisky/laisky-blog/commit/756400ea934fba27568bce1fe043a64669450fa8)
+- 2015-07-22 (Laisky) fix tags label -> [view commit](https://github.com/Laisky/laisky-blog/commit/1541477ef269d3fa261ba5435e1d557240d17cdb)
+- 2015-07-22 (Laisky) #17 add english keywords -> [view commit](https://github.com/Laisky/laisky-blog/commit/62473f3fbb8c3ab299180ac626ff4ac8a1877163)
+- 2015-07-22 (Laisky) fix doc log -> [view commit](https://github.com/Laisky/laisky-blog/commit/d12b9c3ca6130156b13f881c61037d70428da0ee)
+- 2015-07-21 (Laisky) #56 fix time format -> [view commit](https://github.com/Laisky/laisky-blog/commit/d808e3f59242246745054f11b1d8fe44fd6b84f5)
+- 2015-07-21 (Laisky) #56 fix time format -> [view commit](https://github.com/Laisky/laisky-blog/commit/6fb5ba7a3dbb12b05f6ae735c3e0a8e8b756506e)
+- 2015-07-21 (Laisky) #56 add log -> [view commit](https://github.com/Laisky/laisky-blog/commit/9f6ebd065da8b72d5de7b3acc0f5ec6a1abfac51)
+- 2015-07-21 (Laisky) typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/368cd0b11d1dd13d10f2f6ad64c241c17f4afc57)
+- 2015-07-21 (Laisky) 1.6.1 pytz -> [view commit](https://github.com/Laisky/laisky-blog/commit/5d94819d261a54c7f648912f79c28425a6ed9c45)
+- 2015-07-20 (Laisky) fix markdown css -> [view commit](https://github.com/Laisky/laisky-blog/commit/a685bc4340a6e2428f3576d0e081a8ff0dba2ab4)
+- 2015-07-20 (Laisky) yahei -> [view commit](https://github.com/Laisky/laisky-blog/commit/1107d29100bf432393740d0958a4f8be05646470)
+- 2015-07-12 (Laisky) chage font -> [view commit](https://github.com/Laisky/laisky-blog/commit/1d5b8958bc6c456f0b10ff1c87f0016386568a49)
+- 2015-07-12 (Laisky) fix post container center -> [view commit](https://github.com/Laisky/laisky-blog/commit/283e44fff6dd0c7554b6429de83622c5e8f6ca09)
+- 2015-07-12 (Laisky) fix post container center -> [view commit](https://github.com/Laisky/laisky-blog/commit/44b3faa1018ca44dcb3005d35c0c60e2d24bc681)
+- 2015-07-08 (Laisky) #17 add time task -> [view commit](https://github.com/Laisky/laisky-blog/commit/bdada2f204f25b64192b6221a0d521c99e733751)
+- 2015-07-07 (Laisky) #17 1.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1bc5be169d40cf017a019e2e84759c19e549337d)
+- 2015-07-07 (Laisky) #17 archives tags -> [view commit](https://github.com/Laisky/laisky-blog/commit/4d7f868af737389d3de7dad7a63cb94a83c6eeb3)
+- 2015-07-07 (Laisky) #17 task script ok -> [view commit](https://github.com/Laisky/laisky-blog/commit/e9a5c25da38f1b21ad4356e99b8d16abbaca3e4f)    
+       
+*1.5.1*
+---
+    
+- 2015-07-06 (Laisky) 1.5.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/043d8ce858e695e6cbe5d07636ab91b82ca587b6)
+- 2015-07-06 (Laisky) #49   - 加上了 fade   - 加上了 缓存 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6cb7893737ede01b1cfe7c3c439559e1f74802f1)
+- 2015-07-06 (Laisky) fix datetime -> [view commit](https://github.com/Laisky/laisky-blog/commit/f27c7d732831b03b36c50660a0d53aa979fc1efe)
+- 2015-07-06 (Laisky) bugfix -> [view commit](https://github.com/Laisky/laisky-blog/commit/92e39ca2e277569d1fbf551549480aeb3b8a2c52)
+- 2015-07-06 (Laisky) 1.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6b0fae93e2405b1de2e791001780e4cc31c261ce)
+- 2015-07-06 (Laisky) #51 baidutongji -> [view commit](https://github.com/Laisky/laisky-blog/commit/970fffa8473e73d48bf58c41c39f25232b58780b)
+- 2015-07-05 (Laisky) #51 兼容 js -> [view commit](https://github.com/Laisky/laisky-blog/commit/b08efb7f203544b15bed7f7749ec004dd5db834e)
+- 2015-07-05 (Laisky) #51 兼容 js -> [view commit](https://github.com/Laisky/laisky-blog/commit/2baff4e1f4323123fe1d7463027f46f9c58b30fd)
+- 2015-07-05 (Laisky) #51 兼容 js -> [view commit](https://github.com/Laisky/laisky-blog/commit/4961539b59b8a10f8384e2e78ace55300c0d2f71)
+- 2015-07-05 (Laisky) #51 兼容 js -> [view commit](https://github.com/Laisky/laisky-blog/commit/0704823a4f05fad6a22ed73c023e07e2d4cb5b46)
+- 2015-07-05 (Laisky) #51 clean -> [view commit](https://github.com/Laisky/laisky-blog/commit/bb197839ba776e7f30b5fcba9b4268ac44f78ff5)
+- 2015-07-05 (Laisky) #51 baidu tongji -> [view commit](https://github.com/Laisky/laisky-blog/commit/222d8440d218da7d7e317af48b6c4d5d3d39836e)
+- 2015-07-05 (Laisky) fix profile html -> [view commit](https://github.com/Laisky/laisky-blog/commit/6bebdd21d7790b434d2ddff2759fbf3a1c15401c)
+- 2015-07-05 (Laisky) add modified time -> [view commit](https://github.com/Laisky/laisky-blog/commit/7e949e82c752caaa2fea75170dbaaa4187580dc5)
+- 2015-07-03 (Laisky) ajax -> [view commit](https://github.com/Laisky/laisky-blog/commit/956e833368528e591e8575019f8a67682ddac723)
+- 2015-07-03 (Laisky) 1.4rc -> [view commit](https://github.com/Laisky/laisky-blog/commit/be1bfecd40c498cbd5eee82f4739c2760c9c0508)
+- 2015-07-03 (Laisky) #49 add profile page -> [view commit](https://github.com/Laisky/laisky-blog/commit/12f6d61b094a39aa9f3f4739b7f2514577d34ed3)
+- 2015-07-03 (Laisky) #49 fix header -> [view commit](https://github.com/Laisky/laisky-blog/commit/865a706dd52e29c83286c001d8c5aa20167cfa4d)
+- 2015-06-29 (Laisky) #49: add notebook -> [view commit](https://github.com/Laisky/laisky-blog/commit/d4948f3899c18f991197abbed9fde35d426464e0)
+- 2015-06-09 (Laisky) #49: add simple profile -> [view commit](https://github.com/Laisky/laisky-blog/commit/769d5736142c530b96d5fec65c643f4c538b8099)
+- 2015-06-09 (Laisky) fix version -> [view commit](https://github.com/Laisky/laisky-blog/commit/ceb0ca9a99fdf6011938d5517e89181bd0a5c8a4)
+- 2015-06-09 (Laisky) #48: done -> [view commit](https://github.com/Laisky/laisky-blog/commit/4ae35a4f67a989cb6d1f7bbbb0dc5f2aef3060c7)
+- 2015-06-09 (Laisky) fix duplicate name -> [view commit](https://github.com/Laisky/laisky-blog/commit/bedffa8966fbc014dda716400f2132508cafd696)
+- 2015-06-09 (Laisky) remove logging filehandler -> [view commit](https://github.com/Laisky/laisky-blog/commit/9bb1dcd3550e1ccdbefd132d0cc435e89c99480e)
+- 2015-06-09 (Laisky) #48: fix amend page -> [view commit](https://github.com/Laisky/laisky-blog/commit/678abba17d6743479c2cbdf3b84d291e85038263)
+- 2015-06-09 (Laisky) #48: fe ok -> [view commit](https://github.com/Laisky/laisky-blog/commit/51a00851da8f874b844d8eaf942505da9aed506d)
+- 2015-06-08 (Laisky) #48: fix fe -> [view commit](https://github.com/Laisky/laisky-blog/commit/5e134f2162c539bf0f96f8defd73bed164089e5f)
+- 2015-06-08 (Laisky) #48: publish raw markdown -> [view commit](https://github.com/Laisky/laisky-blog/commit/47cea0bdc1b065b20de3b089504696d41ec5f53f)
+- 2015-06-06 (Laisky) #46: fix publish -> [view commit](https://github.com/Laisky/laisky-blog/commit/3c908a944a0b05be6cd2aefe5ba661b7334c34fa)
+- 2015-06-06 (Laisky) #35: publish markdown ok -> [view commit](https://github.com/Laisky/laisky-blog/commit/f8c62d4dc261e794fd098693539441a9037f6941)
+- 2015-06-06 (Laisky) fix post title -> [view commit](https://github.com/Laisky/laisky-blog/commit/44989f71988d025379899fd15ea5d123a89d8166)
+- 2015-06-06 (Laisky) hotfix -> [view commit](https://github.com/Laisky/laisky-blog/commit/9e13f56656c46fdab44634884753944a2e2a1909)
+- 2015-06-06 (Laisky) #46: 1.3.0 markdown -> [view commit](https://github.com/Laisky/laisky-blog/commit/a769242473b9a467e951635409f9c16ca0f08c72)
+- 2015-06-06 (Laisky) #46: markdown style for text ok -> [view commit](https://github.com/Laisky/laisky-blog/commit/c3698896f86da92729c01cb566073836abceaf4d)
+- 2015-06-06 (Laisky) #46: fix code color -> [view commit](https://github.com/Laisky/laisky-blog/commit/c4a51e1b0d33d245f9dc81d59ab72a1994ca86f8)
+- 2015-06-06 (Laisky) #46: fix navbar color -> [view commit](https://github.com/Laisky/laisky-blog/commit/80a376ec950d00eb09ae1fa81f363676a5b74613)
+- 2015-06-06 (Laisky) #46: change post style -> [view commit](https://github.com/Laisky/laisky-blog/commit/25024ecb35d4d0894693df2172cb317c5459eb7e)
+- 2015-06-05 (Laisky) #46: add github markdown css -> [view commit](https://github.com/Laisky/laisky-blog/commit/1d7b6878749c7bf8c99a7e964cc2a6e10aabb355)
+- 2015-06-04 (Laisky) hotfix publish id -> [view commit](https://github.com/Laisky/laisky-blog/commit/6fab49f3e380f78b1de0473ea40f9b2e802e2d5a)
+- 2015-06-04 (Laisky) 1.2.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/aca2709129cfacccb3bc4c27951d08bc2c0025dd)
+- 2015-06-04 (Laisky) change sentry level to ERROR -> [view commit](https://github.com/Laisky/laisky-blog/commit/c423bcefd4ad6161885d0fd34017493b0d0f48dc)
+- 2015-06-03 (Laisky) #43: fix sentry -> [view commit](https://github.com/Laisky/laisky-blog/commit/d90ceb91b26943e0b946f7b04a96fcc21db83629)
+- 2015-06-03 (Laisky) #43: fix sentry   - fix logging level   - fix sentry -> [view commit](https://github.com/Laisky/laisky-blog/commit/ea95290157f5dd0f9ddcec54a903459477eb777f)
+- 2015-06-03 (Laisky) #43: integrid sentry -> [view commit](https://github.com/Laisky/laisky-blog/commit/35224021402d4a950f4e69f627dbc94dfcd8387d)
+- 2015-05-29 (Laisky) hotfix -> [view commit](https://github.com/Laisky/laisky-blog/commit/0505ceac0c374d04aadb5ae9c8ae9f75a1ddb603)
+- 2015-05-29 (Laisky) remove log file -> [view commit](https://github.com/Laisky/laisky-blog/commit/0350f8d7bfef40a0df89829bb12248e399af6310)
+- 2015-05-29 (Laisky) #42: http code -> [view commit](https://github.com/Laisky/laisky-blog/commit/9066019806a45693438015bbfd2437949bab4a27)
+- 2015-05-28 (Laisky) 1.1.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3d1573a42dbbe553be2348803763c62e60e53f0e)
+- 2015-05-28 (Laisky) #33: fe ok -> [view commit](https://github.com/Laisky/laisky-blog/commit/54f71ba8e058947bbc6759642e40b3322a19d4e9)
+- 2015-05-28 (Laisky) #33: backend ok -> [view commit](https://github.com/Laisky/laisky-blog/commit/e0c9c70ff542a339ac495899f63f584965d5cafd)
+- 2015-05-28 (Laisky) #28: 1.1.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/39bfd8c2627bbaea740efdfc41f709885cc4c35e)
+- 2015-05-28 (Laisky) #28: ugly but works -> [view commit](https://github.com/Laisky/laisky-blog/commit/34959ceb58a3d168cb40675c6381118642fc832d)
+- 2015-05-28 (Laisky) #28: fix css bug -> [view commit](https://github.com/Laisky/laisky-blog/commit/f1e6d35426dba99e0e8fc6345966a74696266b71)
+- 2015-05-28 (Laisky) #28: add vendor -> [view commit](https://github.com/Laisky/laisky-blog/commit/a7c7a7f7d28008e623f5d19992d35d306640b13e)
+- 2015-05-22 (Laisky) version 1.1.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/322654de7a80b2455f1f624932ace98715c52894)
+- 2015-05-22 (Laisky) update readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/7cdabdccc13c02335646d37b76e1322273d8011c)
+- 2015-05-22 (Laisky) fix eshost -> [view commit](https://github.com/Laisky/laisky-blog/commit/60db0defd76e3ce00571eb803c2e2088a6f9430e)
+- 2015-05-22 (Laisky) #39: fix -> [view commit](https://github.com/Laisky/laisky-blog/commit/3c1a449e1a2bc522db2c7c7d17d8c6a3272ffc7c)
+- 2015-05-22 (Laisky) fix timeout -> [view commit](https://github.com/Laisky/laisky-blog/commit/5e6272583c939e1d6da3318e83464caaa805acde)
+- 2015-05-22 (Laisky) #41: add timeout to fadein -> [view commit](https://github.com/Laisky/laisky-blog/commit/f03103f190c903bd0b73d0d7f14f79ddfe05dc17)
+- 2015-05-22 (Laisky) #41-add eshost -> [view commit](https://github.com/Laisky/laisky-blog/commit/8ffa2c3c333e2dd05a6abf2ffb9fc1ce0f200b95)
+- 2015-05-21 (Laisky) fix es index -> [view commit](https://github.com/Laisky/laisky-blog/commit/6a86edc19eaa159db116d5c0652ddf7c1232bd16)
+- 2015-05-20 (Laisky) fix comment count js -> [view commit](https://github.com/Laisky/laisky-blog/commit/c9042f7e277bd43a9763531eb8f986654fd25a69)
+- 2015-05-20 (Laisky) fix comment count -> [view commit](https://github.com/Laisky/laisky-blog/commit/fa18068c3f85ceb02da69380115071222eb11ccb)
+- 2015-05-20 (Laisky) fix comment count by identify -> [view commit](https://github.com/Laisky/laisky-blog/commit/8075a2d22221ae38178774344c53e40d2b4e9fd6)
+- 2015-05-19 (Laisky) #18: add pushState -> [view commit](https://github.com/Laisky/laisky-blog/commit/4a239c3f55c56ab743ac575445a9968caafa71a9)
+- 2015-05-19 (Laisky) #18: fix fe height -> [view commit](https://github.com/Laisky/laisky-blog/commit/2fed296323748ff2e9710cb8cc49b97c19b91b68)
+- 2015-05-19 (Laisky) #18 FE & BE ok -> [view commit](https://github.com/Laisky/laisky-blog/commit/1cb5087da9f8b9c278dbec9ebfbaff6d6890cc56)
+- 2015-05-19 (Laisky) #18: backend ok -> [view commit](https://github.com/Laisky/laisky-blog/commit/661ddc19b1d6972c679496dbb2665c13530faedd)
+- 2015-05-19 (Laisky) fix session cookie -> [view commit](https://github.com/Laisky/laisky-blog/commit/0248da3e7e89a1aeef919a4d3ea1fc87c480daf8)
+- 2015-05-19 (Laisky) fix ensure_index in setup_db -> [view commit](https://github.com/Laisky/laisky-blog/commit/a7693bfee71233a9b3679a9568e497c75a097f88)
+- 2015-05-18 (Laisky) #18: fade ok -> [view commit](https://github.com/Laisky/laisky-blog/commit/7465ef395a26af78b8c2484c996bd5b794b98179)
+- 2015-05-18 (Laisky) less error -> [view commit](https://github.com/Laisky/laisky-blog/commit/d63201e3e469a3ea082fe9636e393f0f917b3b76)
+- 2015-05-18 (Laisky) #18: init top navbar -> [view commit](https://github.com/Laisky/laisky-blog/commit/2cb31a471dbe93153ecd1f23b55a5b0051dd3255)
+- 2015-05-18 (Laisky) fix post password -> [view commit](https://github.com/Laisky/laisky-blog/commit/3606e898f6077ae1cbe4b3376654d26a97f8c7f5)
+- 2015-05-17 (Laisky) bigger font -> [view commit](https://github.com/Laisky/laisky-blog/commit/4580790781abeed2020cbdbf63176eda1f9e0dc5)
+- 2015-05-17 (Laisky) fix version -> [view commit](https://github.com/Laisky/laisky-blog/commit/e7f39e397e9ea25a43858c8a9290c5227aa4b8e1)    
