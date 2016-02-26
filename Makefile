@@ -7,3 +7,6 @@ all:
 nose:
 	@# nosetests -vs --logging-level=DEBUG --with-coverage --cover-package=gargantua tests
 	nosetests -vs --logging-level=DEBUG tests
+
+changelog:
+	sh ./.scripts/generate_changelog.sh
