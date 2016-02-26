@@ -1,11 +1,17 @@
-<a name="2.1.3"></a>
-## [2.1.3](https://github.com/Laisky/laisky-blog/compare/2.1.2...v2.1.3) (2016-02-02)
+<a name="2.1.6"></a>
+## [2.1.6](https://github.com/Laisky/laisky-blog/compare/2.1.2...v2.1.6) (2016-02-19)
 
+
+### Bug Fixes
+
+* fix body css overflow ([2f58206](https://github.com/Laisky/laisky-blog/commit/2f58206))
+* fix css overflow ([86f9233](https://github.com/Laisky/laisky-blog/commit/86f9233))
 
 ### Performance Improvements
 
 * 2.1.3 ([c1b9771](https://github.com/Laisky/laisky-blog/commit/c1b9771))
-* Use ngx-check to support loadbalance ([94047eb](https://github.com/Laisky/laisky-blog/commit/94047eb)), closes [#80](https://github.com/Laisky/laisky-blog/issues/80)
+* change docker from python:3.4 ([94022ee](https://github.com/Laisky/laisky-blog/commit/94022ee))
+* Use ngx-check to support loadbalance ([6aaa29f](https://github.com/Laisky/laisky-blog/commit/6aaa29f)), closes [#80](https://github.com/Laisky/laisky-blog/issues/80)
 
 
 
