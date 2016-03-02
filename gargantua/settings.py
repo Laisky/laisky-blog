@@ -34,10 +34,10 @@ SENTRY_PORT = 9000
 SENTRY_NAME = '2'
 
 # mail
-MAIL_HOST = 'smtp.gmail.com'
-MAIL_PORT = 587
+MAIL_HOST = 'smtp.mailgun.org'
+MAIL_PORT = 25
 MAIL_SUBJECT = 'Gargantua Error'
 FROM_ADDR = 'gargantua@laisky.com'
 TO_ADDRS = ('ppcelery@gmail.com',)
-MAIL_USERNAME = 'ppcelery@gmail.com'
+MAIL_USERNAME = 'postmaster@mg.laisky.com'
 MAIL_PASSWD = '123456'

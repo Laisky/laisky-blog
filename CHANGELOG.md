@@ -2,6 +2,8 @@
 *CURRENT*
 ---
     
+- 2016-03-02 (Laisky) chore: change mail server to mailgun -> [view commit](https://github.com/Laisky/laisky-blog/commit/01989ee89a2f645e54b7ec34126d88955b110102)
+- 2016-02-26 (Laisky) docs: update changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/9d1c61068aa4efa3ec2615d7a639195d2c3f5b28)
 - 2016-02-26 (Laisky) chore: update docker files -> [view commit](https://github.com/Laisky/laisky-blog/commit/056776cba08b5be33dba9cea85ca43dc7675a0a9)
 - 2016-02-17 (Laisky) 2.1.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/12d3ef613a8241cf48e47e83444991a76c34b3b8)
 - 2016-02-17 (Laisky) 2.1.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f66e6a15990f9e50a1f25aa12b4815df07dcc3a)
