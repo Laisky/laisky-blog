@@ -2,28 +2,46 @@
 *CURRENT*
 ---
     
+    
+       
+*2.1.9*
+---
+    
+- 2016-03-05 (Laisky) 2.1.9 -> [view commit](https://github.com/Laisky/laisky-blog/commit/adc44970b6d95014a960dc997d34b4679af97ae1)
+- 2016-03-05 (Laisky) fix: 因为 settings 放入二级目录导致 CWD 错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/82ccc4e8301287c828a51f6135dfec4bf420591a)
 - 2016-03-05 (Laisky) docs: update docs -> [view commit](https://github.com/Laisky/laisky-blog/commit/8b669b95ef38f2020dae5b11a395961f18e37b4d)
+- 2016-03-05 (Laisky) 2.1.8 -> [view commit](https://github.com/Laisky/laisky-blog/commit/e6537fef0e204cc10aa94ff42e0810567727971b)
 - 2016-03-05 (Laisky) fix: totally fixed email bugs -> [view commit](https://github.com/Laisky/laisky-blog/commit/7486cd44fce37419c67bdfa0b2dda3e39e192be8)
 - 2016-03-05 (Laisky) fix: fix error warning mail -> [view commit](https://github.com/Laisky/laisky-blog/commit/4c790f8424c7fa7115d2a296236d98fc88356dbd)
 - 2016-03-05 (Laisky) feat: 通过命令行配置邮件参数 -> [view commit](https://github.com/Laisky/laisky-blog/commit/946f0d707fe2098109c325bbd8906afed046fafe)
 - 2016-03-05 (Laisky) refactor: 整理 settings 文件，全部放入 /settings 里 -> [view commit](https://github.com/Laisky/laisky-blog/commit/14fb15442c676075900546e67231ba7a1599e162)
+- 2016-03-02 (Laisky) chore: change mail server to mailgun -> [view commit](https://github.com/Laisky/laisky-blog/commit/239d3c2eab001ffb47b6f7a1a33e32e1ecb53b9c)
 - 2016-03-02 (Laisky) * fix password -> [view commit](https://github.com/Laisky/laisky-blog/commit/6638c04ccb2129dfd0bb8efe16b3d81cf889aff3)
 - 2016-03-02 (Laisky) * update deploy files -> [view commit](https://github.com/Laisky/laisky-blog/commit/3e6abdecc001c31543275f66a3073880f5fce9e0)
+- 2016-02-26 (Laisky) docs: update changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/9d1c61068aa4efa3ec2615d7a639195d2c3f5b28)
+- 2016-02-26 (Laisky) chore: update docker files -> [view commit](https://github.com/Laisky/laisky-blog/commit/056776cba08b5be33dba9cea85ca43dc7675a0a9)
 - 2016-02-26 (Laisky) * add changelog shell scripts -> [view commit](https://github.com/Laisky/laisky-blog/commit/6f6b8a41dead39c7535f7dc05faddd6ef400c439)
 - 2016-02-24 (Laisky) chore: fix compose-file -> [view commit](https://github.com/Laisky/laisky-blog/commit/9ab38e59d60a9fdf8eafa54b14f701f383583141)
 - 2016-02-20 (Laisky) chore: update dockerfile -> [view commit](https://github.com/Laisky/laisky-blog/commit/654f5ade80ca618df0495e118c295c37cab20384)
 - 2016-02-19 (Laisky) chore: update docker-compose -> [view commit](https://github.com/Laisky/laisky-blog/commit/42fe4bdd4f19a6aca4f01f954a50af9813b3e134)
+- 2016-02-17 (Laisky) 2.1.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/12d3ef613a8241cf48e47e83444991a76c34b3b8)
 - 2016-02-17 (Laisky) fix: fix body css overflow -> [view commit](https://github.com/Laisky/laisky-blog/commit/2f582068b0d1029999f649e76cc6b50c2c837476)
+- 2016-02-17 (Laisky) 2.1.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f66e6a15990f9e50a1f25aa12b4815df07dcc3a)
 - 2016-02-17 (Laisky) fix: fix css overflow -> [view commit](https://github.com/Laisky/laisky-blog/commit/86f9233366d7a6a34e2048ca3a1aa0a0bcce77e3)
 - 2016-02-07 (Laisky) docs: more docker run arguments -> [view commit](https://github.com/Laisky/laisky-blog/commit/1f09ff246ace4ae80a8da72abfec895b129654a3)
 - 2016-02-07 (Laisky) * fix python path -> [view commit](https://github.com/Laisky/laisky-blog/commit/35bf2c7e3a3122ca4904bdac04a45850c06e5cc5)
+- 2016-02-06 (Laisky) 2.1.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3e80d0ba5265a2d8447882db2cf11a09c3834d8e)
 - 2016-02-06 (Laisky) * change Dockerfile -> [view commit](https://github.com/Laisky/laisky-blog/commit/789b8991524c5cbd442738914336e140033a0508)
+- 2016-02-02 (Laisky) 2.1.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/7b88cb93b4439af66c43ee662b06171a7aa86eda)
 - 2016-02-02 (Laisky) perf: Use ngx-check to support loadbalance -> [view commit](https://github.com/Laisky/laisky-blog/commit/6aaa29f0e7ff8405187f8fe75fc35979d78423cd)
+- 2016-02-01 (Laisky) 2.1.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/06b448d1e314bcf77c138fd42545fb8e70c081c1)
 - 2016-02-01 (Laisky) docs: update readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/8c5eff3bb3bd04728b81c7aa1562ee1362ae9643)
 - 2016-02-01 (Laisky) docs: add deploy scripts -> [view commit](https://github.com/Laisky/laisky-blog/commit/5bf3fc2088e73c1295bbedd924ec6beb06c5faeb)
+- 2016-02-01 (Laisky) perf: 2.1.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/c1b9771e9b1bd3bce8ee14495f2b4477161885c3)
 - 2016-02-01 (Laisky) * #38 fix CMD -> [view commit](https://github.com/Laisky/laisky-blog/commit/ad639396309cfe33b68db8d8bdd94f9e2f67b360)
 - 2016-02-01 (Laisky) * #38 fix stupid typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/8d9a5cb2ac44a13c955b1db9915283abe9dde295)
 - 2016-02-01 (Laisky) + #38 dockerfile init -> [view commit](https://github.com/Laisky/laisky-blog/commit/24168bbe3dd53d8d73478c024ed436edf51c5c65)
+- 2016-02-01 (Laisky) refactor: refactory ugly code -> [view commit](https://github.com/Laisky/laisky-blog/commit/d79a2e3d3f8df1e04a0b8c7592fd4b178c93616b)
 - 2016-02-01 (Laisky) * #77 done -> [view commit](https://github.com/Laisky/laisky-blog/commit/3189567357b471bd1979b7b5c062e66067c8b9ab)
 - 2016-01-31 (Laisky) * #77 amend article via PATCH -> [view commit](https://github.com/Laisky/laisky-blog/commit/6a80f1371824e95c24f4a09872ef31bc8fddbb8c)
 - 2016-01-31 (Laisky) * #77 refactory post validator -> [view commit](https://github.com/Laisky/laisky-blog/commit/14241d5ef6a5ea7c87435cab417fed75faa4ff5b)
@@ -32,30 +50,7 @@
 - 2016-01-12 (Laisky) * post auth move to archives -> [view commit](https://github.com/Laisky/laisky-blog/commit/ff1e3681705754eff0072b58de858674b2268441)
 - 2016-01-12 (Laisky) * fix tests -> [view commit](https://github.com/Laisky/laisky-blog/commit/5dc5dc7af675fd03b6442606b9fae299ba26a6c9)
 - 2016-01-12 (Laisky) * 把查看单篇文章移动到了 archives -> [view commit](https://github.com/Laisky/laisky-blog/commit/a1742c49348bc36500d68911685915996861a66b)
-- 2016-01-12 (Laisky) + 新增 models base -> [view commit](https://github.com/Laisky/laisky-blog/commit/430c46c230818ebbbd74e138270033d421e3eb81)    
-       
-*2.1.8*
----
-    
-- 2016-03-05 (Laisky) 2.1.8 -> [view commit](https://github.com/Laisky/laisky-blog/commit/e6537fef0e204cc10aa94ff42e0810567727971b)    
-       
-*2.1.7*
----
-    
-- 2016-03-02 (Laisky) chore: change mail server to mailgun -> [view commit](https://github.com/Laisky/laisky-blog/commit/239d3c2eab001ffb47b6f7a1a33e32e1ecb53b9c)
-- 2016-02-26 (Laisky) docs: update changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/9d1c61068aa4efa3ec2615d7a639195d2c3f5b28)
-- 2016-02-26 (Laisky) chore: update docker files -> [view commit](https://github.com/Laisky/laisky-blog/commit/056776cba08b5be33dba9cea85ca43dc7675a0a9)
-- 2016-02-17 (Laisky) 2.1.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/12d3ef613a8241cf48e47e83444991a76c34b3b8)
-- 2016-02-17 (Laisky) 2.1.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f66e6a15990f9e50a1f25aa12b4815df07dcc3a)
-- 2016-02-06 (Laisky) 2.1.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3e80d0ba5265a2d8447882db2cf11a09c3834d8e)
-- 2016-02-02 (Laisky) 2.1.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/7b88cb93b4439af66c43ee662b06171a7aa86eda)
-- 2016-02-01 (Laisky) 2.1.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/06b448d1e314bcf77c138fd42545fb8e70c081c1)
-- 2016-02-01 (Laisky) perf: 2.1.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/c1b9771e9b1bd3bce8ee14495f2b4477161885c3)    
-       
-*2.1.2*
----
-    
-- 2016-02-01 (Laisky) refactor: refactory ugly code -> [view commit](https://github.com/Laisky/laisky-blog/commit/d79a2e3d3f8df1e04a0b8c7592fd4b178c93616b)
+- 2016-01-12 (Laisky) + 新增 models base -> [view commit](https://github.com/Laisky/laisky-blog/commit/430c46c230818ebbbd74e138270033d421e3eb81)
 - 2016-01-11 (Laisky) docs: add gitter -> [view commit](https://github.com/Laisky/laisky-blog/commit/5401e70cc8bd5ec838269f4693dca43e88a53ab5)
 - 2016-01-10 (Laisky) style: change indent -> [view commit](https://github.com/Laisky/laisky-blog/commit/da8e4c4c376ca0df63031179e64ada9be006755f)
 - 2016-01-07 (Laisky) style: fix requirements -> [view commit](https://github.com/Laisky/laisky-blog/commit/b4c098dc9c1887934b3e8c90c533fab8ad9e8e11)
