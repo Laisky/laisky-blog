@@ -2,6 +2,7 @@
 *CURRENT*
 ---
     
+- 2016-03-05 (Laisky) fix: totally fixed email bugs -> [view commit](https://github.com/Laisky/laisky-blog/commit/7486cd44fce37419c67bdfa0b2dda3e39e192be8)
 - 2016-03-05 (Laisky) fix: fix error warning mail -> [view commit](https://github.com/Laisky/laisky-blog/commit/4c790f8424c7fa7115d2a296236d98fc88356dbd)
 - 2016-03-05 (Laisky) feat: 通过命令行配置邮件参数 -> [view commit](https://github.com/Laisky/laisky-blog/commit/946f0d707fe2098109c325bbd8906afed046fafe)
 - 2016-03-05 (Laisky) refactor: 整理 settings 文件，全部放入 /settings 里 -> [view commit](https://github.com/Laisky/laisky-blog/commit/14fb15442c676075900546e67231ba7a1599e162)
@@ -31,6 +32,11 @@
 - 2016-01-12 (Laisky) * fix tests -> [view commit](https://github.com/Laisky/laisky-blog/commit/5dc5dc7af675fd03b6442606b9fae299ba26a6c9)
 - 2016-01-12 (Laisky) * 把查看单篇文章移动到了 archives -> [view commit](https://github.com/Laisky/laisky-blog/commit/a1742c49348bc36500d68911685915996861a66b)
 - 2016-01-12 (Laisky) + 新增 models base -> [view commit](https://github.com/Laisky/laisky-blog/commit/430c46c230818ebbbd74e138270033d421e3eb81)    
+       
+*2.1.8*
+---
+    
+- 2016-03-05 (Laisky) 2.1.8 -> [view commit](https://github.com/Laisky/laisky-blog/commit/e6537fef0e204cc10aa94ff42e0810567727971b)    
        
 *2.1.7*
 ---
