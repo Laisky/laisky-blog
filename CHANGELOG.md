@@ -2,6 +2,7 @@
 *CURRENT*
 ---
     
+- 2016-03-05 (Laisky) chore: refactory setup.py -> [view commit](https://github.com/Laisky/laisky-blog/commit/9c649a5d05a94ced016c0462f7dd1a10e7542f3f)
 - 2016-03-05 (Laisky) docs: update changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/e974116881d7237ee6c423696930f26a7ba2dc80)    
        
 *2.1.9*
