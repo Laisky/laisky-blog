@@ -79,3 +79,6 @@ node_modules/
 
 # sass
 .sass-cache/
+
+# prod
+/gargantua/settings/settings.py
