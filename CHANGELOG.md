@@ -2,6 +2,7 @@
 *CURRENT*
 ---
     
+- 2016-03-05 (Laisky) docs: update docs -> [view commit](https://github.com/Laisky/laisky-blog/commit/8b669b95ef38f2020dae5b11a395961f18e37b4d)
 - 2016-03-05 (Laisky) fix: totally fixed email bugs -> [view commit](https://github.com/Laisky/laisky-blog/commit/7486cd44fce37419c67bdfa0b2dda3e39e192be8)
 - 2016-03-05 (Laisky) fix: fix error warning mail -> [view commit](https://github.com/Laisky/laisky-blog/commit/4c790f8424c7fa7115d2a296236d98fc88356dbd)
 - 2016-03-05 (Laisky) feat: 通过命令行配置邮件参数 -> [view commit](https://github.com/Laisky/laisky-blog/commit/946f0d707fe2098109c325bbd8906afed046fafe)
