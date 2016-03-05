@@ -2,7 +2,7 @@
 *CURRENT*
 ---
     
-    
+- 2016-03-05 (Laisky) docs: update changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/e974116881d7237ee6c423696930f26a7ba2dc80)    
        
 *2.1.9*
 ---
