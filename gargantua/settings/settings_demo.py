@@ -8,7 +8,7 @@ DEBUG = False
 LISTEN_PORT = 27850
 
 # common
-CWD = pathlib.PurePath(__file__).parents[0]
+CWD = pathlib.PurePath(__file__).parents[1]
 LOG_NAME = 'gargantua'
 LOG_PATH = '/tmp/gargantua-blog.log'
 suffix = 0

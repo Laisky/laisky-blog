@@ -61,6 +61,7 @@ class PageNotFound(BaseHandler):
 class Application(tornado.web.Application):
 
     def __init__(self):
+        print('!!!!!!!', str(Path(CWD, 'static')))
         settings = {
             'static_path': str(Path(CWD, 'static')),
             'static_url_prefix': '/static/',
@@ -93,8 +94,8 @@ class Application(tornado.web.Application):
         ]
         handlers.append(('/(.*)', PageNotFound))
         self.setup_db()
-        # if not options.debug:
-        self.setup_mail_handler()
+        if not options.debug:
+            self.setup_mail_handler()
 
         super(Application, self).__init__(handlers, **settings)
 
