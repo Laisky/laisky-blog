@@ -16,10 +16,9 @@ import pymongo
 from tornado.web import url
 from tornado.options import define, options
 
-from gargantua.settings import CWD, LISTEN_PORT, LOG_NAME, \
-    DB_HOST, DB_PORT, DB_NAME, \
-    MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWD, FROM_ADDR, TO_ADDRS, MAIL_SUBJECT
-from gargantua.utils import setup_log, generate_random_string
+from gargantua.settings import CWD
+from gargantua.utils import setup_log, generate_random_string, \
+    get_default_config, logger
 from gargantua.views import BaseHandler, PostsHandler, UserHandler
 from gargantua.apis import PostApiHandler
 from gargantua.libs import LogMailHandler, LogMailFormatter
@@ -27,24 +26,29 @@ from gargantua.models import BaseBlogModel
 
 
 # settings
-define('port', default=LISTEN_PORT, type=int)
-define('debug', default=False, type=bool)
+define('port', default=get_default_config('LISTEN_PORT'), type=int)
+define('debug', default=get_default_config('DEBUG'), type=bool)
 # database
-define('dbname', default=DB_NAME, type=str)
-define('dbhost', default=DB_HOST, type=str)
-define('dbport', default=DB_PORT, type=int)
+define('dbname', default=get_default_config('DB_NAME'), type=str)
+define('dbhost', default=get_default_config('DB_HOST'), type=str)
+define('dbport', default=get_default_config('DB_PORT'), type=int)
 # mail
-define('mail_passwd', default=MAIL_PASSWD, type=str)
+define('mail_host', default=get_default_config('MAIL_HOST'), type=str)
+define('mail_port', default=get_default_config('MAIL_PORT'), type=int)
+define('mail_subject', default=get_default_config('MAIL_SUBJECT'), type=str)
+define('mail_from_addr', default=get_default_config('MAIL_FROM_ADDR'), type=str)
+define('mail_to_addrs', default=get_default_config('MAIL_TO_ADDRS'), type=str)
+define('mail_username', default=get_default_config('MAIL_USERNAME'), type=str)
+define('mail_passwd', default=get_default_config('MAIL_PASSWD'), type=str)
 
-log = logging.getLogger(LOG_NAME)
-setup_log()
+setup_log(options.debug)
 
 
 class PageNotFound(BaseHandler):
 
     @tornado.gen.coroutine
     def get(self, url=None):
-        log.debug('GET PageNotFound for url {}'.format(url))
+        logger.debug('GET PageNotFound for url {}'.format(url))
 
         if url is None:
             self.render2('404.html', url=url)
@@ -89,25 +93,25 @@ class Application(tornado.web.Application):
         ]
         handlers.append(('/(.*)', PageNotFound))
         self.setup_db()
-        if not options.debug:
-            self.setup_mail_handler()
+        # if not options.debug:
+        self.setup_mail_handler()
 
         super(Application, self).__init__(handlers, **settings)
 
     def setup_mail_handler(self):
         # set mail handler
-        mh = LogMailHandler(mailhost=(MAIL_HOST, MAIL_PORT),
-                            fromaddr=FROM_ADDR,
-                            toaddrs=TO_ADDRS,
-                            credentials=(MAIL_USERNAME, options.mail_passwd),
-                            subject=MAIL_SUBJECT)
+        mh = LogMailHandler(mailhost=(options.mail_host, options.mail_port),
+                            fromaddr=options.mail_from_addr,
+                            toaddrs=options.mail_to_addrs,
+                            credentials=(options.mail_username, options.mail_passwd),
+                            subject=options.mail_subject)
         mh.setFormatter(LogMailFormatter())
         mh.setLevel(logging.ERROR)
-        log.addHandler(mh)
+        logging.getLogger().addHandler(mh)
 
     def setup_db(self):
-        log.debug('connect database at {}:{}'
-                  .format(options.dbhost, options.dbport))
+        logger.debug('connect database at {}:{}'
+                     .format(options.dbhost, options.dbport))
 
         model = BaseBlogModel(host=options.dbhost, port=options.dbport)
         self.conn = model.conn

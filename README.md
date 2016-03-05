@@ -3,7 +3,7 @@ Gargantua
 
 [![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg)]()
 [![Build Status](https://travis-ci.org/Laisky/laisky-blog.svg?branch=master)](https://travis-ci.org/Laisky/laisky-blog)
-[![Crates.io](https://img.shields.io/badge/version-v2.1.7-blue.svg)]()
+[![Crates.io](https://img.shields.io/badge/version-v2.1.8-blue.svg)]()
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Gitter](https://badges.gitter.im/Laisky/laisky-blog.svg)](https://gitter.im/Laisky/laisky-blog?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
@@ -32,7 +32,14 @@ $ sudo docker run ppcelery/laisky-blog \
     --dbhost=mongo32 \
     --dbport=27017 \
     --debug=false \
-    --mail_passwd=YOUR_GMAIL_PASSWORD
+    --mail_host='smtp.mailgun.org'
+    --mail_port=25
+    --mail_subject='Gargantua Error'
+    --mail_from_addr='gargantua@laisky.com'
+    --mail_to_addrs='a@gmail.com;b@gmail.com;c@gmail.com'
+    --mail_username=<YOUR_SMTP_USERNAME>
+    --mail_passwd=<YOUR_SMTP_PASSWORD
+    --mail_passwd=<YOUR_GMAIL_PASSWORD>
 ```
 
 

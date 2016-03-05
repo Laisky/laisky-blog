@@ -4,6 +4,7 @@ import pathlib
 
 
 # server
+DEBUG = False
 LISTEN_PORT = 27850
 
 # common
@@ -37,7 +38,7 @@ SENTRY_NAME = '2'
 MAIL_HOST = 'smtp.mailgun.org'
 MAIL_PORT = 25
 MAIL_SUBJECT = 'Gargantua Error'
-FROM_ADDR = 'gargantua@laisky.com'
-TO_ADDRS = ('ppcelery@gmail.com',)
-MAIL_USERNAME = 'postmaster@mg.laisky.com'
-MAIL_PASSWD = '123456'
+MAIL_FROM_ADDR = 'gargantua@laisky.com'
+MAIL_TO_ADDRS = 'ppcelery@gmail.com'
+MAIL_USERNAME = '<YOUR_SMTP_USERNAME>'
+MAIL_PASSWD = '<YOUR_SMTP_PASSWORD>'

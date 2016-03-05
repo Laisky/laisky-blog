@@ -15,7 +15,7 @@ from gargantua.settings import LOG_NAME, OK
 from .jinja import TemplateRendering
 
 
-log = logging.getLogger(LOG_NAME)
+logger = logging.getLogger(LOG_NAME)
 __all__ = [
     'debug_wrapper', 'DbHandlerMixin', 'WebHandlerMixin', 'AuthHandlerMixin',
     'HttpErrorMixin', 'HttpErrorMixin', 'JinjaMixin', 'RFCMixin',
@@ -24,7 +24,7 @@ __all__ = [
 
 def debug_wrapper(func):
     def wrapper(*args, **kw):
-        log.debug('debug_wrapper for args {}, kw {}'.format(args, kw))
+        logger.debug('debug_wrapper for args {}, kw {}'.format(args, kw))
         try:
             yield from func(*args, **kw)
         except Exception as err:
@@ -35,10 +35,11 @@ def debug_wrapper(func):
                 'headers': str(self.request.headers),
                 'cookies': str(self.request.cookies),
             }
-            log.error('{}\n-----\n{}'.format(
+            logger.error('{}\n-----\n{}'.format(
                 traceback.format_exc(),
                 json.dumps(err_msg, indent=4, sort_keys=True),
             ))
+            self.finish()
     return wrapper
 
 
@@ -61,7 +62,7 @@ class WebHandlerMixin():
 
     def write_json(self, *, status=OK, msg='', data={}):
         j = json.dumps({'status': status, 'msg': msg, 'data': data})
-        log.debug('<< {}'.format(j))
+        logger.debug('<< {}'.format(j))
         self.write(j)
 
     def get_argument(self, arg_name, bool=False, *args, **kw):
@@ -105,14 +106,14 @@ class RFCMixin():
         raw_accepts = self.request.headers.get('Accept', '').split(',')
         accepts = [self._parse_accept(a) for a in raw_accepts]
         parsed_accepts = sorted(accepts, key=lambda ac: ac.quality, reverse=True)
-        log.debug('Requests Accepts: {}'.format(parsed_accepts))
+        logger.debug('Requests Accepts: {}'.format(parsed_accepts))
         return parsed_accepts
 
 
 class AuthHandlerMixin():
 
     def get_current_user(self):
-        log.debug('get_current_user')
+        logger.debug('get_current_user')
 
         try:
             cli_uid = self.get_secure_cookie('uid')
@@ -133,14 +134,14 @@ class AuthHandlerMixin():
             assert token_docu['uid'] == cli_uid
 
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError) as err:
-            log.debug('token validate error: {}'.format(err))
+            logger.debug('token validate error: {}'.format(err))
         except AttributeError as err:
-            log.debug('get_current_user error: {}'.format(err))
+            logger.debug('get_current_user error: {}'.format(err))
         except Exception:
             err = traceback.format_exc()
-            log.exception('get_current_user error: {}'.format(err))
+            logger.exception('get_current_user error: {}'.format(err))
         else:
-            log.debug("authenticated user")
+            logger.debug("authenticated user")
             return user_docu
 
 

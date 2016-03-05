@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
 import re
+import sys
 import random
 import datetime
 import string
@@ -9,6 +11,7 @@ import logging
 import pytz
 
 from gargantua.settings import LOG_NAME, LOG_PATH
+from gargantua import settings
 from .encryt import generate_passwd, validate_passwd, \
     generate_token, validate_token
 from .jinja import TemplateRendering
@@ -40,6 +43,10 @@ oid_regex = re.compile(r'[a-z0-9]{24}')
 is_objectid = lambda s: oid_regex.fullmatch(s)
 
 
+def get_default_config(varname):
+    return os.environ.get(varname, getattr(settings, varname, ''))
+
+
 def utcnow():
     return datetime.datetime.utcnow().replace(tzinfo=tz)
 
@@ -56,22 +63,23 @@ def utc2cst_timestamp(dt):
     return dt2timestamp(utc2cst(dt))
 
 
-def setup_log():
+def setup_log(debug=False):
+    log_level = logging.DEBUG if debug else logging.INFO
     _format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     formatter = logging.Formatter(_format)
     # set stdout
-    # ch = logging.StreamHandler(sys.stdout)
-    # ch.setLevel(logging.DEBUG)
-    # ch.setFormatter(formatter)
+    ch = logging.StreamHandler(sys.stdout)
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(formatter)
     # set log file
-    fh = logging.FileHandler(LOG_PATH)
-    fh.setLevel(logging.DEBUG)
-    fh.setFormatter(formatter)
+    # fh = logging.FileHandler(LOG_PATH)
+    # fh.setLevel(log_level)
+    # fh.setFormatter(formatter)
     # log
     logging.getLogger(LOG_NAME).setLevel(logging.DEBUG)
     log = logging.getLogger()
-    log.setLevel(logging.DEBUG)
-    # log.addHandler(ch)
+    log.setLevel(log_level)
+    log.addHandler(ch)
     # log.addHandler(fh)
 
 
