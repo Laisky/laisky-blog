@@ -38,6 +38,6 @@ MAIL_HOST = 'smtp.mailgun.org'
 MAIL_PORT = 25
 MAIL_SUBJECT = 'Gargantua Error'
 FROM_ADDR = 'gargantua@laisky.com'
-TO_ADDRS = ('ppcelery@gmail.com',)
+TO_ADDRS = 'ppcelery@gmail.com'
 MAIL_USERNAME = 'postmaster@mg.laisky.com'
 MAIL_PASSWD = '123456'
