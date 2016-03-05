@@ -3,7 +3,7 @@ Gargantua
 
 [![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg)]()
 [![Build Status](https://travis-ci.org/Laisky/laisky-blog.svg?branch=master)](https://travis-ci.org/Laisky/laisky-blog)
-[![Crates.io](https://img.shields.io/badge/version-v2.1.9-blue.svg)]()
+[![Crates.io](https://img.shields.io/badge/version-v2.1.11-blue.svg)]()
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Gitter](https://badges.gitter.im/Laisky/laisky-blog.svg)](https://gitter.im/Laisky/laisky-blog?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 

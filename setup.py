@@ -9,16 +9,37 @@ except ImportError:
 from pip.req import parse_requirements
 from pip.download import PipSession
 
+import re
 import gargantua
 
 
 requires = [str(i.req) for i in parse_requirements('requirements.txt',
                                                    session=PipSession())
             if i.req is not None]
+
+
+def update_readme_version(version):
+    ver_reg = re.compile(
+        '(https://img\.shields\.io/badge/version-v'
+        '[0-9]+\.[0-9]+(\.[0-9]+)?'
+        '-blue\.svg)'
+    )
+    _v = 'https://img.shields.io/badge/version-v{}-blue.svg'.format(version)
+    with open('README.md', 'r') as f:
+        src = f.read()
+
+    with open('README.md', 'w') as f:
+        dest = ver_reg.sub(_v, src)
+        f.write(dest)
+
+
 version = gargantua.__version__
+update_readme_version(version)
+
 kwargs = {}
 with open('README.md', 'r') as f:
     kwargs['long_description'] = f.read()
+
 
 setup(
     name='gargantua',
