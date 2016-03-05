@@ -35,8 +35,8 @@ $ sudo docker run ppcelery/laisky-blog \
     --mail_host='smtp.mailgun.org'
     --mail_port=25
     --mail_subject='Gargantua Error'
-    --from_addr='gargantua@laisky.com'
-    --to_addrs='a@gmail.com;g@gmail.com;c@gmail.com'
+    --mail_from_addr='gargantua@laisky.com'
+    --mail_to_addrs='a@gmail.com;b@gmail.com;c@gmail.com'
     --mail_username=<YOUR_SMTP_USERNAME>
     --mail_passwd=<YOUR_SMTP_PASSWORD
     --mail_passwd=<YOUR_GMAIL_PASSWORD>

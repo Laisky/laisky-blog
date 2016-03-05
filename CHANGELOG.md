@@ -2,6 +2,7 @@
 *CURRENT*
 ---
     
+- 2016-03-05 (Laisky) fix: fix error warning mail -> [view commit](https://github.com/Laisky/laisky-blog/commit/4c790f8424c7fa7115d2a296236d98fc88356dbd)
 - 2016-03-05 (Laisky) feat: 通过命令行配置邮件参数 -> [view commit](https://github.com/Laisky/laisky-blog/commit/946f0d707fe2098109c325bbd8906afed046fafe)
 - 2016-03-05 (Laisky) refactor: 整理 settings 文件，全部放入 /settings 里 -> [view commit](https://github.com/Laisky/laisky-blog/commit/14fb15442c676075900546e67231ba7a1599e162)
 - 2016-03-02 (Laisky) * fix password -> [view commit](https://github.com/Laisky/laisky-blog/commit/6638c04ccb2129dfd0bb8efe16b3d81cf889aff3)

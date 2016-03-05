@@ -16,9 +16,9 @@ import pymongo
 from tornado.web import url
 from tornado.options import define, options
 
-from gargantua.settings import CWD, LOG_NAME
+from gargantua.settings import CWD
 from gargantua.utils import setup_log, generate_random_string, \
-    get_default_config
+    get_default_config, logger
 from gargantua.views import BaseHandler, PostsHandler, UserHandler
 from gargantua.apis import PostApiHandler
 from gargantua.libs import LogMailHandler, LogMailFormatter
@@ -41,7 +41,6 @@ define('mail_to_addrs', default=get_default_config('MAIL_TO_ADDRS'), type=str)
 define('mail_username', default=get_default_config('MAIL_USERNAME'), type=str)
 define('mail_passwd', default=get_default_config('MAIL_PASSWD'), type=str)
 
-logger = logging.getLogger(LOG_NAME)
 setup_log(options.debug)
 
 
@@ -94,8 +93,8 @@ class Application(tornado.web.Application):
         ]
         handlers.append(('/(.*)', PageNotFound))
         self.setup_db()
-        if not options.debug:
-            self.setup_mail_handler()
+        # if not options.debug:
+        self.setup_mail_handler()
 
         super(Application, self).__init__(handlers, **settings)
 
@@ -108,7 +107,7 @@ class Application(tornado.web.Application):
                             subject=options.mail_subject)
         mh.setFormatter(LogMailFormatter())
         mh.setLevel(logging.ERROR)
-        logger.addHandler(mh)
+        logging.getLogger().addHandler(mh)
 
     def setup_db(self):
         logger.debug('connect database at {}:{}'
