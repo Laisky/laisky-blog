@@ -304,10 +304,11 @@ class PostsHandler(BaseHandler, ArticleMixin):
         try:
             page = int(self.get_argument('page', strip=True, default=1))
             is_full = self.get_argument('is_full', strip=True, default=False)
-        except ValueError:
-            pass
-        else:
             logger.debug('get_post_by_page for page {}'.format(page))
+        except ValueError as err:
+            logger.error('when get_post_by_page: ', exc_info=err)
+            self.finish()
+            return
 
         skip = (page - 1) * N_POST_PER_PAGE
         cursor = self.db.posts.find()
@@ -350,7 +351,8 @@ class PostsHandler(BaseHandler, ArticleMixin):
             is_full = self.get_argument('is_full', strip=True, default=False)
             _id = self.get_argument('id', strip=True)
         except ValueError:
-            pass
+            self.finish()
+            return
         else:
             logger.debug('get_post_by_id for _id {}, is_full {}'.format(_id, is_full))
 

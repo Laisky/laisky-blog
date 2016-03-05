@@ -104,7 +104,7 @@ class Application(tornado.web.Application):
         mh = LogMailHandler(mailhost=(options.mail_host, options.mail_port),
                             fromaddr=options.mail_from_addr,
                             toaddrs=options.mail_to_addrs,
-                            credentials=(options.mail_mail_username, options.mail_passwd),
+                            credentials=(options.mail_username, options.mail_passwd),
                             subject=options.mail_subject)
         mh.setFormatter(LogMailFormatter())
         mh.setLevel(logging.ERROR)

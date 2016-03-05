@@ -16,7 +16,7 @@ def send_mail(mailhost, mailport, username, passwd,
 
     msg = MIMEMultipart('alternative')
     msg['From'] = from_addr
-    msg['To'] = ';'.join(to_addrs)
+    msg['To'] = to_addrs
     msg['Subject'] = subject
     msg.attach(MIMEText(content, 'html'))
 
@@ -33,7 +33,7 @@ class LogMailFormatter(logging.Formatter):
 class LogMailHandler(logging.handlers.SMTPHandler):
 
     def emit(self, record):
-        logger.debug('delay_task for record {}'.format(record))
+        logger.debug('LogMailHandler for record {}'.format(record))
         delay_task(send_mail,
                    mailhost=self.mailhost,
                    mailport=self.mailport,
