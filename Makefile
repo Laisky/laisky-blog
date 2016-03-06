@@ -1,8 +1,10 @@
 all:
-	mkdir -p /var/log/gargantua
+	@echo 'Create upload files dir.'
 	mkdir -p /srv/gargantua/uploads
-	chmod -R 777 /var/log/gargantua
-	chmod -R 777 /srv/gargantua
+	chmod -R 775 /srv/gargantua
+
+	@echo 'Install'
+	python setup.py develop
 
 nose:
 	@# nosetests -vs --logging-level=DEBUG --with-coverage --cover-package=gargantua tests

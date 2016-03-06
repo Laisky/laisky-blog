@@ -1,0 +1,53 @@
+version: "2"
+services:
+  mongodb:
+    image: mongo:3.2
+    restart: always
+    logging:
+      driver: syslog
+      options:
+        syslog-facility: local6
+        tag: mongodb
+    networks:
+      - gargantua
+    expose:
+      - "27017"
+    ports:
+      - 27016:27017
+    volumes:
+      - /var/lib/mongodb:/data/db
+
+  gargantua:
+    image: ppcelery/laisky-blog:test
+    restart: always
+    logging:
+      driver: syslog
+      options:
+        tag: gargantua
+    links:
+      - mongodb:mongodb
+    networks:
+      - gargantua
+    expose:
+      - "27850"
+    ports:
+      - 27851:27850
+    command:
+      - "python"
+      - "-m"
+      - "gargantua"
+      - "--port=27850"
+      - "--dbhost=mongodb"
+      - "--dbport=27017"
+      - "--debug=false"
+      - "--mail_host=smtp.mailgun.org"
+      - "--mail_port=25"
+      - "--mail_subject=Gargantua Error"
+      - "--mail_from_addr=gargantua@laisky.com"
+      - "--mail_to_addrs='ppcelery@gmail.com'"
+      - "--mail_username=<YOUR_SMTP_USERNAME"
+      - "--mail_passwd=<YOUR_SMTP_PASSWORD>"
+
+networks:
+  gargantua:
+    driver: bridge

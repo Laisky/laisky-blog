@@ -4,16 +4,13 @@
     
     
        
-*2.1.10*
+*2.1.11*
 ---
     
+- 2016-03-05 (Laisky) 2.1.11 -> [view commit](https://github.com/Laisky/laisky-blog/commit/09fdd9dd0726099319dd267697ce75905d7ec4e8)
 - 2016-03-05 (Laisky) 2.1.10 -> [view commit](https://github.com/Laisky/laisky-blog/commit/578c37c16d23e72c5a0d15b9408674e2b45f0c0d)
 - 2016-03-05 (Laisky) chore: refactory setup.py -> [view commit](https://github.com/Laisky/laisky-blog/commit/9c649a5d05a94ced016c0462f7dd1a10e7542f3f)
-- 2016-03-05 (Laisky) docs: update changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/e974116881d7237ee6c423696930f26a7ba2dc80)    
-       
-*2.1.9*
----
-    
+- 2016-03-05 (Laisky) docs: update changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/e974116881d7237ee6c423696930f26a7ba2dc80)
 - 2016-03-05 (Laisky) 2.1.9 -> [view commit](https://github.com/Laisky/laisky-blog/commit/adc44970b6d95014a960dc997d34b4679af97ae1)
 - 2016-03-05 (Laisky) fix: 因为 settings 放入二级目录导致 CWD 错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/82ccc4e8301287c828a51f6135dfec4bf420591a)
 - 2016-03-05 (Laisky) docs: update docs -> [view commit](https://github.com/Laisky/laisky-blog/commit/8b669b95ef38f2020dae5b11a395961f18e37b4d)

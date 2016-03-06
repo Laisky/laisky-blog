@@ -26,12 +26,12 @@ from gargantua.models import BaseBlogModel
 
 
 # settings
-define('port', default=get_default_config('LISTEN_PORT'), type=int)
+define('port', default=get_default_config('PORT'), type=int)
 define('debug', default=get_default_config('DEBUG'), type=bool)
 # database
-define('dbname', default=get_default_config('DB_NAME'), type=str)
-define('dbhost', default=get_default_config('DB_HOST'), type=str)
-define('dbport', default=get_default_config('DB_PORT'), type=int)
+define('dbname', default=get_default_config('DBNAME'), type=str)
+define('dbhost', default=get_default_config('DBHOST'), type=str)
+define('dbport', default=get_default_config('DBPORT'), type=int)
 # mail
 define('mail_host', default=get_default_config('MAIL_HOST'), type=str)
 define('mail_port', default=get_default_config('MAIL_PORT'), type=int)
@@ -61,7 +61,6 @@ class PageNotFound(BaseHandler):
 class Application(tornado.web.Application):
 
     def __init__(self):
-        print('!!!!!!!', str(Path(CWD, 'static')))
         settings = {
             'static_path': str(Path(CWD, 'static')),
             'static_url_prefix': '/static/',

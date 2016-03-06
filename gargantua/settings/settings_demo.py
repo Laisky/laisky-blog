@@ -5,7 +5,7 @@ import pathlib
 
 # server
 DEBUG = False
-LISTEN_PORT = 27850
+PORT = 27850
 
 # common
 CWD = pathlib.PurePath(__file__).parents[1]
@@ -18,9 +18,9 @@ OK = 0
 ERROR = 1
 
 # db
-DB_HOST = 'localhost'
-DB_PORT = 27016
-DB_NAME = 'blog'
+DBHOST = 'localhost'
+DBPORT = 27016
+DBNAME = 'blog'
 
 # search
 ES_HOST = 'localhost'

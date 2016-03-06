@@ -6,9 +6,9 @@ import tornado.httpserver
 import tornado.options as opt
 from tornado.options import options
 
-from .app import Application
-from .tasks import setup_tasks
-from .utils import logger
+from gargantua.app import Application
+from gargantua.tasks import setup_tasks
+from gargantua.utils import logger
 
 
 def main():

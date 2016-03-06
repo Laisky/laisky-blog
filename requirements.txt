@@ -1,5 +1,5 @@
 # debug
-ipython
+# ipython
 
 # encrypt
 PyJWT
@@ -31,6 +31,3 @@ jieba
 # test
 nose
 coverage
-
-# distutils
-pbr

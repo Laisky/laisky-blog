@@ -1,4 +1,4 @@
 try:
     from .settings import *
-except:
+except ImportError:
     from .settings_demo import *  # for test

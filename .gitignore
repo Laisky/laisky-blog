@@ -81,4 +81,5 @@ node_modules/
 .sass-cache/
 
 # prod
+/docker/docker-compose.yml
 /gargantua/settings/settings.py
