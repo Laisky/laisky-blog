@@ -18,7 +18,7 @@ services:
       - /var/lib/mongodb:/data/db
 
   gargantua:
-    image: ppcelery/laisky-blog:test
+    image: ppcelery/laisky-blog
     restart: always
     logging:
       driver: syslog
