@@ -2,6 +2,12 @@
 *CURRENT*
 ---
     
+    
+       
+*2.1.12*
+---
+    
+- 2016-03-06 (Laisky) 2.1.12 -> [view commit](https://github.com/Laisky/laisky-blog/commit/768f83b2a1e28c90d7b28917b031a6bb5df40e0d)
 - 2016-03-06 (Laisky) chore: update docker-compose * dockerfile -> [view commit](https://github.com/Laisky/laisky-blog/commit/7481cdeb5cab6bb519badcf0f061f07bb23624a4)    
        
 *2.1.11*
