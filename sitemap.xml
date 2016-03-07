@@ -10,14 +10,6 @@
     
 
     
-    <url>
-     <loc>None/database/</loc>
-     <lastmod>2016-03-07</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
         
     <url>
      <loc>None/docker/</loc>
@@ -25,6 +17,14 @@
      <changefreq>daily</changefreq>
     </url>
         
+    
+
+    
+    <url>
+     <loc>None/database/</loc>
+     <lastmod>2016-03-07</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
     
 
     
