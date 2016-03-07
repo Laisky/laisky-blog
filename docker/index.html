@@ -7,14 +7,14 @@
         
         
         
-        <link rel="shortcut icon" href="./img/favicon.ico">
+        <link rel="shortcut icon" href="../img/favicon.ico">
 
-	<title>Gargantua Documents</title>
+	<title>Docker - Gargantua Documents</title>
 
-        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="./css/font-awesome-4.5.0.css" rel="stylesheet">
-        <link href="./css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="./css/highlight.css">
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -25,7 +25,7 @@
         
     </head>
 
-    <body class="homepage">
+    <body>
 
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
@@ -43,7 +43,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href=".">Gargantua Documents</a>
+            <a class="navbar-brand" href="..">Gargantua Documents</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -53,25 +53,25 @@
                 <ul class="nav navbar-nav">
                 
                 
-                    <li class="active">
-                        <a href=".">Home</a>
+                    <li >
+                        <a href="..">Home</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="database/">Database</a>
+                        <a href="../database/">Database</a>
                     </li>
                 
                 
                 
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Deploy <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
-<li >
-    <a href="docker/">Docker</a>
+<li class="active">
+    <a href="./">Docker</a>
 </li>
 
                         
@@ -81,7 +81,7 @@
                 
                 
                     <li >
-                        <a href="CHANGELOG/">Changelog</a>
+                        <a href="../CHANGELOG/">Changelog</a>
                     </li>
                 
                 
@@ -95,13 +95,13 @@
                     </a>
                 </li>
                 
-                    <li class="disabled">
-                        <a rel="next" >
+                    <li >
+                        <a rel="next" href="../database/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="database/">
+                        <a rel="prev" href="../CHANGELOG/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -117,35 +117,37 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#gargantua">Gargantua</a></li>
+        <li class="main active"><a href="#deploy-by-docker">Deploy by Docker</a></li>
         
-            <li><a href="#links">Links</a></li>
+            <li><a href="#run-docker-container-by-hand">Run docker container by hand</a></li>
         
-            <li><a href="#technology-stack">Technology Stack</a></li>
+            <li><a href="#deploy-by-docker-compose">Deploy by docker compose</a></li>
         
     
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="gargantua">Gargantua</h1>
-<p>基于 Tornado 的博客项目，主要是用来玩各种技术。</p>
-<h2 id="links">Links</h2>
-<ul>
-<li>HomePage https://github.com/Laisky/laisky-blog</li>
-<li>Document http://laisky.github.io/laisky-blog/</li>
-</ul>
-<h2 id="technology-stack">Technology Stack</h2>
-<pre><code>- Backend
-    - Python v3.4
-        - tornado
-    - MongoDB v3.2 wiredTiger
-    - Nginx
+<h1 id="deploy-by-docker">Deploy by Docker</h1>
+<h2 id="run-docker-container-by-hand">Run docker container by hand</h2>
+<p><a href="https://imagelayers.io/?images=ppcelery/laisky-blog:latest" title="Get your own badge on imagelayers.io"><img alt="" src="https://badge.imagelayers.io/ppcelery/laisky-blog:latest.svg" /></a></p>
+<pre><code class="sh">$ sudo docker run ppcelery/laisky-blog \
+    run_gargantua \
+        --dbhost=mongo32 \
+        --dbport=27017 \
+        --debug=false \
+        --mail_host='smtp.mailgun.org' \
+        --mail_port=25 \
+        --mail_subject='Gargantua Error' \
+        --mail_from_addr='gargantua@laisky.com' \
+        --mail_to_addrs='a@gmail.com;b@gmail.com;c@gmail.com' \
+        --mail_username=&lt;YOUR_SMTP_USERNAME&gt; \
+        --mail_passwd=&lt;YOUR_SMTP_PASSWORD
+</code></pre>
 
-- Frontend
-    - SASS / Compass / Gulp
-    - ECMAScript6 / jQuery
-    - Bootstrap3
+<h2 id="deploy-by-docker-compose">Deploy by docker compose</h2>
+<pre><code class="sh">$ cd docker
+$ docker-compose up -d
 </code></pre></div>
             
         </div>
@@ -156,12 +158,12 @@
             <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
 
-        <script src="./js/jquery-1.10.2.min.js"></script>
-        <script src="./js/bootstrap-3.0.3.min.js"></script>
-        <script src="./js/highlight.pack.js"></script>
-        <script>var base_url = '.';</script>
-        <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
-        <script src="./js/base.js"></script>
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script>var base_url = '..';</script>
+        <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+        <script src="../js/base.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
             <div class="modal-dialog">
@@ -190,8 +192,3 @@
 
     </body>
 </html>
-
-<!--
-MkDocs version : 0.15.3
-Build Date UTC : 2016-03-07 14:24:47.759115
--->

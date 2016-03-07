@@ -11,7 +11,25 @@
 
     
     <url>
-     <loc>None/../CHANGELOG/</loc>
+     <loc>None/database/</loc>
+     <lastmod>2016-03-07</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+        
+    <url>
+     <loc>None/docker/</loc>
+     <lastmod>2016-03-07</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+    <url>
+     <loc>None/CHANGELOG/</loc>
      <lastmod>2016-03-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
