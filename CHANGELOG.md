@@ -2,7 +2,8 @@
 *CURRENT*
 ---
     
-    
+- 2016-03-06 (Laisky) fix: fix docker image tag -> [view commit](https://github.com/Laisky/laisky-blog/commit/aa3ea9aed9cbd965befe855d23d4b3f015c77d43)
+- 2016-03-06 (Laisky) docs: update docs -> [view commit](https://github.com/Laisky/laisky-blog/commit/f3b7c664142785c699d596d0c88898739e88572d)    
        
 *2.1.12*
 ---

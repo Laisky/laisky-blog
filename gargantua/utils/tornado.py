@@ -6,6 +6,7 @@ import traceback
 import os
 import re
 from collections import namedtuple
+from functools import wraps
 
 import jwt
 from bson import ObjectId
@@ -23,6 +24,7 @@ __all__ = [
 
 
 def debug_wrapper(func):
+    @wraps(func)
     def wrapper(*args, **kw):
         logger.debug('debug_wrapper for args {}, kw {}'.format(args, kw))
         try:
@@ -133,7 +135,8 @@ class AuthHandlerMixin():
             token_docu = validate_token(cli_token, user_docu['password'])
             assert token_docu['uid'] == cli_uid
 
-        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError) as err:
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError,
+                AssertionError) as err:
             logger.debug('token validate error: {}'.format(err))
         except AttributeError as err:
             logger.debug('get_current_user error: {}'.format(err))
