@@ -2,6 +2,7 @@
 *CURRENT*
 ---
     
+- 2016-03-07 (Laisky) fix: fix debug_wrapper bug -> [view commit](https://github.com/Laisky/laisky-blog/commit/845cc421e4df09c1d406130b61865b2dbdacf9dc)
 - 2016-03-06 (Laisky) fix: fix docker image tag -> [view commit](https://github.com/Laisky/laisky-blog/commit/aa3ea9aed9cbd965befe855d23d4b3f015c77d43)
 - 2016-03-06 (Laisky) docs: update docs -> [view commit](https://github.com/Laisky/laisky-blog/commit/f3b7c664142785c699d596d0c88898739e88572d)    
        

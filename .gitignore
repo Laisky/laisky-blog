@@ -80,6 +80,9 @@ node_modules/
 # sass
 .sass-cache/
 
+# docs
+/site
+
 # prod
 /docker/docker-compose.yml
 /gargantua/settings/settings.py

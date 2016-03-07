@@ -14,56 +14,28 @@ Gargantua
 | Laisky's New Blog |
 
 
-## Deploy
+## Links
 
-### Git
-
-```sh
-$ sudo make
-```
-
-### Docker
-
-[![](https://badge.imagelayers.io/ppcelery/laisky-blog:latest.svg)](https://imagelayers.io/?images=ppcelery/laisky-blog:latest 'Get your own badge on imagelayers.io')
-
-```sh
-$ sudo docker run ppcelery/laisky-blog \
-    run_gargantua \
-        --dbhost=mongo32 \
-        --dbport=27017 \
-        --debug=false \
-        --mail_host='smtp.mailgun.org' \
-        --mail_port=25 \
-        --mail_subject='Gargantua Error' \
-        --mail_from_addr='gargantua@laisky.com' \
-        --mail_to_addrs='a@gmail.com;b@gmail.com;c@gmail.com' \
-        --mail_username=<YOUR_SMTP_USERNAME> \
-        --mail_passwd=<YOUR_SMTP_PASSWORD
-```
-
-
-## Description
-
-A simple blog by Python3
+  - Github [https://github.com/Laisky/laisky-blog](https://github.com/Laisky/laisky-blog)
+  - Homepage [https://blog.laisky.com/](https://blog.laisky.com/)
+  - Document [http://laisky.github.io/laisky-blog/](http://laisky.github.io/laisky-blog/)
 
 
 ## Technology Stack
 
     - Backend
-        - Python3
+        - Python v3.4
             - tornado
-        - MongoDB3.0 wiredTiger
+        - MongoDB v3.2 wiredTiger
         - Nginx
-        - Elasticsearch
-        - Sentry
 
     - Frontend
-        - SASS / Compass
-        - JavaScript / jQuery
+        - SASS / Compass / Gulp
+        - ECMAScript6 / jQuery
         - Bootstrap3
 
 
 ## CHANGELOG
 
-[CHANGELOG.md](https://github.com/Laisky/laisky-blog/blob/master/CHANGELOG.md)
+[CHANGELOG.md](http://laisky.github.io/laisky-blog/CHANGELOG/)
 

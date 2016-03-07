@@ -1,7 +1,7 @@
 Gargantua Database Structure
 ---
 
-- [blog](#blog)
+    - [blog](#blog)
     - [db.posts](#posts)
     - [db.users](#users)
 

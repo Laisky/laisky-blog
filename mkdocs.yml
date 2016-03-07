@@ -1,0 +1,8 @@
+site_name: Gargantua Documents
+pages:
+  - Home: index.md
+  - Deploy:
+    - Docker: docker.md
+  - Database: database.md
+  - Changelog: CHANGELOG.md
+theme: mkdocs
