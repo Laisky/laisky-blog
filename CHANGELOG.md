@@ -2,7 +2,7 @@
 *CURRENT*
 ---
     
-    
+- 2016-03-07 (Laisky) docs: update readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/c3d9eb3e32364be4aa62df7aa7ff8c150dc72684)    
        
 *2.2*
 ---
