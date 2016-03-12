@@ -4,10 +4,9 @@ services:
     image: mongo:3.2
     restart: always
     logging:
-      driver: syslog
+      driver: fluentd
       options:
-        syslog-facility: local6
-        tag: mongodb
+        fluentd-address: "localhost:24224"
     networks:
       - gargantua
     expose:
@@ -21,9 +20,9 @@ services:
     image: ppcelery/laisky-blog
     restart: always
     logging:
-      driver: syslog
+      driver: fluentd
       options:
-        tag: gargantua
+        fluentd-address: "localhost:24224"
     links:
       - mongodb:mongodb
     networks:

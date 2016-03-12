@@ -2,6 +2,7 @@
 *CURRENT*
 ---
     
+- 2016-03-07 (Laisky) docs: fix changelog typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/41596d8fe862df5a6ee05bb0a7d415a2cf3ae00c)
 - 2016-03-07 (Laisky) docs: update readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/c3d9eb3e32364be4aa62df7aa7ff8c150dc72684)    
        
 *2.2*
