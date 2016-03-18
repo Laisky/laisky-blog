@@ -75,7 +75,7 @@ def load_english_keyword(content):
         'pnumber', 'subject', 'alignnone', 'ppcelery', 'color', 'config', 'shell',
         'static', 'index', 'label', 'number', 'param', 'users', 'first', 'notebook',
         'write', 'volume', 'files', 'total', 'timeit', 'latest', 'which', 'login',
-        'field', 'requesthandler',
+        'field', 'requesthandler', 'https',
     ])
     key_map = defaultdict(int)
     kws = jieba.cut(content, cut_all=False)

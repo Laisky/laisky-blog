@@ -5,10 +5,14 @@ import urllib
 import tornado
 import html2text
 import dicttoxml
+from bson import ObjectId
 
 from gargantua.settings import LOG_NAME
 from gargantua.utils import AuthHandlerMixin, DbHandlerMixin, \
-    WebHandlerMixin, HttpErrorMixin, JinjaMixin, RFCMixin
+    WebHandlerMixin, HttpErrorMixin, JinjaMixin, RFCMixin, \
+    MongoParser, debug_wrapper
+from .filters import FilterError, \
+    OidSortFilter, SkitFilter, LimitFilter
 
 
 logger = logging.getLogger(LOG_NAME)
@@ -40,6 +44,16 @@ class BaseApiHandler(tornado.web.RequestHandler,
                 return m
 
         return self.write_not_accept
+
+    def success(self, data, **kwargs):
+        resp = {'status': 'ok', 'result': data}
+        resp.update(kwargs)
+        self.rest_write(resp)
+
+    def fail(self, data, **kwargs):
+        resp = {'status': 'fail', 'result': data}
+        resp.update(kwargs)
+        self.rest_write(resp)
 
     def rest_write(self, data):
         # TODO 根据 meta 来返回 HTML， JSON 和 XML
@@ -91,3 +105,64 @@ class BaseApiHandler(tornado.web.RequestHandler,
 
     def hyperlink_postname(self, post_name):
         return 'http://blog.laisky.com/api/p/{}/'.format(post_name)
+
+mongo_parser = MongoParser()
+
+
+class ApiHandler(BaseApiHandler):
+
+    _collection = None
+    _filters = (OidSortFilter, LimitFilter, SkitFilter)
+
+    @tornado.web.asynchronous
+    def get(self, oid=None):
+        if oid:
+            return self.retrieve(oid)
+        else:
+            return self.list()
+
+    def parse_docu(self, docu):
+        return docu
+
+    def get_col(self):
+        assert self._collection, 'You must identify _collecion'
+        return getattr(self.db, self._collection)
+
+    def get_cursor(self):
+        col = self.get_col()
+        cursor = col.find()
+        return self.pass_filter(cursor)
+
+    def pass_filter(self, cursor):
+        for f in self._filters:
+            fi = f()
+            try:
+                cursor = fi.query_cursor(self, cursor)
+            except FilterError as err:
+                logger.exception(err)
+                self.http_400_bad_request(err=err)
+                raise
+
+        return cursor
+
+    @tornado.gen.coroutine
+    @debug_wrapper
+    def retrieve(self, oid):
+        logger.info('retrieve {} for oid {}'
+                    .format(self._collection, oid))
+        col = self.get_col()
+        docu = yield col.find_one({'_id': ObjectId(oid)})
+        parsed_docu = self.parse_docu(docu)
+        self.success(parsed_docu)
+
+    @tornado.gen.coroutine
+    @debug_wrapper
+    def list(self):
+        cursor = self.get_cursor()
+        posts = []
+        while (yield cursor.fetch_next):
+            docu = cursor.next_object()
+            post = mongo_parser.parse(docu)
+            posts.append(post)
+
+        self.success(posts)

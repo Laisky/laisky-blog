@@ -1,19 +1,15 @@
-import logging
-
-import pymongo
 import tornado
-from bson import ObjectId
 
 from gargantua.utils import debug_wrapper, \
-    is_objectid, utc2cst_timestamp
-from gargantua.settings import LOG_NAME
-from .base import BaseApiHandler
+    utc2cst_timestamp, logger
+from .base import ApiHandler
+from .filters import OidSortFilter, LimitFilter, SkitFilter
 
 
-logger = logging.getLogger(LOG_NAME)
+class PostApiHandler(ApiHandler):
 
-
-class PostApiHandler(BaseApiHandler):
+    _collection = 'posts'
+    _filters = (OidSortFilter, LimitFilter, SkitFilter)
 
     def parse_docu(self, docu, truncate=None, plaintext=False):
         content = docu['post_content']
@@ -37,55 +33,22 @@ class PostApiHandler(BaseApiHandler):
             'post_status': docu['post_status'],
         }
 
-    @tornado.web.asynchronous
-    def get(self, pid=None):
-        if not pid:
-            self.list()
-        else:
-            self.retrieve(pid)
-
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def retrieve(self, pid):
-        if is_objectid(pid):
-            docu = yield self.db.posts.find_one({'_id': ObjectId(pid)})
-        else:
-            docu = yield self.db.posts.find_one({'post_name': pid})
-
-        parsed_docu = self.parse_docu(docu)
-        self.rest_write(parsed_docu)
-
     @tornado.gen.coroutine
     @debug_wrapper
     def list(self):
         try:
-            sort = self.get_argument('sort', default='des', strip=True)
-            limit = int(self.get_argument('limit', default='15', strip=True))
-            skip = int(self.get_argument('skip', default='0', strip=True))
             plaintext = self.get_argument('plaintext', default='false', strip=True)
-            truncate = int(self.get_argument('truncate', default='0', strip=True))
-            assert(sort in ['des', 'asc'])
-            assert(limit > 0)
-            assert(skip >= 0)
+            truncate = int(self.get_argument('truncate', default='100', strip=True))
             assert(plaintext in ['true', 'false'])
             assert(truncate >= 0)
-        except (ValueError, AssertionError):
-            self.http_400_bad_request('Arguments Error!')
+        except (ValueError, AssertionError) as err:
+            logger.exception(err)
+            self.http_400_bad_request(exc_info=err)
             return
         else:
             plaintext = plaintext == 'true'
 
-        logger.debug(
-            'GET PostsHandler for sort {}, limit {}, skip {}, plaintext {}, '
-            'truncate {}, '
-            .format(sort, limit, skip, plaintext, truncate))
-        cursor = self.db.posts.find()
-        if sort == 'des':
-            cursor.sort([('_id', pymongo.DESCENDING)])
-        elif sort == 'asc':
-            cursor.sort([('_id', pymongo.ASCENDING)])
-
-        cursor.limit(limit).skip(skip)
+        cursor = self.get_cursor()
         posts = []
         while (yield cursor.fetch_next):
             docu = cursor.next_object()
@@ -94,13 +57,4 @@ class PostApiHandler(BaseApiHandler):
             )
             posts.append(parsed_docu)
 
-        resp = {
-            'length': len(posts),
-            'sort': sort,
-            'limit': limit,
-            'skip': skip,
-            'plaintext': plaintext,
-            'truncate': truncate,
-            'results': posts
-        }
-        self.rest_write(resp)
+        self.success(posts)

@@ -33,6 +33,7 @@ def debug_wrapper(func):
             self = args[0]
             err_msg = {
                 'uri': str(self.request.uri),
+                'remote_ip': self.request.remote_ip,
                 'version': str(self.request.version),
                 'headers': str(self.request.headers),
                 'cookies': str(self.request.cookies),
@@ -41,7 +42,7 @@ def debug_wrapper(func):
                 traceback.format_exc(),
                 json.dumps(err_msg, indent=4, sort_keys=True),
             ))
-            self.finish()
+            self._finished or self.finish()
     return wrapper
 
 
@@ -186,107 +187,201 @@ class HttpErrorMixin():
     """Raise Http Error with status code
     """
 
-    def http_400_bad_request(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=400)
+    def parse_err(self, err):
+        return ' '.join(str(_) for _ in err.args)
 
-    def http_401_unauthorized(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=401)
+    def http_400_bad_request(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
 
-    def http_402_payment_required(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=402)
+        return self.write_error(status_code=400, **kwargs)
 
-    def http_403_forbidden(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=403)
+    def http_401_unauthorized(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
 
-    def http_404_not_found(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=404)
+        return self.write_error(status_code=401, **kwargs)
 
-    def http_405_method_not_allowed(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=405)
+    def http_402_payment_required(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
 
-    def http_406_not_acceptable(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=406)
+        return self.write_error(status_code=402, **kwargs)
 
-    def http_407_proxy_authentication_required(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=407)
+    def http_403_forbidden(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
 
-    def http_408_request_timeout(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=408)
+        return self.write_error(status_code=403, **kwargs)
 
-    def http_409_conflict(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=409)
+    def http_404_not_found(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
 
-    def http_410_gone(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=410)
+        return self.write_error(status_code=404, **kwargs)
 
-    def http_411_length_required(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=411)
+    def http_405_method_not_allowed(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
 
-    def http_412_precondition_failed(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=412)
+        return self.write_error(status_code=405, **kwargs)
 
-    def http_413_request_entity_too_large(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=413)
+    def http_406_not_acceptable(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
 
-    def http_414_request_uri_too_long(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=414)
+        return self.write_error(status_code=406, **kwargs)
 
-    def http_415_unsupported_media_type(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=415)
+    def http_407_proxy_authentication_required(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
 
-    def http_416_requested_range_not_satisfiable(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=416)
+        return self.write_error(status_code=407, **kwargs)
 
-    def http_417_expectation_failed(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=417)
+    def http_408_request_timeout(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
 
-    def http_428_precondition_required(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=428)
+        return self.write_error(status_code=408, **kwargs)
 
-    def http_429_too_many_requests(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=429)
+    def http_409_conflict(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
 
-    def http_431_request_header_fields_too_large(self, msg=None):
-        self._reason = msg
-        return self.write_error(status_code=431)
+        return self.write_error(status_code=409, **kwargs)
 
-    def http_500_internal_server_error(self):
-        return self.write_error(status_code=500)
+    def http_410_gone(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
 
-    def http_501_not_implemented(self):
-        return self.write_error(status_code=501)
+        return self.write_error(status_code=410, **kwargs)
 
-    def http_502_bad_gateway(self):
-        return self.write_error(status_code=502)
+    def http_411_length_required(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
 
-    def http_503_service_unavailable(self):
-        return self.write_error(status_code=503)
+        return self.write_error(status_code=411, **kwargs)
 
-    def http_504_gateway_timeout(self):
-        return self.write_error(status_code=504)
+    def http_412_precondition_failed(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
 
-    def http_505_http_version_not_supported(self):
-        return self.write_error(status_code=505)
+        return self.write_error(status_code=412, **kwargs)
 
-    def http_511_network_authentication_required(self):
-        return self.write_error(status_code=511)
+    def http_413_request_entity_too_large(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=413, **kwargs)
+
+    def http_414_request_uri_too_long(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=414, **kwargs)
+
+    def http_415_unsupported_media_type(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=415, **kwargs)
+
+    def http_416_requested_range_not_satisfiable(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=416, **kwargs)
+
+    def http_417_expectation_failed(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=417, **kwargs)
+
+    def http_428_precondition_required(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=428, **kwargs)
+
+    def http_429_too_many_requests(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=429, **kwargs)
+
+    def http_431_request_header_fields_too_large(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=431, **kwargs)
+
+    def http_500_internal_server_error(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=500, **kwargs)
+
+    def http_501_not_implemented(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=501, **kwargs)
+
+    def http_502_bad_gateway(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=502, **kwargs)
+
+    def http_503_service_unavailable(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=503, **kwargs)
+
+    def http_504_gateway_timeout(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=504, **kwargs)
+
+    def http_505_http_version_not_supported(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=505, **kwargs)
+
+    def http_511_network_authentication_required(self, **kwargs):
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+            self._reason = self.parse_err(err)
+
+        return self.write_error(status_code=511, **kwargs)

@@ -86,7 +86,7 @@ class Application(tornado.web.Application):
             url(r'^/(api/posts/.*)/$', PostsHandler, name='api:post'),
             url(r'^/(api/user/.*)/$', UserHandler, name='api:user:login'),
             # ---------------- rest api ----------------
-            url(r'^/api/v2/p/([a-zA-Z]+)?/?$', PostApiHandler, name='rest:post'),
+            url(r'^/api/v2/post/([a-zA-Z0-9]+)?/?$', PostApiHandler, name='rest:post'),
             # ---------------- 404 ----------------
             url(r'^/$', PostsHandler, name='root'),
             url(r'^/404.html$', PageNotFound, name='404'),

@@ -18,7 +18,7 @@ from .jinja import TemplateRendering
 from .tornado import debug_wrapper, \
     DbHandlerMixin, WebHandlerMixin, AuthHandlerMixin, HttpErrorMixin, \
     JinjaMixin, RFCMixin
-from .mongo import unquote_fr_mongo
+from .mongo import unquote_fr_mongo, MongoParser
 from .markdown import render_md_to_html
 
 
@@ -31,7 +31,7 @@ __all__ = [
     'DbHandlerMixin', 'WebHandlerMixin', 'AuthHandlerMixin',
     'HttpErrorMixin', 'JinjaMixin', 'RFCMixin',
     'utc2cst_timestamp', 'utcnow', 'utc2cst', 'dt2timestamp',
-    'UTC', 'CST'
+    'UTC', 'CST', 'MongoParser',
 ]
 
 tz = pytz.timezone('utc')
