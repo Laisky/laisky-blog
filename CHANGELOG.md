@@ -2,7 +2,8 @@
 *CURRENT*
 ---
     
-- 2016-03-13 (Laisky) chore: update requirements -> [view commit](https://github.com/Laisky/laisky-blog/commit/1bfef1b8b28f800ed717dfb95664098aa7f53780)
+- 2016-03-18 (Laisky) fix: search error -> [view commit](https://github.com/Laisky/laisky-blog/commit/7a05f60bf51c9ff16afcc30be906aee46f8a6c78)
+- 2016-03-12 (Laisky) 2.2.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1b63cef527ca62010f0c6c7b59f438d8f01551b2)
 - 2016-03-12 (Laisky) refactor: change docker log-driver to fluentd -> [view commit](https://github.com/Laisky/laisky-blog/commit/d024d3e3d663b6916f2f5fe9d26d5bcb6d25db67)
 - 2016-03-07 (Laisky) docs: fix changelog typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/41596d8fe862df5a6ee05bb0a7d415a2cf3ae00c)
 - 2016-03-07 (Laisky) docs: update readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/c3d9eb3e32364be4aa62df7aa7ff8c150dc72684)    

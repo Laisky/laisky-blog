@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """View about any articles.
 有关文章的一切
 """
@@ -294,7 +291,6 @@ class PostsHandler(BaseHandler, ArticleMixin):
 
         q = 'https://cse.google.com/cse/publicurl?cx=004733495569415005684:-c6y46kjqva&q={keyword}'
         self.redirect(q.format(keyword=keyword, permanent=True))
-        self.finish()
 
     @tornado.gen.coroutine
     @debug_wrapper
@@ -318,9 +314,6 @@ class PostsHandler(BaseHandler, ArticleMixin):
         posts = []
         while (yield cursor.fetch_next):
             docu = cursor.next_object()
-            # if docu.get('post_password'):
-            #     continue
-
             docu = unquote_fr_mongo(docu)
             if not is_full:
                 if docu.get('post_password'):
