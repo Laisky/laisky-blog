@@ -2,6 +2,12 @@
 *CURRENT*
 ---
     
+- 2016-03-19 (Laisky) fix: remove tasks -> [view commit](https://github.com/Laisky/laisky-blog/commit/1f735ffc58e7e91238b89ae98f71922f66de9302)    
+       
+*2.2.2*
+---
+    
+- 2016-03-18 (Laisky) 2.2.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1a6ae1e97c4b288e3036361cc41bdd1651b09c5d)
 - 2016-03-18 (Laisky) fix: search error -> [view commit](https://github.com/Laisky/laisky-blog/commit/7a05f60bf51c9ff16afcc30be906aee46f8a6c78)
 - 2016-03-12 (Laisky) 2.2.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1b63cef527ca62010f0c6c7b59f438d8f01551b2)
 - 2016-03-12 (Laisky) refactor: change docker log-driver to fluentd -> [view commit](https://github.com/Laisky/laisky-blog/commit/d024d3e3d663b6916f2f5fe9d26d5bcb6d25db67)
