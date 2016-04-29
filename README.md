@@ -2,10 +2,11 @@ Gargantua
 ===
 
 [![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg)]()
-[![Build Status](https://travis-ci.org/Laisky/laisky-blog.svg?branch=master)](https://travis-ci.org/Laisky/laisky-blog)
-[![Crates.io](https://img.shields.io/badge/version-v2.2.3-blue.svg)]()
+[![Crates.io](https://img.shields.io/badge/version-v2.2.4-blue.svg)]()
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Gitter](https://badges.gitter.im/Laisky/laisky-blog.svg)](https://gitter.im/Laisky/laisky-blog?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Build Status](https://travis-ci.org/Laisky/laisky-blog.svg?branch=master)](https://travis-ci.org/Laisky/laisky-blog)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b9f5b06d4c7445949d51de7ae15f97a4)](https://www.codacy.com/app/ppcelery/laisky-blog?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Laisky/laisky-blog&amp;utm_campaign=Badge_Grade)
 
 > Do not go gentle into that good night, Rage, rage against the dying of the light.
 
