@@ -7,9 +7,9 @@ $(function() {
 
     function bindPostAuth() {
         $(".post-auth-body .submitBtn").on("click", function() {
-            var postName = $(".post-auth-body form").data("post-name")
-                url = location.pathname
-                $hint = $(".post-auth-body .hint-text")
+            var postName = $(".post-auth-body form").data("post-name"),
+                url = location.pathname,
+                $hint = $(".post-auth-body .hint-text"),
                 password = $(".post-auth-body .passwdInput").val();
 
             $.postJSON(url, {
@@ -35,6 +35,7 @@ $(function() {
     function updatePageTitle() {
         if ($(".post").length == 1) {
             var title = $(".post-title a").html();
+
             $("head title").html(title);
         }
     }
@@ -42,14 +43,14 @@ $(function() {
 
     // 点击图片弹出大图
     function bindImgClick() {
-        var $imgModal = $("#img-modal")
-        $modalImg = $("#img-modal .modal-body img");
+        var $imgModal = $("#img-modal"),
+            $modalImg = $("#img-modal .modal-body img");
 
         $(".container").on("click", "#archives img", imgClickHandler);
 
         function imgClickHandler() {
             var $this = $(this);
-            console.log($this.prop("src"));
+
             $modalImg.prop("src", $this.prop("src"));
             $imgModal.modal({
                 show: true
