@@ -6,21 +6,19 @@ $(function() {
         // console.log("bindLoginHandler");
 
         $(".login-body").on("click", "#signinBtn", function() {
-            var $emailInput = $("#emailInput");
-            var $passwdInput = $("#passwdInput");
-            var $keepLoginInput = $("#keepLoginInput");
-            var $hintText = $(".login-body .hint .hint-text");
-
-            var email = $emailInput.val();
-            var passwd = $passwdInput.val().getMD5();
-            var isKeepLogin = $keepLoginInput.prop("checked");
-
-            var url = '/api/user/login/';
-            var data = {
-                email: email,
-                password: passwd,
-                is_keep_login: isKeepLogin
-            };
+            var $emailInput = $("#emailInput"),
+                $passwdInput = $("#passwdInput"),
+                $keepLoginInput = $("#keepLoginInput"),
+                $hintText = $(".login-body .hint .hint-text"),
+                email = $emailInput.val(),
+                passwd = $passwdInput.val().getMD5(),
+                isKeepLogin = $keepLoginInput.prop("checked"),
+                url = '/api/user/login/',
+                data = {
+                    email: email,
+                    password: passwd,
+                    is_keep_login: isKeepLogin
+                };
 
             $.postJSON(url, data, function(resp) {
                 $hintText.html(resp.msg);

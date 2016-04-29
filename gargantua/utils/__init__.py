@@ -40,7 +40,8 @@ CST = pytz.timezone('Asia/Shanghai')
 oid_regex = re.compile(r'[a-z0-9]{24}')
 
 
-is_objectid = lambda s: oid_regex.fullmatch(s)
+def is_objectid(s):
+    return oid_regex.fullmatch(s)
 
 
 def get_default_config(varname):
