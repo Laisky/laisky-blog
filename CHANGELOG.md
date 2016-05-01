@@ -2,6 +2,12 @@
 *CURRENT*
 ---
     
+- 2016-05-01 (Laisky) chore: update deploy scripts -> [view commit](https://github.com/Laisky/laisky-blog/commit/fbc7245e28385bbb8bcc487551cc204802ea080c)    
+       
+*2.2.4*
+---
+    
+- 2016-04-29 (Laisky) 2.2.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/24ecf893f710f0a541037ca65211e46aff5cbd3f)
 - 2016-04-29 (Laisky) style: fix code style via codacy -> [view commit](https://github.com/Laisky/laisky-blog/commit/a2765b0f8c6c43537a8556dfd32e94e47186b8f6)
 - 2016-04-29 (Laisky) docs: fix docs merge conflict -> [view commit](https://github.com/Laisky/laisky-blog/commit/8ca4b88e755aa2956f0438e53a904d93ed63a7d6)
 - 2016-01-11 (The Gitter Badger) Add Gitter badge -> [view commit](https://github.com/Laisky/laisky-blog/commit/2faff40531051a4cab84bc56bb0f8fccca34973e)    
