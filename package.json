@@ -1,6 +1,6 @@
 {
   "name": "laisky-blog",
-  "version": "2",
+  "version": "1.0.0",
   "description": "Gargantua ===",
   "main": "index.js",
   "directories": {
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/Laisky/laisky-blog#readme",
   "devDependencies": {
-    "cz-conventional-changelog": "^1.1.5"
+    "cz-conventional-changelog": "^1.1.6"
   },
   "config": {
     "commitizen": {
