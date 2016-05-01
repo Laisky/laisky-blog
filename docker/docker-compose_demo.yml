@@ -4,9 +4,10 @@ services:
     image: mongo:3.2
     restart: always
     logging:
-      driver: fluentd
+      driver: syslog
       options:
-        fluentd-address: "localhost:24224"
+        syslog-facility: local6
+        tag: mongodb
     networks:
       - gargantua
     expose:
@@ -15,6 +16,25 @@ services:
       - 27016:27017
     volumes:
       - /var/lib/mongodb:/data/db
+
+  fluentd:
+    image: ppcelery/fluentd-docker-image
+    restart: always
+    networks:
+      - gargantua
+    logging:
+      driver: syslog
+      options:
+        syslog-facility: local6
+        tag: fluentd
+    volumes:
+      - /var/log/nginx:/var/log/nginx
+      - /var/lib/fluentd:/fluentd/log
+      - /etc/fluentd:/fluentd/etc
+    links:
+      - mongodb:mongodb
+    ports:
+      - 24224:24224
 
   gargantua:
     image: ppcelery/laisky-blog
