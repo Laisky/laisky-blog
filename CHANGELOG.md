@@ -2,6 +2,9 @@
 *CURRENT*
 ---
     
+- 2016-05-08 (Laisky) fix: 并不能本地编译，还是远程编译好了 -> [view commit](https://github.com/Laisky/laisky-blog/commit/885e884f69a54889728d6e4d611923814cc278d1)
+- 2016-05-08 (Laisky) chore: 线上机器太烂，增加编译后的静态文件 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ab85662726e8eeb70fc82c7fa45000c1d0a9dcbb)
+- 2016-05-08 (Laisky) 2.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/9dfaa247908dbbec12b6cac8b564fa28f1f0fd77)
 - 2016-05-08 (Laisky) refactor: 用 react 重构 -> [view commit](https://github.com/Laisky/laisky-blog/commit/327e9fe525adf492affcd492fa97f2a4e6561604)
 - 2016-05-04 (Laisky) chore: change deploy -> .deploy -> [view commit](https://github.com/Laisky/laisky-blog/commit/374021b5f26d4ce1965806be9fa6579da22cbe56)
 - 2016-03-18 (Laisky) feat: add filters OidSortFilter, LimitFilter and SkitFilter. -> [view commit](https://github.com/Laisky/laisky-blog/commit/e67b7fe83fe9d10028232d336485c756b331bbf7)
