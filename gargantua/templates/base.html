@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE HTML>
 <html lang="en">
 {% block head %}
 <head>
@@ -10,64 +10,31 @@
     {% endblock %}
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/libs.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/sites.min.css')}}">
     {% block page_css %}
     {% endblock %}<!-- page_css -->
-
-    {% assets filters="cssmin", output="assets/libs.css",
-            "css/vendor/code-styles/tomorrow.css",
-            "css/vendor/loaders.css",
-            "css/vendor/bootstrap.css" %}
-        <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %}
-
-    {% assets filters="cssmin", output="assets/sites.css",
-            "stylesheets/base.css",
-            "stylesheets/pages/archives.css",
-            "stylesheets/pages/profile.css",
-            "stylesheets/widgets/post.css",
-            "stylesheets/widgets/dialog.css",
-            "stylesheets/pages/login.css" %}
-        <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %}
 </head>
 {% endblock %}<!-- head -->
 
 
 {% block body %}
 <body>
-    {% block header %}
-        {% include "header.html" %}
-    {% endblock %}<!-- header -->
 
     {% include "fade.html" %}
+    <div class="container-fluid" id="body">
+        {% block container %}
+        {% endblock %}<!-- container -->
+    </div>
 
-    {% block container %}
-    {% endblock %}<!-- container -->
+    <div class="pagejsx">
+        {% block page_jsx %}
+        {% endblock %}<!-- page_js -->
+    </div>
 
-    {% block footer %}
-        {% include "footer.html" %}
-    {% endblock %}
-
-    {% assets filters="jsmin", output="assets/libs.js",
-            "js/vendor/jquery.min.js",
-            "js/vendor/bootstrap.min.js",
-            "js/vendor/loaders.css.js",
-            "js/highlight.pack.js",
-            "js/vendor/sparkmd5.min.js",
-            "js/vendor/jsSHA.js" %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-
-    {% assets filters="jsmin", output="assets/sites.js",
-            "js/base.js",
-            "js/404.js",
-            "js/pages/archives.js",
-            "js/pages/p.js",
-            "js/pages/login.js",
-            "js/pages/search.js" %}
-        <script async type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-
+    <script src="{{static_url('dist/js/libs.min.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{static_url('dist/js/reactlibs.min.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{static_url('dist/js/sites.js')}}" type="text/javascript" charset="utf-8"></script>
     <div class="pagejs">
         {% block page_js %}
         {% endblock %}<!-- page_js -->

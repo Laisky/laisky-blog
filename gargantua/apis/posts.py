@@ -23,8 +23,10 @@ class PostApiHandler(ApiHandler):
 
         return {
             'post_title': docu['post_title'],
+            'post_type': docu.get('post_type', 'markdown'),
             'link': self.hyperlink_postname(docu['post_name']),
             'post_name': docu['post_name'],
+            'post_markdown': docu.get('post_markdown'),
             'post_content': content,
             'post_id': str(docu['_id']),
             'post_author': str(docu['post_author']),
@@ -36,9 +38,11 @@ class PostApiHandler(ApiHandler):
     @tornado.gen.coroutine
     @debug_wrapper
     def list(self):
+        logger.info('PostApiHandler list')
+
         try:
             plaintext = self.get_argument('plaintext', default='false', strip=True)
-            truncate = int(self.get_argument('truncate', default='100', strip=True))
+            truncate = int(self.get_argument('truncate', default='300', strip=True))
             assert(plaintext in ['true', 'false'])
             assert(truncate >= 0)
         except (ValueError, AssertionError) as err:
@@ -57,4 +61,9 @@ class PostApiHandler(ApiHandler):
             )
             posts.append(parsed_docu)
 
-        self.success(posts)
+        col = self.get_col()
+        total = yield col.count()
+        self.success(posts, total=total)
+
+    def get_oidname(self):
+        return 'post_name'

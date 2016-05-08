@@ -1,0 +1,32 @@
+@import "compass/css3/border-radius";
+@import "../themes/default.scss";
+$nav-bgd-clr: $post-bgd-clr;
+$nav-link-clr: $link-clr;
+$nav-cnt-clr: $post-cnt-clr;
+$nav-title-clr: $post-title-clr;
+
+#post {
+    max-width: 800px;
+    margin-bottom: 10px;
+    min-height: 800px;
+
+    #page-content {
+        @include border-radius(10px);
+        background-color: #F1F1F1;
+        min-height: 600px;
+
+        .hint {
+            margin: 10px;
+        }
+
+    }
+
+    #postComment {
+        padding: 10px;
+    }
+
+    .page-nav {
+        text-align: center;
+    }
+
+}

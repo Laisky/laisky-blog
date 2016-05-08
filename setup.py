@@ -21,7 +21,7 @@ requires = [str(i.req) for i in parse_requirements('requirements.txt',
 def update_readme_version(version):
     ver_reg = re.compile(
         '(https://img\.shields\.io/badge/version-v'
-        '[0-9]+\.[0-9]+(\.[0-9]+)?'
+        '[0-9]+\.[0-9]+(\.[0-9]+)?((dev|rc)[0-9]+)?'
         '-blue\.svg)'
     )
     _v = 'https://img.shields.io/badge/version-v{}-blue.svg'.format(version)

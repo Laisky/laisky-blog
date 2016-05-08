@@ -16,7 +16,8 @@ from tornado.options import define, options
 from gargantua.settings import CWD
 from gargantua.utils import setup_log, generate_random_string, \
     get_default_config, logger
-from gargantua.views import BaseHandler, PostsHandler, UserHandler
+from gargantua.views import BaseHandler, PostsHandler, UserHandler, \
+    ReactRender
 from gargantua.apis import PostApiHandler
 from gargantua.libs import LogMailHandler, LogMailFormatter
 from gargantua.models import BaseBlogModel
@@ -61,34 +62,36 @@ class Application(tornado.web.Application):
         settings = {
             'static_path': str(Path(CWD, 'static')),
             'static_url_prefix': '/static/',
-            'template_path': str(Path(CWD, 'templates')),
-            'cookie_secret': generate_random_string(50),
+            'template_path': str(Path(CWD, 'html')),
+            # 'cookie_secret': generate_random_string(50),
+            'cookie_secret': 'fewjfkjkjkj4h3j5h43j5h4j3h5j34h5ljk34',
             'login_url': '/login/',
             'xsrf_cookies': True,
             'autoescape': None,
             'debug': options.debug
         }
         handlers = [
-            # -------------- handler --------------
-            url(r'^/(archives)/$', PostsHandler, name='post:archives'),
-            url(r'^/(p)/(.*)/$', PostsHandler, name='post:single'),
-            url(r'^/(publish)/$', PostsHandler, name='post:publish'),
-            url(r'^/(amend)/$', PostsHandler, name='post:amend'),
-            url(r'^/(login)/$', UserHandler, name='user:login'),
-            url(r'^/(search)/$', PostsHandler, name='post:search'),
-            url(r'^/(profile)/$', UserHandler, name='user:profile'),
+            # # -------------- handler --------------
+            # url(r'^/(archives)/$', PostsHandler, name='post:archives'),
+            # url(r'^/(p)/(.*)/$', PostsHandler, name='post:single'),
+            # url(r'^/(publish)/$', PostsHandler, name='post:publish'),
+            # url(r'^/(amend)/$', PostsHandler, name='post:amend'),
+            # url(r'^/(login)/$', UserHandler, name='user:login'),
+            # url(r'^/(search)/$', PostsHandler, name='post:search'),
+            # url(r'^/(profile)/$', UserHandler, name='user:profile'),
             # ---------------- rss ----------------
             url(r'^/(rss)/$', PostsHandler, name='post:rss'),
             # ---------------- old api ----------------
             url(r'^/(api/posts/.*)/$', PostsHandler, name='api:post'),
             url(r'^/(api/user/.*)/$', UserHandler, name='api:user:login'),
             # ---------------- rest api ----------------
-            url(r'^/api/v2/post/([a-zA-Z0-9]+)?/?$', PostApiHandler, name='rest:post'),
+            url(r'^/api/v2/post/([a-zA-Z0-9\-_]+)?/?$', PostApiHandler, name='rest:post'),
             # ---------------- 404 ----------------
-            url(r'^/$', PostsHandler, name='root'),
-            url(r'^/404.html$', PageNotFound, name='404'),
+            # url(r'^/404.html$', PageNotFound, name='404'),
+            # ---------------- react-router ----------------
+            url(r'/.*', ReactRender, name='root'),
         ]
-        handlers.append(('/(.*)', PageNotFound))
+        # handlers.append(('/(.*)', PageNotFound))
         self.setup_db()
         if not options.debug:
             self.setup_mail_handler()

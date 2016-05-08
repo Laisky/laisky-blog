@@ -75,6 +75,9 @@ class UserHandler(BaseHandler):
             {'$set': {'token': token, 'last_update': utcnow()}})
 
         expires_days = 30 if is_keep_login else None
+        self.set_cookie('username', user_docu['username'])
+        self.set_cookie('account', user_docu['account'])
+        self.set_cookie('email', user_docu.get('email', ''))
         self.set_secure_cookie('uid', uid, expires_days=expires_days)
         self.set_secure_cookie('token', token, expires_days=expires_days)
         logger.debug('set cookies with uid {}, token {}, expires_days {}'.format(uid, token, expires_days))

@@ -1,0 +1,46 @@
+@import "compass/css3/border-radius";
+@import "../themes/default.scss";
+
+.sidebar {
+    @include border-radius(10px);
+    background-color: $post-bgd-clr;
+    position: relative;
+    color: $post-cnt-clr;
+
+    .console {
+        padding: 10px;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px dashed grey;
+
+        a.btn {
+            padding: 0px;
+        }
+
+        h2 {
+            margin-top: 0px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &.profile {
+            p {
+                margin: 0px;
+            }
+
+        }
+
+        &.login {
+            p {
+                margin: 0px;
+            }
+
+        }
+
+    }
+
+}

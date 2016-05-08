@@ -1,4 +1,3 @@
-import logging
 import json
 import urllib
 
@@ -7,15 +6,11 @@ import html2text
 import dicttoxml
 from bson import ObjectId
 
-from gargantua.settings import LOG_NAME
 from gargantua.utils import AuthHandlerMixin, DbHandlerMixin, \
     WebHandlerMixin, HttpErrorMixin, JinjaMixin, RFCMixin, \
-    MongoParser, debug_wrapper
+    MongoParser, debug_wrapper, logger
 from .filters import FilterError, \
     OidSortFilter, SkitFilter, LimitFilter
-
-
-logger = logging.getLogger(LOG_NAME)
 
 
 class BaseApiHandler(tornado.web.RequestHandler,
@@ -41,8 +36,10 @@ class BaseApiHandler(tornado.web.RequestHandler,
         for accept in self.accept:
             m = _accept_map.get(accept.name)
             if m:
+                logger.debug('_get_resp_method {}'.format(m))
                 return m
 
+        logger.debug('_get_resp_method fail')
         return self.write_not_accept
 
     def success(self, data, **kwargs):
@@ -145,13 +142,17 @@ class ApiHandler(BaseApiHandler):
 
         return cursor
 
+    def get_oidname(self):
+        return '_id'
+
     @tornado.gen.coroutine
     @debug_wrapper
     def retrieve(self, oid):
         logger.info('retrieve {} for oid {}'
                     .format(self._collection, oid))
         col = self.get_col()
-        docu = yield col.find_one({'_id': ObjectId(oid)})
+        oidname = self.get_oidname()
+        docu = yield col.find_one({oidname: oid})
         parsed_docu = self.parse_docu(docu)
         self.success(parsed_docu)
 
@@ -165,4 +166,6 @@ class ApiHandler(BaseApiHandler):
             post = mongo_parser.parse(docu)
             posts.append(post)
 
-        self.success(posts)
+        col = self.get_col()
+        total = yield col.count()
+        self.success(posts, total=total)

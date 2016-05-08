@@ -56,7 +56,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
             'search': self.get_post_by_keyword,      # 按关键词搜索
             'publish': self.get_new_post,            # 发表新文章
             'p': self.get_post_by_name,              # 单篇文章的页面
-            'amend': self.get_amend_post,            # 编辑文章
+            'api/posts/get-amend-post': self.get_amend_post,            # 编辑文章
             'rss': self.get_rss,                     # 获取订阅
             'api/posts/get-post-by-page': self.get_post_by_page,
         }
@@ -68,7 +68,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
 
         router = {
             'api/posts/post-article-password': self.post_article_password,
-            'publish': self.post_new_article,
+            'api/posts/publish': self.post_new_article,
         }
         router.get(url, self.redirect_404)(*args, **kw)
 
@@ -79,7 +79,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
         """
         logger.info('PATCH PostsHandler for url {}'.format(url))
         router = {
-            'amend': self.patch_article,
+            'api/posts/amend': self.patch_article,
         }
         router.get(url)()
 

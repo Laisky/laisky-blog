@@ -10,7 +10,6 @@ __pycache__/
 env/
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 lib/
@@ -68,14 +67,17 @@ koala-config.json
 /notebook
 
 # ctags
-/.tags
+/.tags*
 
 # webassets
 .webassets-cache/
 assets/
+.assets
+html
 
 # node
 node_modules/
+bower_components
 
 # sass
 .sass-cache/
@@ -86,3 +88,8 @@ node_modules/
 # prod
 /docker/docker-compose.yml
 /gargantua/settings/settings.py
+
+# dist
+/gargantua/static/dist/**
+!/gargantua/static/dist/fonts/
+!/gargantua/static/dist/fonts/*

@@ -126,15 +126,16 @@ class AuthHandlerMixin():
             cli_token = cli_token and cli_token.decode()
 
             if not cli_uid or not cli_token:
+                logger.debug('uid or token is missed')
                 return
 
             user_docu = self.mongo_db.users.find_one(
                 {'_id': ObjectId(cli_uid)}
             )
-            assert cli_token == user_docu['token']
+            assert cli_token == user_docu['token'], 'token incorrect'
 
             token_docu = validate_token(cli_token, user_docu['password'])
-            assert token_docu['uid'] == cli_uid
+            assert token_docu['uid'] == cli_uid, 'uid incorrect'
 
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError,
                 AssertionError) as err:
