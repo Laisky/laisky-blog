@@ -1,0 +1,321 @@
+#container {
+  margin-top: 40px;
+}
+
+#archives {
+  max-width: 800px;
+  margin-bottom: 10px;
+  min-height: 800px;
+  background-color: none;
+}
+#archives #archive-content {
+  border-radius: 10px;
+  background-color: #F1F1F1;
+  padding-left: 0px;
+}
+#archives #archive-content .hint {
+  margin: 10px;
+}
+#archives #archive-sidebar {
+  padding-right: 0px;
+}
+#archives .page-nav {
+  text-align: center;
+}
+
+#aboutme {
+  border-radius: 10px;
+  background-color: whitesmoke;
+  position: relative;
+  color: #32322d;
+  max-width: 800px;
+}
+#aboutme .aboutme {
+  padding: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed grey;
+}
+#aboutme .aboutme h2 {
+  margin-top: 0px;
+  font-size: 2em;
+  text-align: center;
+}
+#aboutme .aboutme:last-child {
+  border-bottom: none;
+}
+#aboutme .aboutme.profile p {
+  margin: 0px;
+}
+
+html {
+  height: 100%;
+  overflow-x: hidden;
+  min-height: 600px;
+}
+
+body {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: "Helvetica Neue", "Helvetica", "Microsoft YaHei", "Segoe UI", "Arial", "freesans", "sans-serif";
+  background-image: url(http://laisky-blog.qiniudn.com/background-1500x844.jpg);
+  background-size: 100% 100%;
+  background-attachment: fixed;
+}
+body > .container {
+  max-width: 900px;
+}
+
+.navbar-right {
+  padding-left: 0px;
+}
+
+.navbar .gsc-control-cse {
+  padding: 0px;
+  height: inherit;
+  position: relative;
+  top: 3px;
+  background-color: inherit;
+  border-color: transparent;
+}
+.navbar .gsc-control-cse td {
+  background-color: inherit;
+}
+.navbar .gsc-control-cse .gsc-control-wrapper-cse {
+  width: 150px;
+}
+.navbar .gsc-control-cse .gsc-search-button {
+  display: none;
+}
+
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.navbar-fixed-top {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.loader-inner.pacman {
+  margin-left: 30px;
+}
+.loader-inner.ball-scale-ripple-multiple {
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
+.vertical-align {
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.global-fade {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background-color: rgba(40, 41, 35, 0.8);
+  display: none;
+}
+
+.container,
+.container-fluid {
+  padding: 0px;
+}
+
+#body {
+  margin-top: 40px;
+}
+
+#post {
+  max-width: 800px;
+  margin-bottom: 10px;
+  min-height: 800px;
+}
+#post #page-content {
+  border-radius: 10px;
+  background-color: #F1F1F1;
+  min-height: 600px;
+}
+#post #page-content .hint {
+  margin: 10px;
+}
+#post #postComment {
+  padding: 10px;
+}
+#post .page-nav {
+  text-align: center;
+}
+
+.loginComponent {
+  min-height: 240px;
+  padding: 20px;
+}
+.loginComponent .hint {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.loginComponent .hint .hint-text {
+  font-size: 1em;
+}
+
+@charset "UTF-8";
+/**
+ * archives 组件的 CSS
+ */
+.archive.archive-extract {
+  background-color: whitesmoke;
+  padding: 10px;
+  position: relative;
+  border: 2px solid whitesmoke;
+  border-radius: 25px;
+  margin-bottom: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.archive.archive-extract .archive-title {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 0px;
+}
+.archive.archive-extract .archive-title a {
+  color: #55323E;
+}
+.archive.archive-extract .archive-meta {
+  color: black;
+  text-align: right;
+  margin-bottom: 10px;
+  margin-top: -10px;
+}
+.archive.archive-extract .archive-content {
+  line-height: 150%;
+  color: #32322d;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+.archive.archive-extract .archive-content .reveal {
+  min-height: 600px !important;
+  font-size: 1.4em;
+}
+.archive.archive-extract .archive-content .reveal .slides {
+  text-align: left;
+}
+.archive.archive-extract .archive-content .reveal .slides h1, .archive.archive-extract .archive-content .reveal .slides h2 {
+  text-align: center;
+}
+.archive.archive-extract .archive-content .reveal .slides li {
+  margin-left: 2em;
+}
+.archive.archive-extract .archive-content .reveal .slides img, .archive.archive-extract .archive-content .reveal .slides pre {
+  margin: 0 auto;
+}
+.archive.archive-extract .archive-content .reveal .slides pre, .archive.archive-extract .archive-content .reveal .slides code {
+  font-size: inherit;
+}
+.archive.archive-extract .archive-content h1 {
+  margin-top: 0em;
+}
+.archive.archive-extract .archive-content h1, .archive.archive-extract .archive-content h2 {
+  border-bottom: 2px solid #EEE;
+}
+.archive.archive-extract .archive-content blockquote > p {
+  font-style: italic;
+  font-size: 0.9em;
+  color: #86867D;
+}
+.archive.archive-extract .archive-content .codehilite {
+  margin-bottom: 16px;
+}
+.archive.archive-extract .archive-content img {
+  display: block;
+  cursor: pointer;
+  max-height: 600px;
+  max-width: 600px;
+}
+.archive.archive-extract .archive-content a {
+  color: #1b4187;
+}
+.archive.archive-extract .archive-content blockquote {
+  font: inherit;
+  margin: 20px;
+}
+.archive.archive-extract .archive-tail {
+  text-align: right;
+  margin-right: 30px;
+}
+.archive.archive-extract .archive-tail > span {
+  margin-left: 50px;
+}
+.archive.archive-extract .archive-tail a {
+  color: #32322d;
+  margin-left: 30px;
+}
+
+.redirectComponent {
+  background-color: whitesmoke;
+  padding: 10px;
+  text-align: center;
+}
+
+#publish,
+#amend {
+  background-color: whitesmoke;
+  padding: 10px;
+  position: relative;
+  border: 2px solid whitesmoke;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#publish .hint,
+#amend .hint {
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.sidebar {
+  border-radius: 10px;
+  background-color: whitesmoke;
+  position: relative;
+  color: #32322d;
+}
+.sidebar .console {
+  padding: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed grey;
+}
+.sidebar .console a.btn {
+  padding: 0px;
+}
+.sidebar .console h2 {
+  margin-top: 0px;
+  font-size: 1.2em;
+  text-align: center;
+}
+.sidebar .console:last-child {
+  border-bottom: none;
+}
+.sidebar .console.profile p {
+  margin: 0px;
+}
+.sidebar .console.login p {
+  margin: 0px;
+}
+
+#login {
+  max-width: 600px;
+  background: whitesmoke;
+  margin: 20px auto;
+  border-radius: 10px;
+}
+
