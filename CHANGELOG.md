@@ -2,6 +2,15 @@
 *CURRENT*
 ---
     
+- 2016-05-08 (Laisky) refactor: 用 react 重构 -> [view commit](https://github.com/Laisky/laisky-blog/commit/327e9fe525adf492affcd492fa97f2a4e6561604)
+- 2016-05-04 (Laisky) chore: change deploy -> .deploy -> [view commit](https://github.com/Laisky/laisky-blog/commit/374021b5f26d4ce1965806be9fa6579da22cbe56)
+- 2016-03-18 (Laisky) feat: add filters OidSortFilter, LimitFilter and SkitFilter. -> [view commit](https://github.com/Laisky/laisky-blog/commit/e67b7fe83fe9d10028232d336485c756b331bbf7)
+- 2016-03-13 (Laisky) chore: update requirements -> [view commit](https://github.com/Laisky/laisky-blog/commit/1bfef1b8b28f800ed717dfb95664098aa7f53780)    
+       
+*2.2.5*
+---
+    
+- 2016-05-01 (Laisky) 2.2.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/29f345f79b633fbe5d5cd7d96b5beebb6e9a5823)
 - 2016-05-01 (Laisky) chore: update deploy scripts -> [view commit](https://github.com/Laisky/laisky-blog/commit/fbc7245e28385bbb8bcc487551cc204802ea080c)    
        
 *2.2.4*
