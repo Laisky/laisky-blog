@@ -31,9 +31,10 @@ Gargantua
         - Nginx
 
     - Frontend
-        - SASS / Compass / Gulp
+        - SASS / Compass / Gulp / Webpack
         - ECMAScript6 / jQuery
         - Bootstrap3
+        - ReactJS & React-Router
 
 
 ## CHANGELOG
