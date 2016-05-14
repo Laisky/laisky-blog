@@ -1,12 +1,55 @@
-//XmlHttpRequest对象
-function createXmlHttpRequest() {
-    if (window.ActiveXObject) { //如果是IE浏览器
-        return new ActiveXObject("Microsoft.XMLHTTP");
-    } else if (window.XMLHttpRequest) { //非IE浏览器
-        return new XMLHttpRequest();
+'use strict';
+
+// isArray for ES3
+var isArray = Function.isArray || function(o) {
+    return typeof o === 'object' &&
+        Object.prototype.toString.call(o) === '[object Array]';
+};
+
+/**
+ * inherit from parent
+ */
+function inherit(p) {
+    if (p == null) throw TypeError();
+    if (Object.create) return Object.create(p);
+    var t = typeof p;
+    if (t !== 'object' && t !== 'function') throw TypeError();
+
+    function f() {}
+    f.prototype = p;
+    return new f();
+}
+
+// http://stackoverflow.com/a/18234568
+if (!Array.average) {
+    Array.prototype.average = function() {
+        var sum = 0;
+        var j = 0;
+        for (var i = 0; i < this.length; i++) {
+            if (isFinite(this[i])) {
+                sum = sum + parseFloat(this[i]);
+                j++;
+            }
+        }
+        if (j === 0) {
+            return 0;
+        } else {
+            return sum / j;
+        }
     }
 }
 
+Array.join = Array.join || function(a, f, thisArg) {
+    return Array.prototype.join.call(a, sep)
+}
+
+Array.slice = Array.slice || function(a, from, to) {
+    return Array.prototype.slice.call(a, from, to)
+}
+
+Array.map = Array.map || function(a, f, thisArg) {
+    return Array.prototype.map.call(a, f, thisArg)
+}
 
 // IE7 Array.indexOf
 if (!Array.indexOf) {
@@ -20,6 +63,14 @@ if (!Array.indexOf) {
     }
 }
 
+//XmlHttpRequest对象
+function createXmlHttpRequest() {
+    if (window.ActiveXObject) { //如果是IE浏览器
+        return new ActiveXObject("Microsoft.XMLHTTP");
+    } else if (window.XMLHttpRequest) { //非IE浏览器
+        return new XMLHttpRequest();
+    }
+}
 
 function getCookie(name) {
     var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
