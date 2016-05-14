@@ -2,8 +2,19 @@
 *CURRENT*
 ---
     
+- 2016-05-14 (Laisky) feat: 恢复了 post_menu -> [view commit](https://github.com/Laisky/laisky-blog/commit/b0722575075014b0dbdce4a590ae78f98f16ca69)
+- 2016-05-14 (Laisky) refactor: nginx & base.js -> [view commit](https://github.com/Laisky/laisky-blog/commit/a3e12c13da8d47d73f373c32b2e55d0a64d86d77)    
+       
+*2.3.1*
+---
+    
+- 2016-05-08 (Laisky) 2.3.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/30ab4cd57610d573b6e8d3772d42b0b48809edfc)
 - 2016-05-08 (Laisky) fix: 并不能本地编译，还是远程编译好了 -> [view commit](https://github.com/Laisky/laisky-blog/commit/885e884f69a54889728d6e4d611923814cc278d1)
-- 2016-05-08 (Laisky) chore: 线上机器太烂，增加编译后的静态文件 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ab85662726e8eeb70fc82c7fa45000c1d0a9dcbb)
+- 2016-05-08 (Laisky) chore: 线上机器太烂，增加编译后的静态文件 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ab85662726e8eeb70fc82c7fa45000c1d0a9dcbb)    
+       
+*2.3*
+---
+    
 - 2016-05-08 (Laisky) 2.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/9dfaa247908dbbec12b6cac8b564fa28f1f0fd77)
 - 2016-05-08 (Laisky) refactor: 用 react 重构 -> [view commit](https://github.com/Laisky/laisky-blog/commit/327e9fe525adf492affcd492fa97f2a4e6561604)
 - 2016-05-04 (Laisky) chore: change deploy -> .deploy -> [view commit](https://github.com/Laisky/laisky-blog/commit/374021b5f26d4ce1965806be9fa6579da22cbe56)
