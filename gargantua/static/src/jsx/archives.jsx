@@ -6,9 +6,9 @@
 
 import React from 'react';
 
-import { BaseComponent } from '../components/base.jsx';
-import { ArchiveExtract, ArchiveNav } from '../components/archives.jsx';
-import { Notify, Sidebar } from '../components/sidebar.jsx';
+import { BaseComponent } from './components/base.jsx';
+import { ArchiveExtract, ArchiveNav } from './components/archives.jsx';
+import { Notify, Sidebar } from './components/sidebar.jsx';
 
 
 class Archives extends BaseComponent {

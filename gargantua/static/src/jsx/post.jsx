@@ -6,8 +6,8 @@
 
 import React from 'react';
 
-import { BaseComponent } from '../components/base.jsx';
-import { ArchiveExtract, Comment } from '../components/archives.jsx';
+import { BaseComponent } from './components/base.jsx';
+import { ArchiveExtract, Comment, ArchiveMenu } from './components/archives.jsx';
 
 class Post extends BaseComponent {
     constructor(props, context) {
@@ -139,6 +139,7 @@ class Post extends BaseComponent {
     render() {
         let hintEle,
             postComment,
+            postMenu,
             postContent;
 
         if(this.state.hint) {
@@ -146,23 +147,32 @@ class Post extends BaseComponent {
         }
 
         if(this.state.post) {
-            postComment = <Comment post-name={this.state.post.post_name} />
+            postComment = <Comment post-name={this.state.post.post_name} />;
             postContent = <ArchiveExtract key={this.state.post.post_name}
                                           insertHTML={true}
                                           archive-type={this.state.post.post_type}
                                           archive-name={this.state.post.post_name}
                                           archive-title={this.state.post.post_title}
                                           archive-created-at={this.state.post.post_created_at}
-                                          archive-content={this.state.post.post_content} />
+                                          archive-content={this.state.post.post_content} />;
+
+            if(this.state.post.post_menu) {
+                postMenu = (
+                    <div className="col-xs-2">
+                        <ArchiveMenu content={this.state.post.post_menu} />;
+                    </div>
+                );
+            }
         }
 
         return (
             <div className="container-fluid post-body" id="post">
-                <div id="page-content">
+                <div id="page-content" className={postMenu? 'col-xs-10': 'container-fluid'}>
                     {hintEle}
                     {postContent}
                     {postComment}
                 </div>
+                {postMenu}
             </div>
         )
     };

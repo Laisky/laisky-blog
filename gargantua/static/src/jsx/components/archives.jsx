@@ -59,7 +59,7 @@ class ArchiveExtract extends BaseComponent {
                 articleContent = <article dangerouslySetInnerHTML={{__html: this.props['archive-content']}}></article>
             }
         }else {
-            articleContent = <article>{ this.props['archive-content'] }</article>
+            articleContent = <article data-spy="scroll" data-target=".archive-menu">{ this.props['archive-content'] }</article>
         }
 
         return <div className="archive archive-extract" id={ this.props['archive-name'] }>
@@ -78,6 +78,17 @@ class ArchiveExtract extends BaseComponent {
                 <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">0 评论</Link>
             </div>
         </div>
+    };
+}
+
+
+// 文章目录
+class ArchiveMenu extends BaseComponent {
+    render() {
+        return (
+            <nav className="archive-menu" dangerouslySetInnerHTML={{ __html: this.props.content }}>
+            </nav>
+        );
     };
 }
 
@@ -174,5 +185,6 @@ class ArchiveNav extends BaseComponent {
 export {
     ArchiveExtract,
     ArchiveNav,
-    Comment
+    Comment,
+    ArchiveMenu
 };

@@ -6,8 +6,8 @@
 
 import React from 'react';
 
-import { BaseComponent } from '../components/base.jsx';
-import { Redirect } from '../components/redirect.jsx';
+import { BaseComponent } from './components/base.jsx';
+import { Redirect } from './components/redirect.jsx';
 
 
 class PageNotFound extends BaseComponent {

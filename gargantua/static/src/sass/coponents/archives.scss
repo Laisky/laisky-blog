@@ -4,6 +4,45 @@
 @import "compass/css3/border-radius";
 @import "../themes/default.scss";
 
+.archive-menu {
+    background-color: $post-bgd-clr;
+    padding: 10px;
+    position: relative;
+    border: 2px solid $post-bgd-clr;
+    @include border-radius(10px);
+
+    > .nav li:hover .nav {
+        display: block;
+    }
+
+    .nav li a {
+        // font-size: 0.8em;
+        padding: 2px;
+    }
+
+    li.active > a {
+        background-color: lightgrey;
+    }
+
+    .nav .nav {
+        display: none;
+
+        li {
+            margin-left: 10px;
+        }
+
+    }
+
+    .nav li.active nav {
+        display: block;
+    }
+
+    .nav .active .nav {
+        display: block;
+    }
+
+}
+
 .archive.archive-extract {
     background-color: $post-bgd-clr;
     padding: 10px;
@@ -18,7 +57,6 @@
         text-align: center;
         margin-bottom: 20px;
         margin-top: 0px;
-        // font-weight: bolder;
 
         a {
             color: $post-title-clr;
@@ -42,10 +80,12 @@
         .reveal {
             min-height: 600px !important;
             font-size: 1.4em;
+
             .slides {
                 text-align: left;
 
-                h1, h2 {
+                h1,
+                h2 {
                     text-align: center;
                 }
 
@@ -53,13 +93,16 @@
                     margin-left: 2em;
                 }
 
-                img, pre {
+                img,
+                pre {
                     margin: 0 auto;
                 }
 
-                pre, code {
+                pre,
+                code {
                     font-size: inherit;
                 }
+
             }
 
         }
@@ -68,7 +111,8 @@
             margin-top: 0em;
         }
 
-        h1, h2 {
+        h1,
+        h2 {
             border-bottom: 2px solid #EEE;
         }
 
@@ -97,26 +141,6 @@
             font: inherit;
             margin: 20px;
         }
-
-        // pre {
-        //     color: $post-cnt-clr;
-        //     background-color: $post-bgd-clr;
-        //     font-family: inherit;
-
-        //     span {
-        //         font-family: inherit;
-        //     }
-
-        // }
-
-        // code {
-        //     color: rgb(199, 37, 78);
-
-        //     span {
-        //         font-family: inherit;
-        //     }
-
-        // }
 
     }
 

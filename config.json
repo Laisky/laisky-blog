@@ -37,7 +37,6 @@
         "entry": "./gargantua/static/src/main.jsx",
         "watch": [
             "./gargantua/static/src/main.jsx",
-            "./gargantua/static/src/components/**/*.jsx",
             "./gargantua/static/src/jsx/**/*.jsx"
         ],
         "dest": "./gargantua/static/dist/js",

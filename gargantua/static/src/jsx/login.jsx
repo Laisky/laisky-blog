@@ -7,8 +7,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { BaseComponent } from '../components/base.jsx';
-import { Auth } from '../components/auth.jsx';
+import { BaseComponent } from './components/base.jsx';
+import { Auth } from './components/auth.jsx';
 
 
 class Login extends BaseComponent {

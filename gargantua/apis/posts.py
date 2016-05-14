@@ -27,6 +27,7 @@ class PostApiHandler(ApiHandler):
             'link': self.hyperlink_postname(docu['post_name']),
             'post_name': docu['post_name'],
             'post_markdown': docu.get('post_markdown'),
+            'post_menu': docu.get('post_menu'),
             'post_content': content,
             'post_id': str(docu['_id']),
             'post_author': str(docu['post_author']),
