@@ -2,6 +2,14 @@
 *CURRENT*
 ---
     
+- 2016-06-11 (Laisky) fix: 新建文章不能编辑 postName -> [view commit](https://github.com/Laisky/laisky-blog/commit/8d5bc2b8b1da518932e94676c9732acd69d21eee)
+- 2016-06-11 (Laisky) fix: webpack: faster build -> [view commit](https://github.com/Laisky/laisky-blog/commit/2a264d028feded05a4ad549ed32fbb6a6e8ce3f0)
+- 2016-05-14 (Laisky) docs: update readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/bbac737dcb7b674ec96b760677b87b0d4fd75007)    
+       
+*2.3.2*
+---
+    
+- 2016-05-14 (Laisky) 2.3.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/31db5ac07e312b43cc36c4ab76d5d2cfc18a5134)
 - 2016-05-14 (Laisky) feat: 恢复了 post_menu -> [view commit](https://github.com/Laisky/laisky-blog/commit/b0722575075014b0dbdce4a590ae78f98f16ca69)
 - 2016-05-14 (Laisky) refactor: nginx & base.js -> [view commit](https://github.com/Laisky/laisky-blog/commit/a3e12c13da8d47d73f373c32b2e55d0a64d86d77)    
        
