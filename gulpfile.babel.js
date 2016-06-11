@@ -6,7 +6,7 @@ import gulp from 'gulp';
 import runSequence from 'run-sequence';
 import es6promise from 'es6-promise';
 import loadPlugin from 'gulp-load-plugins';
-import nodeExternals from 'webpack-node-externals';
+import gulpwebpack from 'webpack-stream';
 import webpack from 'webpack';
 
 import config from './config.json';
@@ -85,14 +85,11 @@ gulp.task('reveallibs', () => {
 gulp.task('jssites', () => {
     return gulp.src(config.jssites.entry)
         .pipe($.plumber(plumberErrorHandler))
-        .pipe($.webpack({
-            entry: {
-                app: [config.jssites.entry],
-                vendor: [
-                    'react',
-                    'react-dom',
-                    'react-router'
-                ]
+        .pipe(gulpwebpack({
+            externals: {
+                "react": "React",
+                "react-dom": "ReactDOM",
+                "react-router": "ReactRouter"
             },
             resolve: {
                 root: path.resolve(__dirname, '.'),
@@ -103,7 +100,7 @@ gulp.task('jssites', () => {
                 filename: config.jssites.debugname
             },
             plugins: [
-                new webpack.optimize.CommonsChunkPlugin('vendor', 'reactlibs.js'),
+                // new webpack.optimize.CommonsChunkPlugin('vendor', 'reactlibs.js'),
                 // new webpack.optimize.UglifyJsPlugin({ mangle: false, compress: { warnings: false } }),
                 new webpack.NoErrorsPlugin(),
                 new webpack.DefinePlugin({
