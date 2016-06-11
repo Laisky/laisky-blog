@@ -73,7 +73,6 @@ koala-config.json
 .webassets-cache/
 assets/
 .assets
-html
 
 # node
 node_modules/
@@ -89,7 +88,3 @@ bower_components
 /docker/docker-compose.yml
 /gargantua/settings/settings.py
 
-# dist
-/gargantua/static/dist/**
-!/gargantua/static/dist/fonts/
-!/gargantua/static/dist/fonts/*
