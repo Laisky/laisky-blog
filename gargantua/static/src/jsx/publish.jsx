@@ -65,6 +65,14 @@ class BaseEditComponent extends BaseComponent {
     };
 
     render() {
+        let postName;
+
+        if(this.props.isLinkEditable) {
+            postName = <input type="text" name="postName" className="form-control" ref="postName" placeholder="文章链接 'one-more-tineone-more-chance'" defaultValue={this.state.post_name} />
+        } else {
+            postName = <input type="text" name="postName" className="form-control" ref="postName" placeholder="文章链接 'one-more-tineone-more-chance'" value={this.state.post_name} />
+        }
+
         return (
             <div className="container-fluid publish-body">
                 <div className="row hint">
@@ -77,7 +85,7 @@ class BaseEditComponent extends BaseComponent {
                     </div>
                     <div className="form-group">
                         <label for="post_name">文章链接</label>
-                        <input type="text" name="postName" className="form-control" ref="postName" placeholder="文章链接 'one-more-tineone-more-chance'" value={this.state.post_name} />
+                        {postName}
                     </div>
                     <div className="form-group">
                         <label for="post_content">文章内容</label>
@@ -104,6 +112,7 @@ class Publish extends BaseComponent {
         return (
             <div id="publish">
                 <BaseEditComponent action="/api/posts/publish/"
+                                   isLinkEditable={true}
                                    hint="发布新文章" />
             </div>
 
@@ -139,6 +148,7 @@ class Amend extends BaseComponent {
         return (
             <div id="amend">
                 <BaseEditComponent action="/api/posts/amend/"
+                                   isLinkEditable={false}
                                    method="PATCH"
                                    hint='等待加载...'
                                    params={this.props.params}
