@@ -2,6 +2,14 @@
 *CURRENT*
 ---
     
+- 2016-07-10 (Laisky) fix: replace react.js by react.min -> [view commit](https://github.com/Laisky/laisky-blog/commit/61f33265c872dc4e72d4b47be53eb89b653e6847)
+- 2016-07-10 (Laisky) fix: add Pygments -> [view commit](https://github.com/Laisky/laisky-blog/commit/365c2d17fd59e8f1939bbb3eef3903ef2fa119c4)
+- 2016-05-18 (Laisky) fix: 修好 menu 和 notefoots -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f05509aed669b969463628dda48c485a685ba3d)    
+       
+*2.3.3*
+---
+    
+- 2016-06-11 (Laisky) 2.3.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/45dde390894186494f8e3cb776a6198aa7602e42)
 - 2016-06-11 (Laisky) fix: 新建文章不能编辑 postName -> [view commit](https://github.com/Laisky/laisky-blog/commit/8d5bc2b8b1da518932e94676c9732acd69d21eee)
 - 2016-06-11 (Laisky) fix: webpack: faster build -> [view commit](https://github.com/Laisky/laisky-blog/commit/2a264d028feded05a4ad549ed32fbb6a6e8ce3f0)
 - 2016-05-14 (Laisky) docs: update readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/bbac737dcb7b674ec96b760677b87b0d4fd75007)    
