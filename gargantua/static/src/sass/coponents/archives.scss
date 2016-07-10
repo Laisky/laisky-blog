@@ -11,12 +11,15 @@
     border: 2px solid $post-bgd-clr;
     @include border-radius(10px);
 
+    > .nav {
+        position: relative;
+    }
+
     > .nav li:hover .nav {
         display: block;
     }
 
     .nav li a {
-        // font-size: 0.8em;
         padding: 2px;
     }
 
@@ -116,10 +119,29 @@
             border-bottom: 2px solid #EEE;
         }
 
+        .footnotes {
+            hr {
+                height: 0px;
+                margin: 0px;
+            }
+
+            ol > li {
+                p {
+                    margin: 0px;
+                }
+
+            }
+
+        }
+
         blockquote > p {
             font-style: italic;
             font-size: 0.9em;
             color: $post-quote-clr;
+        }
+
+        pre {
+            margin-bottom: 20px;
         }
 
         .codehilite {

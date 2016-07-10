@@ -6,7 +6,7 @@
             "./gargantua/static/vendor/bower_components/bootstrap/dist/js/bootstrap.js",
             "./gargantua/static/vendor/bower_components/moment/moment.js",
             "./gargantua/static/vendor/bower_components/humane-dates/humane.js",
-            "./node_modules/react/dist/react.js",
+            "./node_modules/react/dist/react.min.js",
             "./node_modules/react-dom/dist/react-dom.js",
             "./node_modules/react-router/umd/ReactRouter.js",
             "./gargantua/static/vendor/js/*.js"
