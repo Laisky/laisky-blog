@@ -89,83 +89,6 @@ body > .container {
   margin-top: 40px;
 }
 
-#aboutme {
-  border-radius: 10px;
-  background-color: whitesmoke;
-  position: relative;
-  color: #32322d;
-  max-width: 800px;
-}
-#aboutme .aboutme {
-  padding: 10px;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px dashed grey;
-}
-#aboutme .aboutme h2 {
-  margin-top: 0px;
-  font-size: 2em;
-  text-align: center;
-}
-#aboutme .aboutme:last-child {
-  border-bottom: none;
-}
-#aboutme .aboutme.profile p {
-  margin: 0px;
-}
-
-#archives {
-  max-width: 800px;
-  margin-bottom: 10px;
-  min-height: 800px;
-  background-color: none;
-}
-#archives #archive-content {
-  border-radius: 10px;
-  background-color: #F1F1F1;
-  padding-left: 0px;
-}
-#archives #archive-content .hint {
-  margin: 10px;
-}
-#archives #archive-sidebar {
-  padding-right: 0px;
-}
-#archives .page-nav {
-  text-align: center;
-}
-
-#login {
-  max-width: 600px;
-  background: whitesmoke;
-  margin: 20px auto;
-  border-radius: 10px;
-}
-
-#post {
-  max-width: 800px;
-  margin-bottom: 10px;
-  min-height: 800px;
-}
-#post #page-content {
-  border-radius: 10px;
-  background-color: #F1F1F1;
-  min-height: 600px;
-}
-#post #page-content .hint {
-  margin: 10px;
-}
-#post .archive-menu {
-  position: fixed;
-  width: inherit;
-}
-#post #postComment {
-  padding: 10px;
-}
-#post .page-nav {
-  text-align: center;
-}
-
 @charset "UTF-8";
 /**
  * archives 组件的 CSS
@@ -176,6 +99,9 @@ body > .container {
   position: relative;
   border: 2px solid whitesmoke;
   border-radius: 10px;
+}
+.archive-menu > .nav {
+  position: relative;
 }
 .archive-menu > .nav li:hover .nav {
   display: block;
@@ -258,10 +184,20 @@ body > .container {
 .archive.archive-extract .archive-content h2 {
   border-bottom: 2px solid #EEE;
 }
+.archive.archive-extract .archive-content .footnotes hr {
+  height: 0px;
+  margin: 0px;
+}
+.archive.archive-extract .archive-content .footnotes ol > li p {
+  margin: 0px;
+}
 .archive.archive-extract .archive-content blockquote > p {
   font-style: italic;
   font-size: 0.9em;
   color: #86867D;
+}
+.archive.archive-extract .archive-content pre {
+  margin-bottom: 20px;
 }
 .archive.archive-extract .archive-content .codehilite {
   margin-bottom: 16px;
@@ -354,5 +290,82 @@ body > .container {
 }
 .sidebar .console.login p {
   margin: 0px;
+}
+
+#aboutme {
+  border-radius: 10px;
+  background-color: whitesmoke;
+  position: relative;
+  color: #32322d;
+  max-width: 800px;
+}
+#aboutme .aboutme {
+  padding: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed grey;
+}
+#aboutme .aboutme h2 {
+  margin-top: 0px;
+  font-size: 2em;
+  text-align: center;
+}
+#aboutme .aboutme:last-child {
+  border-bottom: none;
+}
+#aboutme .aboutme.profile p {
+  margin: 0px;
+}
+
+#archives {
+  max-width: 800px;
+  margin-bottom: 10px;
+  min-height: 800px;
+  background-color: none;
+}
+#archives #archive-content {
+  border-radius: 10px;
+  background-color: #F1F1F1;
+  padding-left: 0px;
+}
+#archives #archive-content .hint {
+  margin: 10px;
+}
+#archives #archive-sidebar {
+  padding-right: 0px;
+}
+#archives .page-nav {
+  text-align: center;
+}
+
+#login {
+  max-width: 600px;
+  background: whitesmoke;
+  margin: 20px auto;
+  border-radius: 10px;
+}
+
+#post {
+  max-width: 800px;
+  margin-bottom: 10px;
+  min-height: 800px;
+}
+#post #page-content {
+  border-radius: 10px;
+  background-color: #F1F1F1;
+  min-height: 600px;
+}
+#post #page-content .hint {
+  margin: 10px;
+}
+#post .archive-menu {
+  position: fixed;
+  width: inherit;
+}
+#post #postComment {
+  padding: 10px;
+}
+#post .page-nav {
+  text-align: center;
 }
 
