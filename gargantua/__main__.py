@@ -14,7 +14,7 @@ from gargantua.utils import logger
 def main():
     opt.parse_command_line()
 
-    http_server = tornado.httpserver.HTTPServer(Application())
+    http_server = tornado.httpserver.HTTPServer(Application(), xheaders=True)
     http_server.listen(options.port)
 
     if options.debug:

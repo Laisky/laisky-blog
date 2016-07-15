@@ -35,7 +35,7 @@ def debug_wrapper(func):
                 'uri': str(self.request.uri),
                 'remote_ip': self.request.remote_ip,
                 'version': str(self.request.version),
-                'headers': str(self.request.headers),
+                'headers': dict(self.request.headers),
                 'cookies': str(self.request.cookies),
             }
             logger.error('{}\n-----\n{}'.format(
