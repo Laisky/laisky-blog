@@ -4,6 +4,7 @@ import pathlib
 
 
 # server
+SECRET_KEY = '34hj32k4hj3k4k3h539c905n8c90UMIFN#*N'
 DEBUG = False
 PORT = 27850
 

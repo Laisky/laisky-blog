@@ -14,8 +14,7 @@ from tornado.web import url
 from tornado.options import define, options
 
 from gargantua.settings import CWD
-from gargantua.utils import setup_log, generate_random_string, \
-    get_default_config, logger
+from gargantua.utils import setup_log, get_default_config, logger
 from gargantua.views import BaseHandler, PostsHandler, UserHandler, \
     ReactRender
 from gargantua.apis import PostApiHandler
@@ -63,8 +62,7 @@ class Application(tornado.web.Application):
             'static_path': str(Path(CWD, 'static')),
             'static_url_prefix': '/static/',
             'template_path': str(Path(CWD, 'html')),
-            # 'cookie_secret': generate_random_string(50),
-            'cookie_secret': 'fewjfkjkjkj4h3j5h43j5h4j3h5j34h5ljk34',
+            'cookie_secret': get_default_config('SECRET_KEY'),
             'login_url': '/login/',
             'xsrf_cookies': True,
             'autoescape': None,
