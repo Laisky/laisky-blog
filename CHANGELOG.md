@@ -2,6 +2,14 @@
 *CURRENT*
 ---
     
+- 2016-07-15 (Laisky) refactor: 将 secret_key 放入 settings -> [view commit](https://github.com/Laisky/laisky-blog/commit/be002affd74425e78dea013a72e499e7d2d2c053)
+- 2016-07-15 (Laisky) fix: 修复文章读取失败 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b3817c503c7398a5057fecb543e5c91ba01105b6)
+- 2016-07-15 (Laisky) fix: 报错邮件显示的信息不全 -> [view commit](https://github.com/Laisky/laisky-blog/commit/dffc679628c2c331376b92beea49cc75b8142f22)    
+       
+*2.3.4*
+---
+    
+- 2016-07-10 (Laisky) 2.3.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/4925760075be46bc6737f9f3daeaab59898e93f2)
 - 2016-07-10 (Laisky) fix: replace react.js by react.min -> [view commit](https://github.com/Laisky/laisky-blog/commit/61f33265c872dc4e72d4b47be53eb89b653e6847)
 - 2016-07-10 (Laisky) fix: add Pygments -> [view commit](https://github.com/Laisky/laisky-blog/commit/365c2d17fd59e8f1939bbb3eef3903ef2fa119c4)
 - 2016-05-18 (Laisky) fix: 修好 menu 和 notefoots -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f05509aed669b969463628dda48c485a685ba3d)    

@@ -152,7 +152,13 @@ class ApiHandler(BaseApiHandler):
                     .format(self._collection, oid))
         col = self.get_col()
         oidname = self.get_oidname()
-        docu = yield col.find_one({oidname: oid})
+        try:
+            docu = yield col.find_one({oidname: oid})
+            assert docu, 'article not exists!'
+        except Exception as err:
+            self.http_404_not_found(err=err)
+            return
+
         parsed_docu = self.parse_docu(docu)
         self.success(parsed_docu)
 
