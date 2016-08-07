@@ -2,6 +2,15 @@
 *CURRENT*
 ---
     
+- 2016-08-07 (Laisky) chore: Upgrade to Nginx v1.10 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6540d60859e761aa3a5e6f145f39911e8e13861a)
+- 2016-08-07 (Laisky) * #110 加点注释 -> [view commit](https://github.com/Laisky/laisky-blog/commit/89571dd75cc67c29191c59bf109fe31399abf6d9)
+- 2016-08-07 (Laisky) fix: Google Analystics 追踪 -> [view commit](https://github.com/Laisky/laisky-blog/commit/33feda9336fad21a154732b1dcf403766b5225b5)
+- 2016-08-05 (Laisky) chore: 配置 HSTS，修改加密 cipher -> [view commit](https://github.com/Laisky/laisky-blog/commit/c8f449ba3cd7cb2b971bcc8e34550f40cb54db63)    
+       
+*2.3.5*
+---
+    
+- 2016-07-15 (Laisky) 2.3.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b74b49b9d29d8ff0c028f912bdf93318428a9d88)
 - 2016-07-15 (Laisky) refactor: 将 secret_key 放入 settings -> [view commit](https://github.com/Laisky/laisky-blog/commit/be002affd74425e78dea013a72e499e7d2d2c053)
 - 2016-07-15 (Laisky) fix: 修复文章读取失败 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b3817c503c7398a5057fecb543e5c91ba01105b6)
 - 2016-07-15 (Laisky) fix: 报错邮件显示的信息不全 -> [view commit](https://github.com/Laisky/laisky-blog/commit/dffc679628c2c331376b92beea49cc75b8142f22)    
