@@ -85,100 +85,6 @@ body > .container {
   margin-top: 40px;
 }
 
-.loginComponent {
-  min-height: 240px;
-  padding: 20px;
-}
-.loginComponent .hint {
-  text-align: center;
-  margin-bottom: 10px;
-}
-.loginComponent .hint .hint-text {
-  font-size: 1em;
-}
-
-#container {
-  margin-top: 40px;
-}
-
-#publish,
-#amend {
-  background-color: whitesmoke;
-  padding: 10px;
-  position: relative;
-  border: 2px solid whitesmoke;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  margin-left: auto;
-  margin-right: auto;
-}
-#publish .hint,
-#amend .hint {
-  text-align: center;
-  font-size: 1.2em;
-}
-
-.redirectComponent {
-  background-color: whitesmoke;
-  padding: 10px;
-  text-align: center;
-}
-
-.sidebar {
-  border-radius: 10px;
-  background-color: whitesmoke;
-  position: relative;
-  color: #32322d;
-}
-.sidebar .console {
-  padding: 10px;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px dashed grey;
-}
-.sidebar .console a.btn {
-  padding: 0px;
-}
-.sidebar .console h2 {
-  margin-top: 0px;
-  font-size: 1.2em;
-  text-align: center;
-}
-.sidebar .console:last-child {
-  border-bottom: none;
-}
-.sidebar .console.profile p {
-  margin: 0px;
-}
-.sidebar .console.login p {
-  margin: 0px;
-}
-
-#aboutme {
-  border-radius: 10px;
-  background-color: whitesmoke;
-  position: relative;
-  color: #32322d;
-  max-width: 800px;
-}
-#aboutme .aboutme {
-  padding: 10px;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px dashed grey;
-}
-#aboutme .aboutme h2 {
-  margin-top: 0px;
-  font-size: 2em;
-  text-align: center;
-}
-#aboutme .aboutme:last-child {
-  border-bottom: none;
-}
-#aboutme .aboutme.profile p {
-  margin: 0px;
-}
-
 @charset "UTF-8";
 /**
  * archives 组件的 CSS
@@ -317,12 +223,100 @@ body > .container {
   margin-left: 30px;
 }
 
-#login {
-  max-width: 600px;
-  background: whitesmoke;
-  margin: 20px auto;
-  border-radius: 10px;
+#container {
+  margin-top: 40px;
 }
+
+.loginComponent {
+  min-height: 240px;
+  padding: 20px;
+}
+.loginComponent .hint {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.loginComponent .hint .hint-text {
+  font-size: 1em;
+}
+
+.redirectComponent {
+  background-color: whitesmoke;
+  padding: 10px;
+  text-align: center;
+}
+
+#publish,
+#amend {
+  background-color: whitesmoke;
+  padding: 10px;
+  position: relative;
+  border: 2px solid whitesmoke;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#publish .hint,
+#amend .hint {
+  text-align: center;
+  font-size: 1.2em;
+}
+
+#aboutme {
+  border-radius: 10px;
+  background-color: whitesmoke;
+  position: relative;
+  color: #32322d;
+  max-width: 800px;
+}
+#aboutme .aboutme {
+  padding: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed grey;
+}
+#aboutme .aboutme h2 {
+  margin-top: 0px;
+  font-size: 2em;
+  text-align: center;
+}
+#aboutme .aboutme:last-child {
+  border-bottom: none;
+}
+#aboutme .aboutme.profile p {
+  margin: 0px;
+}
+
+.sidebar {
+  border-radius: 10px;
+  background-color: whitesmoke;
+  position: relative;
+  color: #32322d;
+}
+.sidebar .console {
+  padding: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed grey;
+}
+.sidebar .console a.btn {
+  padding: 0px;
+}
+.sidebar .console h2 {
+  margin-top: 0px;
+  font-size: 1.2em;
+  text-align: center;
+}
+.sidebar .console:last-child {
+  border-bottom: none;
+}
+.sidebar .console.profile p {
+  margin: 0px;
+}
+.sidebar .console.login p {
+  margin: 0px;
+}
+
 
 #archives {
   max-width: 800px;
@@ -345,6 +339,12 @@ body > .container {
   text-align: center;
 }
 
+#login {
+  max-width: 600px;
+  background: whitesmoke;
+  margin: 20px auto;
+  border-radius: 10px;
+}
 
 #post {
   max-width: 800px;
