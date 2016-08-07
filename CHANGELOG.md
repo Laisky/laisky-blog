@@ -2,6 +2,12 @@
 *CURRENT*
 ---
     
+- 2016-08-07 (Laisky) fix: 静态文件路径错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3242667d6ac69108c1b282e1099df38549946d3e)    
+       
+*2.3.6*
+---
+    
+- 2016-08-07 (Laisky) 2.3.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/73b94494600b1f7973856d257acf699d072ec76b)
 - 2016-08-07 (Laisky) chore: Upgrade to Nginx v1.10 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6540d60859e761aa3a5e6f145f39911e8e13861a)
 - 2016-08-07 (Laisky) * #110 加点注释 -> [view commit](https://github.com/Laisky/laisky-blog/commit/89571dd75cc67c29191c59bf109fe31399abf6d9)
 - 2016-08-07 (Laisky) fix: Google Analystics 追踪 -> [view commit](https://github.com/Laisky/laisky-blog/commit/33feda9336fad21a154732b1dcf403766b5225b5)
