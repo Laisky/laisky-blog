@@ -6,8 +6,8 @@
 
 import React from 'react';
 
-import { BaseComponent } from './components/base.jsx';
-import { ArchiveExtract, Comment, ArchiveMenu } from './components/archives.jsx';
+import { BaseComponent } from '../components/base.jsx';
+import { ArchiveExtract, Comment, ArchiveMenu } from '../components/archives.jsx';
 
 class Post extends BaseComponent {
     constructor(props, context) {

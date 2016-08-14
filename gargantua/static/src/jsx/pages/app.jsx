@@ -6,7 +6,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { BaseComponent } from './components/base.jsx';
+import { BaseComponent } from '../components/base.jsx';
 
 
 class App extends BaseComponent {

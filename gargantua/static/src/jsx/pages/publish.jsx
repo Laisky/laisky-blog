@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-import { BaseComponent } from './components/base.jsx';
+import { BaseComponent } from '../components/base.jsx';
 
 
 class BaseEditComponent extends BaseComponent {
