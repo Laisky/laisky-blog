@@ -34,17 +34,15 @@ class Redirect extends BaseComponent{
     };
 
     setTick() {
-        let that = this;
-
         return () => {
-            if(that.state.waitSec > 0) {
-                that.setState({waitSec: that.state.waitSec - 1});
+            if(this.state.waitSec > 0) {
+                this.setState({waitSec: this.state.waitSec - 1});
             } else {
-                if(that.nextPageData){
+                if(this.nextPageData){
                     browserHistory.push(this.props.nextUrl);
-                    $(that.props.targetSelector).html(that.nextPageData);
+                    $(this.props.targetSelector).html(this.nextPageData);
                 } else {
-                    setTimeout(() => {that.tick();}, 200);
+                    setTimeout(() => {this.tick();}, 200);
                 }
             }
         }

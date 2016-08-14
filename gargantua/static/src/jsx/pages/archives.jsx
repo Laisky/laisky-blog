@@ -11,6 +11,10 @@ import { ArchiveExtract, ArchiveNav } from '../components/archives.jsx';
 import { Notify, Sidebar } from '../components/sidebar.jsx';
 
 
+class ArchivesCache {
+
+}
+
 class Archives extends BaseComponent {
     constructor(props, context) {
         super(props, context);
@@ -29,8 +33,7 @@ class Archives extends BaseComponent {
     };
 
     updatePage(currentPage=this.props.params.page) {
-        let that = this,
-            limit = 10,
+        let limit = 10,
             skip = (currentPage - 1) * limit;
 
         $.getJSON({
@@ -39,7 +42,7 @@ class Archives extends BaseComponent {
             dataType: 'json'
         })
             .done((resp) => {
-                that.setState({
+                this.setState({
                     hint: null,
                     archives: resp.result,
                     totalPage: Math.ceil(resp.total / limit),
@@ -47,7 +50,7 @@ class Archives extends BaseComponent {
                 });
             })
             .fail(() => {
-                that.setState({hint: '读取数据失败，请刷新重试'});
+                this.setState({hint: '读取数据失败，请刷新重试'});
             });
     };
 
