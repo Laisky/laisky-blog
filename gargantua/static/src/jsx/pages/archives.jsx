@@ -13,7 +13,49 @@ import { Notify, Sidebar } from '../components/sidebar.jsx';
 
 class ArchivesCache {
 
+    constructor() {
+        this.limit = 10;
+    };
+
+    convertPage2Skip(nPage) {
+        return (nPage - 1) * this.limit;
+    };
+
+    // 从缓存中取数据
+    async getByPage(nPage) {
+        let resp,
+            _pContent = window.sessionStorage.getItem(`page-${nPage}`);
+
+        if(_pContent) {
+            resp = JSON.parse(_pContent);
+        }else {
+            resp = await this.loadByPage(nPage);
+        }
+
+        return resp
+    };
+
+    saveByPage(nPage, obj) {
+        let _obj = JSON.stringify(obj)
+        window.sessionStorage.setItem(`page-${nPage}`, _obj);
+    };
+
+    async loadByPage(nPage) {
+        let nSkip = this.convertPage2Skip(nPage),
+            resp;
+
+        resp = await $.getJSON({
+            url: `/api/v2/post/?limit=${this.limit}&skip=${nSkip}`,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        this.saveByPage(nPage, resp);
+        return resp;
+    };
+
 }
+
 
 class Archives extends BaseComponent {
     constructor(props, context) {
@@ -22,6 +64,7 @@ class Archives extends BaseComponent {
             archives: [],
             hint: '载入中...'
         };
+        this.archiveCache = new ArchivesCache();
     };
 
     componentDidMount() {
@@ -32,24 +75,28 @@ class Archives extends BaseComponent {
         this.updatePage.call(this, nextProps.params.page);
     };
 
+    updateArchiveCache(currentPage) {
+        for(let i = Math.max(1, currentPage - 2); i <= currentPage + 2; i++) {
+            this.archiveCache.getByPage(i);
+        }
+    };
+
     updatePage(currentPage=this.props.params.page) {
         let limit = 10,
-            skip = (currentPage - 1) * limit;
+            nPage = Number.parseInt(currentPage, 10),
+            skip = (nPage - 1) * limit;
 
-        $.getJSON({
-            url: `/api/v2/post/?limit=${limit}&skip=${skip}`,
-            method: 'GET',
-            dataType: 'json'
-        })
-            .done((resp) => {
+        this.updateArchiveCache(nPage);
+        this.archiveCache.getByPage(nPage)
+            .then((resp) => {
                 this.setState({
                     hint: null,
                     archives: resp.result,
                     totalPage: Math.ceil(resp.total / limit),
-                    currentPage: currentPage,
+                    currentPage: nPage
                 });
             })
-            .fail(() => {
+            .catch((e) => {
                 this.setState({hint: '读取数据失败，请刷新重试'});
             });
     };
@@ -75,7 +122,7 @@ class Archives extends BaseComponent {
         return (
             <div id="archives" className="archives-body container-fluid">
                 <div className="row">
-                    <Notify text="react 前端重构完成度 80 % ..." />
+                    <Notify text="使用 redux 重构前端完成度 20 % ..." />
                 </div>
                 <div className="row">
                     <div id="archive-content" className="col-sm-9 col-xs-12">
