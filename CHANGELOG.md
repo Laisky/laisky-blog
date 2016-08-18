@@ -2,6 +2,12 @@
 *CURRENT*
 ---
     
+- 2016-08-18 (Laisky) fix: 修复一些页面交互 -> [view commit](https://github.com/Laisky/laisky-blog/commit/226ceb78aa6d7fb76b4f49e29ae0ebb7f7ba9be8)    
+       
+*2.4*
+---
+    
+- 2016-08-18 (Laisky) 2.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/460ad3bf8bafc98d9a174d7e5642595ee696d235)
 - 2016-08-18 (Laisky) feat: 点击图片时弹出 modal -> [view commit](https://github.com/Laisky/laisky-blog/commit/7e6a2761d10cb913345340477e82a7fd66e19d10)
 - 2016-08-18 (Laisky) feat: 点击 header 自动滚动到页面顶部 -> [view commit](https://github.com/Laisky/laisky-blog/commit/571fe5e4bbb56779983e1be7cf4a4090dfda3262)
 - 2016-08-18 (Laisky) chore: 更新 npm 包的小版本 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ead2e0209171754ffc196f5de546991e1ab9e366)
