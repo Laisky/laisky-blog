@@ -2,17 +2,17 @@
     "jslibs": {
         "src": [
             "./gargantua/static/vendor/bower_components/babel-polyfill/browser-polyfill.js",
-            "./gargantua/static/vendor/bower_components/jquery/dist/jquery.js",
-            "./gargantua/static/vendor/bower_components/bootstrap/dist/js/bootstrap.js",
+            "./gargantua/static/vendor/bower_components/jquery/dist/jquery.min.js",
+            "./gargantua/static/vendor/bower_components/bootstrap/dist/js/bootstrap.min.js",
             "./gargantua/static/vendor/bower_components/moment/moment.js",
             "./gargantua/static/vendor/bower_components/humane-dates/humane.js",
             "./gargantua/static/vendor/bower_components/immutable/dist/immutable.min.js",
             "./node_modules/react/dist/react.min.js",
-            "./node_modules/react-dom/dist/react-dom.js",
-            "./node_modules/react-router/umd/ReactRouter.js",
+            "./node_modules/react-dom/dist/react-dom.min.js",
+            "./node_modules/react-router/umd/ReactRouter.min.js",
             "./node_modules/react-redux/dist/react-redux.min.js",
             "./node_modules/redux/dist/redux.min.js",
-            "./gargantua/static/vendor/bower_components/react-ga/dist/react-ga.js",
+            "./gargantua/static/vendor/bower_components/react-ga/dist/react-ga.min.js",
             "./gargantua/static/vendor/js/*.js"
         ],
         "dest": "./gargantua/static/dist/js",
