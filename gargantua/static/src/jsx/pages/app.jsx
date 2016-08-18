@@ -27,7 +27,7 @@ class App extends BaseComponent {
 
         return (
           <div className="container-fluid">
-            <nav className="navbar navbar-default navbar-fixed-top">
+            <nav className="navbar navbar-default navbar-fixed-top" onClick={() => {$(document.body).animate({scrollTop: 0}, 500)}}>
               <div className="container-fluid">
                 <div className="navbar-header">
                   <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">

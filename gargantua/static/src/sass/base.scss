@@ -4,13 +4,13 @@
 @import "compass/css3/images";
 
 html {
-    height: 100%;
     overflow-x: hidden;
+    overflow-y: auto;
     @include min-height(600px);
 }
 
 body {
-    height: 100%;
+    height: initial;
     overflow-x: hidden;
     overflow-y: auto;
     font-family: "Helvetica Neue", "Helvetica", "Microsoft YaHei", "Segoe UI", "Arial", "freesans", "sans-serif";
