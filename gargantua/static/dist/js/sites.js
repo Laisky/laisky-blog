@@ -178,6 +178,14 @@
 	  }
 
 	  (0, _createClass3.default)(App, [{
+	    key: 'getScrollToTopHandle',
+	    value: function getScrollToTopHandle() {
+	      return function (evt) {
+	        if (evt.target.tagName != 'DIV') return;
+	        $(document.body).animate({ scrollTop: 0 }, 500);
+	      };
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var googleSearch = '<gcse:search className="google-search" gname="post_search" enableAutoComplete="true"></gcse:search>';
@@ -187,9 +195,7 @@
 	        { className: 'container-fluid' },
 	        _react2.default.createElement(
 	          'nav',
-	          { className: 'navbar navbar-default navbar-fixed-top', onClick: function onClick() {
-	              $(document.body).animate({ scrollTop: 0 }, 500);
-	            } },
+	          { className: 'navbar navbar-default navbar-fixed-top' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'container-fluid' },
@@ -216,7 +222,7 @@
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' },
+	              { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1', onClick: this.getScrollToTopHandle() },
 	              _react2.default.createElement(
 	                'ul',
 	                { className: 'nav navbar-nav apps' },

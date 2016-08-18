@@ -1,7 +1,3 @@
-#container {
-  margin-top: 40px;
-}
-
 html {
   overflow-x: hidden;
   overflow-y: auto;
@@ -87,6 +83,26 @@ body > .container {
 
 #body {
   margin-top: 40px;
+}
+
+#container {
+  margin-top: 40px;
+}
+
+#img-moda .modal-body {
+  text-align: center;
+}
+
+.loginComponent {
+  min-height: 240px;
+  padding: 20px;
+}
+.loginComponent .hint {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.loginComponent .hint .hint-text {
+  font-size: 1em;
 }
 
 @charset "UTF-8";
@@ -227,16 +243,27 @@ body > .container {
   margin-left: 30px;
 }
 
-.loginComponent {
-  min-height: 240px;
-  padding: 20px;
+#publish,
+#amend {
+  background-color: whitesmoke;
+  padding: 10px;
+  position: relative;
+  border: 2px solid whitesmoke;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  margin-left: auto;
+  margin-right: auto;
 }
-.loginComponent .hint {
+#publish .hint,
+#amend .hint {
   text-align: center;
-  margin-bottom: 10px;
+  font-size: 1.2em;
 }
-.loginComponent .hint .hint-text {
-  font-size: 1em;
+
+.redirectComponent {
+  background-color: whitesmoke;
+  padding: 10px;
+  text-align: center;
 }
 
 .sidebar {
@@ -269,49 +296,6 @@ body > .container {
   margin: 0px;
 }
 
-.redirectComponent {
-  background-color: whitesmoke;
-  padding: 10px;
-  text-align: center;
-}
-
-#publish,
-#amend {
-  background-color: whitesmoke;
-  padding: 10px;
-  position: relative;
-  border: 2px solid whitesmoke;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  margin-left: auto;
-  margin-right: auto;
-}
-#publish .hint,
-#amend .hint {
-  text-align: center;
-  font-size: 1.2em;
-}
-
-#archives {
-  max-width: 800px;
-  margin-bottom: 10px;
-  min-height: 800px;
-  background-color: none;
-}
-#archives #archive-content {
-  border-radius: 10px;
-  background-color: #F1F1F1;
-  padding-left: 0px;
-}
-#archives #archive-content .hint {
-  margin: 10px;
-}
-#archives #archive-sidebar {
-  padding-right: 0px;
-}
-#archives .page-nav {
-  text-align: center;
-}
 
 #aboutme {
   border-radius: 10px;
@@ -336,6 +320,27 @@ body > .container {
 }
 #aboutme .aboutme.profile p {
   margin: 0px;
+}
+
+#archives {
+  max-width: 800px;
+  margin-bottom: 10px;
+  min-height: 800px;
+  background-color: none;
+}
+#archives #archive-content {
+  border-radius: 10px;
+  background-color: #F1F1F1;
+  padding-left: 0px;
+}
+#archives #archive-content .hint {
+  margin: 10px;
+}
+#archives #archive-sidebar {
+  padding-right: 0px;
+}
+#archives .page-nav {
+  text-align: center;
 }
 
 #login {
@@ -368,4 +373,3 @@ body > .container {
 #post .page-nav {
   text-align: center;
 }
-
