@@ -24,6 +24,14 @@ class App extends BaseComponent {
         }
     };
 
+
+    getScrollToTopHandle() {
+        return (evt) => {
+            if(evt.target.tagName != 'DIV') return;
+            $(document.body).animate({scrollTop: 0}, 500);
+        }
+    };
+
     render() {
         let googleSearch = '<gcse:search className="google-search" gname="post_search" enableAutoComplete="true"></gcse:search>';
 
@@ -31,7 +39,7 @@ class App extends BaseComponent {
           <div className="container-fluid">
 
             {/* page nav */}
-            <nav className="navbar navbar-default navbar-fixed-top" onClick={() => {$(document.body).animate({scrollTop: 0}, 500)}}>
+            <nav className="navbar navbar-default navbar-fixed-top">
               <div className="container-fluid">
                 <div className="navbar-header">
                   <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -42,7 +50,7 @@ class App extends BaseComponent {
                   </button>
                   <Link to={{ pathname: '/archives/1/' }} className="navbar-brand">Laisky</Link>
                 </div>
-                <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1" onClick={this.getScrollToTopHandle()}>
                   <ul className="nav navbar-nav apps">
                     <li className={this.getCurrentRouteName() == 'archives'? 'active': ''}><Link to={{ pathname: '/archives/1/' }}>Blog</Link></li>
                     <li className={this.getCurrentRouteName() == 'aboutme'? 'active': ''}><Link to={{ pathname: '/about/' }}>AboutMe</Link></li>
