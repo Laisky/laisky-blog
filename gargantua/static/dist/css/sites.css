@@ -1,11 +1,15 @@
+#container {
+  margin-top: 40px;
+}
+
 html {
-  height: 100%;
   overflow-x: hidden;
+  overflow-y: auto;
   min-height: 600px;
 }
 
 body {
-  height: 100%;
+  height: initial;
   overflow-x: hidden;
   overflow-y: auto;
   font-family: "Helvetica Neue", "Helvetica", "Microsoft YaHei", "Segoe UI", "Arial", "freesans", "sans-serif";
@@ -223,10 +227,6 @@ body > .container {
   margin-left: 30px;
 }
 
-#container {
-  margin-top: 40px;
-}
-
 .loginComponent {
   min-height: 240px;
   padding: 20px;
@@ -237,54 +237,6 @@ body > .container {
 }
 .loginComponent .hint .hint-text {
   font-size: 1em;
-}
-
-.redirectComponent {
-  background-color: whitesmoke;
-  padding: 10px;
-  text-align: center;
-}
-
-#publish,
-#amend {
-  background-color: whitesmoke;
-  padding: 10px;
-  position: relative;
-  border: 2px solid whitesmoke;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  margin-left: auto;
-  margin-right: auto;
-}
-#publish .hint,
-#amend .hint {
-  text-align: center;
-  font-size: 1.2em;
-}
-
-#aboutme {
-  border-radius: 10px;
-  background-color: whitesmoke;
-  position: relative;
-  color: #32322d;
-  max-width: 800px;
-}
-#aboutme .aboutme {
-  padding: 10px;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px dashed grey;
-}
-#aboutme .aboutme h2 {
-  margin-top: 0px;
-  font-size: 2em;
-  text-align: center;
-}
-#aboutme .aboutme:last-child {
-  border-bottom: none;
-}
-#aboutme .aboutme.profile p {
-  margin: 0px;
 }
 
 .sidebar {
@@ -317,6 +269,28 @@ body > .container {
   margin: 0px;
 }
 
+.redirectComponent {
+  background-color: whitesmoke;
+  padding: 10px;
+  text-align: center;
+}
+
+#publish,
+#amend {
+  background-color: whitesmoke;
+  padding: 10px;
+  position: relative;
+  border: 2px solid whitesmoke;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#publish .hint,
+#amend .hint {
+  text-align: center;
+  font-size: 1.2em;
+}
 
 #archives {
   max-width: 800px;
@@ -337,6 +311,31 @@ body > .container {
 }
 #archives .page-nav {
   text-align: center;
+}
+
+#aboutme {
+  border-radius: 10px;
+  background-color: whitesmoke;
+  position: relative;
+  color: #32322d;
+  max-width: 800px;
+}
+#aboutme .aboutme {
+  padding: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed grey;
+}
+#aboutme .aboutme h2 {
+  margin-top: 0px;
+  font-size: 2em;
+  text-align: center;
+}
+#aboutme .aboutme:last-child {
+  border-bottom: none;
+}
+#aboutme .aboutme.profile p {
+  margin: 0px;
 }
 
 #login {
@@ -369,3 +368,4 @@ body > .container {
 #post .page-nav {
   text-align: center;
 }
+
