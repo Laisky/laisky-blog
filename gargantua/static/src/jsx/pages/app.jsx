@@ -6,9 +6,11 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { BaseComponent } from './components/base.jsx';
+import { BaseComponent } from '../components/base.jsx';
 
-
+/*
+ * 页面主框架
+ */
 class App extends BaseComponent {
     constructor(props, context) {
         super(props, context);
@@ -27,7 +29,9 @@ class App extends BaseComponent {
 
         return (
           <div className="container-fluid">
-            <nav className="navbar navbar-default navbar-fixed-top">
+
+            {/* page nav */}
+            <nav className="navbar navbar-default navbar-fixed-top" onClick={() => {$(document.body).animate({scrollTop: 0}, 500)}}>
               <div className="container-fluid">
                 <div className="navbar-header">
                   <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -57,6 +61,19 @@ class App extends BaseComponent {
                 </div>
               </div>
             </nav>
+
+            {/* page modal */}
+            <div className="modal fade" id="img-modal">
+              <div className="modal-dialog" style={{'z-index': 1050, width: '800px'}}>
+                <div className="modal-content">
+                  <div className="modal-body" style={{padding: '0px'}}>
+                    <img src="" alt="image" className="img-rounded" style={{'max-height': '800px', 'max-width': '800px'}} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* page content */}
             <div ref="container" className='container' id="container">
               {this.props.children}
             </div>

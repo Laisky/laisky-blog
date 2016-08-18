@@ -22,6 +22,7 @@
     "humane-dates": "*",
     "moment": "~2.12.0",
     "reveal.js": "^3.3.0",
-    "react-ga": "^2.1.1"
+    "react-ga": "^2.1.1",
+    "immutable": "^3.8.1"
   }
 }

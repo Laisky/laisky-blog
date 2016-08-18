@@ -6,8 +6,8 @@
 
 import React from 'react';
 
-import { BaseComponent } from './components/base.jsx';
-import { ArchiveExtract, Comment, ArchiveMenu } from './components/archives.jsx';
+import { BaseComponent } from '../components/base.jsx';
+import { ArchiveExtract, Comment, ArchiveMenu } from '../components/archives.jsx';
 
 class Post extends BaseComponent {
     constructor(props, context) {
@@ -19,8 +19,6 @@ class Post extends BaseComponent {
     };
 
     componentDidMount() {
-        let that = this;
-
         $.getJSON({
             url: `/api/v2/post/${this.props.params.pid}/`,
             method: 'GET',
@@ -28,13 +26,13 @@ class Post extends BaseComponent {
         })
             .done((resp) => {
                 if(resp.result['post_type'] == 'slide') this.loadRevealJs();
-                that.setState({
+                this.setState({
                     post: resp.result,
                     hint: null
                 });
             })
             .fail(() => {
-                that.setState({hint: '读取数据失败，请刷新重试'});
+                this.setState({hint: '读取数据失败，请刷新重试'});
             });
     };
 

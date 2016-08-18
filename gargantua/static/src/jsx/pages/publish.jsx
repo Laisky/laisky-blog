@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-import { BaseComponent } from './components/base.jsx';
+import { BaseComponent } from '../components/base.jsx';
 
 
 class BaseEditComponent extends BaseComponent {
@@ -34,32 +34,30 @@ class BaseEditComponent extends BaseComponent {
     };
 
     getHandleSubmit() {
-        let that = this;
-
         return (evt) => {
             evt.preventDefault();
 
             let formData = {
                 _xsrf: $.cookie('_xsrf'),
-                postTitle: that.refs.postTitle.value,
-                postName: that.refs.postName.value,
-                postContent: that.refs.postContent.value,
-                postType: that.refs.postType.value
+                postTitle: this.refs.postTitle.value,
+                postName: this.refs.postName.value,
+                postContent: this.refs.postContent.value,
+                postType: this.refs.postType.value
             };
 
             $.ajax({
-                url: that.state.action,
-                method: that.state.method,
+                url: this.state.action,
+                method: this.state.method,
                 data: formData
             })
                 .done((resp) => {
-                    that.setState({hint: '发布成功，等待跳转'});
+                    this.setState({hint: '发布成功，等待跳转'});
                     setTimeout(() => {
                         location.href = `/p/${formData.postName}/`;
                     }, 4000);
                 })
                 .fail((resp) => {
-                    that.setState({hint: resp.responseText});
+                    this.setState({hint: resp.responseText});
                 });
         };
     };
@@ -123,24 +121,22 @@ class Publish extends BaseComponent {
 
 class Amend extends BaseComponent {
     getInitData() {
-        let that = this;
-
         $.ajax({
             url: `/api/v2/post/${this.props.params.pid}/`,
             method: 'GET',
             dataType: 'json'
         })
             .done((resp) => {
-                that.setState({
+                this.setState({
                     post_name: resp.result.post_name,
                     hint: '编辑文章'
                 });
-                $(that.refs.postTitle).val(resp.result.post_title);
-                $(that.refs.postContent).val(resp.result.post_markdown);
-                $(that.refs.postType).val(resp.result.post_type);
+                $(this.refs.postTitle).val(resp.result.post_title);
+                $(this.refs.postContent).val(resp.result.post_markdown);
+                $(this.refs.postType).val(resp.result.post_type);
             })
             .fail((resp) => {
-                that.setState({hint: '加载失败，请刷新重试...'})
+                this.setState({hint: '加载失败，请刷新重试...'})
             });
     };
 

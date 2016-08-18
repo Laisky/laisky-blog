@@ -17,33 +17,31 @@ class Auth extends BaseComponent {
     };
 
     getHandleSubmit() {
-        let that = this;
-
         return (evt) => {
-            let accountName = that.state.accountName,
-                passowrdName = that.state.passowrdName,
+            let accountName = this.state.accountName,
+                passowrdName = this.state.passowrdName,
                 next = QueryString['next'] || '/',
                 data = {
                     _xsrf: $.cookie('_xsrf'),
-                    is_keep_login: $(that.refs.isKeepLogin).prop('checked')
+                    is_keep_login: $(this.refs.isKeepLogin).prop('checked')
                 };
 
             evt.preventDefault();
 
-            data[that.state.accountName] = that.refs.account.value;
-            data[that.state.passwordName] = that.refs.password.value.getMD5();
+            data[this.state.accountName] = this.refs.account.value;
+            data[this.state.passwordName] = this.refs.password.value.getMD5();
 
             $.ajax({
-                url: that.state.action,
+                url: this.state.action,
                 method: 'POST',
                 data: data
             })
                 .done((resp) => {
-                    $(that.refs.hint).text(resp);
+                    $(this.refs.hint).text(resp);
                     location.href = next;
                 })
                 .always((resp) => {
-                    $(that.refs.hint).text(resp);
+                    $(this.refs.hint).text(resp);
                 });
         }
     };

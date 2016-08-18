@@ -89,7 +89,9 @@ gulp.task('jssites', () => {
             externals: {
                 "react": "React",
                 "react-dom": "ReactDOM",
-                "react-router": "ReactRouter"
+                "react-router": "ReactRouter",
+                "redux": "Redux",
+                "react-redux": "ReactRedux"
             },
             resolve: {
                 root: path.resolve(__dirname, '.'),
@@ -112,9 +114,11 @@ gulp.task('jssites', () => {
             ],
             module: {
                 loaders: [{
-                    loader: 'babel',
+                    loader: 'babel-loader',
+                    exclude: /node_modules/,
                     query: {
-                        presets: ['react', 'es2015'],
+                        presets: ['es2016', 'es2015', 'react'],
+                        plugins: ['transform-runtime', 'transform-async-to-generator'],
                         compact: false
                     }
                 }]

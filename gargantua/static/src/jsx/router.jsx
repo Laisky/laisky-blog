@@ -4,17 +4,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, Redirect,
          Link, IndexRedirect, browserHistory } from 'react-router';
+import { Provider } from 'react-redux';
 
-import { App } from './jsx/app.jsx';
-import { PageNotFound } from './jsx/404.jsx';
-import { Archives } from './jsx/archives.jsx';
-import { Post } from './jsx/post.jsx';
-import { AboutMe } from './jsx/aboutme.jsx';
-import { Login } from './jsx/login.jsx';
-import { Publish, Amend } from './jsx/publish.jsx';
+import { App } from './pages/app.jsx';
+import { PageNotFound } from './pages/404.jsx';
+import { Archives } from './pages/archives.jsx';
+import { Post } from './pages/post.jsx';
+import { AboutMe } from './pages/aboutme.jsx';
+import { Login } from './pages/login.jsx';
+import { Publish, Amend } from './pages/publish.jsx';
+import {RootReducer, store} from './reducers';
 
 
 ReactDOM.render(
+    <Provider store={store}>
     <Router history={browserHistory}>
         <Route name="home" path="/" component={App}>
             <IndexRedirect to="/archives/1/" />
@@ -27,6 +30,7 @@ ReactDOM.render(
             <Route name="notfound" path="404.html" component={PageNotFound} />
         </Route>
         <Redirect from="*" to="/404.html" />
-    </Router>,
+    </Router>
+    </Provider>,
     document.getElementById('body')
 );

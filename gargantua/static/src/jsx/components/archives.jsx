@@ -40,6 +40,20 @@ class Comment extends BaseComponent {
 
 // 文章
 class ArchiveExtract extends BaseComponent {
+    componentDidMount() {
+        let $imgModal = $("#img-modal"),
+            $modalImg = $("#img-modal .modal-body img");
+
+        $(this.refs.archiveContent).on('click', 'img', (evt) => {
+            let $target = $(evt.target);
+
+            $modalImg.prop("src", $target.prop("src"));
+            $imgModal.modal({
+                show: true
+            });
+        })
+    };
+
     render() {
         let archiveName = this.props['archive-name'],
             archiveUrl = `/p/${archiveName}/`,
@@ -70,7 +84,7 @@ class ArchiveExtract extends BaseComponent {
                 <span>发布于：</span>
                 <span>{this.formatTs(this.props['archive-created-at'])}</span>
             </div>
-            <div className="archive-content">
+            <div className="archive-content" ref="archiveContent">
                 {articleContent}
             </div>
             <div className="archive-tail">
