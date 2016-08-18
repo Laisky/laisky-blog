@@ -2,6 +2,18 @@
 *CURRENT*
 ---
     
+- 2016-08-18 (Laisky) feat: 点击图片时弹出 modal -> [view commit](https://github.com/Laisky/laisky-blog/commit/7e6a2761d10cb913345340477e82a7fd66e19d10)
+- 2016-08-18 (Laisky) feat: 点击 header 自动滚动到页面顶部 -> [view commit](https://github.com/Laisky/laisky-blog/commit/571fe5e4bbb56779983e1be7cf4a4090dfda3262)
+- 2016-08-18 (Laisky) chore: 更新 npm 包的小版本 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ead2e0209171754ffc196f5de546991e1ab9e366)
+- 2016-08-15 (Laisky) feat: 使用 sessionStorage 做缓存 -> [view commit](https://github.com/Laisky/laisky-blog/commit/9d954fbabb7b597e476fb64dd677f4154c520fea)
+- 2016-08-14 (Laisky) refactor: 去掉 that -> [view commit](https://github.com/Laisky/laisky-blog/commit/e81e60b57989b76b088cde98675fca0ad603ee40)
+- 2016-08-14 (Laisky) feat: 引入 redux -> [view commit](https://github.com/Laisky/laisky-blog/commit/5c7c5afabcef9588ccdb09c4af30f0068fd03bc6)
+- 2016-08-10 (Laisky) chore: 升级 Nginx 配置为 HTTP 2.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/132499b7ea9807b3b4f82e09560264edf96e6e81)    
+       
+*2.3.7*
+---
+    
+- 2016-08-07 (Laisky) 2.3.7 -> [view commit](https://github.com/Laisky/laisky-blog/commit/957cfe5785a93b7b5d1789e7e41815b37b7ac722)
 - 2016-08-07 (Laisky) fix: 静态文件路径错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3242667d6ac69108c1b282e1099df38549946d3e)    
        
 *2.3.6*
