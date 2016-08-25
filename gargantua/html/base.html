@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/libs-7871326441.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/sites-34395506ab.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/sites-2c4170e616.min.css')}}">
     {% block page_css %}
     {% endblock %}<!-- page_css -->
 </head>
@@ -32,19 +32,29 @@
         {% endblock %}<!-- page_js -->
     </div>
 
-    <script src="{{static_url('dist/js/libs-5a1810200c.min.js')}}" type="text/javascript" charset="utf-8"></script>
-    <script src="{{static_url('dist/js/sites.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script>
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-65521906-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    <script src="{{static_url('dist/js/libs-c882803427.min.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{static_url('dist/js/sites-91d3dc7e38.min.js')}}" type="text/javascript" charset="utf-8"></script>
     <div class="pagejs">
         {% block page_js %}
         {% endblock %}<!-- page_js -->
     </div>
-
-    <script>
-    (function() {
-        // https://github.com/react-ga/react-ga
-        ReactGA.initialize('UA-65521906-1', { debug: true });
-    })()
-    </script>
 </body>
 {% endblock %}
 

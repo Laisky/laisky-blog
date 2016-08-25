@@ -1,3 +1,11 @@
+#container {
+  margin-top: 40px;
+}
+
+#img-moda .modal-body {
+  text-align: center;
+}
+
 html {
   overflow-x: hidden;
   overflow-y: auto;
@@ -83,26 +91,6 @@ body > .container {
 
 #body {
   margin-top: 40px;
-}
-
-#container {
-  margin-top: 40px;
-}
-
-#img-moda .modal-body {
-  text-align: center;
-}
-
-.loginComponent {
-  min-height: 240px;
-  padding: 20px;
-}
-.loginComponent .hint {
-  text-align: center;
-  margin-bottom: 10px;
-}
-.loginComponent .hint .hint-text {
-  font-size: 1em;
 }
 
 @charset "UTF-8";
@@ -243,6 +231,18 @@ body > .container {
   margin-left: 30px;
 }
 
+.loginComponent {
+  min-height: 240px;
+  padding: 20px;
+}
+.loginComponent .hint {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.loginComponent .hint .hint-text {
+  font-size: 1em;
+}
+
 #publish,
 #amend {
   background-color: whitesmoke;
@@ -295,7 +295,6 @@ body > .container {
 .sidebar .console.login p {
   margin: 0px;
 }
-
 
 #aboutme {
   border-radius: 10px;
@@ -373,3 +372,4 @@ body > .container {
 #post .page-nav {
   text-align: center;
 }
+
