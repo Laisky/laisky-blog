@@ -12,7 +12,6 @@
             "./node_modules/react-router/umd/ReactRouter.min.js",
             "./node_modules/react-redux/dist/react-redux.min.js",
             "./node_modules/redux/dist/redux.min.js",
-            "./gargantua/static/vendor/bower_components/react-ga/dist/react-ga.min.js",
             "./gargantua/static/vendor/js/*.js"
         ],
         "dest": "./gargantua/static/dist/js",
