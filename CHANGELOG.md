@@ -2,6 +2,12 @@
 *CURRENT*
 ---
     
+- 2016-08-25 (Laisky) fix: 自动跳转失灵 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1b036480449b19bad808a686799c83037c1e56d4)    
+       
+*2.4.2*
+---
+    
+- 2016-08-25 (Laisky) 2.4.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/a6ccc43be9e00ba7c08202163c10c8269cda0a07)
 - 2016-08-25 (Laisky) fix: GA 追踪问题 -> [view commit](https://github.com/Laisky/laisky-blog/commit/dcd31f7e8c87c407f1ecca3ebcd110a31b56afc5)    
        
 *2.4.1*

@@ -3,8 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, Redirect,
-         Link, IndexRedirect } from 'react-router';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
+         Link, IndexRedirect, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 
 import { App } from './pages/app.jsx';
@@ -17,18 +16,9 @@ import { Publish, Amend } from './pages/publish.jsx';
 import {RootReducer, store} from './reducers';
 
 
-const history = createBrowserHistory();
-
-history.listen(function (location) {
-    if(window.ga) {
-        window.ga('send', 'pageview', location.pathname);
-    }
-});
-
-
 ReactDOM.render(
     <Provider store={store}>
-    <Router history={history}>
+    <Router history={browserHistory} onUpdate={() => {window.ga || window.ga('send', 'pageview', location.pathname);}}>
         <Route name="home" path="/" component={App}>
             <IndexRedirect to="/archives/1/" />
             <Route name="archives" path="archives/:page/" component={Archives} />
