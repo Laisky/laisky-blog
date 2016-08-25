@@ -2,6 +2,12 @@
 *CURRENT*
 ---
     
+- 2016-08-25 (Laisky) fix: GA 追踪问题 -> [view commit](https://github.com/Laisky/laisky-blog/commit/dcd31f7e8c87c407f1ecca3ebcd110a31b56afc5)    
+       
+*2.4.1*
+---
+    
+- 2016-08-18 (Laisky) 2.4.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6b91bd3e5cfc413b7fa4242d89df904324a589f3)
 - 2016-08-18 (Laisky) fix: 修复一些页面交互 -> [view commit](https://github.com/Laisky/laisky-blog/commit/226ceb78aa6d7fb76b4f49e29ae0ebb7f7ba9be8)    
        
 *2.4*
