@@ -13,7 +13,7 @@ import { Redirect } from '../components/redirect.jsx';
 class PageNotFound extends BaseComponent {
     render() {
         return <div id="pagenotfound">
-            <Redirect waitSec="3"
+            <Redirect waitSec="2"
                 title="页面不存在"
                 nextDataUrl="/api/posts/get-post-by-page/?page=1"
                 nextUrl="/archives/1/"
