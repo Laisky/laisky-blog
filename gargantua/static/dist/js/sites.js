@@ -2092,7 +2092,7 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { id: 'pagenotfound' },
-	                _react2.default.createElement(_redirect.Redirect, { waitSec: '3',
+	                _react2.default.createElement(_redirect.Redirect, { waitSec: '2',
 	                    title: '页面不存在',
 	                    nextDataUrl: '/api/posts/get-post-by-page/?page=1',
 	                    nextUrl: '/archives/1/',
@@ -4514,7 +4514,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Notify = function (_BaseComponent) {
+	var Notify = exports.Notify = function (_BaseComponent) {
 	    (0, _inherits3.default)(Notify, _BaseComponent);
 
 	    function Notify() {
@@ -4555,7 +4555,7 @@
 	    return Notify;
 	}(_base.BaseComponent);
 
-	var Sidebar = function (_BaseComponent2) {
+	var Sidebar = exports.Sidebar = function (_BaseComponent2) {
 	    (0, _inherits3.default)(Sidebar, _BaseComponent2);
 
 	    function Sidebar() {
@@ -4706,9 +4706,6 @@
 	    }]);
 	    return Tagcloud;
 	}(_base.BaseComponent);
-
-	exports.Notify = Notify;
-	exports.Sidebar = Sidebar;
 
 /***/ },
 /* 130 */

@@ -6,93 +6,6 @@
   text-align: center;
 }
 
-html {
-  overflow-x: hidden;
-  overflow-y: auto;
-  min-height: 600px;
-}
-
-body {
-  height: initial;
-  overflow-x: hidden;
-  overflow-y: auto;
-  font-family: "Helvetica Neue", "Helvetica", "Microsoft YaHei", "Segoe UI", "Arial", "freesans", "sans-serif";
-  background-image: url(http://laisky-blog.qiniudn.com/background-1500x844.jpg);
-  background-size: 100% 100%;
-  background-attachment: fixed;
-}
-body > .container {
-  max-width: 900px;
-}
-
-.navbar-right {
-  padding-left: 0px;
-}
-
-.navbar .gsc-control-cse {
-  padding: 0px;
-  height: inherit;
-  position: relative;
-  top: 3px;
-  background-color: inherit;
-  border-color: transparent;
-}
-.navbar .gsc-control-cse td {
-  background-color: inherit;
-}
-.navbar .gsc-control-cse .gsc-control-wrapper-cse {
-  width: 150px;
-}
-.navbar .gsc-control-cse .gsc-search-button {
-  display: none;
-}
-
-.row {
-  margin-left: 0px;
-  margin-right: 0px;
-}
-
-.navbar-fixed-top {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.loader-inner.pacman {
-  margin-left: 30px;
-}
-.loader-inner.ball-scale-ripple-multiple {
-  margin-top: 30px;
-  margin-left: 30px;
-}
-
-.vertical-align {
-  position: relative;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-
-.global-fade {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-  background-color: rgba(40, 41, 35, 0.8);
-  display: none;
-}
-
-.container,
-.container-fluid {
-  padding: 0px;
-}
-
-#body {
-  margin-top: 40px;
-}
-
 @charset "UTF-8";
 /**
  * archives 组件的 CSS
@@ -231,6 +144,93 @@ body > .container {
   margin-left: 30px;
 }
 
+html {
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 600px;
+}
+
+body {
+  height: initial;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: "Helvetica Neue", "Helvetica", "Microsoft YaHei", "Segoe UI", "Arial", "freesans", "sans-serif";
+  background-image: url(https://blog.laisky.com/qiniu/background-1500x844.jpg);
+  background-size: 100% 100%;
+  background-attachment: fixed;
+}
+body > .container {
+  max-width: 900px;
+}
+
+.navbar-right {
+  padding-left: 0px;
+}
+
+.navbar .gsc-control-cse {
+  padding: 0px;
+  height: inherit;
+  position: relative;
+  top: 3px;
+  background-color: inherit;
+  border-color: transparent;
+}
+.navbar .gsc-control-cse td {
+  background-color: inherit;
+}
+.navbar .gsc-control-cse .gsc-control-wrapper-cse {
+  width: 150px;
+}
+.navbar .gsc-control-cse .gsc-search-button {
+  display: none;
+}
+
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.navbar-fixed-top {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.loader-inner.pacman {
+  margin-left: 30px;
+}
+.loader-inner.ball-scale-ripple-multiple {
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
+.vertical-align {
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.global-fade {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background-color: rgba(40, 41, 35, 0.8);
+  display: none;
+}
+
+.container,
+.container-fluid {
+  padding: 0px;
+}
+
+#body {
+  margin-top: 40px;
+}
+
 .loginComponent {
   min-height: 240px;
   padding: 20px;
@@ -241,6 +241,12 @@ body > .container {
 }
 .loginComponent .hint .hint-text {
   font-size: 1em;
+}
+
+.redirectComponent {
+  background-color: whitesmoke;
+  padding: 10px;
+  text-align: center;
 }
 
 #publish,
@@ -258,12 +264,6 @@ body > .container {
 #amend .hint {
   text-align: center;
   font-size: 1.2em;
-}
-
-.redirectComponent {
-  background-color: whitesmoke;
-  padding: 10px;
-  text-align: center;
 }
 
 .sidebar {
