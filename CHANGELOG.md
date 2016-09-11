@@ -2,17 +2,13 @@
 *CURRENT*
 ---
     
-- 2016-08-25 (Laisky) fix: 自动跳转失灵 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1b036480449b19bad808a686799c83037c1e56d4)    
-       
-*2.4.2*
----
-    
+- 2016-09-11 (Laisky) fix: 静态文件中有非 HTTPS 连接 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ad3cae16a0e2fc3330c972b62e558a59a04678b2)
+- 2016-09-11 (Laisky) chore: 增加 qiniu 的 HTTPS 反向代理 -> [view commit](https://github.com/Laisky/laisky-blog/commit/fa67c39e953226001def3289ed843cfa121d2aad)
+- 2016-09-07 (Laisky) chore: 增加 Nginx 的安全性 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b1f5caa0424585b044594791a8c048e8ae996198)
+- 2016-08-25 (Laisky) 2.4.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3366316b9444d281b016b7b2a41477e1a65dcff5)
+- 2016-08-25 (Laisky) fix: 自动跳转失灵 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1b036480449b19bad808a686799c83037c1e56d4)
 - 2016-08-25 (Laisky) 2.4.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/a6ccc43be9e00ba7c08202163c10c8269cda0a07)
-- 2016-08-25 (Laisky) fix: GA 追踪问题 -> [view commit](https://github.com/Laisky/laisky-blog/commit/dcd31f7e8c87c407f1ecca3ebcd110a31b56afc5)    
-       
-*2.4.1*
----
-    
+- 2016-08-25 (Laisky) fix: GA 追踪问题 -> [view commit](https://github.com/Laisky/laisky-blog/commit/dcd31f7e8c87c407f1ecca3ebcd110a31b56afc5)
 - 2016-08-18 (Laisky) 2.4.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6b91bd3e5cfc413b7fa4242d89df904324a589f3)
 - 2016-08-18 (Laisky) fix: 修复一些页面交互 -> [view commit](https://github.com/Laisky/laisky-blog/commit/226ceb78aa6d7fb76b4f49e29ae0ebb7f7ba9be8)    
        

@@ -17,7 +17,7 @@ import { Link } from 'react-router';
 import { BaseComponent } from './base.jsx';
 
 
-class Notify extends BaseComponent {
+export class Notify extends BaseComponent {
     render() {
         let text = this.props.text,
             alertEle;
@@ -36,7 +36,7 @@ class Notify extends BaseComponent {
 }
 
 
-class Sidebar extends BaseComponent {
+export class Sidebar extends BaseComponent {
     render() {
         return (
             <div className="container-fluid sidebar">
@@ -99,8 +99,3 @@ class Tagcloud extends BaseComponent {
     };
 }
 
-
-export {
-    Notify,
-    Sidebar
-};
