@@ -1,0 +1,72 @@
+version: "2"
+services:
+  mongodb:
+    image: mongo:3.2
+    restart: always
+    logging:
+      driver: syslog
+      options:
+        syslog-facility: local6
+        tag: mongodb
+    networks:
+      - gargantua
+    expose:
+      - "27017"
+    ports:
+      - 27016:27017
+    volumes:
+      - /var/lib/mongodb:/data/db
+
+  fluentd:
+    image: ppcelery/fluentd-docker-image
+    restart: always
+    networks:
+      - gargantua
+    logging:
+      driver: syslog
+      options:
+        syslog-facility: local6
+        tag: fluentd
+    volumes:
+      - /var/log/nginx:/var/log/nginx
+      - /var/lib/fluentd:/fluentd/log
+      - /etc/fluentd:/fluentd/etc
+    links:
+      - mongodb:mongodb
+    ports:
+      - 24224:24224
+
+  gargantua:
+    image: ppcelery/laisky-blog
+    restart: always
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "localhost:24224"
+    links:
+      - mongodb:mongodb
+    networks:
+      - gargantua
+    expose:
+      - "27850"
+    ports:
+      - 27851:27850
+    command:
+      - "python"
+      - "-m"
+      - "gargantua"
+      - "--port=27850"
+      - "--dbhost=mongodb"
+      - "--dbport=27017"
+      - "--debug=false"
+      - "--mail_host=smtp.mailgun.org"
+      - "--mail_port=25"
+      - "--mail_subject=Gargantua Error"
+      - "--mail_from_addr=gargantua@laisky.com"
+      - "--mail_to_addrs='ppcelery@gmail.com'"
+      - "--mail_username=postmaster@mg.laisky.com"
+      - "--mail_passwd=658b5750d361b95c7429e30a59541078"
+
+networks:
+  gargantua:
+    driver: bridge
