@@ -2,6 +2,11 @@
 *CURRENT*
 ---
     
+- 2016-09-13 (Laisky) fix: 页面无法读取到 cookies -> [view commit](https://github.com/Laisky/laisky-blog/commit/ece5ded79b14606b7e74ed76e3df38b754b5b633)
+- 2016-09-12 (Laisky) chore: 把 Nginx 安全评分刷到 94 了 -> [view commit](https://github.com/Laisky/laisky-blog/commit/9cb8f1665900286635b12a298eff310be2b833ab)
+- 2016-09-12 (Laisky) chore: 增加 Nginx 的安全性配置 -> [view commit](https://github.com/Laisky/laisky-blog/commit/829f9c0b78f9dfba8eb25dc136b10c563a8408f6)
+- 2016-09-11 (Laisky) chore: 修复 Nginx proxy_pass 无法 decode -> [view commit](https://github.com/Laisky/laisky-blog/commit/c1f8b45842bdd2628122813cc83830a4c592d53c)
+- 2016-09-11 (Laisky) 2.4.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/029c8bbd33a9e8259a5b22683e32e3b14f7c665d)
 - 2016-09-11 (Laisky) fix: 静态文件中有非 HTTPS 连接 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ad3cae16a0e2fc3330c972b62e558a59a04678b2)
 - 2016-09-11 (Laisky) chore: 增加 qiniu 的 HTTPS 反向代理 -> [view commit](https://github.com/Laisky/laisky-blog/commit/fa67c39e953226001def3289ed843cfa121d2aad)
 - 2016-09-07 (Laisky) chore: 增加 Nginx 的安全性 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b1f5caa0424585b044594791a8c048e8ae996198)
