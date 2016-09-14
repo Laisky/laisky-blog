@@ -2,6 +2,8 @@
 *CURRENT*
 ---
     
+- 2016-09-14 (Laisky) fix: RSS 源地址改成 /rss.html -> [view commit](https://github.com/Laisky/laisky-blog/commit/84c11ea8104aa95400f41ed108dc6a609acb3033)
+- 2016-09-14 (Laisky) 2.4.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1abfc99da625c85111a9d17b6daeca4abd4d6705)
 - 2016-09-14 (Laisky) fix: RSS 图标不标准 -> [view commit](https://github.com/Laisky/laisky-blog/commit/07e7fb9bc044d577ae8cb087f0da2a1195f4578b)
 - 2016-09-13 (Laisky) 2.4.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/78395308c2c684eac1bec48e1c0e7c65d12ad127)
 - 2016-09-13 (Laisky) fix: 页面无法读取到 cookies -> [view commit](https://github.com/Laisky/laisky-blog/commit/ece5ded79b14606b7e74ed76e3df38b754b5b633)
