@@ -1,6 +1,5 @@
 @import "compass/css3/border-radius";
 @import "../themes/default.scss";
-
 $nav-bgd-clr: $post-bgd-clr;
 $nav-link-clr: $link-clr;
 $nav-cnt-clr: $post-cnt-clr;
@@ -15,20 +14,18 @@ $nav-title-clr: $post-title-clr;
     #archive-content {
         @include border-radius(10px);
         background-color: #F1F1F1;
-        padding-left: 0px;
+        padding-left: 0;
 
         .hint {
             margin: 10px;
         }
-
     }
 
     #archive-sidebar {
-        padding-right: 0px;
+        padding-right: 0;
     }
 
     .page-nav {
         text-align: center;
     }
-
 }
