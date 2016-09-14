@@ -14,23 +14,22 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
     font-family: "Helvetica Neue", "Helvetica", "Microsoft YaHei", "Segoe UI", "Arial", "freesans", "sans-serif";
-    background-image: url(https://blog.laisky.com/qiniu/background-1500x844.jpg);
+    background-image: url("https://blog.laisky.com/qiniu/background-1500x844.jpg");
     @include background-size(100% 100%);
     background-attachment: fixed;
 
     > .container {
         max-width: 900px;
     }
-
 }
 
 .navbar-right {
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 .navbar {
     .gsc-control-cse {
-        padding: 0px;
+        padding: 0;
         height: inherit;
         position: relative;
         top: 3px;
@@ -48,14 +47,17 @@ body {
         .gsc-search-button {
             display: none;
         }
-
     }
 
+    .rss {
+        height: 20px;
+        width: 20px;
+    }
 }
 
 .row {
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .navbar-fixed-top {
@@ -72,7 +74,6 @@ body {
         margin-top: 30px;
         margin-left: 30px;
     }
-
 }
 
 .vertical-align {
@@ -83,8 +84,8 @@ body {
 
 .global-fade {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     z-index: 9999;
@@ -94,7 +95,7 @@ body {
 
 .container,
 .container-fluid {
-    padding: 0px;
+    padding: 0;
 }
 
 #body {
