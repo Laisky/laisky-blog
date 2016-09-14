@@ -265,7 +265,7 @@
 	                  _react2.default.createElement(
 	                    _reactRouter.Link,
 	                    { to: { pathname: '/rss/' }, target: '_blank' },
-	                    _react2.default.createElement('span', { className: 'rss glyphicon glyphicon-th-list', 'aria-hidden': 'true' })
+	                    _react2.default.createElement('img', { src: '/static/dist/images/rss.png', className: 'rss' })
 	                  )
 	                ),
 	                _react2.default.createElement(
