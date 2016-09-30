@@ -2,6 +2,11 @@
 *CURRENT*
 ---
     
+- 2016-09-30 (Laisky) fix: img-modal typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/ee2053db6ef93f69437164b55cbba147f82c2757)
+- 2016-09-30 (Laisky) perf: 对谷歌浏览器启用 webp -> [view commit](https://github.com/Laisky/laisky-blog/commit/e2e26921c5a4a04564f6247753a7487e7b8ae3af)
+- 2016-09-30 (Laisky) fix: 小屏隐藏文章目录 -> [view commit](https://github.com/Laisky/laisky-blog/commit/5067649a71c17b2a3c638c9bf298c14001f00b19)
+- 2016-09-20 (Laisky) refactor: 修复 Public-Key-Pins 错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b6cf1f48147c69fccd5a46ab8c5739a50cc68670)
+- 2016-09-14 (Laisky) 2.4.7 -> [view commit](https://github.com/Laisky/laisky-blog/commit/837f0668308cdcd63ed7ab0726b7a3bfe4d8d095)
 - 2016-09-14 (Laisky) fix: RSS 源地址改成 /rss.html -> [view commit](https://github.com/Laisky/laisky-blog/commit/84c11ea8104aa95400f41ed108dc6a609acb3033)
 - 2016-09-14 (Laisky) 2.4.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1abfc99da625c85111a9d17b6daeca4abd4d6705)
 - 2016-09-14 (Laisky) fix: RSS 图标不标准 -> [view commit](https://github.com/Laisky/laisky-blog/commit/07e7fb9bc044d577ae8cb087f0da2a1195f4578b)
