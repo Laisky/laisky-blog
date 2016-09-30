@@ -183,7 +183,7 @@
 	    key: 'getScrollToTopHandle',
 	    value: function getScrollToTopHandle() {
 	      return function (evt) {
-	        if (evt.target.tagName != 'DIV') return;
+	        if (evt.target.tagName.toUpperCase() != 'DIV') return;
 	        $(document.body).animate({ scrollTop: 0 }, 500);
 	      };
 	    }
@@ -197,7 +197,7 @@
 	        { className: 'container-fluid' },
 	        _react2.default.createElement(
 	          'nav',
-	          { className: 'navbar navbar-default navbar-fixed-top' },
+	          { className: 'navbar navbar-default navbar-fixed-top', onClick: this.getScrollToTopHandle() },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'container-fluid' },
@@ -224,7 +224,7 @@
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1', onClick: this.getScrollToTopHandle() },
+	              { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' },
 	              _react2.default.createElement(
 	                'ul',
 	                { className: 'nav navbar-nav apps' },
@@ -4779,6 +4779,7 @@
 	            }).done(function (resp) {
 	                if (resp.result['post_type'] == 'slide') _this2.loadRevealJs();
 	                resp.result.post_content = _this2.convertImg2Webp(resp.result.post_content);
+	                $(document.body).animate({ scrollTop: 0 }, 200);
 	                _this2.setState({
 	                    post: resp.result,
 	                    hint: null
@@ -4794,7 +4795,7 @@
 	        // http://blog.qiniu.com/archives/5793
 	        value: function convertImg2Webp(content) {
 	            if (navigator.browserInfo.name != 'Chrome') return content;
-	            return content.replace(/(\bhttps:\/\/blog\.laisky\.com\/qiniu\/[^.]+\.(jpg|jpeg|gif|png))/g, '$1?imageMogr2/format/webp');
+	            return content.replace(/(\bhttps:\/\/blog\.laisky\.com\/qiniu\/[^.]+\.(jpg|jpeg|gif|png))/ig, '$1?imageMogr2/format/webp');
 	        }
 	    }, {
 	        key: 'loadRevealJs',

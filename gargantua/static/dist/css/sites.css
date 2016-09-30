@@ -97,18 +97,6 @@ body > .container {
   margin-top: 40px;
 }
 
-.loginComponent {
-  min-height: 240px;
-  padding: 20px;
-}
-.loginComponent .hint {
-  text-align: center;
-  margin-bottom: 10px;
-}
-.loginComponent .hint .hint-text {
-  font-size: 1em;
-}
-
 @charset "UTF-8";
 /**
  * archives 组件的 CSS
@@ -245,6 +233,18 @@ body > .container {
 .archive.archive-extract .archive-tail a {
   color: #32322d;
   margin-left: 30px;
+}
+
+.loginComponent {
+  min-height: 240px;
+  padding: 20px;
+}
+.loginComponent .hint {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.loginComponent .hint .hint-text {
+  font-size: 1em;
 }
 
 #publish,
