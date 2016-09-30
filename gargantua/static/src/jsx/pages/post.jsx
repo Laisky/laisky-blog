@@ -26,6 +26,7 @@ class Post extends BaseComponent {
         })
             .done((resp) => {
                 if(resp.result['post_type'] == 'slide') this.loadRevealJs();
+                resp.result.post_content = this.convertImg2Webp(resp.result.post_content);
                 this.setState({
                     post: resp.result,
                     hint: null
@@ -34,6 +35,15 @@ class Post extends BaseComponent {
             .fail(() => {
                 this.setState({hint: '读取数据失败，请刷新重试'});
             });
+    };
+
+    // http://blog.qiniu.com/archives/5793
+    convertImg2Webp(content) {
+        if(navigator.browserInfo.name != 'Chrome') return content
+        return content.replace(
+            /(\bhttps:\/\/blog\.laisky\.com\/qiniu\/[^.]+\.(jpg|jpeg|gif|png))/g,
+            '$1?imageMogr2/format/webp'
+        )
     };
 
     loadRevealJs() {
