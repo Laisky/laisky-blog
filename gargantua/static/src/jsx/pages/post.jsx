@@ -156,7 +156,7 @@ class Post extends BaseComponent {
 
             if(this.state.post.post_menu) {
                 postMenu = (
-                    <div className="col-xs-2">
+                    <div className="col-sm-2 hidden-xs">
                         <ArchiveMenu content={this.state.post.post_menu} />;
                     </div>
                 );
@@ -165,7 +165,7 @@ class Post extends BaseComponent {
 
         return (
             <div className="container-fluid post-body" id="post">
-                <div id="page-content" className={postMenu? 'col-xs-10': 'container-fluid'}>
+                <div id="page-content" className={postMenu? 'col-sm-10 col-xs-12': 'container-fluid'}>
                     {hintEle}
                     {postContent}
                     {postComment}
