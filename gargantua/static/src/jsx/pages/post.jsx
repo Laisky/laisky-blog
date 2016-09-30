@@ -26,6 +26,7 @@ class Post extends BaseComponent {
         })
             .done((resp) => {
                 if(resp.result['post_type'] == 'slide') this.loadRevealJs();
+                resp.result.post_content = this.convertImg2Webp(resp.result.post_content);
                 this.setState({
                     post: resp.result,
                     hint: null
@@ -34,6 +35,15 @@ class Post extends BaseComponent {
             .fail(() => {
                 this.setState({hint: '读取数据失败，请刷新重试'});
             });
+    };
+
+    // http://blog.qiniu.com/archives/5793
+    convertImg2Webp(content) {
+        if(navigator.browserInfo.name != 'Chrome') return content
+        return content.replace(
+            /(\bhttps:\/\/blog\.laisky\.com\/qiniu\/[^.]+\.(jpg|jpeg|gif|png))/g,
+            '$1?imageMogr2/format/webp'
+        )
     };
 
     loadRevealJs() {
@@ -156,7 +166,7 @@ class Post extends BaseComponent {
 
             if(this.state.post.post_menu) {
                 postMenu = (
-                    <div className="col-xs-2">
+                    <div className="col-sm-2 hidden-xs">
                         <ArchiveMenu content={this.state.post.post_menu} />;
                     </div>
                 );
@@ -165,7 +175,7 @@ class Post extends BaseComponent {
 
         return (
             <div className="container-fluid post-body" id="post">
-                <div id="page-content" className={postMenu? 'col-xs-10': 'container-fluid'}>
+                <div id="page-content" className={postMenu? 'col-sm-10 col-xs-12': 'container-fluid'}>
                     {hintEle}
                     {postContent}
                     {postComment}
