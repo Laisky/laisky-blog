@@ -27,6 +27,7 @@ class Post extends BaseComponent {
             .done((resp) => {
                 if(resp.result['post_type'] == 'slide') this.loadRevealJs();
                 resp.result.post_content = this.convertImg2Webp(resp.result.post_content);
+                $(document.body).animate({scrollTop: 0}, 200);
                 this.setState({
                     post: resp.result,
                     hint: null
@@ -41,7 +42,7 @@ class Post extends BaseComponent {
     convertImg2Webp(content) {
         if(navigator.browserInfo.name != 'Chrome') return content
         return content.replace(
-            /(\bhttps:\/\/blog\.laisky\.com\/qiniu\/[^.]+\.(jpg|jpeg|gif|png))/g,
+            /(\bhttps:\/\/blog\.laisky\.com\/qiniu\/[^.]+\.(jpg|jpeg|gif|png))/ig,
             '$1?imageMogr2/format/webp'
         )
     };
