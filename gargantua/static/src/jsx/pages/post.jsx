@@ -27,6 +27,7 @@ class Post extends BaseComponent {
             .done((resp) => {
                 if(resp.result['post_type'] == 'slide') this.loadRevealJs();
                 resp.result.post_content = this.convertImg2Webp(resp.result.post_content);
+                $(document.body).animate({scrollTop: 0}, 200);
                 this.setState({
                     post: resp.result,
                     hint: null
