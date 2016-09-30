@@ -264,7 +264,7 @@
 	                  null,
 	                  _react2.default.createElement(
 	                    _reactRouter.Link,
-	                    { to: { pathname: '/rss/' }, target: '_blank' },
+	                    { to: { pathname: '/rss.html' }, target: '_blank' },
 	                    _react2.default.createElement('img', { src: '/static/dist/images/rss.png', className: 'rss' })
 	                  )
 	                ),
@@ -2514,7 +2514,7 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
-	                    _react2.default.createElement(_sidebar.Notify, { text: '使用 redux 重构前端完成度 20 % ...' })
+	                    _react2.default.createElement(_sidebar.Notify, { text: 'v2.4.6: 全面启用 HTTP v2' })
 	                ),
 	                _react2.default.createElement(
 	                    'div',
@@ -4778,6 +4778,7 @@
 	                dataType: 'json'
 	            }).done(function (resp) {
 	                if (resp.result['post_type'] == 'slide') _this2.loadRevealJs();
+	                resp.result.post_content = _this2.convertImg2Webp(resp.result.post_content);
 	                _this2.setState({
 	                    post: resp.result,
 	                    hint: null
@@ -4785,6 +4786,15 @@
 	            }).fail(function () {
 	                _this2.setState({ hint: '读取数据失败，请刷新重试' });
 	            });
+	        }
+	    }, {
+	        key: 'convertImg2Webp',
+
+
+	        // http://blog.qiniu.com/archives/5793
+	        value: function convertImg2Webp(content) {
+	            if (navigator.browserInfo.name != 'Chrome') return content;
+	            return content.replace(/(\bhttps:\/\/blog\.laisky\.com\/qiniu\/[^.]+\.(jpg|jpeg|gif|png))/g, '$1?imageMogr2/format/webp');
 	        }
 	    }, {
 	        key: 'loadRevealJs',
@@ -4913,7 +4923,7 @@
 	                if (this.state.post.post_menu) {
 	                    postMenu = _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-xs-2' },
+	                        { className: 'col-sm-2 hidden-xs' },
 	                        _react2.default.createElement(_archives.ArchiveMenu, { content: this.state.post.post_menu }),
 	                        ';'
 	                    );
@@ -4925,7 +4935,7 @@
 	                { className: 'container-fluid post-body', id: 'post' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { id: 'page-content', className: postMenu ? 'col-xs-10' : 'container-fluid' },
+	                    { id: 'page-content', className: postMenu ? 'col-sm-10 col-xs-12' : 'container-fluid' },
 	                    hintEle,
 	                    postContent,
 	                    postComment

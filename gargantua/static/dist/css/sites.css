@@ -2,7 +2,7 @@
   margin-top: 40px;
 }
 
-#img-moda .modal-body {
+#img-modal .modal-body {
   text-align: center;
 }
 
@@ -95,6 +95,18 @@ body > .container {
 
 #body {
   margin-top: 40px;
+}
+
+.loginComponent {
+  min-height: 240px;
+  padding: 20px;
+}
+.loginComponent .hint {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.loginComponent .hint .hint-text {
+  font-size: 1em;
 }
 
 @charset "UTF-8";
@@ -235,18 +247,6 @@ body > .container {
   margin-left: 30px;
 }
 
-.loginComponent {
-  min-height: 240px;
-  padding: 20px;
-}
-.loginComponent .hint {
-  text-align: center;
-  margin-bottom: 10px;
-}
-.loginComponent .hint .hint-text {
-  font-size: 1em;
-}
-
 #publish,
 #amend {
   background-color: whitesmoke;
@@ -300,6 +300,31 @@ body > .container {
   margin: 0px;
 }
 
+#aboutme {
+  border-radius: 10px;
+  background-color: whitesmoke;
+  position: relative;
+  color: #32322d;
+  max-width: 800px;
+}
+#aboutme .aboutme {
+  padding: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed grey;
+}
+#aboutme .aboutme h2 {
+  margin-top: 0px;
+  font-size: 2em;
+  text-align: center;
+}
+#aboutme .aboutme:last-child {
+  border-bottom: none;
+}
+#aboutme .aboutme.profile p {
+  margin: 0px;
+}
+
 #archives {
   max-width: 800px;
   margin-bottom: 10px;
@@ -326,31 +351,6 @@ body > .container {
   background: whitesmoke;
   margin: 20px auto;
   border-radius: 10px;
-}
-
-#aboutme {
-  border-radius: 10px;
-  background-color: whitesmoke;
-  position: relative;
-  color: #32322d;
-  max-width: 800px;
-}
-#aboutme .aboutme {
-  padding: 10px;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px dashed grey;
-}
-#aboutme .aboutme h2 {
-  margin-top: 0px;
-  font-size: 2em;
-  text-align: center;
-}
-#aboutme .aboutme:last-child {
-  border-bottom: none;
-}
-#aboutme .aboutme.profile p {
-  margin: 0px;
 }
 
 #post {
