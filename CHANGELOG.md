@@ -2,6 +2,10 @@
 *CURRENT*
 ---
     
+- 2016-09-30 (Laisky) fix: 打开 post 页位置不对 -> [view commit](https://github.com/Laisky/laisky-blog/commit/efaaff16e2f4cbd289f79790bc54f3e7b99e55c4)
+- 2016-09-30 (Laisky) fix: 手机端不能正常上滑 -> [view commit](https://github.com/Laisky/laisky-blog/commit/088e6f6797ae2731e7557a9e00043edb5e1f2d13)
+- 2016-09-30 (Laisky) fix: 图片文件格式为 PNG 的未正确替换 -> [view commit](https://github.com/Laisky/laisky-blog/commit/55c4a1897249fd792315600d5462f0dd36ff0d4c)
+- 2016-09-30 (Laisky) 2.4.8 -> [view commit](https://github.com/Laisky/laisky-blog/commit/cf1e83b665e0272d884711a60066fcf9919a2f17)
 - 2016-09-30 (Laisky) fix: img-modal typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/ee2053db6ef93f69437164b55cbba147f82c2757)
 - 2016-09-30 (Laisky) perf: 对谷歌浏览器启用 webp -> [view commit](https://github.com/Laisky/laisky-blog/commit/e2e26921c5a4a04564f6247753a7487e7b8ae3af)
 - 2016-09-30 (Laisky) fix: 小屏隐藏文章目录 -> [view commit](https://github.com/Laisky/laisky-blog/commit/5067649a71c17b2a3c638c9bf298c14001f00b19)
@@ -36,57 +40,29 @@
 - 2016-08-15 (Laisky) feat: 使用 sessionStorage 做缓存 -> [view commit](https://github.com/Laisky/laisky-blog/commit/9d954fbabb7b597e476fb64dd677f4154c520fea)
 - 2016-08-14 (Laisky) refactor: 去掉 that -> [view commit](https://github.com/Laisky/laisky-blog/commit/e81e60b57989b76b088cde98675fca0ad603ee40)
 - 2016-08-14 (Laisky) feat: 引入 redux -> [view commit](https://github.com/Laisky/laisky-blog/commit/5c7c5afabcef9588ccdb09c4af30f0068fd03bc6)
-- 2016-08-10 (Laisky) chore: 升级 Nginx 配置为 HTTP 2.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/132499b7ea9807b3b4f82e09560264edf96e6e81)    
-       
-*2.3.7*
----
-    
+- 2016-08-10 (Laisky) chore: 升级 Nginx 配置为 HTTP 2.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/132499b7ea9807b3b4f82e09560264edf96e6e81)
 - 2016-08-07 (Laisky) 2.3.7 -> [view commit](https://github.com/Laisky/laisky-blog/commit/957cfe5785a93b7b5d1789e7e41815b37b7ac722)
-- 2016-08-07 (Laisky) fix: 静态文件路径错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3242667d6ac69108c1b282e1099df38549946d3e)    
-       
-*2.3.6*
----
-    
+- 2016-08-07 (Laisky) fix: 静态文件路径错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3242667d6ac69108c1b282e1099df38549946d3e)
 - 2016-08-07 (Laisky) 2.3.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/73b94494600b1f7973856d257acf699d072ec76b)
 - 2016-08-07 (Laisky) chore: Upgrade to Nginx v1.10 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6540d60859e761aa3a5e6f145f39911e8e13861a)
 - 2016-08-07 (Laisky) * #110 加点注释 -> [view commit](https://github.com/Laisky/laisky-blog/commit/89571dd75cc67c29191c59bf109fe31399abf6d9)
 - 2016-08-07 (Laisky) fix: Google Analystics 追踪 -> [view commit](https://github.com/Laisky/laisky-blog/commit/33feda9336fad21a154732b1dcf403766b5225b5)
-- 2016-08-05 (Laisky) chore: 配置 HSTS，修改加密 cipher -> [view commit](https://github.com/Laisky/laisky-blog/commit/c8f449ba3cd7cb2b971bcc8e34550f40cb54db63)    
-       
-*2.3.5*
----
-    
+- 2016-08-05 (Laisky) chore: 配置 HSTS，修改加密 cipher -> [view commit](https://github.com/Laisky/laisky-blog/commit/c8f449ba3cd7cb2b971bcc8e34550f40cb54db63)
 - 2016-07-15 (Laisky) 2.3.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b74b49b9d29d8ff0c028f912bdf93318428a9d88)
 - 2016-07-15 (Laisky) refactor: 将 secret_key 放入 settings -> [view commit](https://github.com/Laisky/laisky-blog/commit/be002affd74425e78dea013a72e499e7d2d2c053)
 - 2016-07-15 (Laisky) fix: 修复文章读取失败 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b3817c503c7398a5057fecb543e5c91ba01105b6)
-- 2016-07-15 (Laisky) fix: 报错邮件显示的信息不全 -> [view commit](https://github.com/Laisky/laisky-blog/commit/dffc679628c2c331376b92beea49cc75b8142f22)    
-       
-*2.3.4*
----
-    
+- 2016-07-15 (Laisky) fix: 报错邮件显示的信息不全 -> [view commit](https://github.com/Laisky/laisky-blog/commit/dffc679628c2c331376b92beea49cc75b8142f22)
 - 2016-07-10 (Laisky) 2.3.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/4925760075be46bc6737f9f3daeaab59898e93f2)
 - 2016-07-10 (Laisky) fix: replace react.js by react.min -> [view commit](https://github.com/Laisky/laisky-blog/commit/61f33265c872dc4e72d4b47be53eb89b653e6847)
 - 2016-07-10 (Laisky) fix: add Pygments -> [view commit](https://github.com/Laisky/laisky-blog/commit/365c2d17fd59e8f1939bbb3eef3903ef2fa119c4)
-- 2016-05-18 (Laisky) fix: 修好 menu 和 notefoots -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f05509aed669b969463628dda48c485a685ba3d)    
-       
-*2.3.3*
----
-    
 - 2016-06-11 (Laisky) 2.3.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/45dde390894186494f8e3cb776a6198aa7602e42)
 - 2016-06-11 (Laisky) fix: 新建文章不能编辑 postName -> [view commit](https://github.com/Laisky/laisky-blog/commit/8d5bc2b8b1da518932e94676c9732acd69d21eee)
 - 2016-06-11 (Laisky) fix: webpack: faster build -> [view commit](https://github.com/Laisky/laisky-blog/commit/2a264d028feded05a4ad549ed32fbb6a6e8ce3f0)
-- 2016-05-14 (Laisky) docs: update readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/bbac737dcb7b674ec96b760677b87b0d4fd75007)    
-       
-*2.3.2*
----
-    
+- 2016-05-18 (Laisky) fix: 修好 menu 和 notefoots -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f05509aed669b969463628dda48c485a685ba3d)
+- 2016-05-14 (Laisky) docs: update readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/bbac737dcb7b674ec96b760677b87b0d4fd75007)
 - 2016-05-14 (Laisky) 2.3.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/31db5ac07e312b43cc36c4ab76d5d2cfc18a5134)
 - 2016-05-14 (Laisky) feat: 恢复了 post_menu -> [view commit](https://github.com/Laisky/laisky-blog/commit/b0722575075014b0dbdce4a590ae78f98f16ca69)
-- 2016-05-14 (Laisky) refactor: nginx & base.js -> [view commit](https://github.com/Laisky/laisky-blog/commit/a3e12c13da8d47d73f373c32b2e55d0a64d86d77)    
-       
-*2.3.1*
----
-    
+- 2016-05-14 (Laisky) refactor: nginx & base.js -> [view commit](https://github.com/Laisky/laisky-blog/commit/a3e12c13da8d47d73f373c32b2e55d0a64d86d77)
 - 2016-05-08 (Laisky) 2.3.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/30ab4cd57610d573b6e8d3772d42b0b48809edfc)
 - 2016-05-08 (Laisky) fix: 并不能本地编译，还是远程编译好了 -> [view commit](https://github.com/Laisky/laisky-blog/commit/885e884f69a54889728d6e4d611923814cc278d1)
 - 2016-05-08 (Laisky) chore: 线上机器太烂，增加编译后的静态文件 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ab85662726e8eeb70fc82c7fa45000c1d0a9dcbb)    
