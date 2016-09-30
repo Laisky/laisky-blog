@@ -41,7 +41,7 @@ class Post extends BaseComponent {
     convertImg2Webp(content) {
         if(navigator.browserInfo.name != 'Chrome') return content
         return content.replace(
-            /(\bhttps:\/\/blog\.laisky\.com\/qiniu\/[^.]+\.(jpg|jpeg|gif|png))/g,
+            /(\bhttps:\/\/blog\.laisky\.com\/qiniu\/[^.]+\.(jpg|jpeg|gif|png))/ig,
             '$1?imageMogr2/format/webp'
         )
     };
