@@ -31,7 +31,7 @@ class ArticleMixin():
         return html2text.html2text(content)[: length]
 
     def extract_reveal_html(self, html):
-        logger.debug('extract_reveal_html for html {}'.format(html))
+        logger.debug('extract_reveal_html for html {}'.format(html[: 50]))
 
         tree = etree.HTML(html)
         node = tree.xpath('//div[@class="reveal"]')

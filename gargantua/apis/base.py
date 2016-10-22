@@ -77,7 +77,7 @@ class BaseApiHandler(tornado.web.RequestHandler,
         self.render2('widgets/rest_response.html', response=resp)
 
     def write_json(self, data):
-        logger.debug('Resp: {}'.format(data))
+        logger.debug('Resp: {}'.format(str(data)[: 50]))
         resp = json.dumps(data)
         self.set_header('Content-Type', 'application/json; charset=utf-8')
         self.write(resp)
