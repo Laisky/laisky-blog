@@ -136,9 +136,9 @@ class ApiHandler(BaseApiHandler):
             try:
                 cursor = fi.query_cursor(self, cursor)
             except FilterError as err:
-                logger.exception(err)
+                logger.debug(err)
                 self.http_400_bad_request(err=err)
-                raise
+                return
 
         return cursor
 
@@ -166,6 +166,9 @@ class ApiHandler(BaseApiHandler):
     @debug_wrapper
     def list(self):
         cursor = self.get_cursor()
+        if not cursor:
+            return
+
         posts = []
         while (yield cursor.fetch_next):
             docu = cursor.next_object()
