@@ -17,7 +17,15 @@ class BaseComponent extends React.Component {
     };
 
     getCurrentUsername() {
-        return $.cookie('username') || '';
+        let token = $.cookie('token'),
+            userinfo;
+
+        try {
+            userinfo = jwt_decode(token);
+            return userinfo['username'];
+        }catch(e) {
+            return;
+        }
     };
 
     componentWillMount() {

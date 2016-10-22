@@ -10,7 +10,7 @@ import logging
 
 import pytz
 
-from gargantua.settings import LOG_NAME, LOG_PATH
+from gargantua.settings import LOG_NAME
 from gargantua import settings
 from .encryt import generate_passwd, validate_passwd, \
     generate_token, validate_token

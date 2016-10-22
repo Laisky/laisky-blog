@@ -54,6 +54,9 @@ class PostApiHandler(ApiHandler):
             plaintext = plaintext == 'true'
 
         cursor = self.get_cursor()
+        if not cursor:
+            return
+
         posts = []
         while (yield cursor.fetch_next):
             docu = cursor.next_object()

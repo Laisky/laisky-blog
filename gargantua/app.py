@@ -78,7 +78,6 @@ class Application(tornado.web.Application):
             # url(r'^/(search)/$', PostsHandler, name='post:search'),
             # url(r'^/(profile)/$', UserHandler, name='user:profile'),
             # ---------------- rss ----------------
-            url(r'^/(rss).html$', PostsHandler, name='post:rss'),
             url(r'^/(rss)/$', PostsHandler, name='post:rss'),
             # ---------------- old api ----------------
             url(r'^/(api/posts/.*)/$', PostsHandler, name='api:post'),

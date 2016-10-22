@@ -28,7 +28,9 @@ def debug_wrapper(func):
     def wrapper(*args, **kw):
         logger.debug('debug_wrapper for args {}, kw {}'.format(args, kw))
         try:
-            yield from func(*args, **kw)
+            r = func(*args, **kw)
+            if r:
+                yield from r
         except Exception as err:
             self = args[0]
             err_msg = {
@@ -65,7 +67,7 @@ class WebHandlerMixin():
 
     def write_json(self, *, status=OK, msg='', data={}):
         j = json.dumps({'status': status, 'msg': msg, 'data': data})
-        logger.debug('<< {}'.format(j))
+        logger.debug('<< {}'.format(j[: 50]))
         self.write(j)
 
     def get_argument(self, arg_name, bool=False, *args, **kw):
@@ -97,7 +99,9 @@ class RFCMixin():
     ACC_LEVEL_REGX = re.compile('level=([0-9.]+)')
 
     def _parse_accept(self, accept):
-        extract = lambda regx, s: regx.findall(s) or ['0']
+        def extract(regx, s):
+            return regx.findall(s) or ['0']
+
         t = extract(self.ACC_NAME_REGX, accept)[0]
         q = float(extract(self.ACC_Q_REGX, accept)[0])
         l = float(extract(self.ACC_LEVEL_REGX, accept)[0])
@@ -140,8 +144,10 @@ class AuthHandlerMixin():
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError,
                 AssertionError) as err:
             logger.debug('token validate error: {}'.format(err))
+            self.clear_cookie('token')
         except AttributeError as err:
             logger.debug('get_current_user error: {}'.format(err))
+            self.clear_cookie('token')
         except Exception:
             err = traceback.format_exc()
             logger.exception('get_current_user error: {}'.format(err))
@@ -185,7 +191,10 @@ class JinjaMixin(TemplateRendering):
 
 class HttpErrorMixin():
 
-    """Raise Http Error with status code
+    """
+    Raise Http Error with status code
+
+    err=Error message
     """
 
     def parse_err(self, err):

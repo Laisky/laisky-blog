@@ -41,7 +41,6 @@ class LimitFilter(BaseFilter):
             limit = int(app.get_argument('limit', default='10', strip=True))
             assert limit > 0
         except Exception as err:
-            logger.exception(err)
             raise FilterError('Argument limit not correct!')
 
         cursor.limit(limit)
@@ -55,7 +54,6 @@ class SkitFilter(BaseFilter):
             skip = int(app.get_argument('skip', default='0', strip=True))
             assert skip >= 0
         except Exception as err:
-            logger.exception(err)
             raise FilterError('Argument limit not correct!')
 
         cursor.skip(skip)
