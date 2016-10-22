@@ -2,6 +2,16 @@
 *CURRENT*
 ---
     
+- 2016-10-22 (Laisky) fix: 不必要的错误日志 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3e1ae682cea25a16a4d8cfdaba55a0bd77b2a067)
+- 2016-10-22 (Laisky) feat: 给 ramjet 提供 CORS 接口 -> [view commit](https://github.com/Laisky/laisky-blog/commit/95ee9b0ffed45b999e1dbdf0a56dad34b07d66de)
+- 2016-10-19 (Laisky) chore: 修复 supervisor 日志滚动的错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/83f035ba34c012797effa6685f881810dfa7f6cd)
+- 2016-10-13 (Laisky) chore: 引入 yarn -> [view commit](https://github.com/Laisky/laisky-blog/commit/27c2934fae7a2c8321a52c8e8062dfaced911181)
+- 2016-10-10 (Laisky) chore: 更新 fluentd 的配置 -> [view commit](https://github.com/Laisky/laisky-blog/commit/adbdc4bb379e3a484acb1f6b254ef3e49b5a24d6)
+- 2016-10-10 (Laisky) chore: 优化 Nginx -> [view commit](https://github.com/Laisky/laisky-blog/commit/591ce805fba1ed6f998b54cc4a69fa5e8c398a72)
+- 2016-10-10 (Laisky) chore: Nginx 增加 gzip 压缩 -> [view commit](https://github.com/Laisky/laisky-blog/commit/68951519ded406de35dd0f0b7c7a768d928081b9)
+- 2016-10-09 (Laisky) chore: 精简 Nginx -> [view commit](https://github.com/Laisky/laisky-blog/commit/3725337d31ab03207d20aef3f3e6a53d611755ba)
+- 2016-10-08 (Laisky) fix: add rss info to head -> [view commit](https://github.com/Laisky/laisky-blog/commit/2e354ce93ec1ce6029351461deeae3e6b4dd6d43)
+- 2016-09-30 (Laisky) 2.4.9 -> [view commit](https://github.com/Laisky/laisky-blog/commit/345e52a369e2f2f30e8262738a7ea895f1644d42)
 - 2016-09-30 (Laisky) fix: 打开 post 页位置不对 -> [view commit](https://github.com/Laisky/laisky-blog/commit/efaaff16e2f4cbd289f79790bc54f3e7b99e55c4)
 - 2016-09-30 (Laisky) fix: 手机端不能正常上滑 -> [view commit](https://github.com/Laisky/laisky-blog/commit/088e6f6797ae2731e7557a9e00043edb5e1f2d13)
 - 2016-09-30 (Laisky) fix: 图片文件格式为 PNG 的未正确替换 -> [view commit](https://github.com/Laisky/laisky-blog/commit/55c4a1897249fd792315600d5462f0dd36ff0d4c)
