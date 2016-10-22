@@ -176,7 +176,7 @@
 
 	  function App(props, context) {
 	    (0, _classCallCheck3.default)(this, App);
-	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(App).call(this, props, context));
+	    return (0, _possibleConstructorReturn3.default)(this, (App.__proto__ || (0, _getPrototypeOf2.default)(App)).call(this, props, context));
 	  }
 
 	  (0, _createClass3.default)(App, [{
@@ -264,7 +264,7 @@
 	                  null,
 	                  _react2.default.createElement(
 	                    _reactRouter.Link,
-	                    { to: { pathname: '/rss.html' }, target: '_blank' },
+	                    { to: { pathname: '/rss/' }, target: '_blank' },
 	                    _react2.default.createElement('img', { src: '/static/dist/images/rss.png', className: 'rss' })
 	                  )
 	                ),
@@ -1892,7 +1892,7 @@
 
 	    function BaseComponent() {
 	        (0, _classCallCheck3.default)(this, BaseComponent);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(BaseComponent).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (BaseComponent.__proto__ || (0, _getPrototypeOf2.default)(BaseComponent)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(BaseComponent, [{
@@ -1913,7 +1913,15 @@
 	    }, {
 	        key: 'getCurrentUsername',
 	        value: function getCurrentUsername() {
-	            return $.cookie('username') || '';
+	            var token = $.cookie('token'),
+	                userinfo = void 0;
+
+	            try {
+	                userinfo = jwt_decode(token);
+	                return userinfo['username'];
+	            } catch (e) {
+	                return;
+	            }
 	        }
 	    }, {
 	        key: 'componentWillMount',
@@ -2083,7 +2091,7 @@
 
 	    function PageNotFound() {
 	        (0, _classCallCheck3.default)(this, PageNotFound);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(PageNotFound).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (PageNotFound.__proto__ || (0, _getPrototypeOf2.default)(PageNotFound)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(PageNotFound, [{
@@ -2093,7 +2101,7 @@
 	                'div',
 	                { id: 'pagenotfound' },
 	                _react2.default.createElement(_redirect.Redirect, { waitSec: '2',
-	                    title: '页面不存在',
+	                    title: '\u9875\u9762\u4E0D\u5B58\u5728',
 	                    nextDataUrl: '/api/posts/get-post-by-page/?page=1',
 	                    nextUrl: '/archives/1/',
 	                    targetSelector: 'body > .container' })
@@ -2164,7 +2172,7 @@
 	    function Redirect(props, context) {
 	        (0, _classCallCheck3.default)(this, Redirect);
 
-	        var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Redirect).call(this, props, context));
+	        var _this = (0, _possibleConstructorReturn3.default)(this, (Redirect.__proto__ || (0, _getPrototypeOf2.default)(Redirect)).call(this, props, context));
 
 	        var waitSec = (0, _parseInt2.default)(_this.props.waitSec, 10);
 	        _this.state = { waitSec: waitSec };
@@ -2224,7 +2232,7 @@
 	                        { className: 'count' },
 	                        this.state.waitSec
 	                    ),
-	                    ' 秒 后将自动跳转'
+	                    ' \u79D2 \u540E\u5C06\u81EA\u52A8\u8DF3\u8F6C'
 	                )
 	            );
 	        }
@@ -2415,7 +2423,7 @@
 	    function Archives(props, context) {
 	        (0, _classCallCheck3.default)(this, Archives);
 
-	        var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Archives).call(this, props, context));
+	        var _this = (0, _possibleConstructorReturn3.default)(this, (Archives.__proto__ || (0, _getPrototypeOf2.default)(Archives)).call(this, props, context));
 
 	        _this.state = {
 	            archives: [],
@@ -2447,7 +2455,7 @@
 	        value: function updatePage() {
 	            var _this2 = this;
 
-	            var currentPage = arguments.length <= 0 || arguments[0] === undefined ? this.props.params.page : arguments[0];
+	            var currentPage = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props.params.page;
 
 	            var limit = 10,
 	                nPage = (0, _parseInt2.default)(currentPage, 10),
@@ -2514,7 +2522,7 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
-	                    _react2.default.createElement(_sidebar.Notify, { text: 'v2.4.6: 全面启用 HTTP v2' })
+	                    _react2.default.createElement(_sidebar.Notify, { text: 'v2.4.6: \u5168\u9762\u542F\u7528 HTTP v2' })
 	                ),
 	                _react2.default.createElement(
 	                    'div',
@@ -3353,14 +3361,103 @@
 /***/ function(module, exports) {
 
 	// shim for using process in browser
-
 	var process = module.exports = {};
+
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
+	(function () {
+	    try {
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
+	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
+	    }
+	    try {
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
+	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
+	    }
+	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+
+
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+
+
+
+	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
 	var queueIndex = -1;
 
 	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
 	    draining = false;
 	    if (currentQueue.length) {
 	        queue = currentQueue.concat(queue);
@@ -3376,7 +3473,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = setTimeout(cleanUpNextTick);
+	    var timeout = runTimeout(cleanUpNextTick);
 	    draining = true;
 
 	    var len = queue.length;
@@ -3393,7 +3490,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    clearTimeout(timeout);
+	    runClearTimeout(timeout);
 	}
 
 	process.nextTick = function (fun) {
@@ -3405,7 +3502,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        setTimeout(drainQueue, 0);
+	        runTimeout(drainQueue);
 	    }
 	};
 
@@ -4177,7 +4274,7 @@
 
 	    function Comment() {
 	        (0, _classCallCheck3.default)(this, Comment);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Comment).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (Comment.__proto__ || (0, _getPrototypeOf2.default)(Comment)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(Comment, [{
@@ -4209,7 +4306,7 @@
 
 	    function ArchiveExtract() {
 	        (0, _classCallCheck3.default)(this, ArchiveExtract);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(ArchiveExtract).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (ArchiveExtract.__proto__ || (0, _getPrototypeOf2.default)(ArchiveExtract)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(ArchiveExtract, [{
@@ -4241,7 +4338,7 @@
 	                articleEditable = _react2.default.createElement(
 	                    _reactRouter.Link,
 	                    { to: { pathname: '/amend/' + archiveName + '/' } },
-	                    '编辑'
+	                    '\u7F16\u8F91'
 	                );
 	            }
 
@@ -4277,7 +4374,7 @@
 	                    _react2.default.createElement(
 	                        'span',
 	                        null,
-	                        '发布于：'
+	                        '\u53D1\u5E03\u4E8E\uFF1A'
 	                    ),
 	                    _react2.default.createElement(
 	                        'span',
@@ -4297,7 +4394,7 @@
 	                    _react2.default.createElement(
 	                        _reactRouter.Link,
 	                        { to: { pathname: '/p/' + archiveName + '/#disqus_thread' }, 'data-disqus-identifier': archiveName, target: '_blank' },
-	                        '0 评论'
+	                        '0 \u8BC4\u8BBA'
 	                    )
 	                )
 	            );
@@ -4314,7 +4411,7 @@
 
 	    function ArchiveMenu() {
 	        (0, _classCallCheck3.default)(this, ArchiveMenu);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(ArchiveMenu).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (ArchiveMenu.__proto__ || (0, _getPrototypeOf2.default)(ArchiveMenu)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(ArchiveMenu, [{
@@ -4334,7 +4431,7 @@
 
 	    function ArchiveNav() {
 	        (0, _classCallCheck3.default)(this, ArchiveNav);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(ArchiveNav).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (ArchiveNav.__proto__ || (0, _getPrototypeOf2.default)(ArchiveNav)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(ArchiveNav, [{
@@ -4401,7 +4498,7 @@
 	                    _react2.default.createElement(
 	                        'span',
 	                        { 'aria-hidden': 'true' },
-	                        '«'
+	                        '\xAB'
 	                    )
 	                );
 	            } else {
@@ -4416,7 +4513,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            { 'aria-hidden': 'true' },
-	                            '«'
+	                            '\xAB'
 	                        )
 	                    )
 	                );
@@ -4432,7 +4529,7 @@
 	                    _react2.default.createElement(
 	                        'span',
 	                        { 'aria-hidden': 'true' },
-	                        '»'
+	                        '\xBB'
 	                    )
 	                );
 	            } else {
@@ -4447,7 +4544,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            { 'aria-hidden': 'true' },
-	                            '»'
+	                            '\xBB'
 	                        )
 	                    )
 	                );
@@ -4519,7 +4616,7 @@
 
 	    function Notify() {
 	        (0, _classCallCheck3.default)(this, Notify);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Notify).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (Notify.__proto__ || (0, _getPrototypeOf2.default)(Notify)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(Notify, [{
@@ -4538,7 +4635,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            { 'aria-hidden': 'true' },
-	                            '×'
+	                            '\xD7'
 	                        )
 	                    ),
 	                    _react2.default.createElement(
@@ -4560,7 +4657,7 @@
 
 	    function Sidebar() {
 	        (0, _classCallCheck3.default)(this, Sidebar);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Sidebar).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (Sidebar.__proto__ || (0, _getPrototypeOf2.default)(Sidebar)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(Sidebar, [{
@@ -4583,7 +4680,7 @@
 
 	    function Login() {
 	        (0, _classCallCheck3.default)(this, Login);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Login).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (Login.__proto__ || (0, _getPrototypeOf2.default)(Login)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(Login, [{
@@ -4602,7 +4699,7 @@
 	                        _react2.default.createElement(
 	                            _reactRouter.Link,
 	                            { to: { pathname: '/publish/' } },
-	                            '发布'
+	                            '\u53D1\u5E03'
 	                        )
 	                    ),
 	                    _react2.default.createElement(
@@ -4611,7 +4708,7 @@
 	                        _react2.default.createElement(
 	                            'a',
 	                            { className: 'btn' },
-	                            '注销'
+	                            '\u6CE8\u9500'
 	                        )
 	                    )
 	                );
@@ -4619,7 +4716,7 @@
 	                loginBtn = _react2.default.createElement(
 	                    _reactRouter.Link,
 	                    { to: { pathname: '/login/' } },
-	                    '登陆'
+	                    '\u767B\u9646'
 	                );
 	            }
 	            return _react2.default.createElement(
@@ -4628,7 +4725,7 @@
 	                _react2.default.createElement(
 	                    'h2',
 	                    null,
-	                    '登录管理'
+	                    '\u767B\u5F55\u7BA1\u7406'
 	                ),
 	                loginBtn
 	            );
@@ -4642,7 +4739,7 @@
 
 	    function Profile() {
 	        (0, _classCallCheck3.default)(this, Profile);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Profile).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (Profile.__proto__ || (0, _getPrototypeOf2.default)(Profile)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(Profile, [{
@@ -4654,7 +4751,7 @@
 	                _react2.default.createElement(
 	                    'h2',
 	                    null,
-	                    '个人介绍'
+	                    '\u4E2A\u4EBA\u4ECB\u7ECD'
 	                ),
 	                _react2.default.createElement(
 	                    'p',
@@ -4682,7 +4779,7 @@
 
 	    function Tagcloud() {
 	        (0, _classCallCheck3.default)(this, Tagcloud);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Tagcloud).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (Tagcloud.__proto__ || (0, _getPrototypeOf2.default)(Tagcloud)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(Tagcloud, [{
@@ -4694,12 +4791,12 @@
 	                _react2.default.createElement(
 	                    'h2',
 	                    null,
-	                    '标签云'
+	                    '\u6807\u7B7E\u4E91'
 	                ),
 	                _react2.default.createElement(
 	                    'p',
 	                    null,
-	                    '摸鱼被发现了，还没做……'
+	                    '\u6478\u9C7C\u88AB\u53D1\u73B0\u4E86\uFF0C\u8FD8\u6CA1\u505A\u2026\u2026'
 	                )
 	            );
 	        }
@@ -4758,7 +4855,7 @@
 	    function Post(props, context) {
 	        (0, _classCallCheck3.default)(this, Post);
 
-	        var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Post).call(this, props, context));
+	        var _this = (0, _possibleConstructorReturn3.default)(this, (Post.__proto__ || (0, _getPrototypeOf2.default)(Post)).call(this, props, context));
 
 	        _this.state = {
 	            post: null,
@@ -5000,7 +5097,7 @@
 
 	    function AboutMe() {
 	        (0, _classCallCheck3.default)(this, AboutMe);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(AboutMe).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (AboutMe.__proto__ || (0, _getPrototypeOf2.default)(AboutMe)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(AboutMe, [{
@@ -5015,12 +5112,12 @@
 	                    _react2.default.createElement(
 	                        'h2',
 	                        null,
-	                        '关于我'
+	                        '\u5173\u4E8E\u6211'
 	                    ),
 	                    _react2.default.createElement(
 	                        'p',
 	                        null,
-	                        '我显然并没有时间写……'
+	                        '\u6211\u663E\u7136\u5E76\u6CA1\u6709\u65F6\u95F4\u5199\u2026\u2026'
 	                    )
 	                )
 	            );
@@ -5083,7 +5180,7 @@
 
 	    function Login() {
 	        (0, _classCallCheck3.default)(this, Login);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Login).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (Login.__proto__ || (0, _getPrototypeOf2.default)(Login)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(Login, [{
@@ -5095,8 +5192,8 @@
 	                _react2.default.createElement(_auth.Auth, { method: 'POST',
 	                    action: '/api/user/login/',
 	                    accountName: 'email',
-	                    accountLabel: '邮箱',
-	                    accountPlaceholder: '请输入登陆邮箱' })
+	                    accountLabel: '\u90AE\u7BB1',
+	                    accountPlaceholder: '\u8BF7\u8F93\u5165\u767B\u9646\u90AE\u7BB1' })
 	            );
 	        }
 	    }]);
@@ -5156,7 +5253,7 @@
 	    function Auth(props, context) {
 	        (0, _classCallCheck3.default)(this, Auth);
 
-	        var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Auth).call(this, props, context));
+	        var _this = (0, _possibleConstructorReturn3.default)(this, (Auth.__proto__ || (0, _getPrototypeOf2.default)(Auth)).call(this, props, context));
 
 	        _this.state = {};
 	        return _this;
@@ -5221,7 +5318,7 @@
 	                    _react2.default.createElement(
 	                        'p',
 	                        { ref: 'hint', className: 'hint-text label label-info' },
-	                        '请登录'
+	                        '\u8BF7\u767B\u5F55'
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -5353,7 +5450,7 @@
 	    function BaseEditComponent(props, context) {
 	        (0, _classCallCheck3.default)(this, BaseEditComponent);
 
-	        var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(BaseEditComponent).call(this, props, context));
+	        var _this = (0, _possibleConstructorReturn3.default)(this, (BaseEditComponent.__proto__ || (0, _getPrototypeOf2.default)(BaseEditComponent)).call(this, props, context));
 
 	        _this.state = {
 	            post: null,
@@ -5414,9 +5511,9 @@
 	            var postName = void 0;
 
 	            if (this.props.isLinkEditable) {
-	                postName = _react2.default.createElement('input', { type: 'text', name: 'postName', className: 'form-control', ref: 'postName', placeholder: '文章链接 \'one-more-tineone-more-chance\'', defaultValue: this.state.post_name });
+	                postName = _react2.default.createElement('input', { type: 'text', name: 'postName', className: 'form-control', ref: 'postName', placeholder: '\u6587\u7AE0\u94FE\u63A5 \'one-more-tineone-more-chance\'', defaultValue: this.state.post_name });
 	            } else {
-	                postName = _react2.default.createElement('input', { type: 'text', name: 'postName', className: 'form-control', ref: 'postName', placeholder: '文章链接 \'one-more-tineone-more-chance\'', value: this.state.post_name });
+	                postName = _react2.default.createElement('input', { type: 'text', name: 'postName', className: 'form-control', ref: 'postName', placeholder: '\u6587\u7AE0\u94FE\u63A5 \'one-more-tineone-more-chance\'', value: this.state.post_name });
 	            }
 
 	            return _react2.default.createElement(
@@ -5440,9 +5537,9 @@
 	                        _react2.default.createElement(
 	                            'label',
 	                            { 'for': 'post_title' },
-	                            '文章标题'
+	                            '\u6587\u7AE0\u6807\u9898'
 	                        ),
-	                        _react2.default.createElement('input', { type: 'text', className: 'form-control', ref: 'postTitle', placeholder: '文章标题', name: 'postTitle' })
+	                        _react2.default.createElement('input', { type: 'text', className: 'form-control', ref: 'postTitle', placeholder: '\u6587\u7AE0\u6807\u9898', name: 'postTitle' })
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
@@ -5450,7 +5547,7 @@
 	                        _react2.default.createElement(
 	                            'label',
 	                            { 'for': 'post_name' },
-	                            '文章链接'
+	                            '\u6587\u7AE0\u94FE\u63A5'
 	                        ),
 	                        postName
 	                    ),
@@ -5460,9 +5557,9 @@
 	                        _react2.default.createElement(
 	                            'label',
 	                            { 'for': 'post_content' },
-	                            '文章内容'
+	                            '\u6587\u7AE0\u5185\u5BB9'
 	                        ),
-	                        _react2.default.createElement('textarea', { className: 'form-control', name: 'postContent', rows: '20', placeholder: '文章内容', ref: 'postContent' })
+	                        _react2.default.createElement('textarea', { className: 'form-control', name: 'postContent', rows: '20', placeholder: '\u6587\u7AE0\u5185\u5BB9', ref: 'postContent' })
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
@@ -5470,7 +5567,7 @@
 	                        _react2.default.createElement(
 	                            'label',
 	                            { 'for': 'post_type' },
-	                            '文章类型'
+	                            '\u6587\u7AE0\u7C7B\u578B'
 	                        ),
 	                        _react2.default.createElement(
 	                            'select',
@@ -5505,7 +5602,7 @@
 
 	    function Publish() {
 	        (0, _classCallCheck3.default)(this, Publish);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Publish).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (Publish.__proto__ || (0, _getPrototypeOf2.default)(Publish)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(Publish, [{
@@ -5516,7 +5613,7 @@
 	                { id: 'publish' },
 	                _react2.default.createElement(BaseEditComponent, { action: '/api/posts/publish/',
 	                    isLinkEditable: true,
-	                    hint: '发布新文章' })
+	                    hint: '\u53D1\u5E03\u65B0\u6587\u7AE0' })
 	            );
 	        }
 	    }]);
@@ -5528,7 +5625,7 @@
 
 	    function Amend() {
 	        (0, _classCallCheck3.default)(this, Amend);
-	        return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Amend).apply(this, arguments));
+	        return (0, _possibleConstructorReturn3.default)(this, (Amend.__proto__ || (0, _getPrototypeOf2.default)(Amend)).apply(this, arguments));
 	    }
 
 	    (0, _createClass3.default)(Amend, [{
@@ -5561,7 +5658,7 @@
 	                _react2.default.createElement(BaseEditComponent, { action: '/api/posts/amend/',
 	                    isLinkEditable: false,
 	                    method: 'PATCH',
-	                    hint: '等待加载...',
+	                    hint: '\u7B49\u5F85\u52A0\u8F7D...',
 	                    params: this.props.params,
 	                    getInitData: this.getInitData })
 	            );
@@ -5621,7 +5718,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var logins = function logins() {
-	    var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	    var action = arguments[1];
 
 	    switch (action.type) {

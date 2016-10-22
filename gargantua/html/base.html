@@ -8,10 +8,11 @@
     {% block title %}
         <title>Laisky's Blog</title>
     {% endblock %}
+    <link rel="alternate" type="application/rss+xml" title="Articles" href="https://blog.laisky.com/rss/">
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/libs-7871326441.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/sites-7e2b974b2c.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/sites-47ff15950a.min.css')}}">
     {% block page_css %}
     {% endblock %}<!-- page_css -->
 </head>
@@ -49,8 +50,8 @@
         ga('send', 'pageview');
     </script>
 
-    <script src="{{static_url('dist/js/libs-c882803427.min.js')}}" type="text/javascript" charset="utf-8"></script>
-    <script src="{{static_url('dist/js/sites-20c569964c.min.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{static_url('dist/js/libs-aa3879a3e4.min.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{static_url('dist/js/sites-c8314fa73b.min.js')}}" type="text/javascript" charset="utf-8"></script>
     <div class="pagejs">
         {% block page_js %}
         {% endblock %}<!-- page_js -->

@@ -247,6 +247,12 @@ body > .container {
   font-size: 1em;
 }
 
+.redirectComponent {
+  background-color: whitesmoke;
+  padding: 10px;
+  text-align: center;
+}
+
 #publish,
 #amend {
   background-color: whitesmoke;
@@ -262,12 +268,6 @@ body > .container {
 #amend .hint {
   text-align: center;
   font-size: 1.2em;
-}
-
-.redirectComponent {
-  background-color: whitesmoke;
-  padding: 10px;
-  text-align: center;
 }
 
 .sidebar {
@@ -325,6 +325,13 @@ body > .container {
   margin: 0px;
 }
 
+#login {
+  max-width: 600px;
+  background: whitesmoke;
+  margin: 20px auto;
+  border-radius: 10px;
+}
+
 #archives {
   max-width: 800px;
   margin-bottom: 10px;
@@ -344,13 +351,6 @@ body > .container {
 }
 #archives .page-nav {
   text-align: center;
-}
-
-#login {
-  max-width: 600px;
-  background: whitesmoke;
-  margin: 20px auto;
-  border-radius: 10px;
 }
 
 #post {
