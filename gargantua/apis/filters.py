@@ -4,8 +4,6 @@ from abc import ABC, abstractclassmethod
 
 import pymongo
 
-from gargantua.utils import logger
-
 
 class FilterError(Exception):
     pass

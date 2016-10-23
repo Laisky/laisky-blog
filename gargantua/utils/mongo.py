@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 # import datetime
 from numbers import Number
-from collections.abc import Iterable
 
 from bson import ObjectId
 

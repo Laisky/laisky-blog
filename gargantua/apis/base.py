@@ -4,7 +4,6 @@ import urllib
 import tornado
 import html2text
 import dicttoxml
-from bson import ObjectId
 
 from gargantua.utils import AuthHandlerMixin, DbHandlerMixin, \
     WebHandlerMixin, HttpErrorMixin, JinjaMixin, RFCMixin, \

@@ -17,7 +17,7 @@ from gargantua.settings import CWD
 from gargantua.utils import setup_log, get_default_config, logger
 from gargantua.views import BaseHandler, PostsHandler, UserHandler, \
     ReactRender
-from gargantua.apis import PostApiHandler
+from gargantua.apis import PostApiHandler, TweetsApiHandler
 from gargantua.libs import LogMailHandler, LogMailFormatter
 from gargantua.models import BaseBlogModel
 
@@ -84,6 +84,7 @@ class Application(tornado.web.Application):
             url(r'^/(api/user/.*)/$', UserHandler, name='api:user:login'),
             # ---------------- rest api ----------------
             url(r'^/api/v2/post/([a-zA-Z0-9\-_]+)?/?$', PostApiHandler, name='rest:post'),
+            url(r'^/api/v2/tweets/([a-zA-Z0-9\-_]+)?/?$', TweetsApiHandler, name='rest:tweets'),
             # ---------------- 404 ----------------
             # url(r'^/404.html$', PageNotFound, name='404'),
             # ---------------- react-router ----------------
