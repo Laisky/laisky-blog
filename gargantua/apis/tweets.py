@@ -28,13 +28,19 @@ class TweetsApiHandler(ApiHandler):
 
         try:
             truncate = int(self.get_argument('truncate', default='300', strip=True))
+            topic = self.get_argument('topic', default=None, strip=True)
             assert(truncate >= 0)
         except (ValueError, AssertionError) as err:
             logger.exception(err)
             self.http_400_bad_request(exc_info=err)
             return
 
-        cursor = self.get_cursor()
+        if topic:
+            select = {'topics': topic}
+        else:
+            select = None
+
+        cursor = self.get_cursor(select)
         if not cursor:
             return
 

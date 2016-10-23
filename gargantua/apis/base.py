@@ -124,9 +124,9 @@ class ApiHandler(BaseApiHandler):
         assert self._collection, 'You must identify _collecion'
         return getattr(self.db, self._collection)
 
-    def get_cursor(self):
+    def get_cursor(self, select=None):
         col = self.get_col()
-        cursor = col.find()
+        cursor = col.find(select)
         return self.pass_filter(cursor)
 
     def pass_filter(self, cursor):
