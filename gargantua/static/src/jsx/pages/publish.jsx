@@ -26,7 +26,7 @@ class BaseEditComponent extends BaseComponent {
     };
 
     componentDidMount() {
-        if(!$.cookie('uid')) location.href = '/archives/1/';
+        if(!this.getCurrentUsername()) location.href = '/archives/1/';
 
         if(this.props.getInitData) {
             this.props.getInitData.call(this)
