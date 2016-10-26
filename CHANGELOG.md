@@ -2,7 +2,10 @@
 *CURRENT*
 ---
     
-- 2016-10-25 (Laisky) fix: base.html typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/ba4bdda8f34484178df8e8cd4b7488b5102deb6a)    
+- 2016-10-26 (Laisky) fix: 线上登陆错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/eeb3dbc7189d7a5835e81726017218f48dac793d)
+- 2016-10-25 (Laisky) 2.5.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ef46f6bfcccd569e7ec855e5f8d9ecefc9721084)
+- 2016-10-25 (Laisky) fix: base.html typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/ba4bdda8f34484178df8e8cd4b7488b5102deb6a)
+- 2016-10-22 (Laisky) fix: 用户从 ramjet 登陆后也保存一份账户信息 -> [view commit](https://github.com/Laisky/laisky-blog/commit/42f64c4a3ff0d0d81429498b875d3973b1651adf)    
        
 *2.5*
 ---
