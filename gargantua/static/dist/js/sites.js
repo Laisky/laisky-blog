@@ -5469,7 +5469,7 @@
 	    (0, _createClass3.default)(BaseEditComponent, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            if (!$.cookie('uid')) location.href = '/archives/1/';
+	            if (!this.getCurrentUsername()) location.href = '/archives/1/';
 
 	            if (this.props.getInitData) {
 	                this.props.getInitData.call(this);
