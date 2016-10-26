@@ -13,7 +13,7 @@ import pytz
 from gargantua.settings import LOG_NAME
 from gargantua import settings
 from .encryt import generate_passwd, validate_passwd, \
-    generate_token, validate_token
+    generate_token, validate_token, decode_token
 from .jinja import TemplateRendering
 from .tornado import debug_wrapper, \
     DbHandlerMixin, WebHandlerMixin, AuthHandlerMixin, HttpErrorMixin, \
@@ -23,17 +23,6 @@ from .markdown import render_md_to_html
 
 
 logger = logging.getLogger(LOG_NAME)
-__all__ = [
-    'generate_passwd', 'validate_passwd', 'validate_email',
-    'validate_mobile', 'generate_token', 'validate_token',
-    'debug_wrapper', 'setup_log', 'unquote_fr_mongo',
-    'TemplateRendering', 'render_md_to_html',
-    'DbHandlerMixin', 'WebHandlerMixin', 'AuthHandlerMixin',
-    'HttpErrorMixin', 'JinjaMixin', 'RFCMixin',
-    'utc2cst_timestamp', 'utcnow', 'utc2cst', 'dt2timestamp',
-    'UTC', 'CST', 'MongoParser',
-]
-
 tz = pytz.timezone('utc')
 UTC = tz
 CST = pytz.timezone('Asia/Shanghai')

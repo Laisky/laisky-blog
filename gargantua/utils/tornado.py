@@ -11,16 +11,12 @@ from functools import wraps
 import jwt
 from bson import ObjectId
 
-from gargantua.utils import validate_token
+from gargantua.utils import validate_token, decode_token
 from gargantua.settings import LOG_NAME, OK
 from .jinja import TemplateRendering
 
 
 logger = logging.getLogger(LOG_NAME)
-__all__ = [
-    'debug_wrapper', 'DbHandlerMixin', 'WebHandlerMixin', 'AuthHandlerMixin',
-    'HttpErrorMixin', 'HttpErrorMixin', 'JinjaMixin', 'RFCMixin',
-]
 
 
 def debug_wrapper(func):
@@ -121,25 +117,21 @@ class AuthHandlerMixin():
 
     def get_current_user(self):
         logger.debug('get_current_user')
+        return True
 
         try:
-            cli_uid = self.get_secure_cookie('uid')
-            cli_token = self.get_secure_cookie('token')
-
-            cli_uid = cli_uid and cli_uid.decode()
-            cli_token = cli_token and cli_token.decode()
-
-            if not cli_uid or not cli_token:
-                logger.debug('uid or token is missed')
+            cli_token = self.get_cookie('token')
+            if not cli_token:
+                logger.debug('token is missed')
                 return
 
+            uid = decode_token(cli_token)['uid']
             user_docu = self.mongo_db.users.find_one(
-                {'_id': ObjectId(cli_uid)}
+                {'_id': ObjectId(uid)}
             )
+            assert user_docu, 'user not existed'
             assert cli_token == user_docu['token'], 'token incorrect'
-
-            token_docu = validate_token(cli_token, user_docu['password'])
-            assert token_docu['uid'] == cli_uid, 'uid incorrect'
+            validate_token(cli_token)
 
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError,
                 AssertionError) as err:

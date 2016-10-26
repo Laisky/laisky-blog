@@ -21,3 +21,7 @@ def generate_token(json_, secret=SECRET_KEY):
 
 def validate_token(token, secret=SECRET_KEY):
     return jwt.decode(token, secret, verify=True)
+
+
+def decode_token(token):
+    return jwt.decode(token, verify=False)
