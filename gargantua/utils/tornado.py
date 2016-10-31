@@ -117,7 +117,6 @@ class AuthHandlerMixin():
 
     def get_current_user(self):
         logger.debug('get_current_user')
-        return True
 
         try:
             cli_token = self.get_cookie('token')
