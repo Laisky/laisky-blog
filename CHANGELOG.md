@@ -2,6 +2,16 @@
 *CURRENT*
 ---
     
+- 2016-10-26 (Laisky) fix: 线上登陆错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/eeb3dbc7189d7a5835e81726017218f48dac793d)
+- 2016-10-25 (Laisky) 2.5.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ef46f6bfcccd569e7ec855e5f8d9ecefc9721084)
+- 2016-10-25 (Laisky) fix: base.html typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/ba4bdda8f34484178df8e8cd4b7488b5102deb6a)
+- 2016-10-22 (Laisky) fix: 用户从 ramjet 登陆后也保存一份账户信息 -> [view commit](https://github.com/Laisky/laisky-blog/commit/42f64c4a3ff0d0d81429498b875d3973b1651adf)    
+       
+*2.5*
+---
+    
+- 2016-10-22 (Laisky) 2.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/043b792097e48537116769379d7167c0d0501733)
+- 2016-10-22 (Laisky) 2.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/0b3a3552f002e57acd0048465df03183df3ee29b)
 - 2016-10-22 (Laisky) fix: 不必要的错误日志 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3e1ae682cea25a16a4d8cfdaba55a0bd77b2a067)
 - 2016-10-22 (Laisky) feat: 给 ramjet 提供 CORS 接口 -> [view commit](https://github.com/Laisky/laisky-blog/commit/95ee9b0ffed45b999e1dbdf0a56dad34b07d66de)
 - 2016-10-19 (Laisky) chore: 修复 supervisor 日志滚动的错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/83f035ba34c012797effa6685f881810dfa7f6cd)
@@ -11,10 +21,12 @@
 - 2016-10-10 (Laisky) chore: Nginx 增加 gzip 压缩 -> [view commit](https://github.com/Laisky/laisky-blog/commit/68951519ded406de35dd0f0b7c7a768d928081b9)
 - 2016-10-09 (Laisky) chore: 精简 Nginx -> [view commit](https://github.com/Laisky/laisky-blog/commit/3725337d31ab03207d20aef3f3e6a53d611755ba)
 - 2016-10-08 (Laisky) fix: add rss info to head -> [view commit](https://github.com/Laisky/laisky-blog/commit/2e354ce93ec1ce6029351461deeae3e6b4dd6d43)
+- 2016-09-30 (Laisky) 2.4.9 -> [view commit](https://github.com/Laisky/laisky-blog/commit/bb5edddab5a6a97beacc2544c9452d37afee5747)
 - 2016-09-30 (Laisky) 2.4.9 -> [view commit](https://github.com/Laisky/laisky-blog/commit/345e52a369e2f2f30e8262738a7ea895f1644d42)
 - 2016-09-30 (Laisky) fix: 打开 post 页位置不对 -> [view commit](https://github.com/Laisky/laisky-blog/commit/efaaff16e2f4cbd289f79790bc54f3e7b99e55c4)
 - 2016-09-30 (Laisky) fix: 手机端不能正常上滑 -> [view commit](https://github.com/Laisky/laisky-blog/commit/088e6f6797ae2731e7557a9e00043edb5e1f2d13)
 - 2016-09-30 (Laisky) fix: 图片文件格式为 PNG 的未正确替换 -> [view commit](https://github.com/Laisky/laisky-blog/commit/55c4a1897249fd792315600d5462f0dd36ff0d4c)
+- 2016-09-30 (Laisky) 2.4.8 -> [view commit](https://github.com/Laisky/laisky-blog/commit/65c06209825a96f587ac46c05ed961e8c9a47194)
 - 2016-09-30 (Laisky) 2.4.8 -> [view commit](https://github.com/Laisky/laisky-blog/commit/cf1e83b665e0272d884711a60066fcf9919a2f17)
 - 2016-09-30 (Laisky) fix: img-modal typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/ee2053db6ef93f69437164b55cbba147f82c2757)
 - 2016-09-30 (Laisky) perf: 对谷歌浏览器启用 webp -> [view commit](https://github.com/Laisky/laisky-blog/commit/e2e26921c5a4a04564f6247753a7487e7b8ae3af)
@@ -22,6 +34,7 @@
 - 2016-09-20 (Laisky) refactor: 修复 Public-Key-Pins 错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b6cf1f48147c69fccd5a46ab8c5739a50cc68670)
 - 2016-09-14 (Laisky) 2.4.7 -> [view commit](https://github.com/Laisky/laisky-blog/commit/837f0668308cdcd63ed7ab0726b7a3bfe4d8d095)
 - 2016-09-14 (Laisky) fix: RSS 源地址改成 /rss.html -> [view commit](https://github.com/Laisky/laisky-blog/commit/84c11ea8104aa95400f41ed108dc6a609acb3033)
+- 2016-09-14 (Laisky) 2.4.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/02b5cb54b6e156461b506c3da87a6f1e014792ba)
 - 2016-09-14 (Laisky) 2.4.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1abfc99da625c85111a9d17b6daeca4abd4d6705)
 - 2016-09-14 (Laisky) fix: RSS 图标不标准 -> [view commit](https://github.com/Laisky/laisky-blog/commit/07e7fb9bc044d577ae8cb087f0da2a1195f4578b)
 - 2016-09-13 (Laisky) 2.4.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/78395308c2c684eac1bec48e1c0e7c65d12ad127)
@@ -29,16 +42,25 @@
 - 2016-09-12 (Laisky) chore: 把 Nginx 安全评分刷到 94 了 -> [view commit](https://github.com/Laisky/laisky-blog/commit/9cb8f1665900286635b12a298eff310be2b833ab)
 - 2016-09-12 (Laisky) chore: 增加 Nginx 的安全性配置 -> [view commit](https://github.com/Laisky/laisky-blog/commit/829f9c0b78f9dfba8eb25dc136b10c563a8408f6)
 - 2016-09-11 (Laisky) chore: 修复 Nginx proxy_pass 无法 decode -> [view commit](https://github.com/Laisky/laisky-blog/commit/c1f8b45842bdd2628122813cc83830a4c592d53c)
+- 2016-09-11 (Laisky) 2.4.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/bcea54b62486a1aa71e9e63c839c58d5b191615e)
 - 2016-09-11 (Laisky) 2.4.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/029c8bbd33a9e8259a5b22683e32e3b14f7c665d)
 - 2016-09-11 (Laisky) fix: 静态文件中有非 HTTPS 连接 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ad3cae16a0e2fc3330c972b62e558a59a04678b2)
 - 2016-09-11 (Laisky) chore: 增加 qiniu 的 HTTPS 反向代理 -> [view commit](https://github.com/Laisky/laisky-blog/commit/fa67c39e953226001def3289ed843cfa121d2aad)
 - 2016-09-07 (Laisky) chore: 增加 Nginx 的安全性 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b1f5caa0424585b044594791a8c048e8ae996198)
+- 2016-08-25 (Laisky) 2.4.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/28a1d358758b1051b5230761d12bedbb0abfebcf)
 - 2016-08-25 (Laisky) 2.4.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3366316b9444d281b016b7b2a41477e1a65dcff5)
 - 2016-08-25 (Laisky) fix: 自动跳转失灵 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1b036480449b19bad808a686799c83037c1e56d4)
+- 2016-08-25 (Laisky) 2.4.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/e39cd0d5c2832969c0956559bebb3c3d533b76a1)
 - 2016-08-25 (Laisky) 2.4.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/a6ccc43be9e00ba7c08202163c10c8269cda0a07)
 - 2016-08-25 (Laisky) fix: GA 追踪问题 -> [view commit](https://github.com/Laisky/laisky-blog/commit/dcd31f7e8c87c407f1ecca3ebcd110a31b56afc5)
+- 2016-08-18 (Laisky) 2.4.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b7934b131f38423d91a7ebe2a915019ec1b65ed9)
 - 2016-08-18 (Laisky) 2.4.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6b91bd3e5cfc413b7fa4242d89df904324a589f3)
-- 2016-08-18 (Laisky) fix: 修复一些页面交互 -> [view commit](https://github.com/Laisky/laisky-blog/commit/226ceb78aa6d7fb76b4f49e29ae0ebb7f7ba9be8)    
+- 2016-08-18 (Laisky) fix: 修复一些页面交互 -> [view commit](https://github.com/Laisky/laisky-blog/commit/226ceb78aa6d7fb76b4f49e29ae0ebb7f7ba9be8)
+- 2016-08-18 (Laisky) 2.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/5c92632050f95c36f4c2c49095f4429f75dab72c)
+- 2016-08-07 (Laisky) 2.3.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/4b6fe2b35a603385b6ffca1c41d5be10e1352b03)
+- 2016-07-15 (Laisky) 2.3.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/4057d29c01a7eb7ee626f435b249603424b00e6f)
+- 2016-07-10 (Laisky) 2.3.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/79e5ae787e91a128ba1643b12e4823ee8ffcbb27)
+- 2016-06-11 (Laisky) 2.3.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/a3663f816437dd72801be797c6ff21b1ab5973af)    
        
 *2.4*
 ---

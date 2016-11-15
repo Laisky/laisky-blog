@@ -56,16 +56,16 @@ class UserHandler(BaseHandler):
             return
 
         # login from twitter
-        # sid = '{}.id'.format(d['source'])
-        # old_user = yield self.db.users.find_one({sid: d['id']})
-        # username = old_user and old_user['username'] or d['username']
-        # yield self.db.users.update(
-        #     {sid: d['id']},
-        #     {'$set': {'username': username,
-        #               sid: d['id'],
-        #               'last_update': utcnow()}},
-        #     upsert=True
-        # )
+        sid = '{}.id'.format(d['source'])
+        old_user = yield self.db.users.find_one({sid: d['id']})
+        username = old_user and old_user['username'] or d['username']
+        yield self.db.users.update(
+            {sid: d['id']},
+            {'$set': {'username': username,
+                      sid: d['id'],
+                      'last_update': utcnow()}},
+            upsert=True
+        )
 
         token = generate_token({'username': d['username']})
         self.set_cookie('token', token, expires_days=30)
