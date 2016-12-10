@@ -185,7 +185,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
         try:
             post_docu = self.validate_post(create_new=False)
         except PostValidatorError as err:
-            self.http_400_bad_request(err.message)
+            self.http_400_bad_request(err=err)
             self.finish()
             return
 
@@ -196,7 +196,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
             )
         except Exception as err:
             logger.exception(err)
-            self.http_400_bad_request(err.message)
+            self.http_400_bad_request(err=err)
         else:
             self.write_json(msg='amend article {}'
                             .format(post_docu['post_name']))
@@ -212,7 +212,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
         try:
             post_docu = self.validate_post(create_new=True)
         except PostValidatorError as err:
-            self.http_400_bad_request(err.message)
+            self.http_400_bad_request(err=err)
             self.finish()
             return
 
@@ -220,7 +220,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
             yield self.db.posts.insert(post_docu)
         except Exception as err:
             logger.exception(err)
-            self.http_400_bad_request(err.message)
+            self.http_400_bad_request(err=err)
         else:
             self.write_json(msg='post new article {}'
                             .format(post_docu['post_name']))

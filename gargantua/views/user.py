@@ -45,7 +45,6 @@ class UserHandler(BaseHandler):
         """
         GET 一个包含 source, id, username 的 token
         """
-        print(generate_token({'source': 'twitter', 'username': 'Laisky', 'id': 1234567}))
         try:
             token = self.get_argument('token')
             d = validate_token(token)
@@ -56,18 +55,19 @@ class UserHandler(BaseHandler):
             return
 
         # login from twitter
-        sid = '{}.id'.format(d['source'])
-        old_user = yield self.db.users.find_one({sid: d['id']})
+        sid_str = '{}.id'.format(d['source'])  # like "twitter.id"
+        old_user = yield self.db.users.find_one({sid_str: d['id']})
         username = old_user and old_user['username'] or d['username']
         yield self.db.users.update(
-            {sid: d['id']},
+            {sid_str: d['id']},
             {'$set': {'username': username,
-                      sid: d['id'],
+                      sid_str: d['id'],
                       'last_update': utcnow()}},
             upsert=True
         )
+        user_docu = yield self.db.users.find_one({sid_str: d['id']})
 
-        token = generate_token({'username': d['username']})
+        token = generate_token({'username': d['username'], 'uid': user_docu['_id']})
         self.set_cookie('token', token, expires_days=30)
         self.write_json(msg=OK)
         self.finish()

@@ -2,6 +2,11 @@
 *CURRENT*
 ---
     
+- 2016-12-10 (Laisky) fix: 跨站登陆的 token 格式错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/15a907ecb6770176f8bfc50ab3a566ef01bb1ddf)
+- 2016-12-10 (Laisky) fix: http error parse error -> [view commit](https://github.com/Laisky/laisky-blog/commit/29f9c765b3fc1940f3eed79430ae9ba40edbcd2f)
+- 2016-11-15 (Laisky) build: 增加 sourcemap -> [view commit](https://github.com/Laisky/laisky-blog/commit/4c4b3613e3e6c58e404aeb7a4ec011115975f8af)
+- 2016-10-31 (Laisky) fix: supid typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/1830032431ac0401c1f321626f46165fb52cc359)
+- 2016-10-26 (Laisky) 2.5.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/167cf60aa9442fa1c5a8fcaa523c52b677694f80)
 - 2016-10-26 (Laisky) fix: 线上登陆错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/eeb3dbc7189d7a5835e81726017218f48dac793d)
 - 2016-10-25 (Laisky) 2.5.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ef46f6bfcccd569e7ec855e5f8d9ecefc9721084)
 - 2016-10-25 (Laisky) fix: base.html typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/ba4bdda8f34484178df8e8cd4b7488b5102deb6a)

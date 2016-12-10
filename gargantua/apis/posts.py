@@ -48,7 +48,7 @@ class PostApiHandler(ApiHandler):
             assert(truncate >= 0)
         except (ValueError, AssertionError) as err:
             logger.exception(err)
-            self.http_400_bad_request(exc_info=err)
+            self.http_400_bad_request(err=err)
             return
         else:
             plaintext = plaintext == 'true'
