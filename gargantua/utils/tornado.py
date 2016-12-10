@@ -189,7 +189,10 @@ class HttpErrorMixin():
     """
 
     def parse_err(self, err):
-        return ' '.join(str(_) for _ in err.args)
+        if isinstance(err, BaseException):
+            return ' '.join(str(_) for _ in err.args)
+        else:
+            return str(err)
 
     def http_400_bad_request(self, **kwargs):
         if 'err' in kwargs:
