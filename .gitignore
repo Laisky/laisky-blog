@@ -81,10 +81,12 @@ bower_components
 # sass
 .sass-cache/
 
+# sourcemap
+gargantua/static/dist/maps/
+
 # docs
 /site
 
 # prod
 /docker/docker-compose.yml
 /gargantua/settings/settings.py
-
