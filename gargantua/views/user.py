@@ -51,7 +51,6 @@ class UserHandler(BaseHandler):
         except Exception:
             logger.debug('ramjet_login validate error')
             self.http_400_bad_request(err='token validate error')
-            self.finish()
             return
 
         # login from twitter
@@ -90,14 +89,10 @@ class UserHandler(BaseHandler):
         user_docu = (yield self.db.users.find_one({'email': email}))
         if not user_docu:
             logger.debug('email not existed: {}'.format(email))
-            self.http_400_bad_request(err='Wrong Account or Password')
-            self.finish()
-            return
+            return self.http_400_bad_request(err='Wrong Account or Password')
         elif not validate_passwd(passwd, user_docu['password']):
             logger.debug('invalidate password: {}'.format(passwd))
-            self.http_400_bad_request(err='Wrong Account or Password')
-            self.finish()
-            return
+            return self.http_400_bad_request(err='Wrong Account or Password')
 
         uid = str(user_docu['_id'])
         dtoken = {'uid': uid, 'username': user_docu['username'], 'exp': utcnow() + datetime.timedelta(days=30)}

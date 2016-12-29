@@ -198,6 +198,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(400)  # bug in write_error
 
         return self.write_error(status_code=400, **kwargs)
 
@@ -205,6 +206,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(401)  # bug in write_error
 
         return self.write_error(status_code=401, **kwargs)
 
@@ -212,6 +214,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(402)  # bug in write_error
 
         return self.write_error(status_code=402, **kwargs)
 
@@ -219,6 +222,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(403)  # bug in write_error
 
         return self.write_error(status_code=403, **kwargs)
 
@@ -226,6 +230,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(404)  # bug in write_error
 
         return self.write_error(status_code=404, **kwargs)
 
@@ -233,6 +238,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(405)  # bug in write_error
 
         return self.write_error(status_code=405, **kwargs)
 
@@ -240,6 +246,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(406)  # bug in write_error
 
         return self.write_error(status_code=406, **kwargs)
 
@@ -247,6 +254,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(407)  # bug in write_error
 
         return self.write_error(status_code=407, **kwargs)
 
@@ -254,6 +262,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(408)  # bug in write_error
 
         return self.write_error(status_code=408, **kwargs)
 
@@ -261,6 +270,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(409)  # bug in write_error
 
         return self.write_error(status_code=409, **kwargs)
 
@@ -268,6 +278,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(410)  # bug in write_error
 
         return self.write_error(status_code=410, **kwargs)
 
@@ -275,6 +286,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(411)  # bug in write_error
 
         return self.write_error(status_code=411, **kwargs)
 
@@ -282,6 +294,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(412)  # bug in write_error
 
         return self.write_error(status_code=412, **kwargs)
 
@@ -289,6 +302,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(413)  # bug in write_error
 
         return self.write_error(status_code=413, **kwargs)
 
@@ -296,6 +310,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(414)  # bug in write_error
 
         return self.write_error(status_code=414, **kwargs)
 
@@ -303,6 +318,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(415)  # bug in write_error
 
         return self.write_error(status_code=415, **kwargs)
 
@@ -310,6 +326,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(416)  # bug in write_error
 
         return self.write_error(status_code=416, **kwargs)
 
@@ -317,6 +334,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(417)  # bug in write_error
 
         return self.write_error(status_code=417, **kwargs)
 
@@ -324,6 +342,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(428)  # bug in write_error
 
         return self.write_error(status_code=428, **kwargs)
 
@@ -331,6 +350,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(429)  # bug in write_error
 
         return self.write_error(status_code=429, **kwargs)
 
@@ -338,6 +358,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(431)  # bug in write_error
 
         return self.write_error(status_code=431, **kwargs)
 
@@ -345,6 +366,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(500)  # bug in write_error
 
         return self.write_error(status_code=500, **kwargs)
 
@@ -352,6 +374,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(501)  # bug in write_error
 
         return self.write_error(status_code=501, **kwargs)
 
@@ -359,6 +382,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(502)  # bug in write_error
 
         return self.write_error(status_code=502, **kwargs)
 
@@ -366,6 +390,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(503)  # bug in write_error
 
         return self.write_error(status_code=503, **kwargs)
 
@@ -373,6 +398,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(504)  # bug in write_error
 
         return self.write_error(status_code=504, **kwargs)
 
@@ -380,6 +406,7 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(505)  # bug in write_error
 
         return self.write_error(status_code=505, **kwargs)
 
@@ -387,5 +414,6 @@ class HttpErrorMixin():
         if 'err' in kwargs:
             err = kwargs.pop('err')
             self._reason = self.parse_err(err)
+            self.set_status(511)  # bug in write_error
 
         return self.write_error(status_code=511, **kwargs)

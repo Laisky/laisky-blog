@@ -2,6 +2,10 @@
 *CURRENT*
 ---
     
+- 2016-12-29 (Laisky) fix: Microsoft YaHei 作为首选字体 -> [view commit](https://github.com/Laisky/laisky-blog/commit/62bf0c2f5b5b77a3af671946bc5a957009fbcb41)
+- 2016-12-16 (Laisky) fix: webp 漏掉了一些图 -> [view commit](https://github.com/Laisky/laisky-blog/commit/f2835caf8696bd8aed8d0e1aeca911d9003b3c33)
+- 2016-12-16 (Laisky) fix: http error exception 没有正确的处理 -> [view commit](https://github.com/Laisky/laisky-blog/commit/a186129164c694eda23a1f1198f6287b09860e49)
+- 2016-12-10 (Laisky) 2.5.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/64271e99f55ad8451739e0a517140691cc20afff)
 - 2016-12-10 (Laisky) fix: 跨站登陆的 token 格式错误 -> [view commit](https://github.com/Laisky/laisky-blog/commit/15a907ecb6770176f8bfc50ab3a566ef01bb1ddf)
 - 2016-12-10 (Laisky) fix: http error parse error -> [view commit](https://github.com/Laisky/laisky-blog/commit/29f9c765b3fc1940f3eed79430ae9ba40edbcd2f)
 - 2016-11-15 (Laisky) build: 增加 sourcemap -> [view commit](https://github.com/Laisky/laisky-blog/commit/4c4b3613e3e6c58e404aeb7a4ec011115975f8af)
