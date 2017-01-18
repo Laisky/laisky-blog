@@ -9,6 +9,7 @@ except ImportError:
 from pip.req import parse_requirements
 from pip.download import PipSession
 
+import os
 import re
 import gargantua
 
@@ -40,11 +41,19 @@ kwargs = {}
 with open('README.md', 'r') as f:
     kwargs['long_description'] = f.read()
 
+name = 'gargantua'
+packages = []
+package_dir = {name: name}
+for dirname, dirnames, filenames in os.walk(name):
+    if '__init__.py' in filenames:
+        packages.append(dirname.replace('/', '.'))
+
 
 setup(
-    name='gargantua',
+    name=name,
     version=version,
-    packages=['gargantua'],
+    packages=packages,
+    package_dir=package_dir,
     include_package_data=True,
     install_requires=requires,
     entry_points="""\

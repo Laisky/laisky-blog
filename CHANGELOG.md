@@ -2,6 +2,8 @@
 *CURRENT*
 ---
     
+- 2017-01-18 (Laisky) fix: post font-family not correct -> [view commit](https://github.com/Laisky/laisky-blog/commit/e01f92504d30beac825366d4dc3e61a5c4117dfe)
+- 2016-12-29 (Laisky) 2.5.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/adcc18137b495d9f889eb87ac74ad21664a7a9c5)
 - 2016-12-29 (Laisky) fix: Microsoft YaHei 作为首选字体 -> [view commit](https://github.com/Laisky/laisky-blog/commit/62bf0c2f5b5b77a3af671946bc5a957009fbcb41)
 - 2016-12-16 (Laisky) fix: webp 漏掉了一些图 -> [view commit](https://github.com/Laisky/laisky-blog/commit/f2835caf8696bd8aed8d0e1aeca911d9003b3c33)
 - 2016-12-16 (Laisky) fix: http error exception 没有正确的处理 -> [view commit](https://github.com/Laisky/laisky-blog/commit/a186129164c694eda23a1f1198f6287b09860e49)
