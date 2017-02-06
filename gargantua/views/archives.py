@@ -126,7 +126,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
         try:
             post_title = self.get_argument('postTitle', strip=True)
             post_name = self.get_argument('postName', strip=True)
-            post_name = urllib.parse.quote(post_name)
+            post_name = urllib.parse.quote(post_name).lower()
             post_content = self.get_argument('postContent')
             post_type = self.get_argument('postType', strip=True, default='text')
 

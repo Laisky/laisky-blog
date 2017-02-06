@@ -2,6 +2,8 @@
 *CURRENT*
 ---
     
+- 2017-02-06 (Laisky) fix: captalize post name error -> [view commit](https://github.com/Laisky/laisky-blog/commit/91889fd292429f4830a2d8a207d8de7c29733a83)
+- 2017-01-18 (Laisky) 2.5.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/2fff0268cf848568baa9efad11f2fbe329152eeb)
 - 2017-01-18 (Laisky) fix: post font-family not correct -> [view commit](https://github.com/Laisky/laisky-blog/commit/e01f92504d30beac825366d4dc3e61a5c4117dfe)
 - 2016-12-29 (Laisky) 2.5.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/adcc18137b495d9f889eb87ac74ad21664a7a9c5)
 - 2016-12-29 (Laisky) fix: Microsoft YaHei 作为首选字体 -> [view commit](https://github.com/Laisky/laisky-blog/commit/62bf0c2f5b5b77a3af671946bc5a957009fbcb41)
