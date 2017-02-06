@@ -145,6 +145,9 @@ class ApiHandler(BaseApiHandler):
     def get_oidname(self):
         return '_id'
 
+    def parse_oid(self, oid):
+        return urllib.parse.quote(oid).lower()
+
     @tornado.gen.coroutine
     @debug_wrapper
     def retrieve(self, oid):
@@ -153,7 +156,8 @@ class ApiHandler(BaseApiHandler):
         col = self.get_col()
         oidname = self.get_oidname()
         try:
-            docu = yield col.find_one({oidname: oid})
+            f_oid = self.parse_oid(oid)
+            docu = yield col.find_one({oidname: f_oid})
             assert docu, 'article not exists!'
         except Exception as err:
             self.http_404_not_found(err=err)
