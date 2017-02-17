@@ -2,6 +2,9 @@
 *CURRENT*
 ---
     
+- 2017-02-17 (Laisky) chore: update nginx -> [view commit](https://github.com/Laisky/laisky-blog/commit/615ff824099c5a4150b062b33f053d8a7314426a)
+- 2017-02-17 (Laisky) Revert "fix: terrible font on windows" -> [view commit](https://github.com/Laisky/laisky-blog/commit/2deb62d1ead135f9308f4a51a589e1e3a7e2d86f)
+- 2017-02-17 (Laisky) 2.5.7 -> [view commit](https://github.com/Laisky/laisky-blog/commit/326a3b129ca6bbe92d4ae4bb12990fe9a3a2cf84)
 - 2017-02-17 (Laisky) fix: terrible font on windows -> [view commit](https://github.com/Laisky/laisky-blog/commit/995deda37574f5f3e2244bd60e4a15542ff786fa)
 - 2017-02-06 (Laisky) 2.5.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/4ea60697094b9d09129687db4f8c2392da4c761f)
 - 2017-02-06 (Laisky) fix: captalize post name error -> [view commit](https://github.com/Laisky/laisky-blog/commit/91889fd292429f4830a2d8a207d8de7c29733a83)
