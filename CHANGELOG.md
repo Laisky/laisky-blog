@@ -2,6 +2,8 @@
 *CURRENT*
 ---
     
+- 2017-02-17 (Laisky) fix: terrible font on windows -> [view commit](https://github.com/Laisky/laisky-blog/commit/995deda37574f5f3e2244bd60e4a15542ff786fa)
+- 2017-02-06 (Laisky) 2.5.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/4ea60697094b9d09129687db4f8c2392da4c761f)
 - 2017-02-06 (Laisky) fix: captalize post name error -> [view commit](https://github.com/Laisky/laisky-blog/commit/91889fd292429f4830a2d8a207d8de7c29733a83)
 - 2017-01-18 (Laisky) 2.5.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/2fff0268cf848568baa9efad11f2fbe329152eeb)
 - 2017-01-18 (Laisky) fix: post font-family not correct -> [view commit](https://github.com/Laisky/laisky-blog/commit/e01f92504d30beac825366d4dc3e61a5c4117dfe)

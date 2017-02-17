@@ -13,8 +13,8 @@ body {
     height: initial;
     overflow-x: hidden;
     overflow-y: auto;
-    font-family: "Microsoft YaHei", "Helvetica Neue", "Helvetica", "Segoe UI", "Arial", "freesans", "sans-serif";
-    background-image: url("https://blog.laisky.com/qiniu/background-1500x844.jpg");
+    font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Noto Sans CJK SC,WenQuanYi Micro Hei,Arial,sans-serif;
+    background-image: url("//blog.laisky.com/qiniu/background-1500x844.jpg");
     @include background-size(100% 100%);
     background-attachment: fixed;
 
