@@ -40,8 +40,8 @@ class Auth extends BaseComponent {
                     $(this.refs.hint).text(resp);
                     location.href = next;
                 })
-                .always((resp) => {
-                    $(this.refs.hint).text(resp);
+                .fail((resp) => {
+                    $(this.refs.hint).text('Login failed');
                 });
         }
     };

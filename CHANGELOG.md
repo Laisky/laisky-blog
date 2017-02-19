@@ -2,6 +2,10 @@
 *CURRENT*
 ---
     
+- 2017-02-19 (Laisky) feat: add changelog link -> [view commit](https://github.com/Laisky/laisky-blog/commit/0fc6dd14b565f05b6d723d020e5dd6eb341eac6a)
+- 2017-02-19 (Laisky) build: update cleaning scripts -> [view commit](https://github.com/Laisky/laisky-blog/commit/b47a3ee6f8c4b42cbb02e494b25a2393eb5ea563)
+- 2017-02-19 (Laisky) fix: login error hit -> [view commit](https://github.com/Laisky/laisky-blog/commit/b248a2a3b8b8049bb294ef53fc9abe941769514d)
+- 2017-02-17 (Laisky) 2.5.8 -> [view commit](https://github.com/Laisky/laisky-blog/commit/438e56023775469d127536a6f66e73ab6b66655b)
 - 2017-02-17 (Laisky) chore: update nginx -> [view commit](https://github.com/Laisky/laisky-blog/commit/615ff824099c5a4150b062b33f053d8a7314426a)
 - 2017-02-17 (Laisky) Revert "fix: terrible font on windows" -> [view commit](https://github.com/Laisky/laisky-blog/commit/2deb62d1ead135f9308f4a51a589e1e3a7e2d86f)
 - 2017-02-17 (Laisky) 2.5.7 -> [view commit](https://github.com/Laisky/laisky-blog/commit/326a3b129ca6bbe92d4ae4bb12990fe9a3a2cf84)
