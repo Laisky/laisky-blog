@@ -54,6 +54,7 @@ class App extends BaseComponent {
                   <ul className="nav navbar-nav apps">
                     <li className={this.getCurrentRouteName() == 'archives'? 'active': ''}><Link to={{ pathname: '/archives/1/' }}>Blog</Link></li>
                     <li className={this.getCurrentRouteName() == 'aboutme'? 'active': ''}><Link to={{ pathname: '/about/' }}>AboutMe</Link></li>
+                    <li><a href="//laisky.github.io/laisky-blog/CHANGELOG/" target="_blank">ChangeLog</a></li>
                   </ul>
                   <ul className="nav navbar-nav navbar-right">
                     <li>

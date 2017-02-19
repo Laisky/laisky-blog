@@ -122,7 +122,6 @@ class Archives extends BaseComponent {
         return (
             <div id="archives" className="archives-body container-fluid">
                 <div className="row">
-                    <Notify text="v2.4.6: 全面启用 HTTP v2" />
                 </div>
                 <div className="row">
                     <div id="archive-content" className="col-sm-9 col-xs-12">
