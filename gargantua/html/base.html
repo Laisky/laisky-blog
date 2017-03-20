@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/libs-edee677d7d.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/sites-f4348834b2.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/sites-d1d3f5717e.min.css')}}">
     {% block page_css %}
     {% endblock %}<!-- page_css -->
 </head>
@@ -48,10 +48,13 @@
 
         ga('create', 'UA-65521906-1', 'auto');
         ga('send', 'pageview');
+
+        var revealLibUrl = '/static/dist/js/reveallibs-b19f5e3f7c.min.js';
     </script>
 
+
     <script src="{{static_url('dist/js/libs-e20aa21e9a.min.js')}}" type="text/javascript" charset="utf-8"></script>
-    <script src="{{static_url('dist/js/sites-33c8e5953c.min.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{static_url('dist/js/sites-74ae921d34.min.js')}}" type="text/javascript" charset="utf-8"></script>
     <div class="pagejs">
         {% block page_js %}
         {% endblock %}<!-- page_js -->
