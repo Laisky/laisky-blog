@@ -49,7 +49,7 @@ class Post extends BaseComponent {
     };
 
     loadRevealJs() {
-        $.getScript('/static/dist/js/reveallibs.js')
+        $.getScript(window.revealLibUrl)
             .done(function() {
                 Reveal.initialize({
                     // Display controls in the bottom right corner
