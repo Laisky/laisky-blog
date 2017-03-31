@@ -211,9 +211,10 @@ export class PostCategories extends BaseComponent {
         this.loadArticlesByCategoryId(cateid);
     }
 
-    async loadArticlesByCategoryId(cid='null') {
-        let url = `/api/v2/post/?category=${cid}&truncate=0&limit=1000`,
+    async loadArticlesByCategoryId(cid) {
+        let url = `/api/v2/post/?truncate=0&limit=1000`,
             html = '';
+        if(cid != undefined) url += `&category=${cid}`;
         $.getJSON(url)
             .then(resp => {
                 for(let post of resp.result) {
