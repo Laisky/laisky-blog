@@ -16,8 +16,13 @@ categories = [
 
 def main():
     for cate in categories:
-        col.update_one({
+        r = col.insert_one({
             'name': cate,
             'author': ObjectId('25b3edc00000000000008888'),
             'parent': None,
         })
+        print(r.inserted_id)
+
+
+if __name__ == '__main__':
+    main()
