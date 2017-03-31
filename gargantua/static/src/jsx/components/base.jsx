@@ -4,6 +4,11 @@ import React from 'react';
 
 
 class BaseComponent extends React.Component {
+    constructor(props, context) {
+        super(props, context);
+        this.state = {};
+    };
+
     getCurrentPathName() {
         return this.context.router.getCurrentPathname();
     };
@@ -14,6 +19,10 @@ class BaseComponent extends React.Component {
 
     getCurrentRouteName() {
         return this.props.routes[this.props.routes.length-1].name;
+    };
+
+    addXSRF(data) {
+        return Object.assign({}, {'_xsrf': $.cookie('_xsrf')}, data);
     };
 
     getCurrentUsername() {

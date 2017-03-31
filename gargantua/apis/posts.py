@@ -1,25 +1,53 @@
+import json
+
 import tornado
 
-from gargantua.utils import debug_wrapper, \
-    utc2cst_timestamp, logger
-from .base import ApiHandler
+from gargantua.utils import debug_wrapper, logger
+from gargantua.models.articles import ArticlesModel
+from .base import APIHandler
 from .filters import OidSortFilter, LimitFilter, SkitFilter
+from .query_makers import PostCategoiesFilterMaker
+from .parsers import PostContentTruncateParser
 
 
-class PostApiHandler(ApiHandler):
+class PostCategoriesAPIHandler(APIHandler):
+    _collection = 'categories'
+    _filters = (OidSortFilter, LimitFilter, SkitFilter)
+
+    @tornado.web.authenticated
+    @tornado.gen.coroutine
+    @debug_wrapper
+    def put(self, category=None):
+        try:
+            categories = self.get_argument('categories', strip=True)
+            categories = json.loads(categories)
+        except Exception as err:
+            self.http_400_bad_request(err=err)
+            return
+
+        logger.debug('PostCategoriesAPIHandler PUT for categories %s', categories)
+        yield ArticlesModel.update_posts_categories(categories)
+
+
+class PostAPIHandler(APIHandler):
 
     _collection = 'posts'
     _filters = (OidSortFilter, LimitFilter, SkitFilter)
+    _parsers = (PostContentTruncateParser,)
+    _query_makers = (PostCategoiesFilterMaker,)
 
-    def parse_docu(self, docu, truncate=None, plaintext=False):
+    def parse_docu(self, docu, plaintext=False):
+        docus = super().parse_docus([docu])
+        if not docus:
+            return
+
+        docu = docus[0]
         content = docu['post_content']
         if docu.get('post_password'):
             content = ''
         else:
             if plaintext:
                 content = self.plaintext_content(content)
-            if truncate:
-                content = self.truncate_content(content, truncate)
 
         return {
             'post_title': docu['post_title'],
@@ -31,21 +59,19 @@ class PostApiHandler(ApiHandler):
             'post_content': content,
             'post_id': str(docu['_id']),
             'post_author': str(docu['post_author']),
-            'post_modified_gmt': utc2cst_timestamp(docu['post_modified_gmt']),
-            'post_created_at': utc2cst_timestamp(docu['post_created_at']),
+            'post_modified_gmt': docu['post_modified_gmt'],
+            'post_created_at': docu['post_created_at'],
             'post_status': docu['post_status'],
         }
 
     @tornado.gen.coroutine
     @debug_wrapper
     def list(self):
-        logger.info('PostApiHandler list')
+        logger.info('PostAPIHandler list')
 
         try:
             plaintext = self.get_argument('plaintext', default='false', strip=True)
-            truncate = int(self.get_argument('truncate', default='300', strip=True))
             assert(plaintext in ['true', 'false'])
-            assert(truncate >= 0)
         except (ValueError, AssertionError) as err:
             logger.exception(err)
             self.http_400_bad_request(err=err)
@@ -60,9 +86,7 @@ class PostApiHandler(ApiHandler):
         posts = []
         while (yield cursor.fetch_next):
             docu = cursor.next_object()
-            parsed_docu = self.parse_docu(
-                docu, truncate=truncate, plaintext=plaintext
-            )
+            parsed_docu = self.parse_docu(docu, plaintext=plaintext)
             posts.append(parsed_docu)
 
         col = self.get_col()

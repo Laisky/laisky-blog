@@ -1,42 +1,53 @@
 import motor
 import pymongo
+from bson import ObjectId
 
 
-class BaseModel:
-    _CONNECTION = None  # motor connection
-    _MONGO_CONNECTION = None  # pymongo connection
+class classproperty(object):
+    def __init__(self, f):
+        self.f = f
 
-    def __init__(self, host, port):
-        self.make_connection(host, port)
+    def __get__(self, obj, owner):
+        return self.f(owner)
+
+
+class BaseModel(object):
+    _CONNECTION = None
+    _MONGO_CONNECTION = None
+
+    @classmethod
+    def oid(cls, sid):
+        return ObjectId(sid)
 
     @classmethod
     def make_connection(cls, host, port):
         cls._CONNECTION = motor.MotorClient(host=host, port=port)
         cls._MONGO_CONNECTION = pymongo.MongoClient(host=host, port=port)
+        return cls
 
-    @property
-    def db(self):
-        return self.get_db()
+    @classproperty
+    def db(cls):
+        return cls.get_db()
 
-    @property
-    def conn(self):
-        return self.get_conn()
+    @classproperty
+    def conn(cls):
+        return cls.get_conn()
 
-    @property
-    def mongo_conn(self):
-        return self.get_mongo_conn()
+    @classproperty
+    def mongo_conn(cls):
+        return cls.get_mongo_conn()
 
-    @property
-    def collection(self):
-        return self.get_collection()
+    @classproperty
+    def collection(cls):
+        return cls.get_collection()
 
-    @property
-    def mongo_db(self):
-        return self.get_mongo_db()
+    @classproperty
+    def mongo_db(cls):
+        return cls.get_mongo_db()
 
-    @property
-    def mongo_collection(self):
-        return self.get_mongo_collection()
+    @classproperty
+    def mongo_collection(cls):
+        return cls.get_mongo_collection()
 
     @classmethod
     def get_conn(cls):
@@ -75,8 +86,3 @@ class BaseModel:
     @classmethod
     def get(cls, query):
         return cls.get_collection().find_one(query)
-
-
-class BaseBlogModel(BaseModel):
-
-    __db__ = 'blog'

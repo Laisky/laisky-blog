@@ -20,17 +20,14 @@ dicttoxml
 mkdocs
 
 # db
-pymongo==2.8  # for motor
-motor==0.6.2  # always with bugs, upgrade carefully
+pymongo==3.4  # for motor
+motor==1.1  # always with bugs, upgrade carefully
 
 # server
 tornado>4.0
 
 # time
 pytz
-
-# nlp
-jieba
 
 # test
 nose

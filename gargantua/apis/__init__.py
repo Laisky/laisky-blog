@@ -1,6 +1,1 @@
-from .posts import PostApiHandler
-
-
-__all__ = [
-    'PostApiHandler',
-]
+from .posts import *
