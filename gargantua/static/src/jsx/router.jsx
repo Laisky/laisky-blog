@@ -9,11 +9,12 @@ import { Provider } from 'react-redux';
 import { App } from './pages/app.jsx';
 import { PageNotFound } from './pages/404.jsx';
 import { Archives } from './pages/archives.jsx';
-import { Post } from './pages/post.jsx';
+import { Post, PostCategories } from './pages/post.jsx';
 import { AboutMe } from './pages/aboutme.jsx';
 import { Login } from './pages/login.jsx';
 import { Publish, Amend } from './pages/publish.jsx';
-import {RootReducer, store} from './reducers';
+import { RootReducer, store } from './reducers';
+import { AdminPage, CategoriesConsole } from './pages/admin.jsx';
 
 
 ReactDOM.render(
@@ -25,9 +26,13 @@ ReactDOM.render(
             <Route name="publish" path="publish/" component={Publish} />
             <Route name="amend" path="amend/:pid/" component={Amend} />
             <Route name="post" path="p/:pid/" component={Post} />
+            <Route name="categories" path="cate/(:cateid/)" component={PostCategories} />
             <Route name="aboutme" path="about/" component={AboutMe} />
             <Route name="login" path="login/" component={Login} />
             <Route name="notfound" path="404.html" component={PageNotFound} />
+            <Route name="admin" path="admin/" component={AdminPage} >
+                <Route name="admin-category" path="cate/" component={CategoriesConsole}></Route>
+            </Route>
         </Route>
         <Redirect from="*" to="/404.html" />
     </Router>

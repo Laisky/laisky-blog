@@ -45,7 +45,7 @@ class ArchivesCache {
             resp;
 
         resp = await $.getJSON({
-            url: `/api/v2/post/?limit=${this.limit}&skip=${nSkip}`,
+            url: `/api/v2/post/?limit=${this.limit}&skip=${nSkip}&truncate=200`,
             method: 'GET',
             dataType: 'json'
         });

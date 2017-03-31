@@ -35,3 +35,30 @@ $nav-title-clr: $post-title-clr;
     }
 
 }
+
+
+#post-categories {
+    article {
+        @include border-radius(10px);
+        background-color: #F1F1F1;
+        min-height: 600px;
+        padding-top: 5px;
+
+        p {
+            margin-bottom: 5px;
+            font-size: 120%;
+        }
+    }
+
+    nav {
+        @include border-radius(10px);
+        background-color: #F1F1F1;
+        margin-left: 20px;
+
+        .categories {
+            p {
+                margin: 0px;
+            }
+        }
+    }
+}

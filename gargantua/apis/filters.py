@@ -1,4 +1,4 @@
-"""过滤器
+"""Filters to filter existed cursor
 """
 from abc import ABC, abstractclassmethod
 
@@ -14,7 +14,7 @@ class FilterError(Exception):
 class BaseFilter(ABC):
 
     @abstractclassmethod
-    def query_cursor(self, app, cursor):
+    def query_cursor(cls, app, cursor):
         return cursor
 
 
@@ -22,7 +22,8 @@ class OidSortFilter(BaseFilter):
 
     """根据 oid 进行排序"""
 
-    def query_cursor(self, app, cursor):
+    @classmethod
+    def query_cursor(cls, app, cursor):
         sort = app.get_argument('sort', default='des', strip=True)
         if sort == 'des':
             cursor.sort([('_id', pymongo.DESCENDING)])
@@ -36,7 +37,8 @@ class OidSortFilter(BaseFilter):
 
 class LimitFilter(BaseFilter):
 
-    def query_cursor(self, app, cursor):
+    @classmethod
+    def query_cursor(cls, app, cursor):
         try:
             limit = int(app.get_argument('limit', default='10', strip=True))
             assert limit > 0
@@ -49,7 +51,8 @@ class LimitFilter(BaseFilter):
 
 class SkitFilter(BaseFilter):
 
-    def query_cursor(self, app, cursor):
+    @classmethod
+    def query_cursor(cls, app, cursor):
         try:
             skip = int(app.get_argument('skip', default='0', strip=True))
             assert skip >= 0
@@ -58,3 +61,4 @@ class SkitFilter(BaseFilter):
 
         cursor.skip(skip)
         return cursor
+
