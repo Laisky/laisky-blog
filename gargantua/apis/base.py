@@ -11,15 +11,17 @@ from gargantua.utils import AuthHandlerMixin, DbHandlerMixin, \
     MongoParser, debug_wrapper, logger
 from .filters import FilterError, \
     OidSortFilter, SkitFilter, LimitFilter
+from .query_makers import QueryMakerError
+from .parsers import ParserError, DatetimeParser, MongoDataParser
 
 
-class BaseApiHandler(tornado.web.RequestHandler,
-                     AuthHandlerMixin,
+class BaseAPIHandler(AuthHandlerMixin,
                      JinjaMixin,
                      RFCMixin,
                      DbHandlerMixin,
                      WebHandlerMixin,
-                     HttpErrorMixin):
+                     HttpErrorMixin,
+                     tornado.web.RequestHandler):
 
     def _get_accept_map(self):
         return {
@@ -101,15 +103,22 @@ class BaseApiHandler(tornado.web.RequestHandler,
         return html2text.html2text(content)
 
     def hyperlink_postname(self, post_name):
-        return 'http://blog.laisky.com/api/p/{}/'.format(post_name)
+        return 'https://blog.laisky.com/p/{}/'.format(post_name)
 
 mongo_parser = MongoParser()
 
 
-class ApiHandler(BaseApiHandler):
+class APIHandler(BaseAPIHandler):
+
+    """API Handler
+
+    query_maker -> db -> filters -> parsers -> client
+    """
 
     _collection = None
-    _filters = (OidSortFilter, LimitFilter, SkitFilter)
+    _base_filters = (OidSortFilter, LimitFilter, SkitFilter)
+    _base_query_makers =tuple()
+    _base_parsers =(DatetimeParser, MongoDataParser)
 
     @tornado.web.asynchronous
     def get(self, oid=None):
@@ -118,8 +127,16 @@ class ApiHandler(BaseApiHandler):
         else:
             return self.list()
 
-    def parse_docu(self, docu):
-        return docu
+    def parse_docus(self, docus):
+        try:
+            for p in (getattr(self, '_parsers', tuple()) + self._base_parsers):
+                docus = p.parse_results(self, docus)
+        except ParserError as err:
+            logger.debug(err)
+            self.http_400_bad_request(err=err)
+            return None
+
+        return docus
 
     def get_col(self):
         assert self._collection, 'You must identify _collecion'
@@ -127,14 +144,31 @@ class ApiHandler(BaseApiHandler):
 
     def get_cursor(self):
         col = self.get_col()
-        cursor = col.find()
+        query, projection = self.pass_query_makers()
+        if query is None:
+            logger.debug('not get query')
+            return
+
+        cursor = col.find(query, projection)
         return self.pass_filter(cursor)
 
+    def pass_query_makers(self):
+        query, projection = {}, None
+        try:
+            for qm in (getattr(self, '_query_makers', tuple()) + self._base_query_makers):
+                query, projection = qm.update_query(self, query, projection)
+
+        except QueryMakerError as err:
+            logger.debug(err)
+            self.http_400_bad_request(err=err)
+            return None, None
+
+        return query, projection
+
     def pass_filter(self, cursor):
-        for f in self._filters:
-            fi = f()
+        for f in (getattr(self, '_filters', tuple()) + self._base_filters):
             try:
-                cursor = fi.query_cursor(self, cursor)
+                cursor = f.query_cursor(self, cursor)
             except FilterError as err:
                 logger.debug(err)
                 self.http_400_bad_request(err=err)
@@ -163,8 +197,11 @@ class ApiHandler(BaseApiHandler):
             self.http_404_not_found(err=err)
             return
 
-        parsed_docu = self.parse_docu(docu)
-        self.success(parsed_docu)
+        parsed_docu = self.parse_docus([docu])
+        if not parsed_docu:
+            return
+
+        self.success(parsed_docu[0])
 
     @tornado.gen.coroutine
     @debug_wrapper
@@ -181,4 +218,8 @@ class ApiHandler(BaseApiHandler):
 
         col = self.get_col()
         total = yield col.count()
-        self.success(posts, total=total)
+        parsed_docus = self.parse_docus(posts)
+        if not parsed_docus:
+            return None
+
+        self.success(parsed_docus, total=total)

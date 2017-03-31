@@ -2,6 +2,8 @@
 *CURRENT*
 ---
     
+- 2017-03-31 (Laisky) feat(#36): add support to post categories -> [view commit](https://github.com/Laisky/laisky-blog/commit/d9a9d18cf556dab3374624a529b54f4384002c15)
+- 2017-03-20 (Laisky) 2.5.10 -> [view commit](https://github.com/Laisky/laisky-blog/commit/24a7662e04f2ac247ef5bf4cadd6a05a66f911d5)
 - 2017-03-20 (Laisky) fix: slidelib.js 404 -> [view commit](https://github.com/Laisky/laisky-blog/commit/2f847859b7146fc86c8a62379c84f02e4c64432a)
 - 2017-02-19 (Laisky) 2.5.9 -> [view commit](https://github.com/Laisky/laisky-blog/commit/22224c263b231870988413c977287dc8e2e653c2)
 - 2017-02-19 (Laisky) feat: add changelog link -> [view commit](https://github.com/Laisky/laisky-blog/commit/0fc6dd14b565f05b6d723d020e5dd6eb341eac6a)

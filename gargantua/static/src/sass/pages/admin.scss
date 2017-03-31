@@ -1,0 +1,19 @@
+@import "../themes/default.scss";
+@import "compass/css3/border-radius";
+
+#admin {
+    @include border-radius(10px);
+    background-color: #F1F1F1;
+    padding: 10px;
+
+    .category-console {
+        .control-label {
+            text-align: left;
+        }
+
+        .submit {
+            margin-left: 90%;
+            margin-bottom: 10px;
+        }
+    }
+}

@@ -19,8 +19,10 @@ def unquote_fr_mongo(docu):
 class MongoParser:
 
     def _parse_mongo_item(self, i):
-        if not isinstance(i, Number):
+        if isinstance(i, ObjectId):
             return str(i)
+        else:
+            return i
 
     def _parse_mongo_list(self, l):
         ret = []

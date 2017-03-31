@@ -8,8 +8,13 @@ import React from 'react';
 
 import { BaseComponent } from '../components/base.jsx';
 import { ArchiveExtract, Comment, ArchiveMenu } from '../components/archives.jsx';
+import { Categories } from '../components/sidebar.jsx';
 
-class Post extends BaseComponent {
+
+/**
+ * Post Article
+ */
+export class Post extends BaseComponent {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -189,4 +194,43 @@ class Post extends BaseComponent {
 
 }
 
-export { Post };
+
+/**
+ * Post Categories
+ */
+export class PostCategories extends BaseComponent {
+
+    componentDidMount() {
+        let cateid = this.props.params.cateid;
+        this.loadArticlesByCategoryId(cateid);
+    };
+
+
+    componentWillReceiveProps(nextProps) {
+        let cateid = nextProps.params.cateid;
+        this.loadArticlesByCategoryId(cateid);
+    }
+
+    async loadArticlesByCategoryId(cid='null') {
+        let url = `/api/v2/post/?category=${cid}&truncate=0&limit=1000`,
+            html = '';
+        $.getJSON(url)
+            .then(resp => {
+                for(let post of resp.result) {
+                    html += `<p><a href="/p/${post.post_name}/" target="_blank">${post.post_title}</a></p>`;
+                }
+                this.setState({categories: html});
+            });
+    };
+
+    render() {
+        return (
+            <div className="container-fluid post-body" id="post-categories">
+                <div className="row">
+                    <article className="col-xs-9" dangerouslySetInnerHTML={{ __html: this.state.categories }}></article>
+                    <nav className="col-xs-2"><Categories /></nav>
+                </div>
+            </div>
+        );
+    };
+}

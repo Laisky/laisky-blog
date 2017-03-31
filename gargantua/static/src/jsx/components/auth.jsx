@@ -21,10 +21,7 @@ class Auth extends BaseComponent {
             let accountName = this.state.accountName,
                 passowrdName = this.state.passowrdName,
                 next = QueryString['next'] || '/',
-                data = {
-                    _xsrf: $.cookie('_xsrf'),
-                    is_keep_login: $(this.refs.isKeepLogin).prop('checked')
-                };
+                data = {is_keep_login: $(this.refs.isKeepLogin).prop('checked')};
 
             evt.preventDefault();
 
@@ -34,7 +31,7 @@ class Auth extends BaseComponent {
             $.ajax({
                 url: this.state.action,
                 method: 'POST',
-                data: data
+                data: this.addXSRF(data)
             })
                 .done((resp) => {
                     $(this.refs.hint).text(resp);

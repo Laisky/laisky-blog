@@ -17,7 +17,7 @@ from gargantua.settings import CWD
 from gargantua.utils import setup_log, get_default_config, logger
 from gargantua.views import BaseHandler, PostsHandler, UserHandler, \
     ReactRender
-from gargantua.apis import PostApiHandler
+from gargantua.apis import PostAPIHandler, PostCategoriesAPIHandler
 from gargantua.libs import LogMailHandler, LogMailFormatter
 from gargantua.models import BaseBlogModel
 
@@ -83,7 +83,8 @@ class Application(tornado.web.Application):
             url(r'^/(api/posts/.*)/$', PostsHandler, name='api:post'),
             url(r'^/(api/user/.*)/$', UserHandler, name='api:user:login'),
             # ---------------- rest api ----------------
-            url(r'^/api/v2/post/([a-zA-Z0-9\-_%]+)?/?$', PostApiHandler, name='rest:post'),
+            url(r'^/api/v2/post/category/([a-zA-Z0-9\-_%]+)?/?$', PostCategoriesAPIHandler, name='rest:post_category'),
+            url(r'^/api/v2/post/([a-zA-Z0-9\-_%]+)?/?$', PostAPIHandler, name='rest:post'),
             # ---------------- 404 ----------------
             # url(r'^/404.html$', PageNotFound, name='404'),
             # ---------------- react-router ----------------
@@ -111,7 +112,7 @@ class Application(tornado.web.Application):
         logger.debug('connect database at {}:{}'
                      .format(options.dbhost, options.dbport))
 
-        model = BaseBlogModel(host=options.dbhost, port=options.dbport)
+        model = BaseBlogModel.make_connection(host=options.dbhost, port=options.dbport)
         self.conn = model.conn
         self.db = model.db
         self.mongo_conn = model.mongo_conn

@@ -143,7 +143,7 @@ class AuthHandlerMixin():
             err = traceback.format_exc()
             logger.exception('get_current_user error: {}'.format(err))
         else:
-            logger.debug("authenticated user")
+            logger.debug("authenticated user %s", user_docu['username'])
             return user_docu
 
 

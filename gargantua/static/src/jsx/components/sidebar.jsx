@@ -41,6 +41,7 @@ export class Sidebar extends BaseComponent {
         return (
             <div className="container-fluid sidebar">
                 <Profile />
+                <Categories />
                 <Login />
                 <Tagcloud />
             </div>
@@ -49,7 +50,39 @@ export class Sidebar extends BaseComponent {
 }
 
 
-class Login extends BaseComponent {
+export class Categories extends BaseComponent {
+
+    componentDidMount() {
+        this.loadCategories();
+    };
+
+    async loadCategories() {
+        let url = '/api/v2/post/category/';
+        $.getJSON(url)
+            .then(resp => {
+                this.setState({categories: resp.result});
+            });
+    };
+
+    render() {
+        let html = [<p><Link to="/cate/">全部</Link></p>];
+        if(this.state.categories) {
+            for(let cate of this.state.categories) {
+                html.push(<p><Link to={{ pathname: `/cate/${cate['_id']}/` }}>{`${cate['name']}`}</Link></p>)
+            }
+        }
+
+        return (
+            <section className="row console categories">
+                <h2>类别</h2>
+                <div>{html}</div>
+            </section>
+        );
+    };
+}
+
+
+export class Login extends BaseComponent {
     render() {
         let username = this.getCurrentUsername(),
             loginBtn;
@@ -58,6 +91,7 @@ class Login extends BaseComponent {
             loginBtn = (
                 <div>
                     <p><Link to={{ pathname: '/publish/' }}>发布</Link></p>
+                    <p><Link to={{ pathname: '/admin/' }}>管理</Link></p>
                     <p><a className="btn">注销</a></p>
                 </div>
             );
@@ -74,7 +108,7 @@ class Login extends BaseComponent {
 }
 
 
-class Profile extends BaseComponent {
+export class Profile extends BaseComponent {
     render() {
         return (
             <section className="row console profile">
@@ -88,7 +122,7 @@ class Profile extends BaseComponent {
 }
 
 
-class Tagcloud extends BaseComponent {
+export class Tagcloud extends BaseComponent {
     render() {
         return (
             <section className="row console tag">
