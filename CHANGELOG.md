@@ -2,6 +2,12 @@
 *CURRENT*
 ---
     
+- 2017-03-31 (Laisky) fix: imporve categories ux -> [view commit](https://github.com/Laisky/laisky-blog/commit/df4b23b3bb482bc531480862b53a6ef43c4d09b8)    
+       
+*2.6*
+---
+    
+- 2017-03-31 (Laisky) 2.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/a8dcf430b401ba215f16e3be123f5cff72dc6318)
 - 2017-03-31 (Laisky) feat(#36): add support to post categories -> [view commit](https://github.com/Laisky/laisky-blog/commit/d9a9d18cf556dab3374624a529b54f4384002c15)
 - 2017-03-20 (Laisky) 2.5.10 -> [view commit](https://github.com/Laisky/laisky-blog/commit/24a7662e04f2ac247ef5bf4cadd6a05a66f911d5)
 - 2017-03-20 (Laisky) fix: slidelib.js 404 -> [view commit](https://github.com/Laisky/laisky-blog/commit/2f847859b7146fc86c8a62379c84f02e4c64432a)
