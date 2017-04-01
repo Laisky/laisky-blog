@@ -2,6 +2,9 @@
 *CURRENT*
 ---
     
+- 2017-04-01 (Laisky) fix: profile typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/d38eb0a712404f179108d8a94d929e8b923ddcc2)
+- 2017-04-01 (Laisky) fix: nginx CSP rule -> [view commit](https://github.com/Laisky/laisky-blog/commit/37acecaecf200de4bedc70aacc76daa5c43859be)
+- 2017-03-31 (Laisky) 2.6.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/de4eed61c0b5ee6559e8275e0aa557abe73f85f0)
 - 2017-03-31 (Laisky) fix: imporve categories ux -> [view commit](https://github.com/Laisky/laisky-blog/commit/df4b23b3bb482bc531480862b53a6ef43c4d09b8)    
        
 *2.6*
