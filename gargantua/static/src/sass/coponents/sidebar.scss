@@ -30,6 +30,9 @@
         &.profile {
             p {
                 margin: 0px;
+                label {
+                    min-width: 65px;
+                }
             }
 
         }
