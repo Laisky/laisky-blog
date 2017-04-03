@@ -34,19 +34,29 @@
                     min-width: 65px;
                 }
             }
-
         }
 
         &.login {
             p {
                 margin: 0px;
             }
-
         }
 
         &.categories {
             p {
                 margin: 0px;
+            }
+        }
+
+        &.tag {
+            .tag-labels {
+                span {
+                    cursor: pointer;
+                    font-size: 90%;
+                    float: left;
+                    margin-right: 2px;
+                    margin-bottom: 2px;
+                }
             }
         }
 
