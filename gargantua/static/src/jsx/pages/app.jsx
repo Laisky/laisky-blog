@@ -27,8 +27,10 @@ class App extends BaseComponent {
 
     getScrollToTopHandle() {
         return (evt) => {
-            if(evt.target.tagName.toUpperCase() != 'DIV') return;
+            if(evt.target.tagName.toUpperCase() != 'DIV' || evt.target.className.startsWith('gsc-')) return;
             $(document.body).animate({scrollTop: 0}, 500);
+
+            return false;
         }
     };
 

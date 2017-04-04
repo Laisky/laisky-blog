@@ -10,6 +10,7 @@ from functools import wraps
 
 import jwt
 from bson import ObjectId
+import tornado
 
 from gargantua.utils import validate_token, decode_token
 from gargantua.settings import LOG_NAME, OK
@@ -28,19 +29,30 @@ def debug_wrapper(func):
             if r:
                 yield from r
         except Exception as err:
+            if isinstance(err, tornado.gen.Return):
+                raise
+
             self = args[0]
-            err_msg = {
-                'uri': str(self.request.uri),
-                'remote_ip': self.request.remote_ip,
-                'version': str(self.request.version),
-                'headers': dict(self.request.headers),
-                'cookies': str(self.request.cookies),
-            }
+            if getattr(self, 'request', None):
+                err_msg = {
+                    'uri': str(self.request.uri),
+                    'remote_ip': self.request.remote_ip,
+                    'version': str(self.request.version),
+                    'headers': dict(self.request.headers),
+                    'cookies': str(self.request.cookies),
+                }
+            else:
+                err_msg = 'without self.request'
+
             logger.error('{}\n-----\n{}'.format(
                 traceback.format_exc(),
                 json.dumps(err_msg, indent=4, sort_keys=True),
             ))
-            self._finished or self.finish()
+            if getattr(self, 'finish', None):
+                self._finished or self.finish()
+
+            raise
+
     return wrapper
 
 

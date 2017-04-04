@@ -1,8 +1,9 @@
 import json
+import urllib
 
 import tornado
 
-from gargantua.utils import debug_wrapper, logger
+from gargantua.utils import debug_wrapper, logger, is_objectid
 from gargantua.models.articles import ArticlesModel
 from .base import APIHandler
 from .filters import OidSortFilter, LimitFilter, SkitFilter
@@ -13,6 +14,16 @@ from .parsers import PostContentTruncateParser
 class PostCategoriesAPIHandler(APIHandler):
     _collection = 'categories'
     _filters = (OidSortFilter, LimitFilter, SkitFilter)
+
+    @tornado.gen.coroutine
+    @debug_wrapper
+    def retrieve(self, oid):
+        if not is_objectid(oid):
+            docu = yield self.db.categories.find_one({'name': urllib.parse.unquote(oid)})
+            if docu:
+                oid = str(docu['_id'])
+
+        super().retrieve(oid)
 
     @tornado.web.authenticated
     @tornado.gen.coroutine
@@ -36,6 +47,8 @@ class PostAPIHandler(APIHandler):
     _parsers = (PostContentTruncateParser,)
     _query_makers = (PostCategoiesFilterMaker,)
 
+    @tornado.gen.coroutine
+    # @debug_wrapper
     def parse_docu(self, docu, plaintext=False):
         docus = super().parse_docus([docu])
         if not docus:
@@ -49,7 +62,14 @@ class PostAPIHandler(APIHandler):
             if plaintext:
                 content = self.plaintext_content(content)
 
-        return {
+        if 'category' in docu:
+            category = (yield self.db.categories.find_one({'_id': docu['category']})) or {}
+        else:
+            category = {}
+
+        raise tornado.gen.Return({
+            'post_tags': docu.get('post_tags', []),
+            'post_category': category.get('name'),
             'post_title': docu['post_title'],
             'post_type': docu.get('post_type', 'markdown'),
             'link': self.hyperlink_postname(docu['post_name']),
@@ -62,7 +82,7 @@ class PostAPIHandler(APIHandler):
             'post_modified_gmt': docu['post_modified_gmt'],
             'post_created_at': docu['post_created_at'],
             'post_status': docu['post_status'],
-        }
+        })
 
     @tornado.gen.coroutine
     @debug_wrapper
@@ -79,14 +99,14 @@ class PostAPIHandler(APIHandler):
         else:
             plaintext = plaintext == 'true'
 
-        cursor = self.get_cursor()
+        cursor = yield self.get_cursor()
         if not cursor:
             return
 
         posts = []
         while (yield cursor.fetch_next):
             docu = cursor.next_object()
-            parsed_docu = self.parse_docu(docu, plaintext=plaintext)
+            parsed_docu = yield self.parse_docu(docu, plaintext=plaintext)
             posts.append(parsed_docu)
 
         col = self.get_col()

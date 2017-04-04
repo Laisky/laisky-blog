@@ -18,7 +18,7 @@ from .jinja import TemplateRendering
 from .tornado import debug_wrapper, \
     DbHandlerMixin, WebHandlerMixin, AuthHandlerMixin, HttpErrorMixin, \
     JinjaMixin, RFCMixin
-from .mongo import unquote_fr_mongo, MongoParser
+from .mongo import unquote_fr_mongo, MongoParser, is_objectid
 from .markdown import render_md_to_html
 
 

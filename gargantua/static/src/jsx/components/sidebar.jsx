@@ -146,6 +146,8 @@ export class Tagcloud extends BaseComponent {
 
             let query = $(evt.target).text();
             google.search.cse.element.getElement('post_search').execute(query);
+
+            return false;
         }
     };
 

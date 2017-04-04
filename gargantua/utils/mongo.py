@@ -1,10 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # import datetime
+import re
 from numbers import Number
 from collections.abc import Iterable
 
 from bson import ObjectId
+
+
+oid_regex = re.compile('[a-z][0-9]{24}')
+
+
+def is_objectid(self, oid):
+    return oid_regex.match(str(oid))
 
 
 def unquote_fr_mongo(docu):
