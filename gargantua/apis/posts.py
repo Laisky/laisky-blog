@@ -2,6 +2,7 @@ import json
 import urllib
 
 import tornado
+from bson import ObjectId
 
 from gargantua.utils import debug_wrapper, logger, is_objectid
 from gargantua.models.articles import ArticlesModel
@@ -48,7 +49,7 @@ class PostAPIHandler(APIHandler):
     _query_makers = (PostCategoiesFilterMaker,)
 
     @tornado.gen.coroutine
-    # @debug_wrapper
+    @debug_wrapper
     def parse_docu(self, docu, plaintext=False):
         docus = super().parse_docus([docu])
         if not docus:
@@ -63,7 +64,7 @@ class PostAPIHandler(APIHandler):
                 content = self.plaintext_content(content)
 
         if 'category' in docu:
-            category = (yield self.db.categories.find_one({'_id': docu['category']})) or {}
+            category = (yield self.db.categories.find_one({'_id': ObjectId(docu['category'])})) or {}
         else:
             category = {}
 
