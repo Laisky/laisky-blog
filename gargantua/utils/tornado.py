@@ -23,7 +23,6 @@ logger = logging.getLogger(LOG_NAME)
 def debug_wrapper(func):
     @wraps(func)
     def wrapper(*args, **kw):
-        logger.debug('debug_wrapper for args {}, kw {}'.format(args, kw))
         try:
             r = func(*args, **kw)
             if r:
@@ -32,6 +31,7 @@ def debug_wrapper(func):
             if isinstance(err, tornado.gen.Return):
                 raise
 
+            logger.debug('debug_wrapper for args {}, kw {}'.format(args, kw))
             self = args[0]
             if getattr(self, 'request', None):
                 err_msg = {
