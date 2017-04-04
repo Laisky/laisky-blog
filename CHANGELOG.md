@@ -2,6 +2,9 @@
 *CURRENT*
 ---
     
+- 2017-04-04 (Laisky) feat: add post tags on each single post page -> [view commit](https://github.com/Laisky/laisky-blog/commit/4661c2218193cb961e936f658f11c389b9254377)
+- 2017-04-03 (Laisky) feat: add post tags on archives page -> [view commit](https://github.com/Laisky/laisky-blog/commit/c5143d561c9613011ee5d28897e0d499041d9cb2)
+- 2017-04-01 (Laisky) 2.6.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/9fc80a27959b42a88eac2a0a4bf0ef4a3721048b)
 - 2017-04-01 (Laisky) fix: profile typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/d38eb0a712404f179108d8a94d929e8b923ddcc2)
 - 2017-04-01 (Laisky) fix: nginx CSP rule -> [view commit](https://github.com/Laisky/laisky-blog/commit/37acecaecf200de4bedc70aacc76daa5c43859be)
 - 2017-03-31 (Laisky) 2.6.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/de4eed61c0b5ee6559e8275e0aa557abe73f85f0)
