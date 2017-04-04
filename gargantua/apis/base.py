@@ -4,7 +4,6 @@ import urllib
 import tornado
 import html2text
 import dicttoxml
-from bson import ObjectId
 
 from gargantua.utils import AuthHandlerMixin, DbHandlerMixin, \
     WebHandlerMixin, HttpErrorMixin, JinjaMixin, RFCMixin, \
@@ -142,28 +141,32 @@ class APIHandler(BaseAPIHandler):
         assert self._collection, 'You must identify _collecion'
         return getattr(self.db, self._collection)
 
+    @tornado.gen.coroutine
+    @debug_wrapper
     def get_cursor(self):
         col = self.get_col()
-        query, projection = self.pass_query_makers()
+        query, projection = yield self.pass_query_makers()
         if query is None:
             logger.debug('not get query')
             return
 
         cursor = col.find(query, projection)
-        return self.pass_filter(cursor)
+        raise tornado.gen.Return(self.pass_filter(cursor))
 
+    @tornado.gen.coroutine
+    @debug_wrapper
     def pass_query_makers(self):
         query, projection = {}, None
         try:
             for qm in (getattr(self, '_query_makers', tuple()) + self._base_query_makers):
-                query, projection = qm.update_query(self, query, projection)
+                query, projection = yield qm.update_query(self, query, projection)
 
         except QueryMakerError as err:
             logger.debug(err)
             self.http_400_bad_request(err=err)
             return None, None
 
-        return query, projection
+        raise tornado.gen.Return((query, projection))
 
     def pass_filter(self, cursor):
         for f in (getattr(self, '_filters', tuple()) + self._base_filters):
@@ -206,7 +209,7 @@ class APIHandler(BaseAPIHandler):
     @tornado.gen.coroutine
     @debug_wrapper
     def list(self):
-        cursor = self.get_cursor()
+        cursor = yield self.get_cursor()
         if not cursor:
             return
 

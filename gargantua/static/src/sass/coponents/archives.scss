@@ -1,8 +1,10 @@
 /**
  * archives 组件的 CSS
  */
+
 @import "compass/css3/border-radius";
 @import "../themes/default.scss";
+
 
 .archive-menu {
     background-color: $post-bgd-clr;
@@ -10,40 +12,30 @@
     position: relative;
     border: 2px solid $post-bgd-clr;
     @include border-radius(10px);
-
-    > .nav {
+    >.nav {
         position: relative;
     }
-
-    > .nav li:hover .nav {
+    >.nav li:hover .nav {
         display: block;
     }
-
     .nav li a {
         padding: 2px;
     }
-
-    li.active > a {
+    li.active>a {
         background-color: lightgrey;
     }
-
     .nav .nav {
         display: none;
-
         li {
             margin-left: 10px;
         }
-
     }
-
     .nav li.active nav {
         display: block;
     }
-
     .nav .active .nav {
         display: block;
     }
-
 }
 
 .archive.archive-extract {
@@ -55,122 +47,98 @@
     margin-bottom: 15px;
     margin-left: auto;
     margin-right: auto;
-
     .archive-title {
         text-align: center;
         margin-bottom: 20px;
         margin-top: 0px;
-
         a {
             color: $post-title-clr;
         }
-
     }
-
     .archive-meta {
         color: black;
         text-align: right;
         margin-bottom: 10px;
         margin-top: -10px;
     }
-
     .archive-content {
         line-height: 150%;
         color: $post-cnt-clr;
         margin-bottom: 10px;
         font-size: 16px;
-
         .reveal {
             min-height: 600px !important;
             font-size: 1.4em;
-
             .slides {
                 text-align: left;
-
                 h1,
                 h2 {
                     text-align: center;
                 }
-
                 li {
                     margin-left: 2em;
                 }
-
                 img,
                 pre {
                     margin: 0 auto;
                 }
-
                 pre,
                 code {
                     font-size: inherit;
                 }
-
             }
-
         }
-
         h1 {
             margin-top: 0em;
         }
-
         h1,
         h2 {
             border-bottom: 2px solid #EEE;
         }
-
         .footnotes {
             hr {
                 height: 0px;
                 margin: 0px;
             }
-
-            ol > li {
+            ol>li {
                 p {
                     margin: 0px;
                 }
-
             }
-
         }
-
-        blockquote > p {
+        blockquote>p {
             font-style: italic;
             font-size: 0.9em;
             color: $post-quote-clr;
         }
-
         pre {
             margin-bottom: 20px;
         }
-
         .codehilite {
             margin-bottom: 16px;
         }
-
         img {
             display: block;
             cursor: pointer;
             max-height: 600px;
             max-width: 600px;
         }
-
         a {
             color: $link-clr;
         }
-
         blockquote {
             font: inherit;
             margin: 20px;
         }
-
     }
-
     .archive-tail {
         text-align: right;
         margin-right: 30px;
+        div {
+            float: left;
+        }
 
-        > span {
+        >span {
             margin-left: 50px;
         }
 
@@ -179,6 +147,17 @@
             margin-left: 30px;
         }
 
-    }
+        .category a {
+            margin-left: 0px;
+        }
 
+        .tags {
+            margin-left: 5px;
+            max-width: 335px;
+            span {
+                margin-left: 1px;
+                cursor: pointer;
+            }
+        }
+    }
 }

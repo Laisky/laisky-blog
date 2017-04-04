@@ -3,8 +3,9 @@ from abc import ABC, abstractclassmethod
 
 import pymongo
 from bson import ObjectId
+import tornado
 
-from gargantua.utils import logger
+from gargantua.utils import logger, is_objectid, debug_wrapper
 
 
 class QueryMakerError(Exception):
@@ -14,8 +15,9 @@ class QueryMakerError(Exception):
 class BaseMaker(ABC):
 
     @abstractclassmethod
+    @tornado.gen.coroutine
     def update_query(cls, app, query, projection):
-        return query, projection
+        raise tornado.gen.Return((query, projection))
 
 
 class PostCategoiesFilterMaker(BaseMaker):
@@ -35,15 +37,23 @@ class PostCategoiesFilterMaker(BaseMaker):
             'post_menu': 1,
             'post_modified_gmt': 1,
             'post_created_at': 1,
+            'post_tags': 1,
         }
 
     @classmethod
+    @tornado.gen.coroutine
+    @debug_wrapper
     def update_query(cls, app, query, projection):
-        projection = projection or cls.get_default_posts_projection()
+        projection = projection
         try:
             category = app.get_argument('category', default=None, strip=True)
             if category and category != 'null':
-                category = ObjectId(category)
+                if is_objectid(category):
+                    category = ObjectId(category)
+                else:
+                    docu = yield app.db.categories.find_one({'name': category})
+                    if docu:
+                        category = docu['_id']
         except Exception as err:
             raise QueryMakerError(err)
 
@@ -54,5 +64,5 @@ class PostCategoiesFilterMaker(BaseMaker):
             else:
                 query['category'] = category
 
-        return query, projection
+        raise tornado.gen.Return((query, projection))
 

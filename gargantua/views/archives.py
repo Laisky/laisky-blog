@@ -56,6 +56,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
             'search': self.get_post_by_keyword,      # 按关键词搜索
             'publish': self.get_new_post,            # 发表新文章
             'p': self.get_post_by_name,              # 单篇文章的页面
+            'api/posts/keywords': self.get_post_keywords,
             'api/posts/get-amend-post': self.get_amend_post,            # 编辑文章
             'rss': self.get_rss,                     # 获取订阅
             'api/posts/get-post-by-page': self.get_post_by_page,
@@ -93,7 +94,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
     @debug_wrapper
     def get_rss(self):
         cursor = self.db.posts.find()
-        cursor.sort([('_id', pymongo.DESCENDING)]) \
+        cursor.sort([('_id', pymongo.DESCENDING)])
 
         posts = []
         while (yield cursor.fetch_next):
@@ -104,6 +105,13 @@ class PostsHandler(BaseHandler, ArticleMixin):
             posts.append(unquote_fr_mongo(docu))
 
         self.render_post('rss.html', posts=posts)
+        self.finish()
+
+    @tornado.gen.coroutine
+    @debug_wrapper
+    def get_post_keywords(self):
+        docu = yield self.db.statistics.find_one({'types': 'keyword'})
+        self.write_json(data=docu['keywords'])
         self.finish()
 
     @tornado.web.authenticated

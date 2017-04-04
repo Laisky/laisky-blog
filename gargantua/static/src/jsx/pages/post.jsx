@@ -165,6 +165,7 @@ export class Post extends BaseComponent {
             postComment = <Comment post-name={this.state.post.post_name} />;
             postContent = <ArchiveExtract key={this.state.post.post_name}
                                           insertHTML={true}
+                                          archive-object={this.state.post}
                                           archive-type={this.state.post.post_type}
                                           archive-name={this.state.post.post_name}
                                           archive-title={this.state.post.post_title}
@@ -204,7 +205,6 @@ export class PostCategories extends BaseComponent {
         let cateid = this.props.params.cateid;
         this.loadArticlesByCategoryId(cateid);
     };
-
 
     componentWillReceiveProps(nextProps) {
         let cateid = nextProps.params.cateid;

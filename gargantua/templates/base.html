@@ -52,13 +52,13 @@
         var revealLibUrl = '/static/dist/js/reveallibs.min.js';
     </script>
 
-
     <script src="{{static_url('dist/js/libs.min.js')}}" type="text/javascript" charset="utf-8"></script>
     <script src="{{static_url('dist/js/sites.min.js')}}" type="text/javascript" charset="utf-8"></script>
     <div class="pagejs">
         {% block page_js %}
         {% endblock %}<!-- page_js -->
     </div>
+<object data="/static/dist/js/reveallibs.min.js" />
 </body>
 {% endblock %}
 

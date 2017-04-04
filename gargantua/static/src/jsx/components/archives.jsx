@@ -54,6 +54,55 @@ class ArchiveExtract extends BaseComponent {
         })
     };
 
+    getTagClickHandler() {
+        return evt => {
+            if (!google || !google.search.cse.element.getElement('post_search')) return;
+
+            let query = $(evt.target).text();
+            google.search.cse.element.getElement('post_search').execute(query);
+
+            return false;
+        }
+    };
+
+    getPostTails() {
+        let articleEditable,
+            archiveName = this.props['archive-name'],
+            postCategory = this.props['archive-object'] && this.props['archive-object']['post_category'],
+            postTags = this.props['archive-object'] && this.props['archive-object']['post_tags'] || [];
+
+        if(this.getCurrentUsername()) {
+            articleEditable = <Link to={{ pathname: `/amend/${archiveName}/` }}>编辑</Link>
+        }
+
+        let tagHtml = []
+        postTags.map(t => tagHtml.push(
+            <span onClick={this.getTagClickHandler()} className="label label-info">{t}</span>
+        ));
+
+        if(this.props['archive-object']) {
+            return [
+                <div className="category">
+                    <span>分类：</span>
+                    <Link to={{ pathname: `/cate/${postCategory}/` }}>
+                        {postCategory || '未分类'}
+                    </Link>
+                </div>,
+                <div className="tags">
+                    <span>标签：</span>
+                    {tagHtml}
+                </div>,
+                articleEditable,
+                <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">0 评论</Link>
+            ];
+        }
+
+        return [
+            articleEditable,
+            <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">0 评论</Link>
+        ];
+    };
+
     render() {
         let archiveName = this.props['archive-name'],
             archiveUrl = `/p/${archiveName}/`,
@@ -61,10 +110,6 @@ class ArchiveExtract extends BaseComponent {
             articleEditable,
             archiveType = this.props['archive-type'] || 'markdown',
             amendUrl = `/amend/${archiveName}`;
-
-        if(this.getCurrentUsername()) {
-            articleEditable = <Link to={{ pathname: `/amend/${archiveName}/` }}>编辑</Link>
-        }
 
         if(this.props.insertHTML) {
             if(archiveType == 'markdown') {
@@ -88,8 +133,7 @@ class ArchiveExtract extends BaseComponent {
                 {articleContent}
             </div>
             <div className="archive-tail">
-                {articleEditable}
-                <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">0 评论</Link>
+                {this.getPostTails()}
             </div>
         </div>
     };

@@ -74,7 +74,7 @@ export class Categories extends BaseComponent {
 
         return (
             <section className="row console categories">
-                <h2>类别</h2>
+                <h2>分类</h2>
                 <div>{html}</div>
             </section>
         );
@@ -125,11 +125,39 @@ export class Profile extends BaseComponent {
 
 
 export class Tagcloud extends BaseComponent {
+    componentDidMount() {
+        this.loadTags();
+    };
+
+    async loadTags() {
+        let url = '/api/posts/keywords/',
+            html = [];
+
+        $.getJSON(url)
+            .then(resp => {
+                resp.data.map(tag => html.push(<span onClick={this.getTagClickHandler()} className="label label-info">{`${tag}`}</span>));
+                this.setState({tags: html})
+            });
+    };
+
+    getTagClickHandler() {
+        return evt => {
+            if (!google || !google.search.cse.element.getElement('post_search')) return;
+
+            let query = $(evt.target).text();
+            google.search.cse.element.getElement('post_search').execute(query);
+
+            return false;
+        }
+    };
+
     render() {
         return (
             <section className="row console tag">
-                <h2>标签云</h2>
-                <p>摸鱼被发现了，还没做……</p>
+                <h2>标签</h2>
+                <div className="tag-labels">
+                    {this.state.tags}
+                </div>
             </section>
         );
     };
