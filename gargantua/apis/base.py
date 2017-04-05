@@ -120,60 +120,54 @@ class APIHandler(BaseAPIHandler):
     _base_parsers =(DatetimeParser, MongoDataParser)
 
     @tornado.web.asynchronous
-    def get(self, oid=None):
+    async def get(self, oid=None):
         if oid:
-            return self.retrieve(oid)
+            return await self.retrieve(oid)
         else:
-            return self.list()
+            return await self.list()
 
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def parse_docus(self, docus):
+    async def parse_docus(self, docus):
         try:
-            for p in (getattr(self, '_parsers', tuple()) + self._base_parsers):
-                docus = yield p.parse_results(self, docus)
+            for p in (self._base_parsers + getattr(self, '_parsers', tuple())):
+                docus = await p.parse_results(self, docus)
         except ParserError as err:
             logger.debug(err)
             self.http_400_bad_request(err=err)
             return None
 
-        raise tornado.gen.Return(docus)
+        return docus
 
     def get_col(self):
         assert self._collection, 'You must identify _collecion'
         return getattr(self.db, self._collection)
 
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def get_cursor(self):
+    async def get_cursor(self):
         col = self.get_col()
-        query, projection = yield self.pass_query_makers()
+        query, projection = await self.pass_query_makers()
         if query is None:
             logger.debug('not get query')
             return
 
         cursor = col.find(query, projection)
-        raise tornado.gen.Return(self.pass_filter(cursor))
+        return await self.pass_filter(cursor)
 
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def pass_query_makers(self):
+    async def pass_query_makers(self):
         query, projection = {}, None
         try:
-            for qm in (getattr(self, '_query_makers', tuple()) + self._base_query_makers):
-                query, projection = yield qm.update_query(self, query, projection)
+            for qm in (self._base_query_makers + getattr(self, '_query_makers', tuple())):
+                query, projection = await qm.update_query(self, query, projection)
 
         except QueryMakerError as err:
             logger.debug(err)
             self.http_400_bad_request(err=err)
             return None, None
 
-        raise tornado.gen.Return((query, projection))
+        return query, projection
 
-    def pass_filter(self, cursor):
-        for f in (getattr(self, '_filters', tuple()) + self._base_filters):
+    async def pass_filter(self, cursor):
+        for f in (self._base_filters + getattr(self, '_filters', tuple())):
             try:
-                cursor = f.query_cursor(self, cursor)
+                cursor = await f.query_cursor(self, cursor)
             except FilterError as err:
                 logger.debug(err)
                 self.http_400_bad_request(err=err)
@@ -187,43 +181,38 @@ class APIHandler(BaseAPIHandler):
     def parse_oid(self, oid):
         return urllib.parse.quote(oid).lower()
 
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def retrieve(self, oid):
+    async def retrieve(self, oid):
         logger.info('retrieve {} for oid {}'
                     .format(self._collection, oid))
         col = self.get_col()
         oidname = self.get_oidname()
         try:
             f_oid = self.parse_oid(oid)
-            docu = yield col.find_one({oidname: f_oid})
+            docu = await col.find_one({oidname: f_oid})
             assert docu, 'article not exists!'
         except Exception as err:
             self.http_404_not_found(err=err)
             return
 
-        parsed_docu = yield self.parse_docus([docu])
+        parsed_docu = await self.parse_docus([docu])
         if not parsed_docu:
             return
 
         self.success(parsed_docu[0])
 
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def list(self):
-        cursor = yield self.get_cursor()
+    async def list(self):
+        cursor = await self.get_cursor()
         if not cursor:
             return
 
         posts = []
-        while (yield cursor.fetch_next):
+        while (await cursor.fetch_next):
             docu = cursor.next_object()
-            post = mongo_parser.parse(docu)
-            posts.append(post)
+            posts.append(docu)
 
         col = self.get_col()
-        total = yield col.count()
-        parsed_docus = yield self.parse_docus(posts)
+        total = await col.count()
+        parsed_docus = await self.parse_docus(posts)
         if not parsed_docus:
             return None
 

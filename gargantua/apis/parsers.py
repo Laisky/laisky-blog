@@ -16,43 +16,35 @@ class ParserError(Exception):
 class BaseParser(ABC):
 
     @abstractclassmethod
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def parse_results(cls, app, results):
-        raise tornado.gen.Return(results)
+    async def parse_results(cls, app, results):
+        return results
 
 
 class MongoDataParser(BaseParser):
 
     @classmethod
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def parse_results(cls, app, results):
+    async def parse_results(cls, app, results):
         mparser = MongoParser()
-        raise tornado.gen.Return(mparser.parse(results))
+        return mparser.parse(results)
 
 
 class DatetimeParser(BaseParser):
 
     @classmethod
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def parse_results(cls, app, results):
+    async def parse_results(cls, app, results):
         for docu in results:
             for k, v in docu.items():
                 if isinstance(v, datetime.datetime):
                     docu[k] = utc2cst_timestamp(v)
 
-        raise tornado.gen.Return(results)
+        return results
 
 
 
 class PostContentTruncateParser(BaseParser):
 
     @classmethod
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def parse_results(cls, app, results):
+    async def parse_results(cls, app, results):
         try:
             truncate = int(app.get_argument('truncate', default=-1))
         except Exception as e:
@@ -64,15 +56,13 @@ class PostContentTruncateParser(BaseParser):
             for docu in results:
                 docu['post_content'] = docu['post_content'][:truncate]
 
-        raise tornado.gen.Return(results)
+        return results
 
 
 class PostContentParser(BaseParser):
 
     @classmethod
-    @tornado.gen.coroutine
-    @debug_wrapper
-    def parse_results(cls, app, results):
+    async def parse_results(cls, app, results):
         logger.debug('PostContentParser.parse_results')
         try:
             plaintext = app.get_argument('plaintext', default='false', strip=True)
@@ -92,7 +82,7 @@ class PostContentParser(BaseParser):
                     content = app.plaintext_content(content)
 
             if 'category' in docu:
-                category = (yield app.db.categories.find_one({'_id': ObjectId(docu['category'])})) or {}
+                category = (await app.db.categories.find_one({'_id': ObjectId(docu['category'])})) or {}
             else:
                 category = {}
 
@@ -113,5 +103,5 @@ class PostContentParser(BaseParser):
                 'post_status': docu['post_status'],
             })
 
-        raise tornado.gen.Return(r)
+        return r
 
