@@ -2,6 +2,9 @@
 *CURRENT*
 ---
     
+- 2017-04-05 (Laisky) perf: replace ioloop by asyncio -> [view commit](https://github.com/Laisky/laisky-blog/commit/490df5437f5127b0cb4b89c12088c6faca4ce122)
+- 2017-04-05 (Laisky) fix: preload reveallib.js -> [view commit](https://github.com/Laisky/laisky-blog/commit/f6023156b20f505600f693fa01d105da6c8ce032)
+- 2017-04-04 (Laisky) 2.7.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/2552979947ded438b88ac388f0e2e31a8fa119da)
 - 2017-04-04 (Laisky) fix: category not display -> [view commit](https://github.com/Laisky/laisky-blog/commit/317a1ce9f49967d3c5ea5762ee50f6d67f46fee9)
 - 2017-04-04 (Laisky) fix: nginx allow sameorigin's frame -> [view commit](https://github.com/Laisky/laisky-blog/commit/4627909fe9b1840ba7a26aac17d035090b70bdac)    
        
@@ -150,12 +153,6 @@
 - 2016-05-08 (Laisky) 2.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/9dfaa247908dbbec12b6cac8b564fa28f1f0fd77)
 - 2016-05-08 (Laisky) refactor: 用 react 重构 -> [view commit](https://github.com/Laisky/laisky-blog/commit/327e9fe525adf492affcd492fa97f2a4e6561604)
 - 2016-05-04 (Laisky) chore: change deploy -> .deploy -> [view commit](https://github.com/Laisky/laisky-blog/commit/374021b5f26d4ce1965806be9fa6579da22cbe56)
-- 2016-03-18 (Laisky) feat: add filters OidSortFilter, LimitFilter and SkitFilter. -> [view commit](https://github.com/Laisky/laisky-blog/commit/e67b7fe83fe9d10028232d336485c756b331bbf7)
-- 2016-03-13 (Laisky) chore: update requirements -> [view commit](https://github.com/Laisky/laisky-blog/commit/1bfef1b8b28f800ed717dfb95664098aa7f53780)    
-       
-*2.2.5*
----
-    
 - 2016-05-01 (Laisky) 2.2.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/29f345f79b633fbe5d5cd7d96b5beebb6e9a5823)
 - 2016-05-01 (Laisky) chore: update deploy scripts -> [view commit](https://github.com/Laisky/laisky-blog/commit/fbc7245e28385bbb8bcc487551cc204802ea080c)
 - 2016-04-29 (Laisky) 2.2.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/24ecf893f710f0a541037ca65211e46aff5cbd3f)
@@ -165,6 +162,8 @@
 - 2016-03-19 (Laisky) fix: remove tasks -> [view commit](https://github.com/Laisky/laisky-blog/commit/1f735ffc58e7e91238b89ae98f71922f66de9302)
 - 2016-03-18 (Laisky) 2.2.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1a6ae1e97c4b288e3036361cc41bdd1651b09c5d)
 - 2016-03-18 (Laisky) fix: search error -> [view commit](https://github.com/Laisky/laisky-blog/commit/7a05f60bf51c9ff16afcc30be906aee46f8a6c78)
+- 2016-03-18 (Laisky) feat: add filters OidSortFilter, LimitFilter and SkitFilter. -> [view commit](https://github.com/Laisky/laisky-blog/commit/e67b7fe83fe9d10028232d336485c756b331bbf7)
+- 2016-03-13 (Laisky) chore: update requirements -> [view commit](https://github.com/Laisky/laisky-blog/commit/1bfef1b8b28f800ed717dfb95664098aa7f53780)
 - 2016-03-12 (Laisky) 2.2.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/1b63cef527ca62010f0c6c7b59f438d8f01551b2)
 - 2016-03-12 (Laisky) refactor: change docker log-driver to fluentd -> [view commit](https://github.com/Laisky/laisky-blog/commit/d024d3e3d663b6916f2f5fe9d26d5bcb6d25db67)
 - 2016-03-07 (Laisky) docs: fix changelog typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/41596d8fe862df5a6ee05bb0a7d415a2cf3ae00c)
@@ -178,11 +177,7 @@
 - 2016-03-07 (Laisky) docs: mkdocs -> [view commit](https://github.com/Laisky/laisky-blog/commit/a07e4a50137b313b5598f3ed6731e3c938cb2e6b)
 - 2016-03-07 (Laisky) fix: fix debug_wrapper bug -> [view commit](https://github.com/Laisky/laisky-blog/commit/845cc421e4df09c1d406130b61865b2dbdacf9dc)
 - 2016-03-06 (Laisky) fix: fix docker image tag -> [view commit](https://github.com/Laisky/laisky-blog/commit/aa3ea9aed9cbd965befe855d23d4b3f015c77d43)
-- 2016-03-06 (Laisky) docs: update docs -> [view commit](https://github.com/Laisky/laisky-blog/commit/f3b7c664142785c699d596d0c88898739e88572d)    
-       
-*2.1.12*
----
-    
+- 2016-03-06 (Laisky) docs: update docs -> [view commit](https://github.com/Laisky/laisky-blog/commit/f3b7c664142785c699d596d0c88898739e88572d)
 - 2016-03-06 (Laisky) 2.1.12 -> [view commit](https://github.com/Laisky/laisky-blog/commit/768f83b2a1e28c90d7b28917b031a6bb5df40e0d)
 - 2016-03-06 (Laisky) chore: update docker-compose * dockerfile -> [view commit](https://github.com/Laisky/laisky-blog/commit/7481cdeb5cab6bb519badcf0f061f07bb23624a4)
 - 2016-03-05 (Laisky) 2.1.11 -> [view commit](https://github.com/Laisky/laisky-blog/commit/09fdd9dd0726099319dd267697ce75905d7ec4e8)
@@ -238,22 +233,22 @@
 - 2016-01-07 (Laisky) style: fix requirements -> [view commit](https://github.com/Laisky/laisky-blog/commit/b4c098dc9c1887934b3e8c90c533fab8ad9e8e11)
 - 2016-01-07 (Laisky) docs: add commitizen logo -> [view commit](https://github.com/Laisky/laisky-blog/commit/dafddaf448e3fe1d1b2802c0e484384d410404af)
 - 2016-01-07 (Laisky) docs: fix docs -> [view commit](https://github.com/Laisky/laisky-blog/commit/47a6a09d39590611056951aae19275321a708a01)
-- 2016-01-07 (Laisky) docs: 2.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6f29e04af4b334f984156e8fa0559b7665f42779)
-- 2016-01-07 (Laisky) feat: add chinese title serial number #72 -> [view commit](https://github.com/Laisky/laisky-blog/commit/f42a6184a07925b4ecf9d000e2ecd98c5b2d22a0)
 - 2016-01-07 (Laisky) feat: add chinese title serial number #72 -> [view commit](https://github.com/Laisky/laisky-blog/commit/82880171b4fe9d543d44695b4625581eb9aa34ef)
 - 2016-01-07 (Laisky) docs: fix readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/2ba2449fce06fde5cfa6a01330b2bd94b8d4815b)
 - 2016-01-07 (Laisky) style: fix package.json -> [view commit](https://github.com/Laisky/laisky-blog/commit/72f9ab9594784eed95d22fd2943097d53bbd4aeb)
 - 2016-01-07 (Laisky) docs: + change log -> [view commit](https://github.com/Laisky/laisky-blog/commit/69f2cdf7ca363d9b93b732386c9d54c017086736)
 - 2016-01-07 (Laisky) refactor: move gargantua project to root dir -> [view commit](https://github.com/Laisky/laisky-blog/commit/3c152a0eb6e3f3005cce4cf3258d7bd8ca6fdf73)
 - 2016-01-07 (Laisky) docs: add pbr & commitizen -> [view commit](https://github.com/Laisky/laisky-blog/commit/0a2533fb6265b387dff23e50d225cef25973ce75)
-- 2016-01-07 (Laisky) + #73 pbr -> [view commit](https://github.com/Laisky/laisky-blog/commit/b45f22ce08e24d18031ec10eb57eecedfa99c6aa)
-- 2015-12-31 (Laisky) - highlightjs -> [view commit](https://github.com/Laisky/laisky-blog/commit/4b948aa2c67aca613e85656409e3d49ec4107364)
-- 2015-12-31 (Laisky) - highlightjs -> [view commit](https://github.com/Laisky/laisky-blog/commit/65f82651a446148062fbf86a620be9a79fa04876)
-- 2015-12-19 (Laisky) * post menu hover 自动展开 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ee5e0762fa705700a756a069883a86519061bddf)    
+- 2016-01-07 (Laisky) + #73 pbr -> [view commit](https://github.com/Laisky/laisky-blog/commit/b45f22ce08e24d18031ec10eb57eecedfa99c6aa)    
        
-*2.0.5*
+*2.1*
 ---
     
+- 2016-01-07 (Laisky) docs: 2.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6f29e04af4b334f984156e8fa0559b7665f42779)
+- 2016-01-07 (Laisky) feat: add chinese title serial number #72 -> [view commit](https://github.com/Laisky/laisky-blog/commit/f42a6184a07925b4ecf9d000e2ecd98c5b2d22a0)
+- 2015-12-31 (Laisky) - highlightjs -> [view commit](https://github.com/Laisky/laisky-blog/commit/4b948aa2c67aca613e85656409e3d49ec4107364)
+- 2015-12-31 (Laisky) - highlightjs -> [view commit](https://github.com/Laisky/laisky-blog/commit/65f82651a446148062fbf86a620be9a79fa04876)
+- 2015-12-19 (Laisky) * post menu hover 自动展开 -> [view commit](https://github.com/Laisky/laisky-blog/commit/ee5e0762fa705700a756a069883a86519061bddf)
 - 2015-12-18 (Laisky) 2.0.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/70d778ef43f8762c9c0291ab77f284ed588902ae)
 - 2015-12-18 (Laisky) * #64 改写 reveal.js，修复了一个 safari 下的bug -> [view commit](https://github.com/Laisky/laisky-blog/commit/1295fee265e6935b596b926593b8f929e650d2b1)
 - 2015-12-18 (Laisky) * fix reveal.js error on safari -> [view commit](https://github.com/Laisky/laisky-blog/commit/f21e9cfce73227b94bdaf47796c4485f15fc7343)
@@ -277,13 +272,13 @@
 - 2015-11-26 (Laisky) * bugfix slide 的颜色和amend有bug -> [view commit](https://github.com/Laisky/laisky-blog/commit/7ad132887b43eca9827541daf0adb4500162413f)
 - 2015-11-09 (Laisky) * 测试数据库端口为 27016 -> [view commit](https://github.com/Laisky/laisky-blog/commit/e89f70c5113a7d1bb1e5fa001f6435552e642dd5)
 - 2015-11-09 (Laisky) * fix 美化 post menu -> [view commit](https://github.com/Laisky/laisky-blog/commit/50d387b3d1bcdd75d4e1f1193b68a3c5bd6b41dd)
-- 2015-11-08 (Laisky) * fix redirect -> [view commit](https://github.com/Laisky/laisky-blog/commit/736aa0f39b9c387b94dafa26fa844edf20fd7b25)
-- 2015-11-08 (Laisky) 2.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/dc476928520df29779ba35666b6df625cb86ed36)
-- 2015-11-08 (Laisky) * #67 登陆后自动跳转到 next -> [view commit](https://github.com/Laisky/laisky-blog/commit/ed0f86dd20427df49aaf027f39025bf7321cd6a6)    
+- 2015-11-08 (Laisky) * fix redirect -> [view commit](https://github.com/Laisky/laisky-blog/commit/736aa0f39b9c387b94dafa26fa844edf20fd7b25)    
        
-*1.9.9*
+*2.0*
 ---
     
+- 2015-11-08 (Laisky) 2.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/dc476928520df29779ba35666b6df625cb86ed36)
+- 2015-11-08 (Laisky) * #67 登陆后自动跳转到 next -> [view commit](https://github.com/Laisky/laisky-blog/commit/ed0f86dd20427df49aaf027f39025bf7321cd6a6)
 - 2015-11-08 (Laisky) * fix: 美化文章 CSS -> [view commit](https://github.com/Laisky/laisky-blog/commit/f2eb6faa9d5be617305044f2be9bfd9e3a4a6e43)
 - 2015-11-01 (Laisky) * fix: remove maven -> [view commit](https://github.com/Laisky/laisky-blog/commit/31c37aff3c86b0a471161f575f7889faa466ec79)
 - 2015-10-27 (Laisky) 1.9.8 -> [view commit](https://github.com/Laisky/laisky-blog/commit/5c780652a6f05eae57719bcaee06a14929ab1a24)
