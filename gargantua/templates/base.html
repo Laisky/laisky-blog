@@ -51,11 +51,17 @@
 
         var revealLibUrl = '/static/dist/js/reveallibs.min.js';
     </script>
-
+    <script src="https://s1.laisky.com/static/jquery.min.js"></script>
+    <script src="https://s1.laisky.com/static/bootstrap.min.js"></script>
+    <script src="https://s1.laisky.com/static/browser-polyfill.js"></script>
+    <script src="https://s1.laisky.com/static/humane.js"></script>
+    <script src="https://s2.laisky.com/static/immutable.min.js"></script>
+    <script src="https://s2.laisky.com/static/jwt-decode.min.js"></script>
+    <script src="https://s2.laisky.com/static/moment-with-locales.min.js"></script>
     <script src="{{static_url('dist/js/libs.min.js')}}" type="text/javascript" charset="utf-8"></script>
-    <script src="{{static_url('dist/js/sites.min.js')}}" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" charset="utf-8">
-        $.ajax({url: "/static/dist/js/reveallibs.min.js"});
+    <script async defer src="{{static_url('dist/js/sites.min.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script async defer type="text/javascript" charset="utf-8">
+        if(window.fetch) fetch("/static/dist/js/reveallibs.min.js");
     </script>
     <div class="pagejs">
         {% block page_js %}
