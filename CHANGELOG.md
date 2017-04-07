@@ -2,6 +2,9 @@
 *CURRENT*
 ---
     
+- 2017-04-07 (Laisky) fix: static file url -> [view commit](https://github.com/Laisky/laisky-blog/commit/653e60455f819a4bc46b321e4dd02075b8a91acb)
+- 2017-04-06 (Laisky) chore: split libs.js to small files -> [view commit](https://github.com/Laisky/laisky-blog/commit/19097237cd7a3c84d050cf84366aa48486616ee3)
+- 2017-04-06 (Laisky) 2.7.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/89b7459e908176f90762be337b9181c416228d64)
 - 2017-04-05 (Laisky) perf: replace ioloop by asyncio -> [view commit](https://github.com/Laisky/laisky-blog/commit/490df5437f5127b0cb4b89c12088c6faca4ce122)
 - 2017-04-05 (Laisky) fix: preload reveallib.js -> [view commit](https://github.com/Laisky/laisky-blog/commit/f6023156b20f505600f693fa01d105da6c8ce032)
 - 2017-04-04 (Laisky) 2.7.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/2552979947ded438b88ac388f0e2e31a8fa119da)
