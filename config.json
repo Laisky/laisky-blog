@@ -1,13 +1,6 @@
 {
     "jslibs": {
         "src": [
-            "./gargantua/static/vendor/bower_components/babel-polyfill/browser-polyfill.js",
-            "./gargantua/static/vendor/bower_components/jquery/dist/jquery.min.js",
-            "./gargantua/static/vendor/bower_components/bootstrap/dist/js/bootstrap.min.js",
-            "./gargantua/static/vendor/bower_components/moment/moment.js",
-            "./gargantua/static/vendor/bower_components/humane-dates/humane.js",
-            "./gargantua/static/vendor/bower_components/immutable/dist/immutable.min.js",
-            "./gargantua/static/vendor/bower_components/jwt-decode/build/jwt-decode.min.js",
             "./node_modules/react/dist/react.min.js",
             "./node_modules/react-dom/dist/react-dom.min.js",
             "./node_modules/react-router/umd/ReactRouter.min.js",
