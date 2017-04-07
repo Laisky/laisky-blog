@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/libs-edee677d7d.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/sites-57d36d0c6f.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/sites-6045ab6029.min.css')}}">
     {% block page_css %}
     {% endblock %}<!-- page_css -->
 </head>
@@ -51,11 +51,17 @@
 
         var revealLibUrl = '/static/dist/js/reveallibs-b19f5e3f7c.min.js';
     </script>
-
-    <script src="{{static_url('dist/js/libs-e20aa21e9a.min.js')}}" type="text/javascript" charset="utf-8"></script>
-    <script src="{{static_url('dist/js/sites-55104a05cc.min.js')}}" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" charset="utf-8">
-        $.ajax({url: "/static/dist/js/reveallibs-b19f5e3f7c.min.js"});
+    <script src="https://s1.laisky.com/static/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://s1.laisky.com/static/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://s1.laisky.com/static/babel-polyfill/6.23.0/polyfill.min.js"></script>
+    <script src="https://s1.laisky.com/static/humane.min.js"></script>
+    <script src="https://s2.laisky.com/static/immutable/3.8.1/immutable.min.js"></script>
+    <script src="https://s2.laisky.com/static/jwt-decode/2.1.0/jwt-decode.min.js"></script>
+    <script src="https://s2.laisky.com/static/moment.js/2.12.0/moment-with-locales.min.js"></script>
+    <script src="{{static_url('dist/js/libs-6279436b98.min.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script async defer src="{{static_url('dist/js/sites-55104a05cc.min.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script async defer type="text/javascript" charset="utf-8">
+        if(window.fetch) fetch("/static/dist/js/reveallibs-b19f5e3f7c.min.js");
     </script>
     <div class="pagejs">
         {% block page_js %}
