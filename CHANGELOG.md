@@ -2,6 +2,8 @@
 *CURRENT*
 ---
     
+- 2017-04-20 (Laisky) fix: rss & fonts -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f4350f313c2512164b0ed4f3263db640beab3f8)
+- 2017-04-20 (Laisky) 2.7.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b37236ecf1f9f8e485f93b7c18fc977f11c1666a)
 - 2017-04-20 (Laisky) chore: add cdn to speedup static file -> [view commit](https://github.com/Laisky/laisky-blog/commit/f4ac3765dc3519ed367d3804f07133a0b920e9be)
 - 2017-04-08 (Laisky) perf: sites.js async but not defer -> [view commit](https://github.com/Laisky/laisky-blog/commit/b90a99ad06c25048a86effdc51730b9efbd46312)
 - 2017-04-07 (Laisky) 2.7.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/942ef1d0177ad180d65ffb9c70e895080240341a)
