@@ -2,6 +2,9 @@
 *CURRENT*
 ---
     
+- 2017-04-20 (Laisky) chore: add cdn to speedup static file -> [view commit](https://github.com/Laisky/laisky-blog/commit/f4ac3765dc3519ed367d3804f07133a0b920e9be)
+- 2017-04-08 (Laisky) perf: sites.js async but not defer -> [view commit](https://github.com/Laisky/laisky-blog/commit/b90a99ad06c25048a86effdc51730b9efbd46312)
+- 2017-04-07 (Laisky) 2.7.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/942ef1d0177ad180d65ffb9c70e895080240341a)
 - 2017-04-07 (Laisky) fix: static file url -> [view commit](https://github.com/Laisky/laisky-blog/commit/653e60455f819a4bc46b321e4dd02075b8a91acb)
 - 2017-04-06 (Laisky) chore: split libs.js to small files -> [view commit](https://github.com/Laisky/laisky-blog/commit/19097237cd7a3c84d050cf84366aa48486616ee3)
 - 2017-04-06 (Laisky) 2.7.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/89b7459e908176f90762be337b9181c416228d64)
