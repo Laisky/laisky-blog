@@ -11,8 +11,10 @@
     <link rel="alternate" type="application/rss+xml" title="Articles" href="https://blog.laisky.com/rss/">
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/libs.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{static_url('dist/css/sites.min.css')}}">
+    <!--<link rel="stylesheet" type="text/css" href="{{static_url('dist/css/libs.min.css')}}">-->
+    <!--<link rel="stylesheet" type="text/css" href="{{static_url('dist/css/sites.min.css')}}">-->
+    <link rel="stylesheet" type="text/css" href="https://laisky-cache.b0.upaiyun.com/gargantua/css/libs-edee677d7d.min.css">
+    <link rel="stylesheet" type="text/css" href="https://laisky-cache.b0.upaiyun.com/gargantua/css/sites-1e668c684d.min.css">
     {% block page_css %}
     {% endblock %}<!-- page_css -->
 </head>
@@ -44,24 +46,26 @@
             a.async = 1;
             a.src = g;
             m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        })(window, document, 'script', 'https://laisky-cache.b0.upaiyun.com/ga-analytics-20170420.js', 'ga');
 
         ga('create', 'UA-65521906-1', 'auto');
         ga('send', 'pageview');
 
-        var revealLibUrl = '/static/dist/js/reveallibs.min.js';
+        var revealLibUrl = 'https://laisky-cache.b0.upaiyun.com/gargantua/js/reveallibs.min.js';
     </script>
-    <script src="https://s1.laisky.com/static/jquery/2.2.2/jquery.min.js"></script>
-    <script src="https://s1.laisky.com/static/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://s1.laisky.com/static/babel-polyfill/6.23.0/polyfill.min.js"></script>
-    <script src="https://s1.laisky.com/static/humane.min.js"></script>
-    <script src="https://s2.laisky.com/static/immutable/3.8.1/immutable.min.js"></script>
-    <script src="https://s2.laisky.com/static/jwt-decode/2.1.0/jwt-decode.min.js"></script>
-    <script src="https://s2.laisky.com/static/moment.js/2.12.0/moment-with-locales.min.js"></script>
-    <script src="{{static_url('dist/js/libs.min.js')}}" type="text/javascript" charset="utf-8"></script>
-    <script async src="{{static_url('dist/js/sites.min.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script src="https://laisky-cache.b0.upaiyun.com/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://laisky-cache.b0.upaiyun.com/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://laisky-cache.b0.upaiyun.com/babel-polyfill/6.23.0/polyfill.min.js"></script>
+    <script src="https://laisky-cache.b0.upaiyun.com/humane.min.js"></script>
+    <script src="https://laisky-cache.b0.upaiyun.com/immutable/3.8.1/immutable.min.js"></script>
+    <script src="https://laisky-cache.b0.upaiyun.com/jwt-decode/2.1.0/jwt-decode.min.js"></script>
+    <script src="https://laisky-cache.b0.upaiyun.com/moment.js/2.12.0/moment-with-locales.min.js"></script>
+    <!--<script src="{{static_url('dist/js/libs.min.js')}}" type="text/javascript" charset="utf-8"></script>-->
+    <!--<script async src="{{static_url('dist/js/sites.min.js')}}" type="text/javascript" charset="utf-8"></script>-->
+    <script src="https://laisky-cache.b0.upaiyun.com/gargantua/js/libs-6279436b98.min.js" type="text/javascript" charset="utf-8"></script>
+    <script async src="https://laisky-cache.b0.upaiyun.com/gargantua/js/sites-55104a05cc.min.js" type="text/javascript" charset="utf-8"></script>
     <script async type="text/javascript" charset="utf-8">
-        if(window.fetch) fetch("/static/dist/js/reveallibs.min.js");
+        if(window.fetch) fetch("https://laisky-cache.b0.upaiyun.com/gargantua/js/reveallibs.min.js");
     </script>
     <div class="pagejs">
         {% block page_js %}
