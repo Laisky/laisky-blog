@@ -91,3 +91,4 @@ gargantua/static/dist/maps/
 # prod
 /docker/docker-compose.yml
 /gargantua/settings/settings.py
+gargantua/static/dist/
