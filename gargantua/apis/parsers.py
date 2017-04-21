@@ -93,7 +93,7 @@ class PostContentParser(BaseParser):
                 'post_type': docu.get('post_type', 'markdown'),
                 'link': app.hyperlink_postname(docu['post_name']),
                 'post_name': docu['post_name'],
-                'post_markdown': docu.get('post_markdown'),
+                # 'post_markdown': docu.get('post_markdown'),
                 'post_menu': docu.get('post_menu'),
                 'post_content': content,
                 'post_id': str(docu['_id']),

@@ -57,10 +57,16 @@ class PageNotFound(BaseHandler):
 
 class Application(tornado.web.Application):
 
+    def get_static_url_prefix(self):
+        if options.debug:
+            return '/static/dist/'
+        else:
+            return 'https://laisky-cache.b0.upaiyun.com/gargantua/'
+
     def __init__(self):
         settings = {
-            'static_path': str(Path(CWD, 'static')),
-            'static_url_prefix': '/static/',
+            'static_path': str(Path(CWD, 'static', 'dist')),
+            'static_url_prefix': self.get_static_url_prefix(),
             'template_path': str(Path(CWD, 'html')),
             'cookie_secret': get_default_config('SECRET_KEY'),
             'login_url': '/login/',
@@ -69,14 +75,6 @@ class Application(tornado.web.Application):
             'debug': options.debug
         }
         handlers = [
-            # # -------------- handler --------------
-            # url(r'^/(archives)/$', PostsHandler, name='post:archives'),
-            # url(r'^/(p)/(.*)/$', PostsHandler, name='post:single'),
-            # url(r'^/(publish)/$', PostsHandler, name='post:publish'),
-            # url(r'^/(amend)/$', PostsHandler, name='post:amend'),
-            # url(r'^/(login)/$', UserHandler, name='user:login'),
-            # url(r'^/(search)/$', PostsHandler, name='post:search'),
-            # url(r'^/(profile)/$', UserHandler, name='user:profile'),
             # ---------------- rss ----------------
             url(r'^/(rss)/$', PostsHandler, name='post:rss'),
             # ---------------- old api ----------------
@@ -85,8 +83,6 @@ class Application(tornado.web.Application):
             # ---------------- rest api ----------------
             url(r'^/api/v2/post/category/([a-zA-Z0-9\-_%]+)?/?$', PostCategoriesAPIHandler, name='rest:post_category'),
             url(r'^/api/v2/post/([a-zA-Z0-9\-_%]+)?/?$', PostAPIHandler, name='rest:post'),
-            # ---------------- 404 ----------------
-            # url(r'^/404.html$', PageNotFound, name='404'),
             # ---------------- react-router ----------------
             url(r'/.*', ReactRender, name='root'),
         ]
