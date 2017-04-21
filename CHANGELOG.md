@@ -2,6 +2,8 @@
 *CURRENT*
 ---
     
+- 2017-04-21 (Laisky) chore: add second cdn -> [view commit](https://github.com/Laisky/laisky-blog/commit/c8e86fc372495d5aee31f248c70a49a4584df9b5)
+- 2017-04-21 (Laisky) 2.7.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/40fe6e6425a78adc7e269594b750fce8ee90ffa1)
 - 2017-04-21 (Laisky) fix: static url & remove markdown -> [view commit](https://github.com/Laisky/laisky-blog/commit/d11639bc76f4dcddb0b520b5eb7156b36b89ba3d)
 - 2017-04-20 (Laisky) 2.7.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/4ba75fc4faaf68ac7628a2a399ce6dd31d635f63)
 - 2017-04-20 (Laisky) fix: rss & fonts -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f4350f313c2512164b0ed4f3263db640beab3f8)
