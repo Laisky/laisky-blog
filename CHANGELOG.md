@@ -2,6 +2,8 @@
 *CURRENT*
 ---
     
+- 2017-05-08 (Laisky) fix: amend page do not show markdown content -> [view commit](https://github.com/Laisky/laisky-blog/commit/17e06c7ad158e15875f43bbce189438ee7f52f4d)
+- 2017-04-21 (Laisky) 2.7.7 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b00a01511941927f27a130b8bc6f71f4fcd10c2c)
 - 2017-04-21 (Laisky) chore: add second cdn -> [view commit](https://github.com/Laisky/laisky-blog/commit/c8e86fc372495d5aee31f248c70a49a4584df9b5)
 - 2017-04-21 (Laisky) 2.7.6 -> [view commit](https://github.com/Laisky/laisky-blog/commit/40fe6e6425a78adc7e269594b750fce8ee90ffa1)
 - 2017-04-21 (Laisky) fix: static url & remove markdown -> [view commit](https://github.com/Laisky/laisky-blog/commit/d11639bc76f4dcddb0b520b5eb7156b36b89ba3d)
