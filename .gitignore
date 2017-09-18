@@ -94,3 +94,7 @@ bower_components
 /gargantua/static/dist/**
 !/gargantua/static/dist/fonts/
 !/gargantua/static/dist/fonts/*
+
+# dev
+.tags
+.vscode
