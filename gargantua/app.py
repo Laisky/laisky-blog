@@ -58,10 +58,7 @@ class PageNotFound(BaseHandler):
 class Application(tornado.web.Application):
 
     def get_static_url_prefix(self):
-        if options.debug:
-            return '/static/dist/'
-        else:
-            return 'https://laisky-cache.b0.upaiyun.com/gargantua/'
+        return '/static/dist/'
 
     def __init__(self):
         settings = {

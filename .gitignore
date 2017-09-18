@@ -91,4 +91,12 @@ gargantua/static/dist/maps/
 # prod
 /docker/docker-compose.yml
 /gargantua/settings/settings.py
-gargantua/static/dist/
+
+# dist
+/gargantua/static/dist/**
+!/gargantua/static/dist/fonts/
+!/gargantua/static/dist/fonts/*
+
+# dev
+.tags
+.vscode
