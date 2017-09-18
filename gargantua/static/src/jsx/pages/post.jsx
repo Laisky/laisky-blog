@@ -44,6 +44,7 @@ export class Post extends BaseComponent {
     };
 
     // http://blog.qiniu.com/archives/5793
+    // should only work for qiniu
     convertImg2Webp(content) {
         if(navigator.browserInfo.name != 'Chrome') return content
         return content.replace(
