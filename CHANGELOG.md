@@ -2,6 +2,11 @@
 *CURRENT*
 ---
     
+- 2017-09-18 (Laisky) fix: change sites static file to own host -> [view commit](https://github.com/Laisky/laisky-blog/commit/1662ae5064f1c2f9afcc8e55f8566b7c5f04ed7a)
+- 2017-09-18 (Laisky) fix: static server host name -> [view commit](https://github.com/Laisky/laisky-blog/commit/5baf89ef9b0240527bda7016a3595209984fa749)
+- 2017-09-18 (Laisky) fix: static server server_name -> [view commit](https://github.com/Laisky/laisky-blog/commit/528416c946d4e161ed4c75ea6641e272342bb0fa)
+- 2017-09-18 (Laisky) fix: remove qiniu -> [view commit](https://github.com/Laisky/laisky-blog/commit/d6035959d4e824b6c71b9803af6a7cee607a7ef9)
+- 2017-05-08 (Laisky) 2.7.8 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b8b4acffe87ca3bcd979cc10fc1563d07201d41a)
 - 2017-05-08 (Laisky) fix: amend page do not show markdown content -> [view commit](https://github.com/Laisky/laisky-blog/commit/17e06c7ad158e15875f43bbce189438ee7f52f4d)
 - 2017-04-21 (Laisky) 2.7.7 -> [view commit](https://github.com/Laisky/laisky-blog/commit/b00a01511941927f27a130b8bc6f71f4fcd10c2c)
 - 2017-04-21 (Laisky) chore: add second cdn -> [view commit](https://github.com/Laisky/laisky-blog/commit/c8e86fc372495d5aee31f248c70a49a4584df9b5)
