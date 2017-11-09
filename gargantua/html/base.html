@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="stylesheet" type="text/css" href="https://laisky-cache.b0.upaiyun.com/gargantua/css/libs-edee677d7d.min.css">
-    <link rel="stylesheet" type="text/css" href="{{static_url('css/sites-1b5af089a9.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{static_url('css/sites-ca0f896ef2.min.css')}}">
     {% block page_css %}
     {% endblock %}<!-- page_css -->
 </head>
@@ -59,9 +59,13 @@
     <script src="https://laisky-cache-libs.b0.upaiyun.com/jwt-decode/2.1.0/jwt-decode.min.js"></script>
     <script src="https://laisky-cache.b0.upaiyun.com/moment.js/2.12.0/moment-with-locales.min.js"></script>
     <script src="https://laisky-cache.b0.upaiyun.com/gargantua/js/libs-6279436b98.min.js" type="text/javascript" charset="utf-8"></script>
-    <script async src="{{static_url('js/sites-652bd1a99c.min.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script async src="{{static_url('js/sites-f0f8665823.min.js')}}" type="text/javascript" charset="utf-8"></script>
     <script async type="text/javascript" charset="utf-8">
         if(window.fetch) fetch("https://laisky-cache.b0.upaiyun.com/gargantua/js/reveallibs-b19f5e3f7c.min.js");
+    </script>
+    <script type="text/javascript" src="https://s3.laisky.com/static/mathjax/2.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\[','\\]']]}});
     </script>
     <div class="pagejs">
         {% block page_js %}
