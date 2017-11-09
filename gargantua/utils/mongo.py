@@ -3,7 +3,6 @@
 # import datetime
 import re
 from numbers import Number
-from collections.abc import Iterable
 
 from bson import ObjectId
 

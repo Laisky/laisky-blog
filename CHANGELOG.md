@@ -2,6 +2,10 @@
 *CURRENT*
 ---
     
+- 2017-11-09 (Laisky) fix: some bugs during testing -> [view commit](https://github.com/Laisky/laisky-blog/commit/934d96580c842ff07c79e936d858ca5579f6c12b)
+- 2017-11-09 (Laisky) fix: friendly `about` -> [view commit](https://github.com/Laisky/laisky-blog/commit/a0d98914ce8de80fb12c6887ccfe164eeae712e5)
+- 2017-11-08 (Laisky) feat: support mathjax -> [view commit](https://github.com/Laisky/laisky-blog/commit/151e565bdbd4d3ddac9501688a6e7ac5a9f7cd5e)
+- 2017-09-18 (Laisky) 2.7.9 -> [view commit](https://github.com/Laisky/laisky-blog/commit/35ae54b2853dae1f7c31f27537e9dcd099e0b07d)
 - 2017-09-18 (Laisky) fix: change sites static file to own host -> [view commit](https://github.com/Laisky/laisky-blog/commit/1662ae5064f1c2f9afcc8e55f8566b7c5f04ed7a)
 - 2017-09-18 (Laisky) fix: static server host name -> [view commit](https://github.com/Laisky/laisky-blog/commit/5baf89ef9b0240527bda7016a3595209984fa749)
 - 2017-09-18 (Laisky) fix: static server server_name -> [view commit](https://github.com/Laisky/laisky-blog/commit/528416c946d4e161ed4c75ea6641e272342bb0fa)
@@ -25,7 +29,9 @@
 - 2017-04-05 (Laisky) fix: preload reveallib.js -> [view commit](https://github.com/Laisky/laisky-blog/commit/f6023156b20f505600f693fa01d105da6c8ce032)
 - 2017-04-04 (Laisky) 2.7.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/2552979947ded438b88ac388f0e2e31a8fa119da)
 - 2017-04-04 (Laisky) fix: category not display -> [view commit](https://github.com/Laisky/laisky-blog/commit/317a1ce9f49967d3c5ea5762ee50f6d67f46fee9)
-- 2017-04-04 (Laisky) fix: nginx allow sameorigin's frame -> [view commit](https://github.com/Laisky/laisky-blog/commit/4627909fe9b1840ba7a26aac17d035090b70bdac)    
+- 2017-04-04 (Laisky) fix: nginx allow sameorigin's frame -> [view commit](https://github.com/Laisky/laisky-blog/commit/4627909fe9b1840ba7a26aac17d035090b70bdac)
+- 2016-10-23 (Laisky) #115 增加了 topic 的 filter -> [view commit](https://github.com/Laisky/laisky-blog/commit/0004a3d94dda1b8f7774dbb326fd715a0771c965)
+- 2016-10-23 (Laisky) #115 后端接口调通 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6a0cb620f23f937468c3f01d2a20022bcc0317e2)    
        
 *2.7*
 ---

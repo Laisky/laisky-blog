@@ -28,8 +28,9 @@ def convert2chn_serial(number):
 
 def render_md_to_html(content, is_extract_menu=False):
     html = markdown2.markdown(content, extras=['fenced-code-blocks', 'footnotes', 'tables'])
-    html = '<div class="highlight">{}</div>'.format(html)
+    html = '<div>{}</div>'.format(html)
     html = TITLE_REG.sub(r'<\2 id="\3">\3</\2>', html)
+    html = html.replace('class="codehilite"', 'class="codehilite highlight"')
     h2_count = h3_count = 1
     if is_extract_menu:
         title_menu = TitleMenu()

@@ -1,34 +1,29 @@
 @import "compass/css3/border-radius";
 @import "../themes/default.scss";
 
-#aboutme {
-    @include border-radius(10px);
+#about {
+    @include border-radius(4px);
     background-color: $post-bgd-clr;
     position: relative;
     color: $post-cnt-clr;
     max-width: 800px;
 
-    .aboutme {
+    .tab-pane {
         padding: 10px;
-        padding-bottom: 10px;
         margin-bottom: 10px;
-        border-bottom: 1px dashed grey;
-
+        // border-bottom: 1px dashed grey;
         h2 {
-            margin-top: 0px;
+            margin-top: 0;
             font-size: 2em;
             text-align: center;
         }
-
-        &:last-child {
-            border-bottom: none;
-        }
-
+        // &:last-child {
+        //     border-bottom: none;
+        // }
         &.profile {
             p {
-                margin: 0px;
+                margin: 0;
             }
         }
     }
-
 }
