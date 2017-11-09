@@ -12,7 +12,7 @@ class UserHandler(BaseHandler):
 
     @tornado.web.asynchronous
     def get(self, url):
-        logger.info('GET UserHandler {}'.format(url))
+        logger.info('GET UserHandler %s', url)
 
         router = {
             'login': self.login_page,
@@ -23,7 +23,7 @@ class UserHandler(BaseHandler):
 
     @tornado.web.asynchronous
     def post(self, url):
-        logger.info('POST UserHandler {}'.format(url))
+        logger.info('POST UserHandler %s', url)
 
         router = {
             'api/user/login': self.login_api,
@@ -45,7 +45,6 @@ class UserHandler(BaseHandler):
         """
         GET 一个包含 source, id, username 的 token
         """
-        print(generate_token({'source': 'twitter', 'username': 'Laisky', 'id': 1234567}))
         try:
             token = self.get_argument('token')
             d = validate_token(token)
@@ -56,18 +55,19 @@ class UserHandler(BaseHandler):
             return
 
         # login from twitter
-        sid = '{}.id'.format(d['source'])
-        old_user = yield self.db.users.find_one({sid: d['id']})
-        username = old_user and old_user['username'] or d['username']
+        sid_str = '{}.id'.format(d['source'])  # like "twitter.id"
+        old_user = yield self.db.users.find_one({sid_str: d['id']})
+        username = old_user['username'] if old_user else d['username']
         yield self.db.users.update(
-            {sid: d['id']},
+            {sid_str: d['id']},
             {'$set': {'username': username,
-                      sid: d['id'],
+                      sid_str: d['id'],
                       'last_update': utcnow()}},
             upsert=True
         )
+        user_docu = yield self.db.users.find_one({sid_str: d['id']})
 
-        token = generate_token({'username': d['username']})
+        token = generate_token({'username': d['username'], 'uid': user_docu['_id']})
         self.set_cookie('token', token, expires_days=30)
         self.write_json(msg=OK)
         self.finish()
@@ -78,23 +78,22 @@ class UserHandler(BaseHandler):
         email = self.get_argument('email', strip=True)
         passwd = self.get_argument('password')
         is_keep_login = self.get_argument('is_keep_login', bool=True)
-        logger.debug('login_api with email {}, passwd {}, is_keep_login {}'
-                     .format(email, passwd, is_keep_login))
+        logger.debug('login_api with email %s, passwd %s, is_keep_login %s', email, passwd, is_keep_login)
 
         if not validate_email(email):
-            logger.debug("invalidate email: {}".format(email))
+            logger.debug("invalidate email: %s", email)
             self.write_json(msg="invalidate email", status=ERROR)
             self.finish()
             return
 
         user_docu = (yield self.db.users.find_one({'email': email}))
         if not user_docu:
-            logger.debug('email not existed: {}'.format(email))
+            logger.debug('email not existed: %s', email)
             self.http_400_bad_request(err='Wrong Account or Password')
             self.finish()
             return
         elif not validate_passwd(passwd, user_docu['password']):
-            logger.debug('invalidate password: {}'.format(passwd))
+            logger.debug('invalidate password: %s', passwd)
             self.http_400_bad_request(err='Wrong Account or Password')
             self.finish()
             return
@@ -109,6 +108,6 @@ class UserHandler(BaseHandler):
 
         expires_days = 30 if is_keep_login else None
         self.set_cookie('token', token, expires_days=expires_days)
-        logger.debug('set cookies with uid {}, token {}, expires_days {}'.format(uid, token, expires_days))
+        logger.debug('set cookies with uid %s, token %s, expires_days %s', uid, token, expires_days)
         self.write_json(msg=OK)
         self.finish()
