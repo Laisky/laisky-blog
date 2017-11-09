@@ -18,10 +18,10 @@ def main():
     http_server.listen(options.port)
 
     if options.debug:
-        logger.info('start application in debug mode')
+        logger.info('start application in debug mode localhost:%s', options.port)
         logger.setLevel(logging.DEBUG)
     else:
-        logger.info('start application in normal mode')
+        logger.info('start application in normal mode localhost:%s', options.port)
     ioloop = tornado.ioloop.IOLoop.instance()
 
     if not options.debug:

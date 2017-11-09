@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% block page_css %}
-    <style type="text/css">
-        .pagenotfound * {
-            text-align: center;
-        }
-    </style>
+  <style type="text/css">
+    .pagenotfound * {
+      text-align: center;
+    }
+  </style>
 {% endblock %}
 
 {% block container %}
-    {{ super() }}
-    <div class="container pagenotfound" id="redirect-404">
-    </div>
+  {{ super() }}
+  <div class="container pagenotfound" id="redirect-404">
+  </div>
 {% endblock %}
 
 {% block page_jsx %}

@@ -20,7 +20,7 @@ ERROR = 1
 
 # db
 DBHOST = 'localhost'
-DBPORT = 27016
+DBPORT = 27017
 DBNAME = 'blog'
 
 # search

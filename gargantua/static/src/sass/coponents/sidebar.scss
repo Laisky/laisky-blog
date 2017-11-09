@@ -9,16 +9,15 @@
 
     .console {
         padding: 10px;
-        padding-bottom: 10px;
         margin-bottom: 10px;
         border-bottom: 1px dashed grey;
 
         a.btn {
-            padding: 0px;
+            padding: 0;
         }
 
         h2 {
-            margin-top: 0px;
+            margin-top: 0;
             font-size: 1.2em;
             text-align: center;
         }
@@ -29,18 +28,14 @@
 
         &.profile {
             p {
-                margin: 0px;
+                margin: 0;
             }
-
         }
 
         &.login {
             p {
-                margin: 0px;
+                margin: 0;
             }
-
         }
-
     }
-
 }

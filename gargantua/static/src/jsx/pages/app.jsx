@@ -53,7 +53,7 @@ class App extends BaseComponent {
                 <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1" onClick={this.getScrollToTopHandle()}>
                   <ul className="nav navbar-nav apps">
                     <li className={this.getCurrentRouteName() == 'archives'? 'active': ''}><Link to={{ pathname: '/archives/1/' }}>Blog</Link></li>
-                    <li className={this.getCurrentRouteName() == 'aboutme'? 'active': ''}><Link to={{ pathname: '/about/' }}>AboutMe</Link></li>
+                    <li className={this.getCurrentRouteName() == 'aboutme'? 'active': ''}><Link to={{ pathname: '/about/' }}>About</Link></li>
                   </ul>
                   <ul className="nav navbar-nav navbar-right">
                     <li>

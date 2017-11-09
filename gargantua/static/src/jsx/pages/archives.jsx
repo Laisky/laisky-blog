@@ -122,7 +122,7 @@ class Archives extends BaseComponent {
         return (
             <div id="archives" className="archives-body container-fluid">
                 <div className="row">
-                    <Notify text="使用 redux 重构前端完成度 20 % ..." />
+                    <Notify text="全站启用 HTTPS & HTTPv2.0" />
                 </div>
                 <div className="row">
                     <div id="archive-content" className="col-sm-9 col-xs-12">
