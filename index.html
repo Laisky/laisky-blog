@@ -18,8 +18,8 @@
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
-	
-	<script src="./js/jquery-1.10.2.min.js"></script>
+
+        <script src="./js/jquery-1.10.2.min.js"></script>
         <script src="./js/bootstrap-3.0.3.min.js"></script>
         <script src="./js/highlight.pack.js"></script> 
     </head>
@@ -99,7 +99,7 @@
 
 <h1 id="gargantua">Gargantua</h1>
 <p><a href=""><img alt="Crates.io" src="https://img.shields.io/crates/l/rustc-serialize.svg" /></a>
-<a href=""><img alt="Crates.io" src="https://img.shields.io/badge/version-v2.7.3-blue.svg" /></a>
+<a href=""><img alt="Crates.io" src="https://img.shields.io/badge/version-v2.8-blue.svg" /></a>
 <a href="http://commitizen.github.io/cz-cli/"><img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" /></a>
 <a href="https://gitter.im/Laisky/laisky-blog?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge"><img alt="Gitter" src="https://badges.gitter.im/Laisky/laisky-blog.svg" /></a>
 <a href="https://travis-ci.org/Laisky/laisky-blog"><img alt="Build Status" src="https://travis-ci.org/Laisky/laisky-blog.svg?branch=master" /></a>
@@ -107,9 +107,18 @@
 <blockquote>
 <p>Do not go gentle into that good night, Rage, rage against the dying of the light.</p>
 </blockquote>
-<p>| <img alt="" src="http://7xjvpy.dl1.z0.glb.clouddn.com/gargantua.jpg" /> |
-|:--:|
-| Laisky's New Blog |</p>
+<table>
+<thead>
+<tr>
+<th align="center"><img alt="" src="http://7xjvpy.dl1.z0.glb.clouddn.com/gargantua.jpg" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Laisky's New Blog</td>
+</tr>
+</tbody>
+</table>
 <h2 id="links">Links</h2>
 <ul>
 <li>Github <a href="https://github.com/Laisky/laisky-blog">https://github.com/Laisky/laisky-blog</a></li>
@@ -138,8 +147,11 @@
             <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
         <script>var base_url = '.';</script>
-        <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
-        <script src="./js/base.js"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <script src="./js/base.js"></script>
+        <script src="./search/require.js"></script>
+        <script src="./search/search.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -162,12 +174,52 @@
             </div>
         </div>
     </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&larr;</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&rarr;</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
 </div>
+
 
     </body>
 </html>
 
 <!--
-MkDocs version : 0.16.2
-Build Date UTC : 2017-04-07 01:18:55
+MkDocs version : 0.17.1
+Build Date UTC : 2017-11-09 05:50:29
 -->
