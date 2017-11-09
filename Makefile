@@ -17,4 +17,5 @@ nose:
 	nosetests -vs --logging-level=DEBUG tests
 
 changelog: CHANGELOG.md
-	sh ./.scripts/generate_changelog.sh
+	@python setup.py develop
+	@sh ./.scripts/generate_changelog.sh

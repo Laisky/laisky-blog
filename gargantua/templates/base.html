@@ -63,6 +63,10 @@
     <script async type="text/javascript" charset="utf-8">
         if(window.fetch) fetch("https://laisky-cache.b0.upaiyun.com/gargantua/js/reveallibs.min.js");
     </script>
+    <script type="text/javascript" src="https://s3.laisky.com/static/mathjax/2.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\[','\\]']]}});
+    </script>
     <div class="pagejs">
         {% block page_js %}
         {% endblock %}<!-- page_js -->

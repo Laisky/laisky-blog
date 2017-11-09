@@ -10,7 +10,7 @@ import { App } from './pages/app.jsx';
 import { PageNotFound } from './pages/404.jsx';
 import { Archives } from './pages/archives.jsx';
 import { Post, PostCategories } from './pages/post.jsx';
-import { AboutMe } from './pages/aboutme.jsx';
+import { About } from './pages/about.jsx';
 import { Login } from './pages/login.jsx';
 import { Publish, Amend } from './pages/publish.jsx';
 import { RootReducer, store } from './reducers';
@@ -27,7 +27,7 @@ ReactDOM.render(
             <Route name="amend" path="amend/:pid/" component={Amend} />
             <Route name="post" path="p/:pid/" component={Post} />
             <Route name="categories" path="cate/(:cateid/)" component={PostCategories} />
-            <Route name="aboutme" path="about/" component={AboutMe} />
+            <Route name="about" path="about/" component={About} />
             <Route name="login" path="login/" component={Login} />
             <Route name="notfound" path="404.html" component={PageNotFound} />
             <Route name="admin" path="admin/" component={AdminPage} >
