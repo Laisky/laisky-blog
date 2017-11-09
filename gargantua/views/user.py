@@ -12,7 +12,7 @@ class UserHandler(BaseHandler):
 
     @tornado.web.asynchronous
     def get(self, url):
-        logger.info('GET UserHandler {}'.format(url))
+        logger.info('GET UserHandler %s', url)
 
         router = {
             'login': self.login_page,
@@ -23,7 +23,7 @@ class UserHandler(BaseHandler):
 
     @tornado.web.asynchronous
     def post(self, url):
-        logger.info('POST UserHandler {}'.format(url))
+        logger.info('POST UserHandler %s', url)
 
         router = {
             'api/user/login': self.login_api,
@@ -56,7 +56,7 @@ class UserHandler(BaseHandler):
         # login from twitter
         sid_str = '{}.id'.format(d['source'])  # like "twitter.id"
         old_user = yield self.db.users.find_one({sid_str: d['id']})
-        username = old_user and old_user['username'] or d['username']
+        username = old_user['username'] if old_user else d['username']
         yield self.db.users.update(
             {sid_str: d['id']},
             {'$set': {'username': username,
@@ -77,22 +77,25 @@ class UserHandler(BaseHandler):
         email = self.get_argument('email', strip=True)
         passwd = self.get_argument('password')
         is_keep_login = self.get_argument('is_keep_login', bool=True)
-        logger.debug('login_api with email {}, passwd {}, is_keep_login {}'
-                     .format(email, passwd, is_keep_login))
+        logger.debug('login_api with email %s, passwd %s, is_keep_login %s', email, passwd, is_keep_login)
 
         if not validate_email(email):
-            logger.debug("invalidate email: {}".format(email))
+            logger.debug("invalidate email: %s", email)
             self.write_json(msg="invalidate email", status=ERROR)
             self.finish()
             return
 
         user_docu = (yield self.db.users.find_one({'email': email}))
         if not user_docu:
-            logger.debug('email not existed: {}'.format(email))
-            return self.http_400_bad_request(err='Wrong Account or Password')
+            logger.debug('email not existed: %s', email)
+            self.http_400_bad_request(err='Wrong Account or Password')
+            self.finish()
+            return
         elif not validate_passwd(passwd, user_docu['password']):
-            logger.debug('invalidate password: {}'.format(passwd))
-            return self.http_400_bad_request(err='Wrong Account or Password')
+            logger.debug('invalidate password: %s', passwd)
+            self.http_400_bad_request(err='Wrong Account or Password')
+            self.finish()
+            return
 
         uid = str(user_docu['_id'])
         dtoken = {'uid': uid, 'username': user_docu['username'], 'exp': utcnow() + datetime.timedelta(days=30)}
@@ -104,6 +107,6 @@ class UserHandler(BaseHandler):
 
         expires_days = 30 if is_keep_login else None
         self.set_cookie('token', token, expires_days=expires_days)
-        logger.debug('set cookies with uid {}, token {}, expires_days {}'.format(uid, token, expires_days))
+        logger.debug('set cookies with uid %s, token %s, expires_days %s', uid, token, expires_days)
         self.write_json(msg=OK)
         self.finish()
