@@ -20,8 +20,14 @@ def generate_token(json_, secret=SECRET_KEY):
 
 
 def validate_token(token, secret=SECRET_KEY):
-    return jwt.decode(token, secret, verify=True)
+    return decode_token(token, secret=secret) is not None
 
 
-def decode_token(token):
-    return jwt.decode(token, verify=False)
+def decode_token(token, secret=SECRET_KEY):
+    """
+    JWT is dangerous: https://paragonie.com/blog/2017/03/jwt-json-web-tokens-is-bad-standard-that-everyone-should-avoid
+    """
+    try:
+        return jwt.decode(token, secret, algorithms=['HS512'])
+    except (jwt.InvalidAlgorithmError, jwt.DecodeError):
+        return None

@@ -2,7 +2,7 @@
 # ipython
 
 # encrypt
-PyJWT
+PyJWT>=1.5
 python-bcrypt
 
 # templates
