@@ -2,6 +2,12 @@
 *CURRENT*
 ---
     
+- 2018-01-05 (Laisky) fix: jwt security issue -> [view commit](https://github.com/Laisky/laisky-blog/commit/445350674101bee35c55ff424ee0a46d75f23f35)    
+       
+*2.8*
+---
+    
+- 2017-11-09 (Laisky) ci: changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/f16da62e85dc33e276a698f7853ffaa27de5ab06)
 - 2017-11-09 (Laisky) fix: some bugs during testing -> [view commit](https://github.com/Laisky/laisky-blog/commit/934d96580c842ff07c79e936d858ca5579f6c12b)
 - 2017-11-09 (Laisky) fix: friendly `about` -> [view commit](https://github.com/Laisky/laisky-blog/commit/a0d98914ce8de80fb12c6887ccfe164eeae712e5)
 - 2017-11-08 (Laisky) feat: support mathjax -> [view commit](https://github.com/Laisky/laisky-blog/commit/151e565bdbd4d3ddac9501688a6e7ac5a9f7cd5e)
