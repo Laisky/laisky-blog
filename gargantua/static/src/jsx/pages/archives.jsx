@@ -89,6 +89,7 @@ class Archives extends BaseComponent {
         this.updateArchiveCache(nPage);
         this.archiveCache.getByPage(nPage)
             .then((resp) => {
+                document.title = 'laisky-blog - p' + nPage;
                 this.setState({
                     hint: null,
                     archives: resp.result,
