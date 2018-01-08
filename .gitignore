@@ -87,7 +87,7 @@ bower_components
 /site
 
 # prod
-/docker/docker-compose.yml
+/.docker/docker-compose.yml
 /gargantua/settings/settings.py
 
 # dist
