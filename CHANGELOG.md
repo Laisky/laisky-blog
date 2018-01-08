@@ -2,6 +2,9 @@
 *CURRENT*
 ---
     
+- 2018-01-08 (Laisky) fix: refresh document title -> [view commit](https://github.com/Laisky/laisky-blog/commit/bfa75d1116eb943cfa2dab2a154348e0674d8a9c)
+- 2018-01-08 (Laisky) fix: container port issus -> [view commit](https://github.com/Laisky/laisky-blog/commit/78b468ec520a33cfb71048b1a6a6691cf5eeba67)
+- 2018-01-05 (Laisky) ci: changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/07981b2150b3200b7f9d511b1ee98df8d42f5aa5)
 - 2018-01-05 (Laisky) fix: jwt security issue -> [view commit](https://github.com/Laisky/laisky-blog/commit/445350674101bee35c55ff424ee0a46d75f23f35)    
        
 *2.8*
