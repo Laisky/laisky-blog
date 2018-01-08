@@ -30,6 +30,7 @@ export class Post extends BaseComponent {
             dataType: 'json'
         })
             .done((resp) => {
+                document.title = "laisky-blog: " + resp.result.post_title;
                 if(resp.result['post_type'] == 'slide') this.loadRevealJs();
                 resp.result.post_content = this.convertImg2Webp(resp.result.post_content);
                 $(document.body).animate({scrollTop: 0}, 200);

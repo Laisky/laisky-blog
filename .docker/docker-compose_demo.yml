@@ -13,7 +13,7 @@ services:
     expose:
       - "27017"
     ports:
-      - 27016:27017
+      - localhost:27016:27017
     volumes:
       - /var/lib/mongodb:/data/db
 
