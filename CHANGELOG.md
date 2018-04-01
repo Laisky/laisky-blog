@@ -2,6 +2,11 @@
 *CURRENT*
 ---
     
+- 2018-04-01 (Laisky) fix: remove html tag in preview -> [view commit](https://github.com/Laisky/laisky-blog/commit/53819bdff11460acdf7cdad18a3b1e6d2e70122c)
+- 2018-03-19 (Laisky) fix: update cert to wildcard -> [view commit](https://github.com/Laisky/laisky-blog/commit/300989685eabafdf01811f5c3de63ac9b0f83d04)
+- 2018-01-28 (Laisky) ci: fluentd add monitor -> [view commit](https://github.com/Laisky/laisky-blog/commit/a2cf0678c28416c42abbee215e03d4a6976982b5)
+- 2018-01-23 (Laisky) ci: update docker-compose and fluentd -> [view commit](https://github.com/Laisky/laisky-blog/commit/3a3f870d6ed1493a9447f9f87d90e838fa537731)
+- 2018-01-08 (Laisky) ci: changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/4a756dfe166651d0f9ededf05e0a34dd9130186b)
 - 2018-01-08 (Laisky) fix: refresh document title -> [view commit](https://github.com/Laisky/laisky-blog/commit/bfa75d1116eb943cfa2dab2a154348e0674d8a9c)
 - 2018-01-08 (Laisky) fix: container port issus -> [view commit](https://github.com/Laisky/laisky-blog/commit/78b468ec520a33cfb71048b1a6a6691cf5eeba67)
 - 2018-01-05 (Laisky) ci: changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/07981b2150b3200b7f9d511b1ee98df8d42f5aa5)
