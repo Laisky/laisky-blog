@@ -54,7 +54,7 @@ class PostContentTruncateParser(BaseParser):
 
         if truncate >= 0:
             for docu in results:
-                docu['post_content'] = docu['post_content'][:truncate]
+                docu['post_content'] = docu.get('post_markdown', '')[:truncate]
                 docu['post_markdown'] = ''
 
         return results

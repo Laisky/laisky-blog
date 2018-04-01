@@ -34,38 +34,58 @@ services:
     links:
       - mongodb:mongodb
     ports:
-      - 24224:24224
+      - localhost:24224:24224
 
-  gargantua:
-    image: ppcelery/laisky-blog
+  cadvisor:
+    image: google/cadvisor:latest
     restart: always
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: "localhost:24224"
-    links:
-      - mongodb:mongodb
     networks:
       - gargantua
-    expose:
-      - "27850"
+    logging:
+      driver: syslog
+      options:
+        syslog-facility: local6
+        tag: fluentd
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
     ports:
-      - 27851:27850
-    command:
-      - "python"
-      - "-m"
-      - "gargantua"
-      - "--port=27850"
-      - "--dbhost=mongodb"
-      - "--dbport=27017"
-      - "--debug=false"
-      - "--mail_host=smtp.mailgun.org"
-      - "--mail_port=25"
-      - "--mail_subject=Gargantua Error"
-      - "--mail_from_addr=gargantua@laisky.com"
-      - "--mail_to_addrs='ppcelery@gmail.com'"
-      - "--mail_username=<YOUR_SMTP_USERNAME"
-      - "--mail_passwd=<YOUR_SMTP_PASSWORD>"
+      - 8080:8080
+
+  # gargantua:
+  #   image: ppcelery/laisky-blog
+  #   restart: always
+  #   logging:
+  #     driver: fluentd
+  #     options:
+  #       fluentd-address: "localhost:24224"
+  #       tag: "gargantua"
+  #   links:
+  #     - mongodb:mongodb
+  #   networks:
+  #     - gargantua
+  #   expose:
+  #     - "27850"
+  #   ports:
+  #     - localhost:27851:27850
+  #   command:
+  #     - "python"
+  #     - "-m"
+  #     - "gargantua"
+  #     - "--port=27850"
+  #     - "--dbhost=mongodb"
+  #     - "--dbport=27017"
+  #     - "--debug=false"
+  #     - "--mail_host=smtp.mailgun.org"
+  #     - "--mail_port=25"
+  #     - "--mail_subject=Gargantua Error"
+  #     - "--mail_from_addr=gargantua@laisky.com"
+  #     - "--mail_to_addrs='ppcelery@gmail.com'"
+  #     - "--mail_username=<YOUR_SMTP_USERNAME"
+  #     - "--mail_passwd=<YOUR_SMTP_PASSWORD>"
 
 networks:
   gargantua:
