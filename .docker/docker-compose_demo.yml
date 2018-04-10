@@ -10,10 +10,8 @@ services:
         tag: mongodb
     networks:
       - gargantua
-    expose:
-      - "27017"
     ports:
-      - localhost:27016:27017
+      - 127.0.0.1:27016:27017
     volumes:
       - /var/lib/mongodb:/data/db
 
@@ -34,7 +32,7 @@ services:
     links:
       - mongodb:mongodb
     ports:
-      - localhost:24224:24224
+      - 127.0.0.1:24224:24224
 
   cadvisor:
     image: google/cadvisor:latest
@@ -61,7 +59,7 @@ services:
   #   logging:
   #     driver: fluentd
   #     options:
-  #       fluentd-address: "localhost:24224"
+  #       fluentd-address: "127.0.0.1:24224"
   #       tag: "gargantua"
   #   links:
   #     - mongodb:mongodb
@@ -70,7 +68,7 @@ services:
   #   expose:
   #     - "27850"
   #   ports:
-  #     - localhost:27851:27850
+  #     - 127.0.0.1:27851:27850
   #   command:
   #     - "python"
   #     - "-m"
