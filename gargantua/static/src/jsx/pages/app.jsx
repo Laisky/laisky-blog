@@ -63,7 +63,7 @@ class App extends BaseComponent {
                       <a>{ this.getCurrentUsername() }</a>
                     </li>
                     <li>
-                      <Link to={{ pathname: '/rss/' }} target="_blank"><img src="https://laisky-cache.b0.upaiyun.com/gargantua/images/rss.png" className="rss"></img></Link>
+                      <Link to={{ pathname: '/rss/' }} target="_blank"><img src="https://s3.laisky.com/uploads/images/rss.png" className="rss"></img></Link>
                     </li>
                     <div className="navbar-form navbar-right nav-bar-search">
                       <div dangerouslySetInnerHTML={{ __html: googleSearch }} />
