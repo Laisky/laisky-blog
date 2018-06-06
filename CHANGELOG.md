@@ -2,6 +2,8 @@
 *CURRENT*
 ---
     
+- 2018-06-06 (Laisky) fix: port should be int -> [view commit](https://github.com/Laisky/laisky-blog/commit/056aff8a73b48ebf6a972b68a249bfa2eb393576)
+- 2018-06-06 (Laisky) ci: changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/0da7c0335fbb14a9bace45f1f3407b8eb302855b)
 - 2018-06-06 (Laisky) fix: tornado<5.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3134cc572880f96ead684c2b750988552f8d205b)
 - 2018-06-06 (Laisky) fix: replace python-bcrypt by bcrypt -> [view commit](https://github.com/Laisky/laisky-blog/commit/42ef2c5f4233f6d556e83dfeb0266cf0719f72eb)
 - 2018-06-06 (Laisky) ci: changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/a3fc2fa6738cfd24bc34d9431dcc89ac2afcd30b)
