@@ -23,15 +23,15 @@ from gargantua.models import BaseBlogModel
 
 
 # settings
-define('port', default=get_default_config('PORT'), type=int)
+define('port', default=int(get_default_config('PORT')), type=int)
 define('debug', default=get_default_config('DEBUG'), type=bool)
 # database
 define('dbname', default=get_default_config('DBNAME'), type=str)
 define('dbhost', default=get_default_config('DBHOST'), type=str)
-define('dbport', default=get_default_config('DBPORT'), type=int)
+define('dbport', default=int(get_default_config('DBPORT')), type=int)
 # mail
 define('mail_host', default=get_default_config('MAIL_HOST'), type=str)
-define('mail_port', default=get_default_config('MAIL_PORT'), type=int)
+define('mail_port', default=int(get_default_config('MAIL_PORT')), type=int)
 define('mail_subject', default=get_default_config('MAIL_SUBJECT'), type=str)
 define('mail_from_addr', default=get_default_config('MAIL_FROM_ADDR'), type=str)
 define('mail_to_addrs', default=get_default_config('MAIL_TO_ADDRS'), type=str)
