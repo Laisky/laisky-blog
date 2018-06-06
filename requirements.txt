@@ -3,7 +3,7 @@
 
 # encrypt
 PyJWT>=1.5
-python-bcrypt
+bcrypt
 
 # templates
 jinja2
