@@ -6,17 +6,14 @@ try:
 except ImportError:
     setuptools = None
     from distutils.core import setup
-from pip.req import parse_requirements
-from pip.download import PipSession
 
 import os
 import re
 import gargantua
 
 
-requires = [str(i.req) for i in parse_requirements('requirements.txt',
-                                                   session=PipSession())
-            if i.req is not None]
+with open('requirements.txt') as f:
+    install_requires = f.read().strip().split('\n')
 
 
 def update_readme_version(version):
@@ -55,7 +52,7 @@ setup(
     packages=packages,
     package_dir=package_dir,
     include_package_data=True,
-    install_requires=requires,
+    install_requires=install_requires,
     entry_points="""\
         [console_scripts]
         run_gargantua=gargantua.__main__:main
