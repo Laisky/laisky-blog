@@ -2,6 +2,9 @@
 *CURRENT*
 ---
     
+- 2018-06-06 (Laisky) fix: tornado<5.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3134cc572880f96ead684c2b750988552f8d205b)
+- 2018-06-06 (Laisky) fix: replace python-bcrypt by bcrypt -> [view commit](https://github.com/Laisky/laisky-blog/commit/42ef2c5f4233f6d556e83dfeb0266cf0719f72eb)
+- 2018-06-06 (Laisky) ci: changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/a3fc2fa6738cfd24bc34d9431dcc89ac2afcd30b)
 - 2018-06-06 (Laisky) fix: change nginx adapt to cloudflare -> [view commit](https://github.com/Laisky/laisky-blog/commit/7c5b9c35df192d54accc00db2186109f7cd2642c)
 - 2018-06-06 (Laisky) fix: compatable to pip10 -> [view commit](https://github.com/Laisky/laisky-blog/commit/8898c83598bdc3b76aba51dd76e75458c4a35813)
 - 2018-04-19 (Laisky) fix: CORS domain error -> [view commit](https://github.com/Laisky/laisky-blog/commit/5ea9f7d8863d59e3ed1db217fc1807909a0a1df4)
