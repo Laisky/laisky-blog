@@ -2,6 +2,10 @@
 *CURRENT*
 ---
     
+- 2018-06-06 (Laisky) fix: change nginx adapt to cloudflare -> [view commit](https://github.com/Laisky/laisky-blog/commit/7c5b9c35df192d54accc00db2186109f7cd2642c)
+- 2018-06-06 (Laisky) fix: compatable to pip10 -> [view commit](https://github.com/Laisky/laisky-blog/commit/8898c83598bdc3b76aba51dd76e75458c4a35813)
+- 2018-04-19 (Laisky) fix: CORS domain error -> [view commit](https://github.com/Laisky/laisky-blog/commit/5ea9f7d8863d59e3ed1db217fc1807909a0a1df4)
+- 2018-04-19 (Laisky) ci: changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/9c691cbbb3ba02b93f637ebfe356c7dc55be564a)
 - 2018-04-19 (Laisky) perf: use cloudflare replace youpaiyun -> [view commit](https://github.com/Laisky/laisky-blog/commit/343a2f57f5b1f2937b260190fedcd927e15f604d)
 - 2018-04-10 (Laisky) fix: bind docker port to host only -> [view commit](https://github.com/Laisky/laisky-blog/commit/c22d9ce65ad9c9c83cb99c612e2cf00fc5843786)
 - 2018-04-01 (Laisky) style: fix some indent for the deploy configuration -> [view commit](https://github.com/Laisky/laisky-blog/commit/8d39378a6f41f8def0f042b05e7eef57e5e1b42e)
