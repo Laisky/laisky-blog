@@ -3,7 +3,7 @@
 
 # encrypt
 PyJWT>=1.5
-python-bcrypt
+bcrypt
 
 # templates
 jinja2
@@ -24,7 +24,7 @@ pymongo==3.4  # for motor
 motor==1.1  # always with bugs, upgrade carefully
 
 # server
-tornado>4.0
+tornado<5.0
 
 # time
 pytz

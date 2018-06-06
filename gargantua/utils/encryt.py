@@ -8,11 +8,11 @@ from gargantua.settings import SECRET_KEY
 
 
 def generate_passwd(passwd):
-    return bcrypt.hashpw(passwd, bcrypt.gensalt())
+    return bcrypt.hashpw(passwd.encode('utf8'), bcrypt.gensalt(len(passwd))).decode('utf8')
 
 
 def validate_passwd(passwd, hashed):
-    return bcrypt.hashpw(passwd, hashed) == hashed
+    return bcrypt.hashpw(passwd.encode('utf8'), hashed.encode('utf8')) == hashed.encode('utf8')
 
 
 def generate_token(json_, secret=SECRET_KEY):
