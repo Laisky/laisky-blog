@@ -2,6 +2,8 @@
 *CURRENT*
 ---
     
+- 2018-10-28 (Laisky) fix: set tz as UTC before convert to unix timestamp -> [view commit](https://github.com/Laisky/laisky-blog/commit/53a9642cd40103a7a5220e6e062c3309aa4b806a)
+- 2018-06-06 (Laisky) ci: changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/570ded33d35bc7d93cb8a5aa3b620de7e3e20097)
 - 2018-06-06 (Laisky) fix: port should be int -> [view commit](https://github.com/Laisky/laisky-blog/commit/056aff8a73b48ebf6a972b68a249bfa2eb393576)
 - 2018-06-06 (Laisky) ci: changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/0da7c0335fbb14a9bace45f1f3407b8eb302855b)
 - 2018-06-06 (Laisky) fix: tornado<5.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/3134cc572880f96ead684c2b750988552f8d205b)
