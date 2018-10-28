@@ -6,8 +6,7 @@ import datetime
 import tornado
 from bson import ObjectId
 
-from gargantua.utils import logger, utc2cst_timestamp, MongoParser, debug_wrapper
-
+from gargantua.utils import logger, utc2cst_timestamp, MongoParser, debug_wrapper, UTC
 
 class ParserError(Exception):
     pass
@@ -35,7 +34,9 @@ class DatetimeParser(BaseParser):
         for docu in results:
             for k, v in docu.items():
                 if isinstance(v, datetime.datetime):
-                    docu[k] = utc2cst_timestamp(v)
+                    print(">> k", k)
+                    print(">> v", v)
+                    docu[k] = v.replace(tzinfo=UTC).timestamp()
 
         return results
 
@@ -87,6 +88,7 @@ class PostContentParser(BaseParser):
             else:
                 category = {}
 
+            print(">>", docu.get("post_created_at"), type(docu.get("post_created_at")))
             r.append({
                 'post_tags': docu.get('post_tags', []),
                 'post_category': category.get('name'),
