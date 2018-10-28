@@ -10,6 +10,9 @@ import { BaseComponent } from '../components/base.jsx';
 import { ArchiveExtract, Comment, ArchiveMenu } from '../components/archives.jsx';
 import { Categories } from '../components/sidebar.jsx';
 
+var markdown = require("markdown-it");
+var markdown = require("markdown-it-mathjax");
+
 
 /**
  * Post Article
@@ -31,23 +34,24 @@ export class Post extends BaseComponent {
         })
             .done((resp) => {
                 document.title = "laisky-blog: " + resp.result.post_title;
-                if(resp.result['post_type'] == 'slide') this.loadRevealJs();
-                resp.result.post_content = this.convertImg2Webp(resp.result.post_content);
-                $(document.body).animate({scrollTop: 0}, 200);
+                if (resp.result['post_type'] == 'slide') this.loadRevealJs();
+                markdownit().use(require("markdown-it-mathjax")).
+                    resp.result.post_content = this.convertImg2Webp(resp.result.post_content);
+                $(document.body).animate({ scrollTop: 0 }, 200);
                 this.setState({
                     post: resp.result,
                     hint: null
                 });
             })
             .fail(() => {
-                this.setState({hint: '读取数据失败，请刷新重试'});
+                this.setState({ hint: '读取数据失败，请刷新重试' });
             });
     };
 
     // http://blog.qiniu.com/archives/5793
     // should only work for qiniu
     convertImg2Webp(content) {
-        if(navigator.browserInfo.name != 'Chrome') return content
+        if (navigator.browserInfo.name != 'Chrome') return content
         return content.replace(
             // https://blog.laisky.com/qiniu/srceen_shot%202016-10-31%20at%2020.22.45.jpg
             /(\bhttps:\/\/blog\.laisky\.com\/qiniu\/[^\/]+\.(jpg|jpeg|gif|png))/ig,
@@ -57,7 +61,7 @@ export class Post extends BaseComponent {
 
     loadRevealJs() {
         $.getScript(window.revealLibUrl)
-            .done(function() {
+            .done(function () {
                 Reveal.initialize({
                     // Display controls in the bottom right corner
                     controls: true,
@@ -159,22 +163,22 @@ export class Post extends BaseComponent {
             postMenu,
             postContent;
 
-        if(this.state.hint) {
+        if (this.state.hint) {
             hintEle = <p className="hint">{this.state.hint}</p>
         }
 
-        if(this.state.post) {
+        if (this.state.post) {
             postComment = <Comment post-name={this.state.post.post_name} />;
             postContent = <ArchiveExtract key={this.state.post.post_name}
-                                          insertHTML={true}
-                                          archive-object={this.state.post}
-                                          archive-type={this.state.post.post_type}
-                                          archive-name={this.state.post.post_name}
-                                          archive-title={this.state.post.post_title}
-                                          archive-created-at={this.state.post.post_created_at}
-                                          archive-content={this.state.post.post_content} />;
+                insertHTML={true}
+                archive-object={this.state.post}
+                archive-type={this.state.post.post_type}
+                archive-name={this.state.post.post_name}
+                archive-title={this.state.post.post_title}
+                archive-created-at={this.state.post.post_created_at}
+                archive-content={this.state.post.post_content} />;
 
-            if(this.state.post.post_menu) {
+            if (this.state.post.post_menu) {
                 postMenu = (
                     <div className="col-sm-2 hidden-xs">
                         <ArchiveMenu content={this.state.post.post_menu} />;
@@ -185,7 +189,7 @@ export class Post extends BaseComponent {
 
         return (
             <div className="container-fluid post-body" id="post">
-                <div id="page-content" className={postMenu? 'col-sm-10 col-xs-12': 'container-fluid'}>
+                <div id="page-content" className={postMenu ? 'col-sm-10 col-xs-12' : 'container-fluid'}>
                     {hintEle}
                     {postContent}
                     {postComment}
@@ -216,13 +220,13 @@ export class PostCategories extends BaseComponent {
     async loadArticlesByCategoryId(cid) {
         let url = `/api/v2/post/?truncate=0&limit=1000`,
             html = '';
-        if(cid != undefined) url += `&category=${cid}`;
+        if (cid != undefined) url += `&category=${cid}`;
         $.getJSON(url)
             .then(resp => {
-                for(let post of resp.result) {
+                for (let post of resp.result) {
                     html += `<p><a href="/p/${post.post_name}/" target="_blank">${post.post_title}</a></p>`;
                 }
-                this.setState({categories: html});
+                this.setState({ categories: html });
             });
     };
 
