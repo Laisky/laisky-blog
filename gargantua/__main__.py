@@ -16,7 +16,11 @@ from gargantua.utils import logger
 def main():
     opt.parse_command_line()
 
-    # tornado.platform.asyncio.AsyncIOMainLoop().install()
+    try:
+        tornado.platform.asyncio.AsyncIOMainLoop().install()
+    except AttributeError:  # this method in tornado is deprecated after python 3.4
+        pass
+
     ioloop = asyncio.get_event_loop()
 
     http_server = tornado.httpserver.HTTPServer(Application(), xheaders=True)
