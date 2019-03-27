@@ -2,6 +2,9 @@
 *CURRENT*
 ---
     
+- 2019-03-27 (Laisky) fix: tornado compatable error -> [view commit](https://github.com/Laisky/laisky-blog/commit/4fa68fe1b1598cd476b53a96365243354a815986)
+- 2019-03-27 (Laisky) 2.8.9 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6c0ee4b0a224a00ae39b60c98fac8c7f948bd250)
+- 2019-03-27 (Laisky) docs: update changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/47c999211140b77439584a50a53e0977831d5513)
 - 2019-03-27 (Laisky) feat(121): click to close modal & small img -> [view commit](https://github.com/Laisky/laisky-blog/commit/1e647c21c165caa8eaae8de236121b650dc90578)
 - 2018-10-28 (Laisky) 2.8.8 -> [view commit](https://github.com/Laisky/laisky-blog/commit/e7b60dc1e59bc29af1793d655c8c9374ceb7b18f)
 - 2018-10-28 (Laisky) fix: set tz as UTC before convert to unix timestamp -> [view commit](https://github.com/Laisky/laisky-blog/commit/53a9642cd40103a7a5220e6e062c3309aa4b806a)
