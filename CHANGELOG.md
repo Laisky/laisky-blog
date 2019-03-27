@@ -2,6 +2,9 @@
 *CURRENT*
 ---
     
+- 2019-03-27 (Laisky) docs: update changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/47c999211140b77439584a50a53e0977831d5513)
+- 2019-03-27 (Laisky) feat(121): click to close modal & small img -> [view commit](https://github.com/Laisky/laisky-blog/commit/1e647c21c165caa8eaae8de236121b650dc90578)
+- 2018-10-28 (Laisky) 2.8.8 -> [view commit](https://github.com/Laisky/laisky-blog/commit/e7b60dc1e59bc29af1793d655c8c9374ceb7b18f)
 - 2018-10-28 (Laisky) fix: set tz as UTC before convert to unix timestamp -> [view commit](https://github.com/Laisky/laisky-blog/commit/53a9642cd40103a7a5220e6e062c3309aa4b806a)
 - 2018-06-06 (Laisky) ci: changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/570ded33d35bc7d93cb8a5aa3b620de7e3e20097)
 - 2018-06-06 (Laisky) fix: port should be int -> [view commit](https://github.com/Laisky/laisky-blog/commit/056aff8a73b48ebf6a972b68a249bfa2eb393576)

@@ -16,7 +16,7 @@ from gargantua.utils import logger
 def main():
     opt.parse_command_line()
 
-    tornado.platform.asyncio.AsyncIOMainLoop().install()
+    # tornado.platform.asyncio.AsyncIOMainLoop().install()
     ioloop = asyncio.get_event_loop()
 
     http_server = tornado.httpserver.HTTPServer(Application(), xheaders=True)

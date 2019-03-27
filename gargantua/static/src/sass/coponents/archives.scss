@@ -121,7 +121,8 @@
             display: block;
             cursor: pointer;
             max-height: 600px;
-            max-width: 600px;
+            // max-width: 600px;
+            max-width: 90%;
         }
         a {
             color: $link-clr;
