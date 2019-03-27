@@ -34,8 +34,8 @@ class DatetimeParser(BaseParser):
         for docu in results:
             for k, v in docu.items():
                 if isinstance(v, datetime.datetime):
-                    print(">> k", k)
-                    print(">> v", v)
+                    # print(">> k", k)
+                    # print(">> v", v)
                     docu[k] = v.replace(tzinfo=UTC).timestamp()
 
         return results
