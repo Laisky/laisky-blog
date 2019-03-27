@@ -52,6 +52,10 @@ class ArchiveExtract extends BaseComponent {
                 show: true
             });
         })
+
+        $imgModal.on("click", (evt) => {
+            $imgModal.modal('hide');
+        })
     };
 
     getTagClickHandler() {
