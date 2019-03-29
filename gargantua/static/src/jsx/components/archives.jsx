@@ -22,6 +22,15 @@ class Comment extends BaseComponent {
                     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
                     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
                     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+
+                    $('.archive-tail .pay').popover({
+                        html: true,
+                        trigger: 'hover',
+                        placement: 'top',
+                        content: function(){
+                            return '<img src="https://s3.laisky.com/uploads/2019/03/pay-merge.jpg" alt="pay"/>';
+                        }
+                      });
                 })();
             `;
 
@@ -96,6 +105,7 @@ class ArchiveExtract extends BaseComponent {
                     <span>标签：</span>
                     {tagHtml}
                 </div>,
+                <span className="pay">打赏</span>,
                 articleEditable,
                 <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">0 评论</Link>
             ];

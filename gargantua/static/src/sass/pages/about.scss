@@ -7,6 +7,7 @@
     position: relative;
     color: $post-cnt-clr;
     max-width: 800px;
+    padding-bottom: 10px;
 
     .tab-pane {
         padding: 10px;
@@ -23,6 +24,17 @@
         &.profile {
             p {
                 margin: 0;
+            }
+        }
+    }
+
+    #me {
+        .pay {
+            img {
+                float: left;
+                margin-left: 5px;
+                max-width: 200px;
+                max-height: 200px;
             }
         }
     }

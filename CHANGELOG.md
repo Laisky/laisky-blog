@@ -2,6 +2,12 @@
 *CURRENT*
 ---
     
+- 2019-03-30 (Laisky) feat(89): add payment -> [view commit](https://github.com/Laisky/laisky-blog/commit/1e619791d54786fa52bf23f2bff4a23a6f3ea575)    
+       
+*2.8.10*
+---
+    
+- 2019-03-27 (Laisky) 2.8.10 -> [view commit](https://github.com/Laisky/laisky-blog/commit/50c84f926629ebd2a1b689d99dc3a3ae58a28d21)
 - 2019-03-27 (Laisky) fix: tornado compatable error -> [view commit](https://github.com/Laisky/laisky-blog/commit/4fa68fe1b1598cd476b53a96365243354a815986)
 - 2019-03-27 (Laisky) 2.8.9 -> [view commit](https://github.com/Laisky/laisky-blog/commit/6c0ee4b0a224a00ae39b60c98fac8c7f948bd250)
 - 2019-03-27 (Laisky) docs: update changelog -> [view commit](https://github.com/Laisky/laisky-blog/commit/47c999211140b77439584a50a53e0977831d5513)
