@@ -160,5 +160,15 @@
                 cursor: pointer;
             }
         }
+
+        .popover {
+            // width: 500px;
+            max-width: none;
+            img {
+                width: 100%;
+                max-width: 400px;
+                min-width: 200px;
+            }
+        }
     }
 }
