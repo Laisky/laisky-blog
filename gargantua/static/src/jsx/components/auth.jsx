@@ -1,5 +1,5 @@
 /*
- * 登陆组件
+ * 登录组件
  */
 
 'use strict';
@@ -53,7 +53,7 @@ class Auth extends BaseComponent {
             passwordLabel: this.props.passwordLabel || '密码',
             passwordName: this.props.passwordName || 'password',
             passwordPlaceholder: this.props.passwordPlaceholder || '请输入密码',
-            siginLabel: this.props.siginLabel || '登陆',
+            siginLabel: this.props.siginLabel || '登录',
             singupLabel: this.props.singupLabel || '注册'
         })
     };

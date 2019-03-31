@@ -23,10 +23,10 @@ $(function() {
             $.postJSON(url, data, function(resp) {
                 $hintText.html(resp.msg);
                 if (resp.status == 0) {
-                    // 登陆成功
+                    // 登录成功
                     $hintText.removeClass('label-warning');
                     $hintText.addClass("label-success");
-                    $hintText.html("登陆成功，正在跳转");
+                    $hintText.html("登录成功，正在跳转");
                     setTimeout(function() {
                         var redirectTo = QueryString['next'];
                         location.href = redirectTo;
