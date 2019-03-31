@@ -96,7 +96,7 @@ export class Login extends BaseComponent {
                 </div>
             );
         }else {
-            loginBtn = <Link to={{ pathname: '/login/' }}>登陆</Link>
+            loginBtn = <Link to={{ pathname: '/login/' }}>登录</Link>
         }
         return (
             <section className="row console login">

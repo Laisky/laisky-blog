@@ -61,7 +61,7 @@ class TestBlogPage(GargantuaTestCase):
         self.assertIn(GA_ID, content)
 
     def test_login_page(self):
-        """测试登陆页
+        """测试登录页
         """
         self.http_client.fetch(self.get_url('/login/'), self.stop)
         resp = self.wait()

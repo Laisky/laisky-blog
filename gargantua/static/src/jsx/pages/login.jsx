@@ -1,5 +1,5 @@
 /*
- * 博客登陆页
+ * 博客登录页
  */
 
 'use strict';
@@ -19,7 +19,7 @@ class Login extends BaseComponent {
                       action="/api/user/login/"
                       accountName="email"
                       accountLabel="邮箱"
-                      accountPlaceholder="请输入登陆邮箱" />
+                      accountPlaceholder="请输入登录邮箱" />
             </div>
         );
     }
