@@ -7,12 +7,11 @@
     {% for post in posts %}
     <item>
       <title>{{ post.post_title | escape }}</title>
-      <author>Laisky</author>
       <link>https://blog.laisky.com/p/{{ post.post_name }}/</link>
       <guid>https://blog.laisky.com/p/{{ post.post_name }}/</guid>
       <description>
         <![CDATA[
-          {{ post.post_content }}
+          {{ post.post_content | escape }}
         ]]>
       </description>
     </item>
