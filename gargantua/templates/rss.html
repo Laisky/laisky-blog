@@ -6,10 +6,10 @@
     <description>Blog archives of Laisky.</description>
     {% for post in posts %}
     <item>
-      <title>{{ post.post_title }}</title>
+      <title>{{ post.post_title | escape }}</title>
       <link>https://blog.laisky.com/p/{{ post.post_name }}/</link>
       <description>
-        {{ post.post_content }}
+        {{ post.post_content | escape }}
       </description>
     </item>
     {% endfor %}
