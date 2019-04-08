@@ -2,6 +2,7 @@
 *CURRENT*
 ---
     
+- 2019-04-08 (Laisky) 2.8.13 -> [view commit](https://github.com/Laisky/laisky-blog/commit/768451a3a5406403ea7fab86e0e33f4f41dc9a71)
 - 2019-04-08 (Laisky) fix: rss quote -> [view commit](https://github.com/Laisky/laisky-blog/commit/e8e315086bd828588652dc97ac63b2dd8e07f947)
 - 2019-03-31 (Laisky) 2.8.12 -> [view commit](https://github.com/Laisky/laisky-blog/commit/2a8903cd9bc4f3c297a3076ae116df28150fa083)
 - 2019-03-31 (Laisky) perf(#89): prefetch pay image -> [view commit](https://github.com/Laisky/laisky-blog/commit/256f0d42c161e33ed4c5fd683d14d775322d7825)
