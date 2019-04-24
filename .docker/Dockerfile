@@ -18,3 +18,6 @@ RUN git branch -a
 RUN python setup.py install
 
 ENV HOME /root
+
+CMD python -m gargantua --port=27850 --dbhost=mongodb --dbport=27017 --debug=false
+

@@ -2,6 +2,12 @@
 *CURRENT*
 ---
     
+- 2019-04-11 (Laisky) build: update dockerfile -> [view commit](https://github.com/Laisky/laisky-blog/commit/82099d356a22750e3e5205ae591da0658cdd2d7e)    
+       
+*2.8.15*
+---
+    
+- 2019-04-08 (Laisky) 2.8.15 -> [view commit](https://github.com/Laisky/laisky-blog/commit/eb8ae2bd8dda957cc90fd30cf42b8e1d8f605bba)
 - 2019-04-08 (Laisky) 2.8.14 -> [view commit](https://github.com/Laisky/laisky-blog/commit/4c54b098b8c6e523eb69fa7acdf1a61e2ef73390)
 - 2019-04-08 (Laisky) 2.8.13 -> [view commit](https://github.com/Laisky/laisky-blog/commit/768451a3a5406403ea7fab86e0e33f4f41dc9a71)
 - 2019-04-08 (Laisky) fix: rss quote -> [view commit](https://github.com/Laisky/laisky-blog/commit/e8e315086bd828588652dc97ac63b2dd8e07f947)
