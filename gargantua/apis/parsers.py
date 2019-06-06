@@ -34,8 +34,6 @@ class DatetimeParser(BaseParser):
         for docu in results:
             for k, v in docu.items():
                 if isinstance(v, datetime.datetime):
-                    # print(">> k", k)
-                    # print(">> v", v)
                     docu[k] = v.replace(tzinfo=UTC).timestamp()
 
         return results
@@ -88,7 +86,6 @@ class PostContentParser(BaseParser):
             else:
                 category = {}
 
-            print(">>", docu.get("post_created_at"), type(docu.get("post_created_at")))
             r.append({
                 'post_tags': docu.get('post_tags', []),
                 'post_category': category.get('name'),
