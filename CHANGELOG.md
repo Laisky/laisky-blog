@@ -2,6 +2,21 @@
 *CURRENT*
 ---
     
+- 2019-07-09 (Laisky) feat: support graphql publish and login -> [view commit](https://github.com/Laisky/laisky-blog/commit/c94ff0a48ffa17abc558ac51cf20173facf35764)
+- 2019-06-06 (Laisky) fix: update yarn -> [view commit](https://github.com/Laisky/laisky-blog/commit/4b4d34341f6074b03dd1353751bdc27f2659ec01)
+- 2019-06-06 (dependabot[bot]) chore(deps): bump fstream from 1.0.10 to 1.0.12 -> [view commit](https://github.com/Laisky/laisky-blog/commit/33d3a525cbef2e73ec6e1084b866ba396bef7a04)
+- 2019-06-06 (dependabot[bot]) chore(deps): bump concat-with-sourcemaps from 1.0.4 to 1.1.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/fb46e80fa3098a9587524b3e72db30c14e8159e8)
+- 2019-06-06 (dependabot[bot]) chore(deps): bump tar from 2.2.1 to 2.2.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/25eee912816378ed3c00d22bc214a940b09be16b)
+- 2019-06-05 (dependabot[bot]) chore(deps): bump marked from 0.3.6 to 0.3.19 -> [view commit](https://github.com/Laisky/laisky-blog/commit/286d59ffc4d0386c40c6b6d7a333ada520cd2306)
+- 2019-06-04 (dependabot[bot]) chore(deps): bump sshpk from 1.10.1 to 1.16.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/78f631b540e7dd340770e79c60a86e129814b2cb)
+- 2019-04-24 (Laisky) docs: update readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/3b96772d56e08028cd8f152fc7a777753ff5928f)
+- 2019-04-24 (Laisky) docs: update readme -> [view commit](https://github.com/Laisky/laisky-blog/commit/613840cc58fb99e1b39d7078bd6922b847c9c36c)
+- 2019-04-11 (Laisky) build: update dockerfile -> [view commit](https://github.com/Laisky/laisky-blog/commit/82099d356a22750e3e5205ae591da0658cdd2d7e)    
+       
+*2.8.15*
+---
+    
+- 2019-04-08 (Laisky) 2.8.15 -> [view commit](https://github.com/Laisky/laisky-blog/commit/eb8ae2bd8dda957cc90fd30cf42b8e1d8f605bba)
 - 2019-04-08 (Laisky) 2.8.14 -> [view commit](https://github.com/Laisky/laisky-blog/commit/4c54b098b8c6e523eb69fa7acdf1a61e2ef73390)
 - 2019-04-08 (Laisky) 2.8.13 -> [view commit](https://github.com/Laisky/laisky-blog/commit/768451a3a5406403ea7fab86e0e33f4f41dc9a71)
 - 2019-04-08 (Laisky) fix: rss quote -> [view commit](https://github.com/Laisky/laisky-blog/commit/e8e315086bd828588652dc97ac63b2dd8e07f947)

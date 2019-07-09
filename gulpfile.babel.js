@@ -37,7 +37,7 @@ const plumberErrorHandler = {
     errorHandler: $.notify.onError({
         title: notifyInfo.title,
         icon: notifyInfo.icon,
-        message: "Error: <%= error.message %>"
+        message: 'Error: <%= error.message %>'
     })
 };
 
@@ -49,16 +49,16 @@ gulp.task('jslibs', () => {
     return gulp.src(config.jslibs.src)
         .pipe($.plumber(plumberErrorHandler))
         .pipe($.sourcemaps.init())
-            .pipe($.concat(config.jslibs.debugname))
-            .pipe($.uglify())
+        .pipe($.concat(config.jslibs.debugname))
+        .pipe($.uglify())
         .pipe($.sourcemaps.write('../maps'))
         .pipe($.rename((path) => {
-            if(path.extname != '.map') path.basename += '.min';
+            if (path.extname != '.map') path.basename += '.min';
         }))
         .pipe($.rev())
         .pipe($.rename(path => {
-            if(path.extname != '.map') return;
-            path.basename = path.basename.replace(/\-[\d\w]+\./, '.');
+            if (path.extname != '.map') return;
+            path.basename = path.basename.replace(/-[\d\w]+\./, '.');
         }))
         .pipe(gulp.dest(config.jslibs.dest))
         .pipe($.rev.manifest(config.jslibs.revname))
@@ -73,16 +73,16 @@ gulp.task('reveallibs', () => {
     return gulp.src(config.reveallibs.src)
         .pipe($.plumber(plumberErrorHandler))
         .pipe($.sourcemaps.init())
-            .pipe($.concat(config.reveallibs.debugname))
-            .pipe($.uglify())
+        .pipe($.concat(config.reveallibs.debugname))
+        .pipe($.uglify())
         .pipe($.sourcemaps.write('../maps'))
         .pipe($.rename((path) => {
-            if(path.extname != '.map') path.basename += '.min';
+            if (path.extname != '.map') path.basename += '.min';
         }))
         .pipe($.rev())
         .pipe($.rename(path => {
-            if(path.extname != '.map') return;
-            path.basename = path.basename.replace(/\-[\d\w]+\./, '.');
+            if (path.extname != '.map') return;
+            path.basename = path.basename.replace(/-[\d\w]+\./, '.');
         }))
         .pipe(gulp.dest(config.reveallibs.dest))
         .pipe($.rev.manifest(config.reveallibs.revname))
@@ -96,63 +96,65 @@ gulp.task('reveallibs', () => {
 gulp.task('jssites', () => {
     return gulp.src(config.jssites.entry)
         .pipe($.plumber(plumberErrorHandler))
-            .pipe(gulpwebpack({
-                externals: {
-                    "react": "React",
-                    "react-dom": "ReactDOM",
-                    "react-router": "ReactRouter",
-                    "redux": "Redux",
-                    "react-redux": "ReactRedux"
-                },
-                devtool: 'source-map',
-                resolve: {
-                    root: path.resolve(__dirname, '.'),
-                    extensions: ['', '.js', '.jsx'],
-                    modulesDirectories: ["node_modules"],
-                },
-                output: {
-                    filename: config.jssites.debugname
-                },
-                plugins: [
-                    // new webpack.optimize.CommonsChunkPlugin('vendor', 'reactlibs.js'),
-                    // new webpack.optimize.UglifyJsPlugin({ mangle: false, compress: { warnings: false } }),
-                    new webpack.NoErrorsPlugin(),
-                    new webpack.DefinePlugin({
-                        'process.env': {
-                            NODE_ENV: JSON.stringify('production'),
-                            NODE_PATH: path.resolve(__dirname, 'node_modules')
-                        }
-                    })
-                ],
-                module: {
-                    loaders: [{
-                        loader: 'babel-loader',
-                        exclude: /node_modules/,
-                        query: {
-                            presets: ['es2016', 'es2015', 'react'],
-                            plugins: ['transform-runtime', 'transform-async-to-generator'],
-                            compact: false
-                        }
-                    }]
-                }
-            }))
-            .pipe($.sourcemaps.init({loadMaps: true}))
-            .pipe(through.obj(function (file, enc, cb) {
-              // Dont pipe through any source map files as it will be handled
-              // by gulp-sourcemaps
-              var isSourceMap = /\.map$/.test(file.path);
-              if (!isSourceMap) this.push(file);
-              cb();
-            }))
-            .pipe($.uglify())
-            .pipe($.rename((path) => {
-                if(path.extname != '.map') path.basename += '.min';
-            }))
+        .pipe(gulpwebpack({
+            externals: {
+                'react': 'React',
+                'react-dom': 'ReactDOM',
+                'react-router': 'ReactRouter',
+                'redux': 'Redux',
+                'react-redux': 'ReactRedux'
+            },
+            devtool: 'source-map',
+            resolve: {
+                root: path.resolve(__dirname, '.'),
+                extensions: ['', '.js', '.jsx'],
+                modulesDirectories: ['node_modules'],
+            },
+            output: {
+                filename: config.jssites.debugname
+            },
+            plugins: [
+                // new webpack.optimize.CommonsChunkPlugin('vendor', 'reactlibs.js'),
+                // new webpack.optimize.UglifyJsPlugin({ mangle: false, compress: { warnings: false } }),
+                new webpack.NoErrorsPlugin(),
+                new webpack.DefinePlugin({
+                    'process.env': {
+                        NODE_ENV: JSON.stringify('production'),
+                        NODE_PATH: path.resolve(__dirname, 'node_modules')
+                    }
+                })
+            ],
+            module: {
+                loaders: [{
+                    loader: 'babel-loader',
+                    exclude: /node_modules/,
+                    query: {
+                        presets: ['es2016', 'es2015', 'react'],
+                        plugins: ['transform-runtime', 'transform-async-to-generator'],
+                        compact: false
+                    }
+                }]
+            }
+        }))
+        .pipe($.sourcemaps.init({
+            loadMaps: true
+        }))
+        .pipe(through.obj(function (file, enc, cb) {
+            // Dont pipe through any source map files as it will be handled
+            // by gulp-sourcemaps
+            var isSourceMap = /\.map$/.test(file.path);
+            if (!isSourceMap) this.push(file);
+            cb();
+        }))
+        .pipe($.uglify())
+        .pipe($.rename((path) => {
+            if (path.extname != '.map') path.basename += '.min';
+        }))
         .pipe($.sourcemaps.write('../maps'))
         .pipe($.rev())
         .pipe($.rename(path => {
-            if(path.extname != '.map') return;
-            path.basename = path.basename.replace(/\-[\d\w]+\./, '.');
+            if (path.extname != '.map') return;
+            path.basename = path.basename.replace(/-[\d\w]+\./, '.');
         }))
         .pipe(gulp.dest(config.jssites.dest))
         .pipe($.rev.manifest(config.jssites.revname))
@@ -166,18 +168,24 @@ gulp.task('jssites', () => {
 gulp.task('csslibs', () => {
     return gulp.src(config.csslibs.src)
         .pipe($.plumber(plumberErrorHandler))
-        .pipe($.sourcemaps.init({loadMaps: true}))
-            .pipe($.concat(config.csslibs.debugname))
-            .pipe($.autoprefixer({ browsers: autoprefixerBrowsers }))
-            .pipe($.cleanCss({ compatibility: 'ie8' }))
+        .pipe($.sourcemaps.init({
+            loadMaps: true
+        }))
+        .pipe($.concat(config.csslibs.debugname))
+        .pipe($.autoprefixer({
+            browsers: autoprefixerBrowsers
+        }))
+        .pipe($.cleanCss({
+            compatibility: 'ie8'
+        }))
         .pipe($.sourcemaps.write('../maps'))
         .pipe($.rename((path) => {
-            if(path.extname != '.map') path.basename += '.min';
+            if (path.extname != '.map') path.basename += '.min';
         }))
         .pipe($.rev())
         .pipe($.rename(path => {
-            if(path.extname != '.map') return;
-            path.basename = path.basename.replace(/\-[\d\w]+\./, '.');
+            if (path.extname != '.map') return;
+            path.basename = path.basename.replace(/-[\d\w]+\./, '.');
         }))
         .pipe(gulp.dest(config.csslibs.dest))
         .pipe($.rev.manifest(config.csslibs.revname))
@@ -192,18 +200,22 @@ gulp.task('csssites', () => {
     return gulp.src(config.csssites.src)
         .pipe($.plumber(plumberErrorHandler))
         .pipe($.compass(config.csssites.compass))
-            .pipe($.sourcemaps.init())
-            .pipe($.concat(config.csssites.debugname))
-            .pipe($.autoprefixer({ browsers: autoprefixerBrowsers }))
-            .pipe($.cleanCss({ compatibility: 'ie8' }))
+        .pipe($.sourcemaps.init())
+        .pipe($.concat(config.csssites.debugname))
+        .pipe($.autoprefixer({
+            browsers: autoprefixerBrowsers
+        }))
+        .pipe($.cleanCss({
+            compatibility: 'ie8'
+        }))
         .pipe($.sourcemaps.write('../maps'))
         .pipe($.rename((path) => {
-            if(path.extname != '.map') path.basename += '.min';
+            if (path.extname != '.map') path.basename += '.min';
         }))
         .pipe($.rev())
         .pipe($.rename(path => {
-            if(path.extname != '.map') return;
-            path.basename = path.basename.replace(/\-[\d\w]+\./, '.');
+            if (path.extname != '.map') return;
+            path.basename = path.basename.replace(/-[\d\w]+\./, '.');
         }))
         .pipe(gulp.dest(config.csssites.dest))
         .pipe($.rev.manifest(config.csssites.revname))
@@ -216,14 +228,14 @@ gulp.task('csssites', () => {
  */
 gulp.task('clean', () => {
     return gulp.src([
-            './gargantua/static/dist/.assets',
-            './gargantua/static/dist/css',
-            './gargantua/static/dist/js',
-            './gargantua/static/dist/maps',
-            './gargantua/html/*'
-        ], {
-            read: false
-        })
+        './gargantua/static/dist/.assets',
+        './gargantua/static/dist/css',
+        './gargantua/static/dist/js',
+        './gargantua/static/dist/maps',
+        './gargantua/html/*'
+    ], {
+        read: false
+    })
         .pipe($.clean());
 });
 
