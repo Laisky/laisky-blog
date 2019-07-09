@@ -6,6 +6,7 @@
 
 import React from 'react';
 import { Link } from 'react-router';
+import { request } from 'graphql-request';
 
 import { BaseComponent } from './base.jsx';
 
@@ -21,24 +22,26 @@ class Auth extends BaseComponent {
             let accountName = this.state.accountName,
                 passowrdName = this.state.passowrdName,
                 next = QueryString['next'] || '/',
-                data = {is_keep_login: $(this.refs.isKeepLogin).prop('checked')};
+                data = { is_keep_login: $(this.refs.isKeepLogin).prop('checked') };
 
             evt.preventDefault();
 
             data[this.state.accountName] = this.refs.account.value;
             data[this.state.passwordName] = this.refs.password.value.getMD5();
 
-            $.ajax({
-                url: this.state.action,
-                method: 'POST',
-                data: this.addXSRF(data)
-            })
-                .done((resp) => {
-                    $(this.refs.hint).text(resp);
+            const query = `mutation {
+                login(account:"${this.refs.account.value}", password:"${this.refs.password.value}") {
+                    username
+                }
+            }`;
+            request(this.state.action, query)
+                .then(data => {
+                    $(this.refs.hint).text(`welcome ${data.login.username}`);
                     location.href = next;
                 })
-                .fail((resp) => {
-                    $(this.refs.hint).text('Login failed');
+                .catch(err => {
+                    console.log(err)
+                    $(this.refs.hint).text(`${err.message}`)
                 });
         }
     };
@@ -66,15 +69,15 @@ class Auth extends BaseComponent {
                 </div>
                 <form className="form-horizontal" method={this.state.method} action={this.state.action}>
                     <div className="form-group">
-                        <label for="account" className="col-sm-2 control-label">{ this.state.accountLabel }</label>
+                        <label for="account" className="col-sm-2 control-label">{this.state.accountLabel}</label>
                         <div className="col-sm-10">
-                            <input ref="account" type="email" className="form-control account" placeholder={ this.state.accountPlaceholder } name="account" />
+                            <input ref="account" type="email" className="form-control account" placeholder={this.state.accountPlaceholder} name="account" />
                         </div>
                     </div>
                     <div className="form-group">
-                        <label for="passowrd" className="col-sm-2 control-label">{ this.state.passwordLabel }</label>
+                        <label for="passowrd" className="col-sm-2 control-label">{this.state.passwordLabel}</label>
                         <div className="col-sm-10">
-                            <input ref="password" type="password" className="form-control password" placeholder={ this.state.passwordPlaceholder } name="password" />
+                            <input ref="password" type="password" className="form-control password" placeholder={this.state.passwordPlaceholder} name="password" />
                         </div>
                     </div>
                     <div className="form-group">
@@ -89,8 +92,8 @@ class Auth extends BaseComponent {
                     </div>
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-10">
-                            <button onClick={this.getHandleSubmit()} type="submit" className="signinBtn btn btn-default">{ this.state.siginLabel }</button>
-                            <button onClick={this.getHandleSubmit()} disabled="true" type="submit" className="signupBtn btn btn-default">{ this.state.singupLabel }</button>
+                            <button onClick={this.getHandleSubmit()} type="submit" className="signinBtn btn btn-default">{this.state.siginLabel}</button>
+                            <button onClick={this.getHandleSubmit()} disabled="true" type="submit" className="signupBtn btn btn-default">{this.state.singupLabel}</button>
                         </div>
                     </div>
                 </form>
