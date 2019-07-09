@@ -141,19 +141,18 @@ class AuthHandlerMixin():
                 {'_id': ObjectId(uid)}
             )
             assert user_docu, 'user not existed'
-            assert cli_token == user_docu['token'], 'token incorrect'
-            validate_token(cli_token)
-
+            # assert cli_token == user_docu['token'], 'token incorrect'
+            # validate_token(cli_token)
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError,
-                AssertionError) as err:
-            logger.debug('token validate error: {}'.format(err))
+                AssertionError):
+            logger.exception('token validate error')
             self.clear_cookie('token')
         except AttributeError as err:
-            logger.debug('get_current_user error: {}'.format(err))
+            logger.exception('get_current_user error')
             self.clear_cookie('token')
         except Exception:
             err = traceback.format_exc()
-            logger.exception('get_current_user error: {}'.format(err))
+            logger.exception('get_current_user error')
         else:
             logger.debug("authenticated user %s", user_docu['username'])
             return user_docu

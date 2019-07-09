@@ -30,4 +30,4 @@ def decode_token(token, secret=SECRET_KEY):
     try:
         return jwt.decode(token, secret, algorithms=['HS512'])
     except (jwt.InvalidAlgorithmError, jwt.DecodeError):
-        return None
+        raise

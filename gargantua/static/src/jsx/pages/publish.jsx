@@ -7,6 +7,7 @@
 import React from 'react';
 
 import { BaseComponent } from '../components/base.jsx';
+import { request } from 'graphql-request';
 
 
 class BaseEditComponent extends BaseComponent {
@@ -26,9 +27,9 @@ class BaseEditComponent extends BaseComponent {
     };
 
     componentDidMount() {
-        if(!this.getCurrentUsername()) location.href = '/archives/1/';
+        if (!this.getCurrentUsername()) location.href = '/archives/1/';
 
-        if(this.props.getInitData) {
+        if (this.props.getInitData) {
             this.props.getInitData.call(this)
         }
     };
@@ -45,19 +46,53 @@ class BaseEditComponent extends BaseComponent {
                 postType: this.refs.postType.value
             };
 
-            $.ajax({
-                url: this.state.action,
-                method: this.state.method,
-                data: formData
+            let req;
+            if (formData.postType == 'markdown') {
+                switch (this.props.method) {
+                    case 'POST':
+                        req = request(this.state.action, `mutation {
+                                createBlogPost(
+                                    post:{
+                                        title: ${JSON.stringify(JSON.stringify(this.refs.postTitle.value))},
+                                        name: "${this.refs.postName.value}",
+                                        markdown: ${JSON.stringify(JSON.stringify(this.refs.postContent.value))},
+                                        type: ${this.refs.postType.value},
+                                    },
+                                ) {
+                                    name
+                                }
+                            }`);
+                        break;
+                    case 'PATCH':
+                        req = request(this.state.action, `mutation {
+                                amendBlogPost(
+                                    post:{
+                                        title: ${JSON.stringify(JSON.stringify(this.refs.postTitle.value))},
+                                        name: "${this.refs.postName.value}",
+                                        markdown: ${JSON.stringify(JSON.stringify(this.refs.postContent.value))},
+                                        type: ${this.refs.postType.value},
+                                    },
+                                ) {
+                                    name
+                                }
+                            }`);
+                        break;
+                }
+            } else {  // for slide
+                req = fetch(this.state.action, {
+                    method: this.state.method,
+                    body: JSON.stringify(formData),
+                });
+            }
+
+            req.then((resp) => {
+                this.setState({ hint: '发布成功，等待跳转' });
+                setTimeout(() => {
+                    location.href = `/p/${formData.postName}/`;
+                }, 4000);
             })
-                .done((resp) => {
-                    this.setState({hint: '发布成功，等待跳转'});
-                    setTimeout(() => {
-                        location.href = `/p/${formData.postName}/`;
-                    }, 4000);
-                })
-                .fail((resp) => {
-                    this.setState({hint: resp.responseText});
+                .catch((err) => {
+                    this.setState({ hint: err.message });
                 });
         };
     };
@@ -65,7 +100,7 @@ class BaseEditComponent extends BaseComponent {
     render() {
         let postName;
 
-        if(this.props.isLinkEditable) {
+        if (this.props.isLinkEditable) {
             postName = <input type="text" name="postName" className="form-control" ref="postName" placeholder="文章链接 'one-more-tineone-more-chance'" defaultValue={this.state.post_name} />
         } else {
             postName = <input type="text" name="postName" className="form-control" ref="postName" placeholder="文章链接 'one-more-tineone-more-chance'" value={this.state.post_name} />
@@ -109,9 +144,10 @@ class Publish extends BaseComponent {
     render() {
         return (
             <div id="publish">
-                <BaseEditComponent action="/api/posts/publish/"
-                                   isLinkEditable={true}
-                                   hint="发布新文章" />
+                <BaseEditComponent
+                    action="/graphql/query/"
+                    isLinkEditable={true}
+                    hint="发布新文章" />
             </div>
 
         );
@@ -136,19 +172,20 @@ class Amend extends BaseComponent {
                 $(this.refs.postType).val(resp.result.post_type);
             })
             .fail((resp) => {
-                this.setState({hint: '加载失败，请刷新重试...'})
+                this.setState({ hint: '加载失败，请刷新重试...' })
             });
     };
 
     render() {
         return (
             <div id="amend">
-                <BaseEditComponent action="/api/posts/amend/"
-                                   isLinkEditable={false}
-                                   method="PATCH"
-                                   hint='等待加载...'
-                                   params={this.props.params}
-                                   getInitData={this.getInitData} />
+                <BaseEditComponent
+                    action="/graphql/query/"
+                    isLinkEditable={false}
+                    method="PATCH"
+                    hint='等待加载...'
+                    params={this.props.params}
+                    getInitData={this.getInitData} />
             </div>
         );
     };

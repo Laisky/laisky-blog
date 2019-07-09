@@ -4,22 +4,19 @@
 
 'use strict';
 
-import React from 'react';
 import { Link } from 'react-router';
-
 import { BaseComponent } from '../components/base.jsx';
 import { Auth } from '../components/auth.jsx';
 
-
 class Login extends BaseComponent {
     render() {
-        return(
+        return (
             <div id="login">
                 <Auth method="POST"
-                      action="/api/user/login/"
-                      accountName="email"
-                      accountLabel="邮箱"
-                      accountPlaceholder="请输入登录邮箱" />
+                    action="/graphql/query/"
+                    accountName="email"
+                    accountLabel="邮箱"
+                    accountPlaceholder="请输入登录邮箱" />
             </div>
         );
     }
