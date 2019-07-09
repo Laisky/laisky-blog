@@ -31,7 +31,19 @@ class BaseComponent extends React.Component {
 
         try {
             userinfo = jwt_decode(token);
-            return userinfo['username'];
+            return userinfo['display_name'];
+        }catch(e) {
+            return;
+        }
+    };
+
+    getCurrentUID() {
+        let token = $.cookie('token'),
+            userinfo;
+
+        try {
+            userinfo = jwt_decode(token);
+            return userinfo['uid'];
         }catch(e) {
             return;
         }
