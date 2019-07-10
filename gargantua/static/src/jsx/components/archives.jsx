@@ -65,6 +65,10 @@ class ArchiveExtract extends BaseComponent {
                 return `<img src="https://s3.laisky.com/uploads/2019/03/pay-merge.jpg" alt="pay"/>`;
             }
         });
+
+        document.querySelectorAll('code').forEach((block) => {
+            hljs.highlightBlock(block);
+        });
     };
 
     getTagClickHandler() {
