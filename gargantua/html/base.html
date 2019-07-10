@@ -33,6 +33,25 @@
         {% endblock %}<!-- page_js -->
     </div>
 
+    <script src="https://s1.laisky.com/static/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://s1.laisky.com/static/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://s1.laisky.com/static/babel-polyfill/6.23.0/polyfill.min.js"></script>
+    <script src="https://s2.laisky.com/static/humane.min.js"></script>
+    <script src="https://s2.laisky.com/static/immutable/3.8.1/immutable.min.js"></script>
+    <script src="https://s2.laisky.com/static/jwt-decode/2.1.0/jwt-decode.min.js"></script>
+    <script src="https://s3.laisky.com/static/moment.js/2.12.0/moment-with-locales.min.js"></script>
+    <script src="https://s2.laisky.com/static/highlight/9.15.8/highlight.min.js"></script>
+    <script src="https://s3.laisky.com/static/gargantua/js/libs-6279436b98.min.js" type="text/javascript" charset="utf-8"></script>
+    <script async src="{{static_url('js/sites-060ca44977.min.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script async type="text/javascript" charset="utf-8">
+        if(window.fetch) fetch("https://s3.laisky.com/static/gargantua/js/reveallibs-b19f5e3f7c.min.js");
+    </script>
+    <script type="text/javascript" src="https://s3.laisky.com/static/mathjax/2.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['\\[','\\]'], ['\\(','\\)']]}
+        });
+    </script>
     <script>
         (function(i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
@@ -50,23 +69,8 @@
         ga('send', 'pageview');
 
         var revealLibUrl = 'https://s2.laisky.com/static/gargantua/js/reveallibs-b19f5e3f7c.min.js';
-    </script>
-    <script src="https://s1.laisky.com/static/jquery/2.2.2/jquery.min.js"></script>
-    <script src="https://s1.laisky.com/static/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://s1.laisky.com/static/babel-polyfill/6.23.0/polyfill.min.js"></script>
-    <script src="https://s2.laisky.com/static/humane.min.js"></script>
-    <script src="https://s2.laisky.com/static/immutable/3.8.1/immutable.min.js"></script>
-    <script src="https://s2.laisky.com/static/jwt-decode/2.1.0/jwt-decode.min.js"></script>
-    <script src="https://s3.laisky.com/static/moment.js/2.12.0/moment-with-locales.min.js"></script>
-    <script src="https://s3.laisky.com/static/gargantua/js/libs-6279436b98.min.js" type="text/javascript" charset="utf-8"></script>
-    <script async src="{{static_url('js/sites-f8583226c1.min.js')}}" type="text/javascript" charset="utf-8"></script>
-    <script async type="text/javascript" charset="utf-8">
-        if(window.fetch) fetch("https://s3.laisky.com/static/gargantua/js/reveallibs-b19f5e3f7c.min.js");
-    </script>
-    <script type="text/javascript" src="https://s3.laisky.com/static/mathjax/2.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {inlineMath: [['\\[','\\]'], ['\\(','\\)']]}
+        document.querySelectorAll('code').forEach((block) => {
+            hljs.highlightBlock(block);
         });
     </script>
     <div class="pagejs">
