@@ -39,44 +39,51 @@ class BaseEditComponent extends BaseComponent {
             evt.preventDefault();
 
             let formData = {
-                _xsrf: $.cookie('_xsrf'),
-                postTitle: this.refs.postTitle.value,
-                postName: this.refs.postName.value,
-                postContent: this.refs.postContent.value,
-                postType: this.refs.postType.value
-            };
+                    _xsrf: $.cookie('_xsrf'),
+                    postTitle: this.refs.postTitle.value,
+                    postName: this.refs.postName.value,
+                    postContent: this.refs.postContent.value,
+                    postType: this.refs.postType.value
+                },
+                req,
+                variables;
 
-            let req;
             if (formData.postType == 'markdown') {
                 switch (this.props.method) {
-                    case 'POST':
-                        req = request(this.state.action, `mutation {
-                                createBlogPost(
-                                    post:{
-                                        title: ${JSON.stringify(JSON.stringify(this.refs.postTitle.value))},
-                                        name: "${this.refs.postName.value}",
-                                        markdown: ${JSON.stringify(JSON.stringify(this.refs.postContent.value))},
-                                        type: ${this.refs.postType.value},
-                                    },
-                                ) {
-                                    name
-                                }
-                            }`);
-                        break;
-                    case 'PATCH':
-                        req = request(this.state.action, `mutation {
-                                amendBlogPost(
-                                    post:{
-                                        title: ${JSON.stringify(JSON.stringify(this.refs.postTitle.value))},
-                                        name: "${this.refs.postName.value}",
-                                        markdown: ${JSON.stringify(JSON.stringify(this.refs.postContent.value))},
-                                        type: ${this.refs.postType.value},
-                                    },
-                                ) {
-                                    name
-                                }
-                            }`);
-                        break;
+                case 'POST':
+                    variables = {
+                        post: {
+                            title: this.refs.postTitle.value,
+                            name: this.refs.postName.value,
+                            markdown: this.refs.postContent.value,
+                            type: this.refs.postType.value,
+                        },
+                    };
+                    req = request(this.state.action, `mutation($post: NewBlogPost!) {
+                            createBlogPost(
+                                post: $post,
+                            ) {
+                                name
+                            }
+                        }`, variables);
+                    break;
+                case 'PATCH':
+                    variables = {
+                        post: {
+                            title: this.refs.postTitle.value,
+                            name: this.refs.postName.value,
+                            markdown: this.refs.postContent.value,
+                            type: this.refs.postType.value,
+                        },
+                    };
+                    req = request(this.state.action, `mutation($post: NewBlogPost!) {
+                        amendBlogPost(
+                            post: $post,
+                        ) {
+                            name
+                        }
+                    }`, variables);
+                    break;
                 }
             } else {  // for slide
                 req = fetch(this.state.action, {
