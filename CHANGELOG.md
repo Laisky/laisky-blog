@@ -2,6 +2,8 @@
 *CURRENT*
 ---
     
+- 2019-07-10 (Laisky) fix: use arguments rather than json -> [view commit](https://github.com/Laisky/laisky-blog/commit/2f2d0d1227560fc1690bf854f4a4d90ec3b5e08a)
+- 2019-07-09 (Laisky) ci: release 2.9.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/78a6f34452733c5f7f71b52b43d713821a6136de)
 - 2019-07-09 (Laisky) feat: support graphql publish and login -> [view commit](https://github.com/Laisky/laisky-blog/commit/c94ff0a48ffa17abc558ac51cf20173facf35764)
 - 2019-06-06 (Laisky) fix: update yarn -> [view commit](https://github.com/Laisky/laisky-blog/commit/4b4d34341f6074b03dd1353751bdc27f2659ec01)
 - 2019-06-06 (dependabot[bot]) chore(deps): bump fstream from 1.0.10 to 1.0.12 -> [view commit](https://github.com/Laisky/laisky-blog/commit/33d3a525cbef2e73ec6e1084b866ba396bef7a04)
