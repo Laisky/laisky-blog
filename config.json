@@ -52,6 +52,7 @@
             "./gargantua/static/vendor/bower_components/bootstrap/dist/css/bootstrap.css",
             "./gargantua/static/vendor/bower_components/bootstrap/dist/css/bootstrap-theme.css",
             "./gargantua/static/vendor/bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",
+            "./gargantua/static/vendor/css/highlight/src/styles/default.css",
             "./gargantua/static/vendor/css/*.css"
         ],
         "dest": "./gargantua/static/dist/css",
