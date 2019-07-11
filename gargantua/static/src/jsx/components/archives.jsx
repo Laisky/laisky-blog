@@ -66,7 +66,7 @@ class ArchiveExtract extends BaseComponent {
             }
         });
 
-        document.querySelectorAll('code').forEach((block) => {
+        document.querySelectorAll('pre > code').forEach((block) => {
             hljs.highlightBlock(block);
         });
     };
