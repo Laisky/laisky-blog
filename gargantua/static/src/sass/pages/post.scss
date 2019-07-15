@@ -9,6 +9,7 @@ $nav-title-clr: $post-title-clr;
     max-width: 800px;
     margin-bottom: 10px;
     min-height: 800px;
+    position: relative;
 
     #page-content {
         @include border-radius(10px);
@@ -20,7 +21,7 @@ $nav-title-clr: $post-title-clr;
         }
     }
 
-    .archive-menu {
+    #archive-menu {
         position: fixed;
         width: inherit;
     }
