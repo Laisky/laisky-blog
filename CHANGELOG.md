@@ -2,7 +2,19 @@
 *CURRENT*
 ---
     
-- 2019-07-10 (Laisky) fix: use arguments rather than json -> [view commit](https://github.com/Laisky/laisky-blog/commit/2f2d0d1227560fc1690bf854f4a4d90ec3b5e08a)
+- 2019-07-15 (Laisky) fix: publish error -> [view commit](https://github.com/Laisky/laisky-blog/commit/f53523977de990d915bf12361637815db9e793c1)
+- 2019-07-11 (Laisky) fix: inline code style -> [view commit](https://github.com/Laisky/laisky-blog/commit/24ccea2757f9ac63f9c69188dd685fa177a449a2)
+- 2019-07-10 (Laisky) fix: add highlight css -> [view commit](https://github.com/Laisky/laisky-blog/commit/7f4b19cff096ca10fa34754b7af7dac6a50c24fb)    
+       
+*2.9.1*
+---
+    
+- 2019-07-10 (Laisky) ci: release 2.9.1 -> [view commit](https://github.com/Laisky/laisky-blog/commit/9a9c1b1432cab551b65d68161a440e38e93b34ff)
+- 2019-07-10 (Laisky) fix: use arguments rather than json -> [view commit](https://github.com/Laisky/laisky-blog/commit/2f2d0d1227560fc1690bf854f4a4d90ec3b5e08a)    
+       
+*2.9.0*
+---
+    
 - 2019-07-09 (Laisky) ci: release 2.9.0 -> [view commit](https://github.com/Laisky/laisky-blog/commit/78a6f34452733c5f7f71b52b43d713821a6136de)
 - 2019-07-09 (Laisky) feat: support graphql publish and login -> [view commit](https://github.com/Laisky/laisky-blog/commit/c94ff0a48ffa17abc558ac51cf20173facf35764)
 - 2019-06-06 (Laisky) fix: update yarn -> [view commit](https://github.com/Laisky/laisky-blog/commit/4b4d34341f6074b03dd1353751bdc27f2659ec01)
