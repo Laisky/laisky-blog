@@ -41,23 +41,23 @@ class Comment extends BaseComponent {
 // 文章
 class ArchiveExtract extends BaseComponent {
     componentDidMount() {
-        let $imgModal = $("#img-modal"),
-            $modalImg = $("#img-modal .modal-body img");
+        let $imgModal = $('#img-modal'),
+            $modalImg = $('#img-modal .modal-body img');
 
         $(this.refs.archiveContent).on('click', 'img', (evt) => {
             let $target = $(evt.target);
 
-            $modalImg.prop("src", $target.prop("src"));
+            $modalImg.prop('src', $target.prop('src'));
             $imgModal.modal({
                 show: true
             });
         })
 
-        $imgModal.on("click", (evt) => {
+        $imgModal.on('click', (evt) => {
             $imgModal.modal('hide');
         })
 
-        $(".archive-tail .pay").popover({
+        $('.archive-tail .pay').popover({
             html: true,
             trigger: 'hover',
             placement: 'top',
@@ -67,7 +67,7 @@ class ArchiveExtract extends BaseComponent {
         });
 
         document.querySelectorAll('pre > code').forEach((block) => {
-            hljs.highlightBlock(block);
+            window.hljs && window.hljs.highlightBlock(block);
         });
     };
 
