@@ -166,13 +166,13 @@ export class Post extends BaseComponent {
         if(this.state.post) {
             postComment = <Comment post-name={this.state.post.post_name} />;
             postContent = <ArchiveExtract key={this.state.post.post_name}
-                                          insertHTML={true}
-                                          archive-object={this.state.post}
-                                          archive-type={this.state.post.post_type}
-                                          archive-name={this.state.post.post_name}
-                                          archive-title={this.state.post.post_title}
-                                          archive-created-at={this.state.post.post_created_at}
-                                          archive-content={this.state.post.post_content} />;
+                insertHTML={true}
+                archive-object={this.state.post}
+                archive-type={this.state.post.post_type}
+                archive-name={this.state.post.post_name}
+                archive-title={this.state.post.post_title}
+                archive-created-at={this.state.post.post_created_at}
+                archive-content={this.state.post.post_content} />;
 
             if(this.state.post.post_menu) {
                 postMenu = (

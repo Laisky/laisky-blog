@@ -24,7 +24,8 @@ class BaseEditComponent extends BaseComponent {
             post_content: this.props.post_content || '',
             post_type: this.props.post_type || ''
         };
-    };
+        console.log("method", this.props.method);
+    }
 
     componentDidMount() {
         if (!this.getCurrentUsername()) location.href = '/archives/1/';
@@ -49,7 +50,7 @@ class BaseEditComponent extends BaseComponent {
                 variables;
 
             if (formData.postType == 'markdown') {
-                switch (this.props.method) {
+                switch (this.state.method) {
                 case 'POST':
                     variables = {
                         post: {

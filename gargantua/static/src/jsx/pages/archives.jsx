@@ -15,11 +15,11 @@ class ArchivesCache {
 
     constructor() {
         this.limit = 10;
-    };
+    }
 
     convertPage2Skip(nPage) {
         return (nPage - 1) * this.limit;
-    };
+    }
 
     // 从缓存中取数据
     async getByPage(nPage) {
@@ -32,13 +32,13 @@ class ArchivesCache {
             resp = await this.loadByPage(nPage);
         }
 
-        return resp
-    };
+        return resp;
+    }
 
     saveByPage(nPage, obj) {
         let _obj = JSON.stringify(obj)
         window.sessionStorage.setItem(`page-${nPage}`, _obj);
-    };
+    }
 
     async loadByPage(nPage) {
         let nSkip = this.convertPage2Skip(nPage),
@@ -52,8 +52,7 @@ class ArchivesCache {
 
         this.saveByPage(nPage, resp);
         return resp;
-    };
-
+    }
 }
 
 
@@ -65,21 +64,21 @@ class Archives extends BaseComponent {
             hint: '载入中...'
         };
         this.archiveCache = new ArchivesCache();
-    };
+    }
 
     componentDidMount() {
         this.updatePage.call(this);
-    };
+    }
 
     componentWillReceiveProps(nextProps) {
         this.updatePage.call(this, nextProps.params.page);
-    };
+    }
 
     updateArchiveCache(currentPage) {
         for(let i = Math.max(1, currentPage - 2); i <= currentPage + 2; i++) {
             this.archiveCache.getByPage(i);
         }
-    };
+    }
 
     updatePage(currentPage=this.props.params.page) {
         let limit = 10,
@@ -100,7 +99,7 @@ class Archives extends BaseComponent {
             .catch((e) => {
                 this.setState({hint: '读取数据失败，请刷新重试'});
             });
-    };
+    }
 
     render() {
         let archives = [],
@@ -113,10 +112,10 @@ class Archives extends BaseComponent {
         for(let post of this.state.archives) {
             archives.push(
                 <ArchiveExtract key={post.post_name}
-                                archive-name={post.post_name}
-                                archive-title={post.post_title}
-                                archive-created-at={post.post_created_at}
-                                archive-content={post.post_content} />
+                    archive-name={post.post_name}
+                    archive-title={post.post_title}
+                    archive-created-at={post.post_created_at}
+                    archive-content={post.post_content} />
             );
         }
 
@@ -136,11 +135,11 @@ class Archives extends BaseComponent {
                 </div>
                 <div className="row">
                     <ArchiveNav currentPage={this.state.currentPage}
-                                totalPage={this.state.totalPage} />
+                        totalPage={this.state.totalPage} />
                 </div>
             </div>
         );
-    };
+    }
 }
 
 export { Archives };
