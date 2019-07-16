@@ -5,13 +5,13 @@ $nav-link-clr: $link-clr;
 $nav-cnt-clr: $post-cnt-clr;
 $nav-title-clr: $post-title-clr;
 
-#archives {
+#page-content .archive, #archives {
     max-width: 800px;
     margin-bottom: 10px;
     min-height: 800px;
     background-color: none;
 
-    #archive-content {
+    #archive-content, archive-content {
         @include border-radius(10px);
         background-color: #F1F1F1;
         padding-left: 0;

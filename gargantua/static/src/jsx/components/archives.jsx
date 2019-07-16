@@ -136,12 +136,12 @@ class ArchiveExtract extends BaseComponent {
 
         if(this.props.insertHTML) {
             if(archiveType == 'markdown') {
-                articleContent = <article className="markdown-body" dangerouslySetInnerHTML={{__html: this.props['archive-content']}}></article>
+                articleContent = <article className="markdown-body" dangerouslySetInnerHTML={{__html: this.props['archive-content']}}></article>;
             }else if(archiveType == 'slide') {
-                articleContent = <article dangerouslySetInnerHTML={{__html: this.props['archive-content']}}></article>
+                articleContent = <article dangerouslySetInnerHTML={{__html: this.props['archive-content']}}></article>;
             }
         }else {
-            articleContent = <article data-spy="scroll" data-target=".archive-menu">{ this.props['archive-content'] }</article>
+            articleContent = <article>{ this.props['archive-content'] }</article>;
         }
 
         return <div className="archive archive-extract" id={ this.props['archive-name'] }>
@@ -167,7 +167,7 @@ class ArchiveExtract extends BaseComponent {
 class ArchiveMenu extends BaseComponent {
     render() {
         return (
-            <nav className="archive-menu" dangerouslySetInnerHTML={{ __html: this.props.content }}>
+            <nav id="archive-menu" className="navbar navbar-default navbar-static" role="navigation" dangerouslySetInnerHTML={{ __html: this.props.content }}>
             </nav>
         );
     };

@@ -57,9 +57,9 @@ class TitleMenu():
 
     """提取 H2 和 H3 生成 bootstrap affix 的目录结构"""
 
-    MENU_TMPL = '<ul class="nav affix-top" data-spy="affix">\n{menu_content}</ul>\n'
-    CHILD_MENU_TMPL = '<ul class="nav">\n{child_menu}</ul>\n'
-    TITLE_TMPL = '<li><a href="#{title}">{title}</a>\n{content}</li>\n'
+    MENU_TMPL = '<ul class="nav affix-top">{menu_content}</ul>'
+    CHILD_MENU_TMPL = '<ul class="nav">{child_menu}</ul>'
+    TITLE_TMPL = '<li><a href="#{title}">{title}</a>{content}</li>'
 
     def __init__(self):
         self.title_tree = OrderedDict()
