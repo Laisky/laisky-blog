@@ -39,7 +39,7 @@ export class Post extends BaseComponent {
                     hint: null
                 });
 
-                $('#post').scrollspy({target: '#archive-menu'});
+                $('body').scrollspy({target: '#archive-menu'});
             })
             .fail(() => {
                 this.setState({hint: '读取数据失败，请刷新重试'});
