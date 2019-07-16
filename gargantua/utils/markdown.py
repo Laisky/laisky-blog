@@ -57,7 +57,7 @@ class TitleMenu():
 
     """提取 H2 和 H3 生成 bootstrap affix 的目录结构"""
 
-    MENU_TMPL = '<ul class="nav affix-top" data-spy="affix">{menu_content}</ul>'
+    MENU_TMPL = '<ul class="nav affix-top">{menu_content}</ul>'
     CHILD_MENU_TMPL = '<ul class="nav">{child_menu}</ul>'
     TITLE_TMPL = '<li><a href="#{title}">{title}</a>{content}</li>'
 
