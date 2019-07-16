@@ -2,6 +2,8 @@
 *CURRENT*
 ---
     
+- 2019-07-16 (Laisky) fix: markdown menu & number -> [view commit](https://github.com/Laisky/laisky-blog/commit/10b62677b8f84f45ec7ed0c53192710a59841376)
+- 2019-07-15 (Laisky) ci: release 2.9.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/0308d51f1283fae7117b47a31a37ece29bb2a55c)
 - 2019-07-15 (Laisky) fix: publish error -> [view commit](https://github.com/Laisky/laisky-blog/commit/f53523977de990d915bf12361637815db9e793c1)
 - 2019-07-11 (Laisky) fix: inline code style -> [view commit](https://github.com/Laisky/laisky-blog/commit/24ccea2757f9ac63f9c69188dd685fa177a449a2)
 - 2019-07-10 (Laisky) fix: add highlight css -> [view commit](https://github.com/Laisky/laisky-blog/commit/7f4b19cff096ca10fa34754b7af7dac6a50c24fb)    
