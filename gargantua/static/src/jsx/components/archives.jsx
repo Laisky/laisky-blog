@@ -167,10 +167,7 @@ class ArchiveExtract extends BaseComponent {
 class ArchiveMenu extends BaseComponent {
     render() {
         return (
-            <nav id="archive-menu" className="navbar navbar-default navbar-static" role="navigation">
-                <div className="collapse navbar-collapse" dangerouslySetInnerHTML={{ __html: this.props.content }}>
-
-                </div>
+            <nav id="archive-menu" className="navbar navbar-default navbar-static" role="navigation" dangerouslySetInnerHTML={{ __html: this.props.content }}>
             </nav>
         );
     };
