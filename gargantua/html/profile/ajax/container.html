@@ -1,0 +1,19 @@
+{% set post = {'name': 'profile'} %}
+<div class="container-fluid profile">
+    <div class="row profile-container">
+        <article>
+            <section>
+                <h2>Profile(dev)</h2>
+                <p>以前是气象预报员，现在是 IT，喜欢玩各种好玩的东西。</p>
+                <p>主要用 Python，也喜欢 JavaScript。</p>
+                <p>上班干开发，但是想玩玩数据。</p>
+            </section>
+            <footer>
+                <p>请使用最新版的 Chrome 浏览本站。</p>
+            </footer>
+        </article>
+    </div>
+    <div class="row profile-comment">
+        {% include "widgets/comment.html" %}
+    </div>
+</div>

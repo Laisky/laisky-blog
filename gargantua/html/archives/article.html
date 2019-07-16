@@ -1,0 +1,151 @@
+<!-- Single article page -->
+{% extends "archives/archives.html" %}
+
+{% block title %}
+    <title>{{ post.post_title }}</title>
+{% endblock %}
+
+{% block page_css %}
+    {% if post.post_type in ("text", "markdown")  %}
+        {% assets filters="cssmin", output="assets/page.css",
+                "stylesheets/pages/archives.css",
+                "stylesheets/pages/p.css",
+                "css/vendor/markdown.css" %}
+            <link rel="stylesheet" href="{{ ASSET_URL }}" />
+        {% endassets %}
+    {% elif post.post_type == "slide" %}
+        {% assets filters="cssmin", output="assets/page.css",
+                "css/vendor/reveal.css",
+                "css/vendor/reveal-theme/simple.css",
+                "stylesheets/pages/p.css",
+                "stylesheets/widgets/slide.css",
+                "css/vendor/font-awesome.css" %}
+            <link rel="stylesheet" href="{{ ASSET_URL }}" />
+        {% endassets %}
+    {% endif %}
+{% endblock %}
+
+{% block container %}
+    {% include "widgets/dialog.html" %}
+    <div class="container">
+    {% if post.post_type == 'slide' %}
+        <div class="slide-container">
+    {% endif %}
+        <div class="container-fluid post-body">
+            <div class="row">
+                <!-- archives -->
+                {% if post.post_menu %}
+                    <article class="archives col-xs-12 col-sm-10" id="archives">
+                {% else %}
+                    <article class="archives col-sm-12 col-xs-12" id="archives">
+                {% endif %}
+                    {% if post.post_type in ("text", "markdown") %}
+                        {% include "widgets/post.html" %}
+                    {% elif post.post_type == "slide" %}
+                        {{ post.post_content }}
+                    {% endif %}
+                </article>
+                <!-- archives -->
+                {% if post.post_menu %}
+                    <nav class="menu-nav col-sm-2 hidden-xs">
+                        {{ post.post_menu }}
+                    </nav>
+                {% endif %}
+            </div>
+        </div>
+        {% if post.post_type == "slide" %}
+            {% include "widgets/comment.html" %}
+        {% endif %}
+    {% if post.post_type == 'slide' %}
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block page_js %}
+    {% if post.post_type == "slide" %}
+        {% assets filters="jsmin", output="assets/page.js",
+                "js/vendor/reveal.js",
+                "js/vendor/reveal-head.min.js",
+                "js/vendor/require.js" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+
+        <script>
+            // Full list of configuration options available here: https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+                // mouseWheel: true,
+                transition: 'slide', // none/fade/slide/convex/concave/zoom
+                // theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+                // transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/none
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: '{{ static_url("js/vendor/classList.js") }}', condition: function() { return !document.body.classList; } },
+                    { src: '{{ static_url("js/vendor/markdown/marked.js") }}', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: '{{ static_url("js/vendor/markdown/markdown.js") }}', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: '{{ static_url("js/vendor/highlight/highlight.js") }}', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: '{{ static_url("js/vendor/zoom-js/zoom.js") }}', async: true },
+                    { src: '{{ static_url("js/vendor/notes/notes.js") }}', async: true }
+                ]
+            });
+        </script>
+        <!-- Loading mathjax macro -->
+        <!-- Load mathjax -->
+        <!-- MathJax configuration -->
+        <!-- <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {
+                    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true,
+                    processEnvironments: true
+                },
+                // Center justify equations in code and markdown cells. Elsewhere
+                // we use CSS to left justify single line equations in code cells.
+                displayAlign: 'center',
+                    "HTML-CSS": {
+                        styles: {'.MathJax_Display': {"margin": 0}},
+                        linebreaks: { automatic: true }
+                    }
+            });
+        </script> -->
+        <!-- End of mathjax configuration -->
+        <script>
+            Reveal.addEventListener( 'slidechanged', function( event ) {
+                window.scrollTo(0,0);
+                // MathJax.Hub.Rerender(event.currentSlide);
+            });
+        </script>
+        <!-- page js -->
+        <script>
+            $(function() {
+                bindSetCommentPos();
+
+                // 移动评论控件的位置
+                function bindSetCommentPos() {
+                    var $container = $("body > .container");
+                    var $comment = $("#disqus_thread");
+                    var moveCommentPosTrigger = null;
+
+                    moveComment();
+
+                    function moveComment() {
+                        $comment.css(
+                            "margin-top",
+                            parseInt($container.css("height")) - parseInt($comment.css("height"))
+                        );
+                    }
+
+                    $( window ).resize(function() {
+                        window.clearTimeout(moveCommentPosTrigger);
+                        moveCommentPosTrigger = window.setTimeout(moveComment, 500);
+                    });
+                }
+            });
+        </script>
+    {% endif %}
+{% endblock %}

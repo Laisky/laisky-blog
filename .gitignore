@@ -74,7 +74,6 @@ koala-config.json
 .webassets-cache/
 assets/
 .assets
-html
 
 # node
 node_modules/
@@ -82,6 +81,9 @@ bower_components
 
 # sass
 .sass-cache/
+
+# sourcemap
+gargantua/static/dist/maps/
 
 # docs
 /site
@@ -92,6 +94,10 @@ bower_components
 
 # dist
 /gargantua/static/dist/**
+!/gargantua/static/dist/css/
+!/gargantua/static/dist/css/sites*
+!/gargantua/static/dist/js/
+!/gargantua/static/dist/js/sites*
 !/gargantua/static/dist/fonts/
 !/gargantua/static/dist/fonts/*
 

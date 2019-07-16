@@ -1,0 +1,49 @@
+<!-- Post new article -->
+{% extends "base.html" %}
+
+{% block page_css %}
+    {% assets filters="cssmin", output="assets/page.css",
+            "stylesheets/pages/publish.css" %}
+        <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {% endassets %}
+{% endblock %}
+
+{% block container %}
+    <div class="container">
+        <div class="container-fluid publish-body">
+            <div class="row hint">
+                <span class="label label-info">发布新文章</span>
+            </div>
+            <form id="publishForm" action="/publish/" method="POST">
+                <div class="form-group">
+                    <label for="post_title">文章标题</label>
+                    <input type="text" class="form-control" id="postTitleInput" placeholder="文章标题" name="postTitle" >
+                </div>
+                <div class="form-group">
+                    <label for="post_name">文章链接</label>
+                    <input type="text" name="postName" class="form-control" id="postNameInput" placeholder="文章链接  'one-more-tineone-more-chance'" >
+                </div>
+                <div class="form-group">
+                    <label for="post_content">文章内容</label>
+                    <textarea class="form-control" name="postContent" rows="20" placeholder="文章内容" id="postContentInput"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="post_type">文章类型</label>
+                    <select class="form-control" id="postTypeInput" name="postType" >
+                        <option value="markdown">markdown</option>
+                        <option value="slide">slide</option>
+                    </select>
+                </div>
+                <input type="text" hidden="true" value="{{ post_uuid }}">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_js %}
+    {% assets filters="jsmin", output="assets/page.js",
+            "js/pages/publish.js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+{% endblock %}

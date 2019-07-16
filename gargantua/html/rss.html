@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Laisky's Blog</title>
+    <link>https://blog.laisky.com/</link>
+    <description>Blog archives of Laisky.</description>
+    {% for post in posts %}
+    <item>
+      <title>{{ post.post_title | escape }}</title>
+      <link>https://blog.laisky.com/p/{{ post.post_name }}/</link>
+      <guid>https://blog.laisky.com/p/{{ post.post_name }}/</guid>
+      <description>
+        <![CDATA[
+          {{ post.post_content | escape }}
+        ]]>
+      </description>
+    </item>
+    {% endfor %}
+  </channel>
+</rss>
