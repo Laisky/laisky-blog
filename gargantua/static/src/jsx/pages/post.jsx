@@ -41,9 +41,7 @@ export class Post extends BaseComponent {
 
                 setTimeout(function(){
                     $('body').scrollspy({ target: '#archive-menu' });
-                    window.MathJax.Hub.Config({
-                        tex2jax: { inlineMath: [['\\[', '\\]'], ['\\(', '\\)']] }
-                    });
+                    // window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
                 }, 2000);
             })
             .fail(() => {
