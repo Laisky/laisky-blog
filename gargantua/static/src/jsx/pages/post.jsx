@@ -40,6 +40,9 @@ export class Post extends BaseComponent {
                 });
 
                 $('body').scrollspy({target: '#archive-menu'});
+                window.MathJax.Hub.Config({
+                    tex2jax: {inlineMath: [['\\[','\\]'], ['\\(','\\)']]}
+                });
             })
             .fail(() => {
                 this.setState({hint: '读取数据失败，请刷新重试'});
