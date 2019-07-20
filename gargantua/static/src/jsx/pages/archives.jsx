@@ -7,8 +7,7 @@
 import React from 'react';
 
 import { BaseComponent } from '../components/base.jsx';
-import { ArchiveExtract, ArchiveNav } from '../components/archives.jsx';
-import { Notify, Sidebar } from '../components/sidebar.jsx';
+import { request } from 'graphql-request';
 
 
 class ArchivesCache {
@@ -26,9 +25,9 @@ class ArchivesCache {
         let resp,
             _pContent = window.sessionStorage.getItem(`page-${nPage}`);
 
-        if(_pContent) {
+        if (_pContent) {
             resp = JSON.parse(_pContent);
-        }else {
+        } else {
             resp = await this.loadByPage(nPage);
         }
 
@@ -36,19 +35,44 @@ class ArchivesCache {
     }
 
     saveByPage(nPage, obj) {
-        let _obj = JSON.stringify(obj)
+        let _obj = JSON.stringify(obj);
         window.sessionStorage.setItem(`page-${nPage}`, _obj);
     }
 
     async loadByPage(nPage) {
-        let nSkip = this.convertPage2Skip(nPage),
-            resp;
+        let postsReq = request(window.graphqlAPI, `query {
+            posts(
+                length: 200,
+                page: {size: ${this.limit}, page: ${nPage - 1}},
+            ) {
+                title
+                name
+                markdown
+                created_at
+            }
+        }`),
+            postInfoReq = request(window.graphqlAPI, `query {
+                postinfo {
+                    total
+                }
+        }`);
 
-        resp = await $.getJSON({
-            url: `/api/v2/post/?limit=${this.limit}&skip=${nSkip}&truncate=200`,
-            method: 'GET',
-            dataType: 'json'
-        });
+        let posts = await postsReq,
+            postinfo = await postInfoReq;
+
+        let resp = {
+            total: postinfo.postinfo.total,
+            result: [],
+        };
+
+        for (let post of posts.posts) {
+            resp.result.push({
+                post_name: post.name,
+                post_title: post.title,
+                post_created_at: post.created_at,
+                post_content: post.markdown,
+            });
+        }
 
         this.saveByPage(nPage, resp);
         return resp;
@@ -67,27 +91,26 @@ class Archives extends BaseComponent {
     }
 
     componentDidMount() {
-        this.updatePage.call(this);
+        this.updatePage();
     }
 
     componentWillReceiveProps(nextProps) {
-        this.updatePage.call(this, nextProps.params.page);
+        this.updatePage(nextProps.params.page);
     }
 
     updateArchiveCache(currentPage) {
-        for(let i = Math.max(1, currentPage - 2); i <= currentPage + 2; i++) {
+        for (let i = Math.max(1, currentPage - 2); i <= currentPage + 2; i++) {
             this.archiveCache.getByPage(i);
         }
     }
 
-    updatePage(currentPage=this.props.params.page) {
+    updatePage(currentPage = this.props.params.page) {
         let limit = 10,
-            nPage = Number.parseInt(currentPage, 10),
-            skip = (nPage - 1) * limit;
+            nPage = Number.parseInt(currentPage, 10);
 
         this.updateArchiveCache(nPage);
         this.archiveCache.getByPage(nPage)
-            .then((resp) => {
+            .then(resp => {
                 document.title = 'laisky-blog - p' + nPage;
                 this.setState({
                     hint: null,
@@ -96,8 +119,8 @@ class Archives extends BaseComponent {
                     currentPage: nPage
                 });
             })
-            .catch((e) => {
-                this.setState({hint: '读取数据失败，请刷新重试'});
+            .catch(e => {
+                this.setState({ hint: `读取数据失败，请刷新重试: ${e}` });
             });
     }
 
@@ -105,11 +128,11 @@ class Archives extends BaseComponent {
         let archives = [],
             hintEle;
 
-        if(this.state.hint) {
+        if (this.state.hint) {
             hintEle = <p className="hint">{this.state.hint}</p>;
         }
 
-        for(let post of this.state.archives) {
+        for (let post of this.state.archives) {
             archives.push(
                 <ArchiveExtract key={post.post_name}
                     archive-name={post.post_name}

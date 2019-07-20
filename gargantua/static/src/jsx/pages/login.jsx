@@ -13,7 +13,7 @@ class Login extends BaseComponent {
         return (
             <div id="login">
                 <Auth method="POST"
-                    action="/graphql/query/"
+                    action={window.graphqlAPI}
                     accountName="email"
                     accountLabel="邮箱"
                     accountPlaceholder="请输入登录邮箱" />

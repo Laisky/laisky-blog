@@ -153,7 +153,7 @@ class Publish extends BaseComponent {
         return (
             <div id="publish">
                 <BaseEditComponent
-                    action="/graphql/query/"
+                    action={window.graphqlAPI}
                     isLinkEditable={true}
                     hint="发布新文章" />
             </div>
@@ -188,7 +188,7 @@ class Amend extends BaseComponent {
         return (
             <div id="amend">
                 <BaseEditComponent
-                    action="/graphql/query/"
+                    action={window.graphqlAPI}
                     isLinkEditable={false}
                     method="PATCH"
                     hint='等待加载...'
