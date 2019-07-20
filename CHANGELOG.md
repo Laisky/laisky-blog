@@ -2,6 +2,9 @@
 *CURRENT*
 ---
     
+- 2019-07-20 (Laisky) fix: support archives page -> [view commit](https://github.com/Laisky/laisky-blog/commit/cda7ffa0d1b7725b40014a6ea9b3bd04fde04c23)
+- 2019-07-16 (Laisky) fix: scrollspy -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f710289dd6e5b91cb221271db39525e66c3a259)
+- 2019-07-16 (Laisky) ci: release 2.9.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/f37040c0a729db57a734c1f400f6c3e00f4a3a5f)
 - 2019-07-16 (Laisky) fix: markdown menu & number -> [view commit](https://github.com/Laisky/laisky-blog/commit/10b62677b8f84f45ec7ed0c53192710a59841376)
 - 2019-07-15 (Laisky) ci: release 2.9.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/0308d51f1283fae7117b47a31a37ece29bb2a55c)
 - 2019-07-15 (Laisky) fix: publish error -> [view commit](https://github.com/Laisky/laisky-blog/commit/f53523977de990d915bf12361637815db9e793c1)
