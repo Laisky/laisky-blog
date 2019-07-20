@@ -44,7 +44,7 @@ export class Post extends BaseComponent {
                     window.MathJax.Hub.Config({
                         tex2jax: { inlineMath: [['\\[', '\\]'], ['\\(', '\\)']] }
                     });
-                }, 2);
+                }, 2000);
             })
             .fail(() => {
                 this.setState({ hint: '读取数据失败，请刷新重试' });
@@ -131,7 +131,7 @@ export class Post extends BaseComponent {
                         parallaxBackgroundHorizontal: null,
                         parallaxBackgroundVertical: null,
                     });
-                }, 2);
+                }, 2000);
             });
     }
 
