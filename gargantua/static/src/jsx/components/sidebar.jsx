@@ -15,6 +15,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import { BaseComponent } from './base.jsx';
+import { request } from 'graphql-request';
 
 
 export class Notify extends BaseComponent {
@@ -32,7 +33,7 @@ export class Notify extends BaseComponent {
         return (
             alertEle
         );
-    };
+    }
 }
 
 
@@ -46,7 +47,7 @@ export class Sidebar extends BaseComponent {
                 <Tagcloud />
             </div>
         );
-    };
+    }
 }
 
 
@@ -54,21 +55,23 @@ export class Categories extends BaseComponent {
 
     componentDidMount() {
         this.loadCategories();
-    };
+    }
 
     async loadCategories() {
-        let url = '/api/v2/post/category/';
-        $.getJSON(url)
-            .then(resp => {
-                this.setState({categories: resp.result});
-            });
-    };
+        let resp = await request(window.graphqlAPI, `query {
+            post_categories {
+                name
+                url
+            }
+        }`);
+        this.setState({categories: resp.post_categories});
+    }
 
     render() {
         let html = [<p><Link to="/cate/">全部</Link></p>];
         if(this.state.categories) {
             for(let cate of this.state.categories) {
-                html.push(<p><Link to={{ pathname: `/cate/${cate['_id']}/` }}>{`${cate['name']}`}</Link></p>)
+                html.push(<p><Link to={{ pathname: `/cate/${cate.url}/` }}>{`${cate.name}`}</Link></p>);
             }
         }
 
@@ -78,7 +81,7 @@ export class Categories extends BaseComponent {
                 <div>{html}</div>
             </section>
         );
-    };
+    }
 }
 
 
@@ -104,7 +107,7 @@ export class Login extends BaseComponent {
                 {loginBtn}
             </section>
         );
-    };
+    }
 }
 
 
@@ -120,14 +123,14 @@ export class Profile extends BaseComponent {
                 <p><label>GitHub: </label><a href="https://github.com/Laisky" target="_blank">@Laisky</a></p>
             </section>
         );
-    };
+    }
 }
 
 
 export class Tagcloud extends BaseComponent {
     componentDidMount() {
         this.loadTags();
-    };
+    }
 
     async loadTags() {
         let url = '/api/posts/keywords/',
@@ -136,9 +139,9 @@ export class Tagcloud extends BaseComponent {
         $.getJSON(url)
             .then(resp => {
                 resp.data.map(tag => html.push(<span onClick={this.getTagClickHandler()} className="label label-info">{`${tag}`}</span>));
-                this.setState({tags: html})
+                this.setState({tags: html});
             });
-    };
+    }
 
     getTagClickHandler() {
         return evt => {
@@ -148,8 +151,8 @@ export class Tagcloud extends BaseComponent {
             google.search.cse.element.getElement('post_search').execute(query);
 
             return false;
-        }
-    };
+        };
+    }
 
     render() {
         return (
@@ -160,6 +163,6 @@ export class Tagcloud extends BaseComponent {
                 </div>
             </section>
         );
-    };
+    }
 }
 

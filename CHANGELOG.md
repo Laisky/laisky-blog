@@ -2,6 +2,13 @@
 *CURRENT*
 ---
     
+- 2019-07-22 (Laisky) feat: support blog categories -> [view commit](https://github.com/Laisky/laisky-blog/commit/58e69bc4a88b89e229e38bd976c1520a713424c8)
+- 2019-07-20 (Laisky) fix: mathjax -> [view commit](https://github.com/Laisky/laisky-blog/commit/fb3d9fa1ef40a594fd5dd9e93816fa8a6e68027f)
+- 2019-07-20 (Laisky) fix: mathjax -> [view commit](https://github.com/Laisky/laisky-blog/commit/491f821962199c1a96126f12843ccdc9d4c56b74)
+- 2019-07-20 (Laisky) fix: mathjax -> [view commit](https://github.com/Laisky/laisky-blog/commit/74d70309d7af2ec5b102670fabca366ae17a7842)
+- 2019-07-20 (Laisky) fix: mathjax -> [view commit](https://github.com/Laisky/laisky-blog/commit/5e110bfb4eaa7f67a6c70eed3a2d30bc13e77008)
+- 2019-07-20 (Laisky) fix: sidebar -> [view commit](https://github.com/Laisky/laisky-blog/commit/5639723bacf723e67922bd92b13e327d8be2ea65)
+- 2019-07-20 (Laisky) ci: release 2.9.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/19c7ace8109b70f0e6a0c41acd69e74b736454ab)
 - 2019-07-20 (Laisky) fix: support archives page -> [view commit](https://github.com/Laisky/laisky-blog/commit/cda7ffa0d1b7725b40014a6ea9b3bd04fde04c23)
 - 2019-07-16 (Laisky) fix: scrollspy -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f710289dd6e5b91cb221271db39525e66c3a259)
 - 2019-07-16 (Laisky) ci: release 2.9.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/f37040c0a729db57a734c1f400f6c3e00f4a3a5f)

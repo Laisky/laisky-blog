@@ -9,6 +9,7 @@ import React from 'react';
 import { BaseComponent } from '../components/base.jsx';
 import { ArchiveExtract, Comment, ArchiveMenu } from '../components/archives.jsx';
 import { Categories } from '../components/sidebar.jsx';
+import { request } from 'graphql-request';
 
 
 /**
@@ -39,7 +40,7 @@ export class Post extends BaseComponent {
                     hint: null
                 });
 
-                setTimeout(function(){
+                setTimeout(function () {
                     $('body').scrollspy({ target: '#archive-menu' });
                     window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
                 }, 2000);
@@ -184,26 +185,29 @@ export class Post extends BaseComponent {
 export class PostCategories extends BaseComponent {
 
     componentDidMount() {
-        let cateid = this.props.params.cateid;
-        this.loadArticlesByCategoryId(cateid);
-    };
-
-    componentWillReceiveProps(nextProps) {
-        let cateid = nextProps.params.cateid;
-        this.loadArticlesByCategoryId(cateid);
+        this.loadArticlesByCategoryURL(this.props.params.cateURL);
     }
 
-    async loadArticlesByCategoryId(cid) {
-        let url = '/api/v2/post/?truncate=0&limit=1000',
+    componentWillReceiveProps(nextProps) {
+        this.loadArticlesByCategoryURL(nextProps.params.cateURL);
+    }
+
+    async loadArticlesByCategoryURL(cateUrl) {
+        let resp = await request(window.graphqlAPI, `query {
+            posts(
+                category_url: ${cateUrl ? `"${cateUrl}"` : 'null'},
+                page: {size: 200, page: 0},
+            ) {
+                title
+                name
+            }
+        }`),
             html = '';
-        if (cid != undefined) url += `&category=${cid}`;
-        $.getJSON(url)
-            .then(resp => {
-                for (let post of resp.result) {
-                    html += `<p><a href="/p/${post.post_name}/" target="_blank">${post.post_title}</a></p>`;
-                }
-                this.setState({ categories: html });
-            });
+
+        for (let post of resp.posts) {
+            html += `<p><a href="/p/${post.name}/" target="_blank">${post.title}</a></p>`;
+        }
+        this.setState({ categories: html });
     }
 
     render() {

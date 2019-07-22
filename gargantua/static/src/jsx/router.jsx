@@ -24,9 +24,9 @@ ReactDOM.render(
                 <IndexRedirect to="/archives/1/" />
                 <Route name="archives" path="archives/:page/" component={Archives} />
                 <Route name="publish" path="publish/" component={Publish} />
-                <Route name="amend" path="amend/:pid/" component={Amend} />
+                <Route name="amend" path="amend/:postname/" component={Amend} />
                 <Route name="post" path="p/:pid/" component={Post} />
-                <Route name="categories" path="cate/(:cateid/)" component={PostCategories} />
+                <Route name="categories" path="cate/(:cateURL/)" component={PostCategories} />
                 <Route name="about" path="about/" component={About} />
                 <Route name="login" path="login/" component={Login} />
                 <Route name="notfound" path="404.html" component={PageNotFound} />
