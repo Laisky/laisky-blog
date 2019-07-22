@@ -24,7 +24,6 @@ class BaseEditComponent extends BaseComponent {
             post_content: this.props.post_content || '',
             post_type: this.props.post_type || ''
         };
-        console.log("method", this.props.method);
     }
 
     componentDidMount() {
@@ -33,7 +32,7 @@ class BaseEditComponent extends BaseComponent {
         if (this.props.getInitData) {
             this.props.getInitData.call(this)
         }
-    };
+    }
 
     getHandleSubmit() {
         return (evt) => {
@@ -61,12 +60,12 @@ class BaseEditComponent extends BaseComponent {
                         },
                     };
                     req = request(this.state.action, `mutation($post: NewBlogPost!) {
-                            createBlogPost(
-                                post: $post,
-                            ) {
-                                name
-                            }
-                        }`, variables);
+                        createBlogPost(
+                            post: $post,
+                        ) {
+                            name
+                        }
+                    }`, variables);
                     break;
                 case 'PATCH':
                     variables = {
@@ -78,12 +77,12 @@ class BaseEditComponent extends BaseComponent {
                         },
                     };
                     req = request(this.state.action, `mutation($post: NewBlogPost!) {
-                        amendBlogPost(
-                            post: $post,
-                        ) {
-                            name
-                        }
-                    }`, variables);
+                    amendBlogPost(
+                        post: $post,
+                    ) {
+                        name
+                    }
+                }`, variables);
                     break;
                 }
             } else {  // for slide
@@ -97,21 +96,21 @@ class BaseEditComponent extends BaseComponent {
                 this.setState({ hint: '发布成功，等待跳转' });
                 setTimeout(() => {
                     location.href = `/p/${formData.postName}/`;
-                }, 4000);
+                }, 2000);
             })
                 .catch((err) => {
                     this.setState({ hint: err.message });
                 });
         };
-    };
+    }
 
     render() {
         let postName;
 
         if (this.props.isLinkEditable) {
-            postName = <input type="text" name="postName" className="form-control" ref="postName" placeholder="文章链接 'one-more-tineone-more-chance'" defaultValue={this.state.post_name} />
+            postName = <input type="text" name="postName" className="form-control" ref="postName" placeholder="文章链接 'one-more-tineone-more-chance'" defaultValue={this.state.post_name} />;
         } else {
-            postName = <input type="text" name="postName" className="form-control" ref="postName" placeholder="文章链接 'one-more-tineone-more-chance'" value={this.state.post_name} />
+            postName = <input type="text" name="postName" className="form-control" ref="postName" placeholder="文章链接 'one-more-tineone-more-chance'" value={this.state.post_name} />;
         }
 
         return (
@@ -144,7 +143,7 @@ class BaseEditComponent extends BaseComponent {
                 </form>
             </div>
         );
-    };
+    }
 }
 
 
@@ -159,30 +158,42 @@ class Publish extends BaseComponent {
             </div>
 
         );
-    };
+    }
 }
 
 
 class Amend extends BaseComponent {
     getInitData() {
-        $.ajax({
-            url: `/api/v2/post/${this.props.params.pid}/`,
-            method: 'GET',
-            dataType: 'json'
-        })
-            .done((resp) => {
+        request(window.graphqlAPI, `query {
+            posts(
+                name: "${this.props.params.postname}",
+            ) {
+                title
+                markdown
+                type
+            }
+        }`)
+            .then(resp => {
                 this.setState({
-                    post_name: resp.result.post_name,
-                    hint: '编辑文章'
+                    post_name: this.props.params.postname,
+                    hint: '编辑文章',
                 });
-                $(this.refs.postTitle).val(resp.result.post_title);
-                $(this.refs.postContent).val(resp.result.post_markdown);
-                $(this.refs.postType).val(resp.result.post_type);
+                if (resp.posts.length <= 0) {
+                    this.setState({ hint: 'post name not exists' });
+                    return;
+                }
+                let post = resp.posts[0];
+
+                $(this.refs.postTitle).val(post.title);
+                $(this.refs.postContent).val(post.markdown);
+                $(this.refs.postType).val(post.type);
             })
-            .fail((resp) => {
-                this.setState({ hint: '加载失败，请刷新重试...' })
+            .catch(err => {
+                this.setState({
+                    hint: `加载失败，请刷新重试。\n${err}`,
+                });
             });
-    };
+    }
 
     render() {
         return (
@@ -196,7 +207,7 @@ class Amend extends BaseComponent {
                     getInitData={this.getInitData} />
             </div>
         );
-    };
+    }
 }
 
 
