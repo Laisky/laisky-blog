@@ -26,7 +26,7 @@ class Comment extends BaseComponent {
             `;
 
         $.globalEval(script);
-    };
+    }
 
     render() {
         return (
@@ -34,7 +34,7 @@ class Comment extends BaseComponent {
                 <div id="disqus_thread"></div>
             </div>
         );
-    };
+    }
 }
 
 
@@ -51,11 +51,11 @@ class ArchiveExtract extends BaseComponent {
             $imgModal.modal({
                 show: true
             });
-        })
+        });
 
         $imgModal.on('click', (evt) => {
             $imgModal.modal('hide');
-        })
+        });
 
         $('.archive-tail .pay').popover({
             html: true,
@@ -69,7 +69,7 @@ class ArchiveExtract extends BaseComponent {
         document.querySelectorAll('pre > code').forEach((block) => {
             window.hljs && window.hljs.highlightBlock(block);
         });
-    };
+    }
 
     getTagClickHandler() {
         return evt => {
@@ -79,8 +79,8 @@ class ArchiveExtract extends BaseComponent {
             google.search.cse.element.getElement('post_search').execute(query);
 
             return false;
-        }
-    };
+        };
+    }
 
     getPostTails() {
         let articleEditable,
@@ -88,11 +88,11 @@ class ArchiveExtract extends BaseComponent {
             postCategory = this.props['archive-object'] && this.props['archive-object']['post_category'],
             postTags = this.props['archive-object'] && this.props['archive-object']['post_tags'] || [];
 
-        if(this.getCurrentUsername()) {
+        if (this.getCurrentUsername()) {
             articleEditable = <Link to={{ pathname: `/amend/${archiveName}/` }}>编辑</Link>
         }
 
-        let tagHtml = []
+        let tagHtml = [];
         postTags.map(t => tagHtml.push(
             <span onClick={this.getTagClickHandler()} className="label label-info">{t}</span>
         ));
@@ -102,11 +102,11 @@ class ArchiveExtract extends BaseComponent {
             <span className="pay">打赏</span>,
         ];
 
-        if(this.props['archive-object']) {
+        if (this.props['archive-object']) {
             return [
                 <div className="category">
                     <span>分类：</span>
-                    <Link to={{ pathname: postCategory?`/cate/${postCategory}/`:'/cate/' }}>
+                    <Link to={{ pathname: postCategory ? `/cate/${postCategory}/` : '/cate/' }}>
                         {postCategory || '未分类'}
                     </Link>
                 </div>,
@@ -124,7 +124,7 @@ class ArchiveExtract extends BaseComponent {
             articleEditable,
             <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">0 评论</Link>
         ];
-    };
+    }
 
     render() {
         let archiveName = this.props['archive-name'],
@@ -134,23 +134,23 @@ class ArchiveExtract extends BaseComponent {
             archiveType = this.props['archive-type'] || 'markdown',
             amendUrl = `/amend/${archiveName}`;
 
-        if(this.props.insertHTML) {
-            if(archiveType == 'markdown') {
-                articleContent = <article className="markdown-body" dangerouslySetInnerHTML={{__html: this.props['archive-content']}}></article>;
-            }else if(archiveType == 'slide') {
-                articleContent = <article dangerouslySetInnerHTML={{__html: this.props['archive-content']}}></article>;
+        if (this.props.insertHTML) {
+            if (archiveType == 'markdown') {
+                articleContent = <article className="markdown-body" dangerouslySetInnerHTML={{ __html: this.props['archive-content'] }}></article>;
+            } else if (archiveType == 'slide') {
+                articleContent = <article dangerouslySetInnerHTML={{ __html: this.props['archive-content'] }}></article>;
             }
-        }else {
-            articleContent = <article>{ this.props['archive-content'] }</article>;
+        } else {
+            articleContent = <article>{this.props['archive-content']}</article>;
         }
 
-        return <div className="archive archive-extract" id={ this.props['archive-name'] }>
+        return <div className="archive archive-extract" id={this.props['archive-name']}>
             <h2 className="archive-title">
-                <Link to={{ pathname: `/p/${archiveName}/` }}>{ this.props['archive-title'] }</Link>
+                <Link to={{ pathname: `/p/${archiveName}/` }}>{this.props['archive-title']}</Link>
             </h2>
             <div className="archive-meta">
                 <span>发布于：</span>
-                <span>{this.formatTs(this.props['archive-created-at'])}</span>
+                <span>{window.moment(this.props['archive-created-at']).format('YYYY/MM/DD HH:MM')}</span>
             </div>
             <div className="archive-content" ref="archiveContent">
                 {articleContent}
@@ -158,8 +158,8 @@ class ArchiveExtract extends BaseComponent {
             <div className="archive-tail">
                 {this.getPostTails()}
             </div>
-        </div>
-    };
+        </div>;
+    }
 }
 
 
@@ -170,7 +170,7 @@ class ArchiveMenu extends BaseComponent {
             <nav id="archive-menu" className="navbar navbar-default navbar-static" role="navigation" dangerouslySetInnerHTML={{ __html: this.props.content }}>
             </nav>
         );
-    };
+    }
 }
 
 
@@ -190,7 +190,7 @@ class ArchiveNav extends BaseComponent {
                 </ul>
             </nav>
         );
-    };
+    }
 
     getDisplayPageNav() {
         let fromPage = Math.max(this.props.currentPage - 2, 1),
@@ -199,13 +199,13 @@ class ArchiveNav extends BaseComponent {
             pageNav = [];
 
         do {
-            if(nPage == this.props.currentPage) {
+            if (nPage == this.props.currentPage) {
                 pageNav.push(
                     <li key={`pagenav-${nPage}`} className="active">
                         <Link className="page" to={{ pathname: `/archives/${nPage}/` }}>{nPage}</Link>
                     </li>
                 );
-            }else {
+            } else {
                 pageNav.push(
                     <li key={`pagenav-${nPage}`}>
                         <Link className="page" to={{ pathname: `/archives/${nPage}/` }}>{nPage}</Link>
@@ -214,13 +214,13 @@ class ArchiveNav extends BaseComponent {
             }
             nPage += 1;
         }
-        while(nPage <= toPage)
+        while (nPage <= toPage)
 
         return pageNav;
     };
 
     getPrevious() {
-        if(this.props.currentPage == 1) {
+        if (this.props.currentPage == 1) {
             return (
                 <li disabled>
                     <span aria-hidden="true">&laquo;</span>
@@ -241,7 +241,7 @@ class ArchiveNav extends BaseComponent {
     };
 
     getNext() {
-        if(this.props.currentPage == this.props.totalPage) {
+        if (this.props.currentPage == this.props.totalPage) {
             return (
                 <li disabled>
                     <span aria-hidden="true">&raquo;</span>

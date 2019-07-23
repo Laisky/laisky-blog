@@ -25,18 +25,30 @@ export class Post extends BaseComponent {
     }
 
     componentDidMount() {
-        $.getJSON({
-            url: `/api/v2/post/${this.props.params.pid}/`,
-            method: 'GET',
-            dataType: 'json'
-        })
-            .done((resp) => {
-                document.title = 'laisky-blog: ' + resp.result.post_title;
-                if (resp.result['post_type'] == 'slide') this.loadRevealJs();
-                resp.result.post_content = this.convertImg2Webp(resp.result.post_content);
+        request(window.graphqlAPI, `query {
+            posts(
+                name: "${this.props.params.pid}",
+            ) {
+                title
+                type
+                content
+                name
+                menu
+                created_at
+            }
+        }`)
+            .then(resp => {
+                if (resp.posts.length < 1) {
+                    this.setState({ hint: '文章不存在' });
+                }
+                let post = resp.posts[0];
+
+                document.title = 'laisky-blog: ' + post.title;
+                if (post['type'] == 'slide') this.loadRevealJs();
+                // post.content = this.convertImg2Webp(post.content);
                 $(document.body).animate({ scrollTop: 0 }, 200);
                 this.setState({
-                    post: resp.result,
+                    post: post,
                     hint: null
                 });
 
@@ -45,7 +57,7 @@ export class Post extends BaseComponent {
                     window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
                 }, 2000);
             })
-            .fail(() => {
+            .catch(() => {
                 this.setState({ hint: '读取数据失败，请刷新重试' });
             });
     }
@@ -145,20 +157,20 @@ export class Post extends BaseComponent {
         }
 
         if (this.state.post) {
-            postComment = <Comment post-name={this.state.post.post_name} />;
-            postContent = <ArchiveExtract key={this.state.post.post_name}
+            postComment = <Comment post-name={this.state.post.name} />;
+            postContent = <ArchiveExtract key={this.state.post.name}
                 insertHTML={true}
                 archive-object={this.state.post}
-                archive-type={this.state.post.post_type}
-                archive-name={this.state.post.post_name}
-                archive-title={this.state.post.post_title}
-                archive-created-at={this.state.post.post_created_at}
-                archive-content={this.state.post.post_content} />;
+                archive-type={this.state.post.type}
+                archive-name={this.state.post.name}
+                archive-title={this.state.post.title}
+                archive-created-at={this.state.post.created_at}
+                archive-content={this.state.post.content} />;
 
-            if (this.state.post.post_menu) {
+            if (this.state.post.menu) {
                 postMenu = (
                     <div className="col-sm-2 hidden-xs">
-                        <ArchiveMenu content={this.state.post.post_menu} />;
+                        <ArchiveMenu content={this.state.post.menu} />;
                     </div>
                 );
             }
