@@ -135,6 +135,7 @@ class Archives extends BaseComponent {
         }
 
         for (let post of this.state.archives) {
+            console.log(typeof post.post_created_at);
             archives.push(
                 <ArchiveExtract key={post.post_name}
                     archive-name={post.post_name}
