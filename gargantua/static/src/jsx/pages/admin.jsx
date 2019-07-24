@@ -21,7 +21,7 @@ export class AdminPage extends BaseComponent {
                 <div>{this.props.children}</div>
             </div>
         );
-    };
+    }
 }
 
 
@@ -42,14 +42,14 @@ export class CategoriesConsole extends BaseComponent {
     };
 
     async loadCategories() {
-        let url = `/api/v2/post/category/`;
+        let url = '/api/v2/post/category/';
         return $.getJSON(url);
-    };
+    }
 
     async loadArticlesByCategory(category='null') {
         let url = `/api/v2/post/?category=${category}&truncate=0`;
         return $.getJSON(url);
-    };
+    }
 
     generateArticlesHTML(articles, categories) {
         let html = '',
@@ -58,7 +58,7 @@ export class CategoriesConsole extends BaseComponent {
         for(let cate of categories) {
             html_cate += `
                 <option value="${cate['_id']}">${cate['name']}</option>
-            `
+            `;
         }
 
         for(let article of articles) {
@@ -73,10 +73,10 @@ export class CategoriesConsole extends BaseComponent {
                         </select>
                     </div>
                 </div>
-            `
+            `;
         }
         return html;
-    };
+    }
 
 
     getHandleSubmit() {
@@ -111,7 +111,7 @@ export class CategoriesConsole extends BaseComponent {
             evt.preventDefault();
             return false;
         };
-    };
+    }
 
 
     render() {
@@ -128,5 +128,5 @@ export class CategoriesConsole extends BaseComponent {
                 </div>
             </div>
         );
-    };
+    }
 }
