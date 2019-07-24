@@ -41,7 +41,7 @@ export class Sidebar extends BaseComponent {
     render() {
         return (
             <div className="container-fluid sidebar">
-                <Profile />
+                {/* <Profile /> */}
                 <Categories />
                 <Login />
                 <Tagcloud />
