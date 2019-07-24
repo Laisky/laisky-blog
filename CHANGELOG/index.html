@@ -10,86 +10,89 @@
         <link rel="shortcut icon" href="../img/favicon.ico">
         <title>Changelog - Gargantua Documents</title>
         <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="../css/highlight.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-        <script src="../js/jquery-1.10.2.min.js"></script>
-        <script src="../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../js/highlight.pack.js"></script> 
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
     </head>
 
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
+            <div class="container">
 
-        <!-- Collapsed navigation -->
-        <div class="navbar-header">
-            <!-- Expander button -->
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="..">Gargantua Documents</a>
-        </div>
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="..">Gargantua Documents</a>
+                </div>
 
-        <!-- Expanded navigation -->
-        <div class="navbar-collapse collapse">
-                <!-- Main navigation -->
-                <ul class="nav navbar-nav">
-                    <li >
-                        <a href="..">Home</a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Deploy <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="..">Home</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Deploy <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
 <li >
     <a href="../docker/">Docker</a>
 </li>
+                                </ul>
+                            </li>
+                            <li >
+                                <a href="../database/">Database</a>
+                            </li>
+                            <li class="active">
+                                <a href="./">Changelog</a>
+                            </li>
                         </ul>
-                    </li>
-                    <li >
-                        <a href="../database/">Database</a>
-                    </li>
-                    <li class="active">
-                        <a href="./">Changelog</a>
-                    </li>
-                </ul>
 
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                        <i class="fa fa-search"></i> Search
-                    </a>
-                </li>
-                    <li >
-                        <a rel="next" href="../database/">
-                            <i class="fa fa-arrow-left"></i> Previous
-                        </a>
-                    </li>
-                    <li class="disabled">
-                        <a rel="prev" >
-                            Next <i class="fa fa-arrow-right"></i>
-                        </a>
-                    </li>
-            </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li >
+                                <a rel="next" href="../database/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="disabled">
+                                <a rel="prev" >
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#current">CURRENT</a></li>
+        <li class="main "><a href="#291">2.9.1</a></li>
+        <li class="main "><a href="#290">2.9.0</a></li>
         <li class="main "><a href="#2815">2.8.15</a></li>
         <li class="main "><a href="#2810">2.8.10</a></li>
         <li class="main "><a href="#28">2.8</a></li>
@@ -109,6 +112,45 @@
                 <div class="col-md-9" role="main">
 
 <h2 id="current"><em>CURRENT</em></h2>
+<ul>
+<li>2019-07-24 (Laisky) style: some typo -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/fe67fc2e70690ebaeab87672665ece12ae262fc2">view commit</a></li>
+<li>2019-07-23 (Laisky) fix: single post graphql -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/92181d802d9c72d09350f9ae96e801c566cbe35c">view commit</a></li>
+<li>2019-07-22 (Laisky) ci: release 2.9.5 -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/f951414830181edfaa86b222cd43fdf1f3420aba">view commit</a></li>
+<li>2019-07-22 (Laisky) feat: support blog categories -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/58e69bc4a88b89e229e38bd976c1520a713424c8">view commit</a></li>
+<li>2019-07-20 (Laisky) fix: mathjax -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/fb3d9fa1ef40a594fd5dd9e93816fa8a6e68027f">view commit</a></li>
+<li>2019-07-20 (Laisky) fix: mathjax -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/491f821962199c1a96126f12843ccdc9d4c56b74">view commit</a></li>
+<li>2019-07-20 (Laisky) fix: mathjax -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/74d70309d7af2ec5b102670fabca366ae17a7842">view commit</a></li>
+<li>2019-07-20 (Laisky) fix: mathjax -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/5e110bfb4eaa7f67a6c70eed3a2d30bc13e77008">view commit</a></li>
+<li>2019-07-20 (Laisky) fix: sidebar -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/5639723bacf723e67922bd92b13e327d8be2ea65">view commit</a></li>
+<li>2019-07-20 (Laisky) ci: release 2.9.4 -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/19c7ace8109b70f0e6a0c41acd69e74b736454ab">view commit</a></li>
+<li>2019-07-20 (Laisky) fix: support archives page -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/cda7ffa0d1b7725b40014a6ea9b3bd04fde04c23">view commit</a></li>
+<li>2019-07-16 (Laisky) fix: scrollspy -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/8f710289dd6e5b91cb221271db39525e66c3a259">view commit</a></li>
+<li>2019-07-16 (Laisky) ci: release 2.9.3 -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/f37040c0a729db57a734c1f400f6c3e00f4a3a5f">view commit</a></li>
+<li>2019-07-16 (Laisky) fix: markdown menu &amp; number -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/10b62677b8f84f45ec7ed0c53192710a59841376">view commit</a></li>
+<li>2019-07-15 (Laisky) ci: release 2.9.2 -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/0308d51f1283fae7117b47a31a37ece29bb2a55c">view commit</a></li>
+<li>2019-07-15 (Laisky) fix: publish error -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/f53523977de990d915bf12361637815db9e793c1">view commit</a></li>
+<li>2019-07-11 (Laisky) fix: inline code style -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/24ccea2757f9ac63f9c69188dd685fa177a449a2">view commit</a></li>
+<li>2019-07-10 (Laisky) fix: add highlight css -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/7f4b19cff096ca10fa34754b7af7dac6a50c24fb">view commit</a>    </li>
+</ul>
+<h2 id="291"><em>2.9.1</em></h2>
+<ul>
+<li>2019-07-10 (Laisky) ci: release 2.9.1 -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/9a9c1b1432cab551b65d68161a440e38e93b34ff">view commit</a></li>
+<li>2019-07-10 (Laisky) fix: use arguments rather than json -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/2f2d0d1227560fc1690bf854f4a4d90ec3b5e08a">view commit</a>    </li>
+</ul>
+<h2 id="290"><em>2.9.0</em></h2>
+<ul>
+<li>2019-07-09 (Laisky) ci: release 2.9.0 -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/78a6f34452733c5f7f71b52b43d713821a6136de">view commit</a></li>
+<li>2019-07-09 (Laisky) feat: support graphql publish and login -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/c94ff0a48ffa17abc558ac51cf20173facf35764">view commit</a></li>
+<li>2019-06-06 (Laisky) fix: update yarn -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/4b4d34341f6074b03dd1353751bdc27f2659ec01">view commit</a></li>
+<li>2019-06-06 (dependabot[bot]) chore(deps): bump fstream from 1.0.10 to 1.0.12 -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/33d3a525cbef2e73ec6e1084b866ba396bef7a04">view commit</a></li>
+<li>2019-06-06 (dependabot[bot]) chore(deps): bump concat-with-sourcemaps from 1.0.4 to 1.1.0 -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/fb46e80fa3098a9587524b3e72db30c14e8159e8">view commit</a></li>
+<li>2019-06-06 (dependabot[bot]) chore(deps): bump tar from 2.2.1 to 2.2.2 -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/25eee912816378ed3c00d22bc214a940b09be16b">view commit</a></li>
+<li>2019-06-05 (dependabot[bot]) chore(deps): bump marked from 0.3.6 to 0.3.19 -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/286d59ffc4d0386c40c6b6d7a333ada520cd2306">view commit</a></li>
+<li>2019-06-04 (dependabot[bot]) chore(deps): bump sshpk from 1.10.1 to 1.16.1 -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/78f631b540e7dd340770e79c60a86e129814b2cb">view commit</a></li>
+<li>2019-04-24 (Laisky) docs: update readme -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/3b96772d56e08028cd8f152fc7a777753ff5928f">view commit</a></li>
+<li>2019-04-24 (Laisky) docs: update readme -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/613840cc58fb99e1b39d7078bd6922b847c9c36c">view commit</a></li>
+<li>2019-04-11 (Laisky) build: update dockerfile -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/82099d356a22750e3e5205ae591da0658cdd2d7e">view commit</a>    </li>
+</ul>
 <h2 id="2815"><em>2.8.15</em></h2>
 <ul>
 <li>2019-04-08 (Laisky) 2.8.15 -&gt; <a href="https://github.com/Laisky/laisky-blog/commit/eb8ae2bd8dda957cc90fd30cf42b8e1d8f605bba">view commit</a></li>
@@ -651,12 +693,14 @@
 
         <footer class="col-md-12">
             <hr>
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
-        <script>var base_url = '..';</script>
-        <script src="../js/base.js"></script>
-        <script src="../search/require.js"></script>
-        <script src="../search/search.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
     <div class="modal-dialog">
@@ -672,7 +716,7 @@
                 </p>
                 <form role="form">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
                     </div>
                 </form>
                 <div id="mkdocs-search-results"></div>
@@ -698,19 +742,19 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><kbd>?</kbd></td>
+                    <td class="help shortcut"><kbd>?</kbd></td>
                     <td>Open this help</td>
                   </tr>
                   <tr>
-                    <td><kbd>&larr;</kbd></td>
-                    <td>Previous page</td>
-                  </tr>
-                  <tr>
-                    <td><kbd>&rarr;</kbd></td>
+                    <td class="next shortcut"><kbd>n</kbd></td>
                     <td>Next page</td>
                   </tr>
                   <tr>
-                    <td><kbd>s</kbd></td>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
                     <td>Search</td>
                   </tr>
                 </tbody>
@@ -721,7 +765,6 @@
         </div>
     </div>
 </div>
-
 
     </body>
 </html>
