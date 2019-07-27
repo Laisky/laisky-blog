@@ -73,10 +73,10 @@ class ArchiveExtract extends BaseComponent {
 
     getTagClickHandler() {
         return evt => {
-            if (!google || !google.search.cse.element.getElement('post_search')) return;
+            if (!window.google || !window.google.search.cse.element.getElement('post_search')) return;
 
             let query = $(evt.target).text();
-            google.search.cse.element.getElement('post_search').execute(query);
+            window.google.search.cse.element.getElement('post_search').execute(query);
 
             return false;
         };
