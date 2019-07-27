@@ -107,7 +107,7 @@ class ArchiveExtract extends BaseComponent {
                 <div className="category">
                     <span>分类：</span>
                     <Link to={{ pathname: postCategory ? `/cate/${postCategory['url']}/` : '/cate/' }}>
-                        {postCategory['name'] || '未分类'}
+                        {postCategory ? postCategory['name'] : '未分类'}
                     </Link>
                 </div>,
                 <div className="tags">
