@@ -34,7 +34,12 @@ export class Post extends BaseComponent {
                 content
                 name
                 menu
+                tags
                 created_at
+                category {
+                    name
+                    url
+                }
             }
         }`)
             .then(resp => {
