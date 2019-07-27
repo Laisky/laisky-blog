@@ -2,17 +2,36 @@
 *CURRENT*
 ---
     
+- 2019-07-24 (Laisky) style: some typo -> [view commit](https://github.com/Laisky/laisky-blog/commit/fe67fc2e70690ebaeab87672665ece12ae262fc2)
+- 2019-07-23 (Laisky) fix: single post graphql -> [view commit](https://github.com/Laisky/laisky-blog/commit/92181d802d9c72d09350f9ae96e801c566cbe35c)    
+       
+*2.9.5*
+---
+    
+- 2019-07-22 (Laisky) ci: release 2.9.5 -> [view commit](https://github.com/Laisky/laisky-blog/commit/f951414830181edfaa86b222cd43fdf1f3420aba)
 - 2019-07-22 (Laisky) feat: support blog categories -> [view commit](https://github.com/Laisky/laisky-blog/commit/58e69bc4a88b89e229e38bd976c1520a713424c8)
 - 2019-07-20 (Laisky) fix: mathjax -> [view commit](https://github.com/Laisky/laisky-blog/commit/fb3d9fa1ef40a594fd5dd9e93816fa8a6e68027f)
 - 2019-07-20 (Laisky) fix: mathjax -> [view commit](https://github.com/Laisky/laisky-blog/commit/491f821962199c1a96126f12843ccdc9d4c56b74)
 - 2019-07-20 (Laisky) fix: mathjax -> [view commit](https://github.com/Laisky/laisky-blog/commit/74d70309d7af2ec5b102670fabca366ae17a7842)
 - 2019-07-20 (Laisky) fix: mathjax -> [view commit](https://github.com/Laisky/laisky-blog/commit/5e110bfb4eaa7f67a6c70eed3a2d30bc13e77008)
-- 2019-07-20 (Laisky) fix: sidebar -> [view commit](https://github.com/Laisky/laisky-blog/commit/5639723bacf723e67922bd92b13e327d8be2ea65)
+- 2019-07-20 (Laisky) fix: sidebar -> [view commit](https://github.com/Laisky/laisky-blog/commit/5639723bacf723e67922bd92b13e327d8be2ea65)    
+       
+*2.9.4*
+---
+    
 - 2019-07-20 (Laisky) ci: release 2.9.4 -> [view commit](https://github.com/Laisky/laisky-blog/commit/19c7ace8109b70f0e6a0c41acd69e74b736454ab)
 - 2019-07-20 (Laisky) fix: support archives page -> [view commit](https://github.com/Laisky/laisky-blog/commit/cda7ffa0d1b7725b40014a6ea9b3bd04fde04c23)
-- 2019-07-16 (Laisky) fix: scrollspy -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f710289dd6e5b91cb221271db39525e66c3a259)
+- 2019-07-16 (Laisky) fix: scrollspy -> [view commit](https://github.com/Laisky/laisky-blog/commit/8f710289dd6e5b91cb221271db39525e66c3a259)    
+       
+*2.9.3*
+---
+    
 - 2019-07-16 (Laisky) ci: release 2.9.3 -> [view commit](https://github.com/Laisky/laisky-blog/commit/f37040c0a729db57a734c1f400f6c3e00f4a3a5f)
-- 2019-07-16 (Laisky) fix: markdown menu & number -> [view commit](https://github.com/Laisky/laisky-blog/commit/10b62677b8f84f45ec7ed0c53192710a59841376)
+- 2019-07-16 (Laisky) fix: markdown menu & number -> [view commit](https://github.com/Laisky/laisky-blog/commit/10b62677b8f84f45ec7ed0c53192710a59841376)    
+       
+*2.9.2*
+---
+    
 - 2019-07-15 (Laisky) ci: release 2.9.2 -> [view commit](https://github.com/Laisky/laisky-blog/commit/0308d51f1283fae7117b47a31a37ece29bb2a55c)
 - 2019-07-15 (Laisky) fix: publish error -> [view commit](https://github.com/Laisky/laisky-blog/commit/f53523977de990d915bf12361637815db9e793c1)
 - 2019-07-11 (Laisky) fix: inline code style -> [view commit](https://github.com/Laisky/laisky-blog/commit/24ccea2757f9ac63f9c69188dd685fa177a449a2)

@@ -137,7 +137,7 @@ class ArchiveExtract extends BaseComponent {
         if (this.props.insertHTML) {
             if (archiveType == 'markdown') {
                 articleContent = <article className="markdown-body" dangerouslySetInnerHTML={{ __html: this.props['archive-content'] }}></article>;
-            } else if (archiveType == 'slide') {
+            } else if (archiveType == 'slide' || archiveType == 'html') {
                 articleContent = <article dangerouslySetInnerHTML={{ __html: this.props['archive-content'] }}></article>;
             }
         } else {
