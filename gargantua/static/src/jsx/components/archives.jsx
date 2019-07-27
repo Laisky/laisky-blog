@@ -85,8 +85,8 @@ class ArchiveExtract extends BaseComponent {
     getPostTails() {
         let articleEditable,
             archiveName = this.props['archive-name'],
-            postCategory = this.props['archive-object'] && this.props['archive-object']['post_category'],
-            postTags = this.props['archive-object'] && this.props['archive-object']['post_tags'] || [];
+            postCategory = this.props['archive-object'] && this.props['archive-object']['category'],
+            postTags = this.props['archive-object'] && this.props['archive-object']['tags'] || [];
 
         if (this.getCurrentUsername()) {
             articleEditable = <Link to={{ pathname: `/amend/${archiveName}/` }}>编辑</Link>
@@ -106,8 +106,8 @@ class ArchiveExtract extends BaseComponent {
             return [
                 <div className="category">
                     <span>分类：</span>
-                    <Link to={{ pathname: postCategory ? `/cate/${postCategory}/` : '/cate/' }}>
-                        {postCategory || '未分类'}
+                    <Link to={{ pathname: postCategory ? `/cate/${postCategory['url']}/` : '/cate/' }}>
+                        {postCategory['name'] || '未分类'}
                     </Link>
                 </div>,
                 <div className="tags">
