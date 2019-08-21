@@ -38,10 +38,10 @@ export class About extends BaseComponent {
                     <div role="tabpanel" className="tab-pane fade in active" id="site">
                         <article>
                             <h2>关于本站</h2>
-                            <p>本站采用 Nginx & Tornado & Graphql & MongoDB 构建</p>
+                            <p>本站采用 Nginx & Tornado & GraphQL & MongoDB 构建</p>
                             <p>项目地址在：<Link target="_blank" to="https://github.com/Laisky/laisky-blog">https://github.com/Laisky/laisky-blog</Link></p>
-                            <p>Graphql UI：<Link target="_blank" to="https://blog.laisky.com/graphql/ui/">https://blog.laisky.com/graphql/ui/</Link></p>
-                            <p>Graphql Repo：<Link target="_blank" to="https://github.com/Laisky/laisky-blog-graphql">https://github.com/Laisky/laisky-blog-graphql</Link></p>
+                            <p>GraphQL UI：<Link target="_blank" to="https://blog.laisky.com/graphql/ui/">https://blog.laisky.com/graphql/ui/</Link></p>
+                            <p>GraphQL Repo：<Link target="_blank" to="https://github.com/Laisky/laisky-blog-graphql">https://github.com/Laisky/laisky-blog-graphql</Link></p>
                         </article>
                     </div>
                     <div role="tabpanel" className="tab-pane fade" id="right">
