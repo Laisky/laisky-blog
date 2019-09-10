@@ -20,9 +20,10 @@ class BaseModel(object):
         return ObjectId(sid)
 
     @classmethod
-    def make_connection(cls, host, port):
-        cls._CONNECTION = motor.MotorClient(host=host, port=port)
-        cls._MONGO_CONNECTION = pymongo.MongoClient(host=host, port=port)
+    def make_connection(cls, host, port, db, username, passwd):
+        mongo_url = f'mongodb://{username}:{passwd}@{host}:{port}/{db}'
+        cls._CONNECTION = motor.MotorClient(mongo_url)
+        cls._MONGO_CONNECTION = pymongo.MongoClient(mongo_url)
         return cls
 
     @classproperty
