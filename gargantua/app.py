@@ -29,6 +29,8 @@ define('debug', default=get_default_config('DEBUG'), type=bool)
 define('dbname', default=get_default_config('DBNAME'), type=str)
 define('dbhost', default=get_default_config('DBHOST'), type=str)
 define('dbport', default=int(get_default_config('DBPORT')), type=int)
+define('dbuser', default=get_default_config('DBUSER'), type=str)
+define('dbpasswd', default=get_default_config('DBPASSWD'), type=str)
 # mail
 define('mail_host', default=get_default_config('MAIL_HOST'), type=str)
 define('mail_port', default=int(get_default_config('MAIL_PORT')), type=int)
@@ -106,7 +108,13 @@ class Application(tornado.web.Application):
         logger.debug('connect database at {}:{}'
                      .format(options.dbhost, options.dbport))
 
-        model = BaseBlogModel.make_connection(host=options.dbhost, port=options.dbport)
+        model = BaseBlogModel.make_connection(
+            host=options.dbhost,
+            port=options.dbport,
+            db=options.dbname,
+            username=options.dbuser,
+            passwd=options.dbpasswd,
+            )
         self.conn = model.conn
         self.db = model.db
         self.mongo_conn = model.mongo_conn
