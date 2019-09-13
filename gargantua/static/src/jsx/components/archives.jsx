@@ -40,6 +40,7 @@ class Comment extends BaseComponent {
 
 // 文章
 class ArchiveExtract extends BaseComponent {
+
     componentDidMount() {
         let $imgModal = $('#img-modal'),
             $modalImg = $('#img-modal .modal-body img');

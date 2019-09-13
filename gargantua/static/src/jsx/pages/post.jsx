@@ -22,9 +22,7 @@ export class Post extends BaseComponent {
             post: null,
             hint: '载入中...'
         };
-    }
 
-    componentDidMount() {
         request(window.graphqlAPI, `query {
             posts(
                 name: "${this.props.params.pid}",
