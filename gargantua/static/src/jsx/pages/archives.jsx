@@ -43,7 +43,7 @@ class ArchivesCache {
 
     async loadByPage(nPage) {
         let postsReq = request(window.graphqlAPI, `query {
-            posts(
+            BlogPosts(
                 length: 200,
                 page: {size: ${this.limit}, page: ${nPage - 1}},
             ) {
@@ -54,7 +54,7 @@ class ArchivesCache {
             }
         }`),
             postInfoReq = request(window.graphqlAPI, `query {
-                postinfo {
+                BlogPostInfo {
                     total
                 }
         }`);

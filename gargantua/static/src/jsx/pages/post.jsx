@@ -24,7 +24,7 @@ export class Post extends BaseComponent {
         };
 
         request(window.graphqlAPI, `query {
-            posts(
+            BlogPosts(
                 name: "${this.props.params.pid}",
             ) {
                 title
@@ -209,7 +209,7 @@ export class PostCategories extends BaseComponent {
 
     async loadArticlesByCategoryURL(cateUrl) {
         let resp = await request(window.graphqlAPI, `query {
-            posts(
+            BlogPosts(
                 category_url: ${cateUrl ? `"${cateUrl}"` : 'null'},
                 page: {size: 200, page: 0},
             ) {

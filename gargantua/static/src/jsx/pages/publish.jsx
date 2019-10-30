@@ -60,7 +60,7 @@ class BaseEditComponent extends BaseComponent {
                         },
                     };
                     req = request(this.state.action, `mutation($post: NewBlogPost!) {
-                        createBlogPost(
+                        BlogCreatePost(
                             post: $post,
                         ) {
                             name
@@ -77,7 +77,7 @@ class BaseEditComponent extends BaseComponent {
                         },
                     };
                     req = request(this.state.action, `mutation($post: NewBlogPost!) {
-                    amendBlogPost(
+                    BlogAmendPost(
                         post: $post,
                     ) {
                         name
@@ -165,7 +165,7 @@ class Publish extends BaseComponent {
 class Amend extends BaseComponent {
     getInitData() {
         request(window.graphqlAPI, `query {
-            posts(
+            BlogPosts(
                 name: "${this.props.params.postname}",
             ) {
                 title
