@@ -63,11 +63,11 @@ class ArchivesCache {
             postinfo = await postInfoReq;
 
         let resp = {
-            total: postinfo.postinfo.total,
+            total: postinfo.BlogPostInfo.total,
             result: [],
         };
 
-        for (let post of posts.posts) {
+        for (let post of posts.BlogPosts) {
             resp.result.push({
                 post_name: post.name,
                 post_title: post.title,

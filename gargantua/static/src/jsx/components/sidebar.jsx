@@ -64,7 +64,7 @@ export class Categories extends BaseComponent {
                 url
             }
         }`);
-        this.setState({categories: resp.post_categories});
+        this.setState({categories: resp.BlogPostCategories});
     }
 
     render() {

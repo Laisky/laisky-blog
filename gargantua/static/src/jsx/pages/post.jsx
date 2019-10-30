@@ -41,10 +41,10 @@ export class Post extends BaseComponent {
             }
         }`)
             .then(resp => {
-                if (resp.posts.length < 1) {
+                if (resp.BlogPosts.length < 1) {
                     this.setState({ hint: '文章不存在' });
                 }
-                let post = resp.posts[0];
+                let post = resp.BlogPosts[0];
 
                 document.title = 'laisky-blog: ' + post.title;
                 if (post['type'] == 'slide') this.loadRevealJs();
@@ -219,7 +219,7 @@ export class PostCategories extends BaseComponent {
         }`),
             html = '';
 
-        for (let post of resp.posts) {
+        for (let post of resp.BlogPosts) {
             html += `<p><a href="/p/${post.name}/" target="_blank">${post.title}</a></p>`;
         }
         this.setState({ categories: html });
