@@ -59,7 +59,7 @@ export class Categories extends BaseComponent {
 
     async loadCategories() {
         let resp = await request(window.graphqlAPI, `query {
-            post_categories {
+            BlogPostCategories {
                 name
                 url
             }
