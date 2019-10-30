@@ -30,7 +30,7 @@ class Auth extends BaseComponent {
             data[this.state.passwordName] = this.refs.password.value.getMD5();
 
             const query = `mutation {
-                login(account:"${this.refs.account.value}", password:"${this.refs.password.value}") {
+                BlogLogin(account:"${this.refs.account.value}", password:"${this.refs.password.value}") {
                     username
                 }
             }`;
