@@ -178,11 +178,11 @@ class Amend extends BaseComponent {
                     post_name: this.props.params.postname,
                     hint: '编辑文章',
                 });
-                if (resp.posts.length <= 0) {
+                if (resp.BlogPosts.length <= 0) {
                     this.setState({ hint: 'post name not exists' });
                     return;
                 }
-                let post = resp.posts[0];
+                let post = resp.BlogPosts[0];
 
                 $(this.refs.postTitle).val(post.title);
                 $(this.refs.postContent).val(post.markdown);
