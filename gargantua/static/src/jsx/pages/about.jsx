@@ -31,6 +31,7 @@ export class About extends BaseComponent {
                             <p>AboutMe: <Link target="_blank" to="https://about.me/laisky">https://about.me/laisky</Link></p>
                             <div className="pay">
                                 <p>任意打赏☕️</p>
+                                <img src="https://s3.laisky.com/uploads/2020/01/unionpay.jpg" alt="unionpay" />
                                 <img src="https://s3.laisky.com/uploads/2019/03/alipay.jpg" alt="alipay" />
                                 <img src="https://s3.laisky.com/uploads/2019/03/wechat.jpg" alt="wechat" />
                             </div>

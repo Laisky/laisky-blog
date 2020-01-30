@@ -9,6 +9,7 @@ import { Link } from 'react-router';
 
 import { BaseComponent } from './base.jsx';
 
+const $ = window.$;
 
 // 评论
 class Comment extends BaseComponent {
@@ -54,7 +55,7 @@ class ArchiveExtract extends BaseComponent {
             });
         });
 
-        $imgModal.on('click', (evt) => {
+        $imgModal.on('click', () => {
             $imgModal.modal('hide');
         });
 
@@ -63,7 +64,7 @@ class ArchiveExtract extends BaseComponent {
             trigger: 'hover',
             placement: 'top',
             content: function () {
-                return `<img src="https://s3.laisky.com/uploads/2019/03/pay-merge.jpg" alt="pay"/>`;
+                return '<img src="https://s3.laisky.com/uploads/2019/03/pay-merge.jpg" alt="pay"/>';
             }
         });
 
