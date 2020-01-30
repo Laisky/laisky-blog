@@ -58,7 +58,7 @@ export class Post extends BaseComponent {
                 setTimeout(function () {
                     $('body').scrollspy({ target: '#archive-menu' });
                     window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
-                }, 2000);
+                }, 5000);
             })
             .catch(() => {
                 this.setState({ hint: '读取数据失败，请刷新重试' });
