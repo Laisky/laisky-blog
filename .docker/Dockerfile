@@ -1,12 +1,9 @@
-FROM python:3.7.3-alpine3.9
+FROM python:3.8.7-buster
 
-
-RUN apk update && apk upgrade && \
-    apk add --no-cache ca-certificates && \
-    update-ca-certificates
-
-RUN apk add --no-cache gcc build-base git curl \
-        libxslt-dev libxml2-dev libc-dev openssl-dev libffi-dev zlib-dev
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends g++ make gcc git build-essential ca-certificates curl \
+    libxslt-dev libxml2-dev libc-dev libssl-dev libffi-dev zlib1g-dev \
+    && update-ca-certificates
 
 
 RUN mkdir /www && \
@@ -20,4 +17,3 @@ RUN python setup.py install
 ENV HOME /root
 
 CMD python -m gargantua --port=27850 --dbhost=mongodb --dbport=27017 --debug=false
-
