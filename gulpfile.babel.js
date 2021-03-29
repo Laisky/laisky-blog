@@ -1,16 +1,16 @@
 'use strict';
 
-import path from 'path';
-
-import gulp from 'gulp';
-import runSequence from 'run-sequence';
 import es6promise from 'es6-promise';
+import gulp from 'gulp';
 import loadPlugin from 'gulp-load-plugins';
-import gulpwebpack from 'webpack-stream';
+import path from 'path';
+import runSequence from 'run-sequence';
 import through from 'through2';
 import webpack from 'webpack';
-
+import gulpwebpack from 'webpack-stream';
 import config from './config.json';
+
+
 
 
 es6promise.polyfill();
