@@ -4,12 +4,12 @@
 
 'use strict';
 
-import React from 'react';
-
-import { BaseComponent } from '../components/base.jsx';
-import { ArchiveExtract, Comment, ArchiveMenu } from '../components/archives.jsx';
-import { Categories } from '../components/sidebar.jsx';
 import { request } from 'graphql-request';
+import React from 'react';
+import { ArchiveExtract, ArchiveMenu, Comment } from '../components/archives.jsx';
+import { BaseComponent } from '../components/base.jsx';
+import { Categories } from '../components/sidebar.jsx';
+
 
 let $ = window.$;
 
