@@ -9,5 +9,15 @@
     article {
         padding: 10px;
         margin-bottom: 10px;
+        .images {
+            // float: left;
+            img {
+                display: block;
+                cursor: pointer;
+                max-height: 400px;
+                // max-width: 600px;
+                max-width: 90%;
+            }
+        }
     }
 }
