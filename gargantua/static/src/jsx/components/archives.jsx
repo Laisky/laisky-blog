@@ -6,8 +6,8 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-
 import { BaseComponent } from './base.jsx';
+
 
 const $ = window.$;
 
@@ -116,7 +116,7 @@ class ArchiveExtract extends BaseComponent {
                     <span>标签：</span>
                     {tagHtml}
                 </div>,
-                payment,
+                // payment,
                 articleEditable,
                 <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">0 评论</Link>
             ];
