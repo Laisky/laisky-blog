@@ -3,6 +3,7 @@
  */
 'use strict';
 
+import { request } from 'graphql-request';
 import { Link } from 'react-router';
 import { BaseComponent } from '../components/base.jsx';
 
@@ -59,7 +60,7 @@ export class CategoriesConsole extends BaseComponent {
 
         for (let cate of categories) {
             html_cate += `
-                <option value="${cate['_id']}">${cate['name']}</option>
+                <option value="${cate['name']}">${cate['name']}</option>
             `;
         }
 
@@ -86,27 +87,29 @@ export class CategoriesConsole extends BaseComponent {
          * POST {post_id: category_id}
          */
         return evt => {
-            let data = {
-                categories: {}
-            };
-            $('#admin .articles select')
+            $('#admin .articles .form-group')
                 .each((idx, item) => {
                     let $item = $(item);
-                    if (!$item.val())
+                    if (!$item.find('select').val())
                         return;
 
-                    data['categories'][$item.attr('name')] = $item.val();
-                });
+                    let variables = {
+                        post: {
+                            name: $item.find('label a').attr('href').slice(3, -1),
+                            category: $item.find('select').val(),
+                        }
+                    };
 
-            let url = $('#admin .category-console form').attr('action');
-            data['categories'] = JSON.stringify(data['categories']);
-            $.ajax({
-                url: url,
-                data: this.addXSRF(data),
-                method: 'PUT'
-            })
-                .done(resp => {
-                    window.location.reload();
+                    request(window.graphqlAPI, `mutation($post: NewBlogPost!) {
+                        BlogAmendPost(
+                            post: $post,
+                        ) {
+                            name
+                        }
+                    }`, variables).then(resp => {
+                        window.location.reload();
+                    });
+
                 });
 
             evt.stopPropagation();

@@ -14,7 +14,7 @@ $nav-title-clr: $post-title-clr;
     #archive-content, archive-content {
         @include border-radius(10px);
         background-color: #F1F1F1;
-        padding-left: 0;
+        padding: 0;
 
         .hint {
             margin: 10px;
