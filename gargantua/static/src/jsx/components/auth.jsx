@@ -36,11 +36,10 @@ class Auth extends BaseComponent {
             }`;
             request(this.state.action, query)
                 .then(data => {
-                    $(this.refs.hint).text(`welcome ${data.login.username}`);
+                    $(this.refs.hint).text(`welcome ${data.BlogLogin.username}`);
                     location.href = next;
                 })
                 .catch(err => {
-                    console.log(err)
                     $(this.refs.hint).text(`${err.message}`)
                 });
         }

@@ -15,6 +15,7 @@ $nav-title-clr: $post-title-clr;
         @include border-radius(10px);
         background-color: #F1F1F1;
         min-height: 600px;
+        padding: 0px;
 
         .hint {
             margin: 10px;

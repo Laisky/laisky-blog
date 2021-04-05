@@ -3,9 +3,12 @@
  */
 'use strict';
 
+import { request } from 'graphql-request';
 import { Link } from 'react-router';
-
 import { BaseComponent } from '../components/base.jsx';
+
+
+const $ = window.$;
 
 
 export class AdminPage extends BaseComponent {
@@ -46,7 +49,7 @@ export class CategoriesConsole extends BaseComponent {
         return $.getJSON(url);
     }
 
-    async loadArticlesByCategory(category='null') {
+    async loadArticlesByCategory(category = 'null') {
         let url = `/api/v2/post/?category=${category}&truncate=0`;
         return $.getJSON(url);
     }
@@ -55,13 +58,13 @@ export class CategoriesConsole extends BaseComponent {
         let html = '',
             html_cate = '<option value=""></option>';
 
-        for(let cate of categories) {
+        for (let cate of categories) {
             html_cate += `
-                <option value="${cate['_id']}">${cate['name']}</option>
+                <option value="${cate['name']}">${cate['name']}</option>
             `;
         }
 
-        for(let article of articles) {
+        for (let article of articles) {
             html += `
                 <div class="form-group">
                     <label class="col-sm-10 control-label">
@@ -84,27 +87,29 @@ export class CategoriesConsole extends BaseComponent {
          * POST {post_id: category_id}
          */
         return evt => {
-            let data = {
-                categories: {}
-            };
-            $('#admin .articles select')
+            $('#admin .articles .form-group')
                 .each((idx, item) => {
                     let $item = $(item);
-                    if(!$item.val())
+                    if (!$item.find('select').val())
                         return;
 
-                    data['categories'][$item.attr('name')] = $item.val();
-                });
+                    let variables = {
+                        post: {
+                            name: $item.find('label a').attr('href').slice(3, -1),
+                            category: $item.find('select').val(),
+                        }
+                    };
 
-            let url = $('#admin .category-console form').attr('action');
-            data['categories'] = JSON.stringify(data['categories']);
-            $.ajax({
-                url: url,
-                data: this.addXSRF(data),
-                method: 'PUT'
-            })
-                .done(resp => {
-                    window.location.reload();
+                    request(window.graphqlAPI, `mutation($post: NewBlogPost!) {
+                        BlogAmendPost(
+                            post: $post,
+                        ) {
+                            name
+                        }
+                    }`, variables).then(resp => {
+                        window.location.reload();
+                    });
+
                 });
 
             evt.stopPropagation();
@@ -122,7 +127,7 @@ export class CategoriesConsole extends BaseComponent {
                 </nav>
                 <div className="row category-console">
                     <form className="articles form-horizontal" action="/api/v2/post/category/" method="post" onSubmit={this.getHandleSubmit()}>
-                        <div dangerouslySetInnerHTML={{__html: this.state.articles}}></div>
+                        <div dangerouslySetInnerHTML={{ __html: this.state.articles }}></div>
                         <button type="submit" className="btn btn-success submit">提交更新</button>
                     </form>
                 </div>

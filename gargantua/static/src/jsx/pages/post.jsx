@@ -4,13 +4,14 @@
 
 'use strict';
 
-import React from 'react';
-
-import { BaseComponent } from '../components/base.jsx';
-import { ArchiveExtract, Comment, ArchiveMenu } from '../components/archives.jsx';
-import { Categories } from '../components/sidebar.jsx';
 import { request } from 'graphql-request';
+import React from 'react';
+import { ArchiveExtract, ArchiveMenu, Comment } from '../components/archives.jsx';
+import { BaseComponent } from '../components/base.jsx';
+import { Categories } from '../components/sidebar.jsx';
 
+
+let $ = window.$;
 
 /**
  * Post Article
@@ -41,10 +42,10 @@ export class Post extends BaseComponent {
             }
         }`)
             .then(resp => {
-                if (resp.posts.length < 1) {
+                if (resp.BlogPosts.length < 1) {
                     this.setState({ hint: '文章不存在' });
                 }
-                let post = resp.posts[0];
+                let post = resp.BlogPosts[0];
 
                 document.title = 'laisky-blog: ' + post.title;
                 if (post['type'] == 'slide') this.loadRevealJs();
@@ -59,6 +60,12 @@ export class Post extends BaseComponent {
                     $('body').scrollspy({ target: '#archive-menu' });
                     window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
                 }, 2000);
+                setTimeout(function () {
+                    window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+                }, 4000);
+                setTimeout(function () {
+                    window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+                }, 8000);
             })
             .catch(() => {
                 this.setState({ hint: '读取数据失败，请刷新重试' });
@@ -71,7 +78,7 @@ export class Post extends BaseComponent {
         if (navigator.browserInfo.name != 'Chrome') return content;
         return content.replace(
             // https://blog.laisky.com/qiniu/srceen_shot%202016-10-31%20at%2020.22.45.jpg
-            /(\bhttps:\/\/blog\.laisky\.com\/qiniu\/[^\/]+\.(jpg|jpeg|gif|png))/ig,
+            /(\bhttps:\/\/blog\.laisky\.com\/qiniu\/[^/]+\.(jpg|jpeg|gif|png))/ig,
             '$1?imageMogr2/format/webp'
         );
     }
@@ -80,7 +87,7 @@ export class Post extends BaseComponent {
         $.getScript(window.revealLibUrl)
             .done(function () {
                 setTimeout(function () {
-                    Reveal.initialize({
+                    window.Reveal.initialize({
                         // Display controls in the bottom right corner
                         controls: true,
                         // Display a presentation progress bar
@@ -120,7 +127,7 @@ export class Post extends BaseComponent {
                         // Stop auto-sliding after user input
                         autoSlideStoppable: true,
                         // Use this method for navigation when auto-sliding
-                        autoSlideMethod: Reveal.navigateNext,
+                        autoSlideMethod: window.Reveal.navigateNext,
                         // Enable slide navigation via mouse wheel
                         mouseWheel: false,
                         // Hides the address bar on mobile devices
@@ -156,7 +163,7 @@ export class Post extends BaseComponent {
             postContent;
 
         if (this.state.hint) {
-            hintEle = <p className="hint">{this.state.hint}</p>
+            hintEle = <p className="hint">{this.state.hint}</p>;
         }
 
         if (this.state.post) {
@@ -219,7 +226,7 @@ export class PostCategories extends BaseComponent {
         }`),
             html = '';
 
-        for (let post of resp.posts) {
+        for (let post of resp.BlogPosts) {
             html += `<p><a href="/p/${post.name}/" target="_blank">${post.title}</a></p>`;
         }
         this.setState({ categories: html });

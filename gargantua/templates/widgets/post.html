@@ -11,6 +11,6 @@
   </div>
   <div class="post-tail">
     <a href="/amend/?post-name={{ post.post_name }}">编辑</a> {% if post.post_password %} {% elif posts|length != 1 %}
-    <a href="/p/{{ post.post_name }}/#disqus_thread" data-disqus-identifier="{{ post.post_name }}" target="_blank">0 评论</a> {% endif %} {% if not posts %} {% include "widgets/comment.html" %} {% endif %}
+    <a href="/p/{{ post.post_name }}/#disqus_thread" data-disqus-identifier="{{ post.post_name }}" target="_blank">评论</a> {% endif %} {% if not posts %} {% include "widgets/comment.html" %} {% endif %}
   </div>
 </div>

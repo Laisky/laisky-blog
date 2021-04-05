@@ -2,6 +2,10 @@
     margin-top: 40px;
 }
 
-#img-modal .modal-body {
-    text-align: center;
+#img-modal {
+    overflow: scroll;
+
+    .modal-body {
+        text-align: center;
+    }
 }

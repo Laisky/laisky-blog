@@ -6,9 +6,10 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-
 import { BaseComponent } from './base.jsx';
 
+
+const $ = window.$;
 
 // 评论
 class Comment extends BaseComponent {
@@ -54,7 +55,7 @@ class ArchiveExtract extends BaseComponent {
             });
         });
 
-        $imgModal.on('click', (evt) => {
+        $imgModal.on('click', () => {
             $imgModal.modal('hide');
         });
 
@@ -63,7 +64,7 @@ class ArchiveExtract extends BaseComponent {
             trigger: 'hover',
             placement: 'top',
             content: function () {
-                return `<img src="https://s3.laisky.com/uploads/2019/03/pay-merge.jpg" alt="pay"/>`;
+                return '<img src="https://s3.laisky.com/uploads/2019/03/pay-merge.jpg" alt="pay"/>';
             }
         });
 
@@ -74,10 +75,10 @@ class ArchiveExtract extends BaseComponent {
 
     getTagClickHandler() {
         return evt => {
-            if (!google || !google.search.cse.element.getElement('post_search')) return;
+            if (!window.google || !window.google.search.cse.element.getElement('post_search')) return;
 
             let query = $(evt.target).text();
-            google.search.cse.element.getElement('post_search').execute(query);
+            window.google.search.cse.element.getElement('post_search').execute(query);
 
             return false;
         };
@@ -115,15 +116,15 @@ class ArchiveExtract extends BaseComponent {
                     <span>标签：</span>
                     {tagHtml}
                 </div>,
-                payment,
+                // payment,
                 articleEditable,
-                <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">0 评论</Link>
+                <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">评论</Link>
             ];
         }
 
         return [
             articleEditable,
-            <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">0 评论</Link>
+            <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">评论</Link>
         ];
     }
 

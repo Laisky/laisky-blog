@@ -6,9 +6,8 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-
 import { BaseComponent } from '../components/base.jsx';
-import { Redirect } from '../components/redirect.jsx';
+
 
 
 export class About extends BaseComponent {
@@ -27,18 +26,20 @@ export class About extends BaseComponent {
                     <div role="tabpanel" className="tab-pane fade" id="me">
                         <article>
                             <h2>AboutMe</h2>
-                            <p>aboutme: <Link target="_blank" to="https://about.me/laisky">https://about.me/laisky</Link></p>
-                            <div className="pay">
+                            <p>Email: public@laisky.com</p>
+                            <p>AboutMe: <Link target="_blank" to="https://about.me/laisky">https://about.me/laisky</Link></p>
+                            {/* <div className="pay">
                                 <p>任意打赏☕️</p>
+                                <img src="https://s3.laisky.com/uploads/2020/01/unionpay.jpg" alt="unionpay" />
                                 <img src="https://s3.laisky.com/uploads/2019/03/alipay.jpg" alt="alipay" />
                                 <img src="https://s3.laisky.com/uploads/2019/03/wechat.jpg" alt="wechat" />
-                            </div>
+                            </div> */}
                         </article>
                     </div>
                     <div role="tabpanel" className="tab-pane fade in active" id="site">
                         <article>
                             <h2>关于本站</h2>
-                            <p>本站采用 Nginx & Tornado & GraphQL & MongoDB 构建</p>
+                            <p>本站采用 Nginx & Tornado & GraphQL & MongoDB 构建（年久失修）</p>
                             <p>项目地址在：<Link target="_blank" to="https://github.com/Laisky/laisky-blog">https://github.com/Laisky/laisky-blog</Link></p>
                             <p>GraphQL UI：<Link target="_blank" to="https://blog.laisky.com/graphql/ui/">https://blog.laisky.com/graphql/ui/</Link></p>
                             <p>GraphQL Repo：<Link target="_blank" to="https://github.com/Laisky/laisky-blog-graphql">https://github.com/Laisky/laisky-blog-graphql</Link></p>

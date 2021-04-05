@@ -14,9 +14,10 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
     font-family: "Microsoft YaHei", "Helvetica Neue", "Helvetica", "Segoe UI", "Arial", "freesans", "sans-serif";
-    background-image: url("https://s2.laisky.com/uploads/images/background-1500x844.jpg");
+    background-image: url("https://s1.laisky.com/uploads/2020/01/background-white.jpeg");
     @include background-size(100% 100%);
     background-attachment: fixed;
+    word-break: break-all;
 
     > .container {
         max-width: 900px;
