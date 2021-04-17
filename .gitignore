@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+dist
 
 # C extensions
 *.so
@@ -74,6 +75,7 @@ koala-config.json
 .webassets-cache/
 assets/
 .assets
+html
 
 # node
 node_modules/
