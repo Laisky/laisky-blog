@@ -1,5 +1,5 @@
 "use strict;"
-$(function() {
+$(function () {
     updatePageTitle();
     bindImgClick();
     bindPostAuth();
@@ -7,7 +7,7 @@ $(function() {
 
 
     function bindPostAuth() {
-        $(".post-auth-body .submitBtn").on("click", function() {
+        $(".post-auth-body .submitBtn").on("click", function () {
             var postName = $(".post-auth-body form").data("post-name"),
                 url = location.pathname,
                 $hint = $(".post-auth-body .hint-text"),
@@ -16,12 +16,12 @@ $(function() {
             $.postJSON(url, {
                 name: postName,
                 password: password
-            }, function(resp) {
+            }, function (resp) {
                 if (resp.status != 0) {
                     $hint.html(resp.msg);
                 } else {
                     $hint.html("验证成功，正在跳转...");
-                    setTimeout(function() {
+                    setTimeout(function () {
                         location.reload();
                     }, 1000);
                 }
@@ -34,25 +34,25 @@ $(function() {
 
     // 更新文章标题的链接
     function updatePageTitle() {
-        if ($(".post").length == 1) {
-            var title = $(".post-title a").html();
+        if ($('.post').length == 1) {
+            var title = $('.post-title a').html();
 
-            $("head title").html(title);
+            $('head title').html(title);
         }
     }
 
 
     // 点击图片弹出大图
     function bindImgClick() {
-        var $imgModal = $("#img-modal"),
-            $modalImg = $("#img-modal .modal-body img");
+        var $imgModal = $('#img-modal'),
+            $modalImg = $('#img-modal .modal-body img');
 
-        $(".container").on("click", "#archives img", imgClickHandler);
+        $('.container').on('click', '#arc hives img', imgClickHandler);
 
         function imgClickHandler() {
             var $this = $(this);
 
-            $modalImg.prop("src", $this.prop("src"));
+            $modalImg.prop('src', $this.prop('src'));
             $imgModal.modal({
                 show: true
             });

@@ -4,6 +4,7 @@
 
 'use strict';
 
+import { request } from 'graphql-request';
 import React from 'react';
 import { Link } from 'react-router';
 import { BaseComponent } from './base.jsx';
@@ -46,6 +47,7 @@ class ArchiveExtract extends BaseComponent {
         let $imgModal = $('#img-modal'),
             $modalImg = $('#img-modal .modal-body img');
 
+        // image modal
         $(this.refs.archiveContent).on('click', 'img', (evt) => {
             let $target = $(evt.target);
 
@@ -58,7 +60,7 @@ class ArchiveExtract extends BaseComponent {
         $imgModal.on('click', () => {
             $imgModal.modal('hide');
         });
-
+        this.setPostSeries();
         $('.archive-tail .pay').popover({
             html: true,
             trigger: 'hover',
@@ -71,6 +73,50 @@ class ArchiveExtract extends BaseComponent {
         document.querySelectorAll('pre > code').forEach((block) => {
             window.hljs && window.hljs.highlightBlock(block);
         });
+    }
+
+    setPostSeries() {
+        $('.archive-content article')
+            .find('div.post_series')
+            .each((_, se) => {
+                let $block = $(se);
+                let postkey = $block.attr('key');
+                let html = '';
+
+                request(window.graphqlAPI, `query {
+                    GetBlogPostSeries(
+                        key: "${postkey}"
+                    ) {
+                        remark
+                        posts {
+                            name
+                            title
+                        }
+                    }
+                }`)
+                    .then(resp => {
+                        if (resp.GetBlogPostSeries.length < 1) {
+                            return;
+                        }
+
+                        let se = resp.GetBlogPostSeries[0];
+                        for (let i = 0; i < se.posts.length; i++) {
+                            let p = se.posts[i];
+                            html += `<li><a href="https://blog.laisky.com/p/${p.name}/">${p.title}</a></li>`;
+                        }
+
+                        html = `
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">${se.remark} 系列文章：</h3>
+                            </div>
+                            <div class="panel-body">
+                                <ul>${html}</ul>
+                            </div>
+                        </div>`;
+                        $block.html(html);
+                    });
+            });
     }
 
     getTagClickHandler() {
