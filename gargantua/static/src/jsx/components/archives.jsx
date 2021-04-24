@@ -60,7 +60,8 @@ class ArchiveExtract extends BaseComponent {
         $imgModal.on('click', () => {
             $imgModal.modal('hide');
         });
-        this.setPostSeries();
+
+        parseAndReplacePostSeries();
         $('.archive-tail .pay').popover({
             html: true,
             trigger: 'hover',
@@ -75,49 +76,6 @@ class ArchiveExtract extends BaseComponent {
         });
     }
 
-    setPostSeries() {
-        $('.archive-content article')
-            .find('div.post_series')
-            .each((_, se) => {
-                let $block = $(se);
-                let postkey = $block.attr('key');
-                let html = '';
-
-                request(window.graphqlAPI, `query {
-                    GetBlogPostSeries(
-                        key: "${postkey}"
-                    ) {
-                        remark
-                        posts {
-                            name
-                            title
-                        }
-                    }
-                }`)
-                    .then(resp => {
-                        if (resp.GetBlogPostSeries.length < 1) {
-                            return;
-                        }
-
-                        let se = resp.GetBlogPostSeries[0];
-                        for (let i = 0; i < se.posts.length; i++) {
-                            let p = se.posts[i];
-                            html += `<li><a href="https://blog.laisky.com/p/${p.name}/">${p.title}</a></li>`;
-                        }
-
-                        html = `
-                        <div class="panel panel-info">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">${se.remark} 系列文章：</h3>
-                            </div>
-                            <div class="panel-body">
-                                <ul>${html}</ul>
-                            </div>
-                        </div>`;
-                        $block.html(html);
-                    });
-            });
-    }
 
     getTagClickHandler() {
         return evt => {
@@ -310,6 +268,97 @@ class ArchiveNav extends BaseComponent {
     };
 }
 
+
+function parseAndReplacePostSeries() {
+    $('.archive-content article')
+        .find('div.post_series')
+        .each(async (_, seEle) => {
+            let $block = $(seEle);
+            let postkey = $block.attr('key');
+
+            const se = await loadSeries(postkey);
+            if (se == null) {
+                return;
+            }
+
+            let html = parseSeriesHTML(se);
+            for (let i = 0; i < se.children.length; i++) {
+                html += await parseSeriesChildren(se.children[i].key);
+            }
+
+            html = `
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">${se.remark} 系列文章：</h3>
+                            </div>
+                            <div class="panel-body">
+                                <ul>
+                                    ${html}
+                                </ul>
+                            </div>
+                        </div>`;
+            $block.html(html);
+        });
+}
+
+async function loadSeries(postkey) {
+    const resp = await request(window.graphqlAPI, `query {
+            GetBlogPostSeries(
+                key: "${postkey}"
+            ) {
+                remark
+                posts {
+                    name
+                    title
+                }
+                children {
+                    key
+                }
+            }
+        }`);
+
+    if (resp.GetBlogPostSeries.length < 1) {
+        return null;
+    }
+
+    return resp.GetBlogPostSeries[0];
+}
+
+function parseSeriesHTML(se) {
+    let html = '';
+    for (let i = 0; i < se.posts.length; i++) {
+        let p = se.posts[i];
+        html += `<li><a href="https://blog.laisky.com/p/${p.name}/">${p.title}</a></li>`;
+    }
+
+    return html;
+}
+
+async function parseSeriesChildren(seriesKey) {
+    let se = await loadSeries(seriesKey);
+    let sid = `series-${se.remark}`;
+    let html = parseSeriesHTML(se);
+    if (se.children.length != 0) {
+        for (i = 0; i < se.children.length; i++) {
+            html += parseSeriesChildren(se.children[i].key);
+        }
+    }
+
+    html = `
+            <li><a class="btn btn-light" data-toggle="collapse" href="#${sid}">
+                <i class="bi bi-filter-left"></i>${se.remark} 系列文章：</a>
+                <div id="${sid}" class="collapse">
+                    <div class="card-body">
+                        <ul>
+                            ${html}
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        `
+
+    return html;
+}
 
 export {
     ArchiveExtract,
