@@ -38,7 +38,8 @@
 
     <div class="pagejsx">
         <script>
-            window.graphqlAPI = '/graphql/query/';
+            // window.graphqlAPI = '/graphql/query/';
+            window.graphqlAPI = '/graphql/query/' + window.location.search;
         </script>
         {% block page_jsx %}
         {% endblock %}
