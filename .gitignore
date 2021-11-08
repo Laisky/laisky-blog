@@ -102,6 +102,7 @@ gargantua/static/dist/maps/
 !/gargantua/static/dist/js/sites*
 !/gargantua/static/dist/fonts/
 !/gargantua/static/dist/fonts/*
+/gargantua/html
 
 # dev
 .tags
