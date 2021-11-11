@@ -1,21 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import logging
 import json
-import traceback
+import logging
 import os
 import re
+import traceback
 from collections import namedtuple
 from functools import wraps
 
 import jwt
 from bson import ObjectId
+from gargantua.settings import LOG_NAME, OK
+from gargantua.utils import decode_token, validate_token
+
 import tornado
 
-from gargantua.utils import validate_token, decode_token
-from gargantua.settings import LOG_NAME, OK
 from .jinja import TemplateRendering
-
 
 logger = logging.getLogger(LOG_NAME)
 
@@ -128,10 +128,9 @@ class RFCMixin():
 class AuthHandlerMixin():
 
     def get_current_user(self):
-        logger.debug('get_current_user')
-
         try:
             cli_token = self.get_cookie('token')
+            logger.debug(f'get_current_user with {cli_token}')
             if not cli_token:
                 logger.debug('token is missed')
                 return

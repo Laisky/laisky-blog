@@ -4,18 +4,17 @@
 
 'use strict';
 
-import React from 'react';
-import { Link } from 'react-router';
 import { request } from 'graphql-request';
-
+import React from 'react';
 import { BaseComponent } from './base.jsx';
 
+const $ = window.$;
 
 class Auth extends BaseComponent {
     constructor(props, context) {
         super(props, context);
         this.state = {};
-    };
+    }
 
     getHandleSubmit() {
         return (evt) => {
@@ -31,19 +30,24 @@ class Auth extends BaseComponent {
 
             const query = `mutation {
                 BlogLogin(account:"${this.refs.account.value}", password:"${this.refs.password.value}") {
-                    username
+                    user {
+                        username
+                    }
+                    token
                 }
             }`;
             request(this.state.action, query)
                 .then(data => {
-                    $(this.refs.hint).text(`welcome ${data.BlogLogin.username}`);
+                    console.log("got", data.BlogLogin);
+                    $(this.refs.hint).text(`welcome ${data.BlogLogin.user.username}`);
+                    window.Cookies.set('token', data.BlogLogin.token, { expires: 7 });
                     location.href = next;
                 })
                 .catch(err => {
-                    $(this.refs.hint).text(`${err.message}`)
+                    $(this.refs.hint).text(`${err.message}`);
                 });
-        }
-    };
+        };
+    }
 
     componentDidMount() {
         this.setState({
@@ -57,8 +61,8 @@ class Auth extends BaseComponent {
             passwordPlaceholder: this.props.passwordPlaceholder || '请输入密码',
             siginLabel: this.props.siginLabel || '登录',
             singupLabel: this.props.singupLabel || '注册'
-        })
-    };
+        });
+    }
 
     render() {
         return (
@@ -98,7 +102,7 @@ class Auth extends BaseComponent {
                 </form>
             </div>
         );
-    };
+    }
 }
 
 

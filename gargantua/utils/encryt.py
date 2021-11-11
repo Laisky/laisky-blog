@@ -28,6 +28,6 @@ def decode_token(token, secret=SECRET_KEY):
     JWT is dangerous: https://paragonie.com/blog/2017/03/jwt-json-web-tokens-is-bad-standard-that-everyone-should-avoid
     """
     try:
-        return jwt.decode(token, secret, algorithms=['HS512'])
+        return jwt.decode(token, secret, algorithms=['HS512', 'HS256'])
     except (jwt.InvalidAlgorithmError, jwt.DecodeError):
         raise

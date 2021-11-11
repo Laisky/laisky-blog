@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory, IndexRedirect, Redirect, Route, Router } from 'react-router';
 import { Tweet, TwitterPage } from './components/tweet.jsx';
+import './libs.jsx';
 import { PageNotFound } from './pages/404.jsx';
 import { About } from './pages/about.jsx';
 import { AdminPage, CategoriesConsole } from './pages/admin.jsx';
@@ -14,8 +15,6 @@ import { Login } from './pages/login.jsx';
 import { Post, PostCategories } from './pages/post.jsx';
 import { Amend, Publish } from './pages/publish.jsx';
 import { store } from './reducers';
-
-
 
 ReactDOM.render(
     <Provider store={store}>
