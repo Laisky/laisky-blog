@@ -107,3 +107,4 @@ gargantua/static/dist/maps/
 # dev
 .tags
 .vscode
+.python-version

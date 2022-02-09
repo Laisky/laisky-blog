@@ -4,10 +4,10 @@
 
 'use strict';
 
-import React from 'react';
-
-import { BaseComponent } from '../components/base.jsx';
 import { request } from 'graphql-request';
+import React from 'react';
+import { BaseComponent } from '../components/base.jsx';
+
 
 
 class BaseEditComponent extends BaseComponent {
@@ -164,7 +164,9 @@ class Publish extends BaseComponent {
 
 class Amend extends BaseComponent {
     getInitData() {
-        request(window.graphqlAPI, `query {
+        let url = new URL(document.location.origin + window.graphqlAPI);
+        url.searchParams.set("force", "");
+        request(url.toString(), `query {
             BlogPosts(
                 name: "${this.props.params.postname}",
             ) {

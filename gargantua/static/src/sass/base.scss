@@ -64,6 +64,10 @@ body {
 .navbar-fixed-top {
     padding-left: 10px;
     padding-right: 10px;
+
+    .nav-bar-search {
+        margin-bottom: 0px;
+    }
 }
 
 .loader-inner {
