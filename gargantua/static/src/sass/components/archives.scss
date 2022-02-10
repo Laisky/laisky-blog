@@ -9,15 +9,15 @@
 #archive-menu {
     background-color: $post-bgd-clr;
     padding: 10px;
-    position: relative;
+    position: fixed;
+    max-width: 250px;
+    max-height: 600px;
+    overflow-y: auto;
     border: 2px solid $post-bgd-clr;
     @include border-radius(10px);
 
-    >.nav {
-        position: relative;
-    }
-
-    >.nav li:hover .nav {
+    ul, li {
+        float: none;
         display: block;
     }
 
@@ -27,22 +27,6 @@
 
     li.active>a {
         background-color: lightgrey;
-    }
-
-    .nav .nav {
-        display: none;
-
-        li {
-            margin-left: 10px;
-        }
-    }
-
-    .nav li.active nav {
-        display: block;
-    }
-
-    .nav .active .nav {
-        display: block;
     }
 }
 

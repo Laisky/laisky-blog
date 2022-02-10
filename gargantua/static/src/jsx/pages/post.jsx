@@ -57,7 +57,7 @@ export class Post extends BaseComponent {
                 });
 
                 setTimeout(function () {
-                    $('body').scrollspy({ target: '#archive-menu' });
+                    // $('body').scrollspy({ target: '#archive-menu' });
                     window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
                 }, 2000);
                 setTimeout(function () {
@@ -187,7 +187,7 @@ export class Post extends BaseComponent {
         }
 
         return (
-            <div data-spy="scroll" data-target="#archive-menu" className="container-fluid post-body" id="post">
+            <div className="container-fluid post-body" id="post">
                 <div id="page-content" className={postMenu ? 'col-sm-10 col-xs-12' : 'container-fluid'}>
                     {hintEle}
                     {postContent}

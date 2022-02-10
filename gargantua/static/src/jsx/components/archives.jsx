@@ -74,6 +74,18 @@ class ArchiveExtract extends BaseComponent {
         document.querySelectorAll('pre > code').forEach((block) => {
             window.hljs && window.hljs.highlightBlock(block);
         });
+
+        // init TOC
+        {
+            let navSelector = "#archive-menu";
+            Toc.init({
+                $nav: $(navSelector),
+                // $scope: $("h2,h3")
+            });
+            $("body").scrollspy({
+                target: navSelector
+            });
+        }
     }
 
 
@@ -158,7 +170,7 @@ class ArchiveExtract extends BaseComponent {
                 <span>发布于：</span>
                 <span>{window.moment(this.props['archive-created-at']).format('YYYY/MM/DD HH:MM')}</span>
             </div>
-            <div className="archive-content" ref="archiveContent">
+            <div className="archive-content" ref="archiveContent" id="archiveContent">
                 {articleContent}
             </div>
             <div className="archive-tail">
@@ -173,7 +185,7 @@ class ArchiveExtract extends BaseComponent {
 class ArchiveMenu extends BaseComponent {
     render() {
         return (
-            <nav id="archive-menu" className="navbar navbar-default navbar-static" role="navigation" dangerouslySetInnerHTML={{ __html: this.props.content }}>
+            <nav id="archive-menu" className="navbar navbar-default navbar-static" role="navigation">
             </nav>
         );
     }
