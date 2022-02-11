@@ -78,13 +78,15 @@ class ArchiveExtract extends BaseComponent {
         // init TOC
         {
             let navSelector = "#archive-menu";
-            Toc.init({
-                $nav: $(navSelector),
-                // $scope: $("h2,h3")
-            });
-            $("body").scrollspy({
-                target: navSelector
-            });
+            if ($(navSelector).length != 0) {
+                Toc.init({
+                    // $scope: $("h2,h3"),
+                    $nav: $(navSelector)
+                });
+                $("body").scrollspy({
+                    target: navSelector
+                });
+            }
         }
     }
 
