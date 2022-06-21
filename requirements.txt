@@ -32,3 +32,6 @@ pytz
 # test
 nose
 coverage
+
+importlib_metadata<4
+typing_extensions<4
