@@ -89,7 +89,9 @@ class Application(tornado.web.Application):
         # handlers.append(('/(.*)', PageNotFound))
         self.setup_db()
         if not options.debug:
-            self.setup_mail_handler()
+            # FIXME: use telegram instead
+            # self.setup_mail_handler()
+            pass
 
         super(Application, self).__init__(handlers, **settings)
 
