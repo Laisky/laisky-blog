@@ -164,7 +164,7 @@ class Publish extends BaseComponent {
 
 class Amend extends BaseComponent {
     getInitData() {
-        let url = new URL(document.location.origin + window.graphqlAPI);
+        let url = new URL(window.graphqlAPI);
         url.searchParams.set("force", "");
         request(url.toString(), `query {
             BlogPosts(

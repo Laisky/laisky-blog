@@ -23,6 +23,7 @@ from gargantua.models import BaseBlogModel
 
 
 # settings
+define('addr', default=get_default_config('ADDR'), type=str)
 define('port', default=int(get_default_config('PORT')), type=int)
 define('debug', default=get_default_config('DEBUG'), type=bool)
 # database

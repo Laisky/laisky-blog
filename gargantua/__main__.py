@@ -24,7 +24,7 @@ def main():
     ioloop = asyncio.get_event_loop()
 
     http_server = tornado.httpserver.HTTPServer(Application(), xheaders=True)
-    http_server.listen(options.port)
+    http_server.listen(options.port, address=options.addr)
 
     if options.debug:
         logger.info('start application in debug mode localhost:%s', options.port)
