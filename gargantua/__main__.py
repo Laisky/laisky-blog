@@ -27,10 +27,10 @@ def main():
     http_server.listen(options.port, address=options.addr)
 
     if options.debug:
-        logger.info('start application in debug mode localhost:%s', options.port)
+        logger.info('start application in debug mode %s:%s',options.addr, options.port)
         logger.setLevel(logging.DEBUG)
     else:
-        logger.info('start application in normal mode localhost:%s', options.port)
+        logger.info('start application in normal mode %s:%s',options.addr, options.port)
 
     if not options.debug:
         setup_tasks(ioloop)
