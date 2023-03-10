@@ -26,11 +26,12 @@ class BaseHandler(WebHandlerMixin,
     @tornado.gen.coroutine
     def prepare(self):
         super().prepare()
-        cursor = self.db.posts.find()
-        self.post_count = yield cursor.count()
-        self.max_page = ceil(self.post_count / N_POST_PER_PAGE)
-        logger.debug('prepare for post_count {}, max_page {}'
-                     .format(self.post_count, self.max_page))
+        # cursor = self.db.posts.find()
+        # self.post_count = yield cursor.count()
+        self.max_page = 1
+        # self.max_page = ceil(self.post_count / N_POST_PER_PAGE)
+        # logger.debug('prepare for post_count {}, max_page {}'
+        #              .format(self.post_count, self.max_page))
 
     def render_post(self, template_name, **kwargs):
         kwargs.update({
