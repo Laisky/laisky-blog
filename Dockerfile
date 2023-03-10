@@ -31,6 +31,6 @@ RUN cd /www/gargantua \
 ADD . .
 RUN gulp
 RUN git branch -a
-RUN python setup.py install
+RUN python setup.py develop
 
 CMD python -m gargantua --port=27850 --dbhost=mongodb --dbport=27017 --debug=false
