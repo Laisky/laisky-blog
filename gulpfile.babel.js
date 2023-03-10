@@ -254,19 +254,19 @@ gulp.task('default', () => {
         'rev'
     );
     // 监听文件变化
-    $.watch('./gargantua/static/vendor/**/*.js', () => {
-        runSequence('jslibs', 'rev');
-    });
-    $.watch('./gargantua/static/vendor/**/*.css', () => {
-        runSequence('csslibs', 'rev');
-    });
-    $.watch('./gargantua/static/src/sass/**/*.scss', () => {
-        runSequence('csssites', 'rev');
-    });
-    $.watch(config.jssites.watch, () => {
-        runSequence('jssites', 'rev');
-    });
-    $.watch('./gargantua/templates/**/*.html', () => {
-        runSequence('rev');
-    });
+    // $.watch('./gargantua/static/vendor/**/*.js', () => {
+    //     runSequence('jslibs', 'rev');
+    // });
+    // $.watch('./gargantua/static/vendor/**/*.css', () => {
+    //     runSequence('csslibs', 'rev');
+    // });
+    // $.watch('./gargantua/static/src/sass/**/*.scss', () => {
+    //     runSequence('csssites', 'rev');
+    // });
+    // $.watch(config.jssites.watch, () => {
+    //     runSequence('jssites', 'rev');
+    // });
+    // $.watch('./gargantua/templates/**/*.html', () => {
+    //     runSequence('rev');
+    // });
 });
