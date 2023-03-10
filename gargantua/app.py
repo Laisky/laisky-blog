@@ -9,7 +9,7 @@ import logging
 from pathlib import Path
 
 import tornado
-import pymongo
+# import pymongo
 from tornado.web import url
 from tornado.options import define, options
 
@@ -127,10 +127,10 @@ class Application(tornado.web.Application):
         # posts
         # posts_idx = pymongo.IndexModel([('post_name',)], unique=True)
         # self.mongo_db.posts.create_indexes([posts_idx])
-        self.mongo_db.posts.ensure_index([('post_name', pymongo.ASCENDING)], unique=True)  # PyMongo2.8
+        # self.mongo_db.posts.ensure_index([('post_name', pymongo.ASCENDING)], unique=True)  # PyMongo2.8
         # users
         # account_idx = pymongo.IndexModel([('account',)], unique=True)
         # username_idx = pymongo.IndexModel([('username',)], unique=True)
         # self.mongo_db.users.create_indexes([account_idx, username_idx])
-        self.mongo_db.users.ensure_index([('account', pymongo.ASCENDING)], unique=True)   # PyMongo2.8
-        self.mongo_db.users.ensure_index([('username', pymongo.ASCENDING)], unique=True)  # PyMongo2.8
+        # self.mongo_db.users.ensure_index([('account', pymongo.ASCENDING)], unique=True)   # PyMongo2.8
+        # self.mongo_db.users.ensure_index([('username', pymongo.ASCENDING)], unique=True)  # PyMongo2.8
