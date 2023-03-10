@@ -14,13 +14,22 @@ RUN apt-get install -y npm ruby-dev \
     && gem install compass
 
 WORKDIR /www/gargantua
-ADD . .
+ADD requirements.txt requirements.txt
+ADD package.json package.json
+ADD package-lock.json package-lock.json
+ADD yarn.lock yarn.lock
+ADD requirements.txt requirements.txt
+ADD gargantua/static/vendor gargantua/static/vendor
+ADD node_modules node_modules
+
+RUN cd gargantua/static/vendor/ && bower install --allow-root
+RUN pip install -r requirements.txt
 
 RUN cd /www/gargantua \
-    && npm i \
-    && gulp \
-    && cd gargantua/static/vendor/ && bower install --allow-root
+    && npm i
 
+ADD . .
+RUN gulp
 RUN git branch -a
 RUN python setup.py install
 
