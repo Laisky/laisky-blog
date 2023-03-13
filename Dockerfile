@@ -10,7 +10,7 @@ RUN apt update && apt upgrade -y \
     # && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get install -y npm ruby-dev \
-    && npm install -g gulp-cli bower@1.8.4 \
+    && npm install -g gulp-cli bower@1.8.4 yarn \
     && gem install compass
 
 WORKDIR /www/gargantua
@@ -26,7 +26,7 @@ RUN cd gargantua/static/vendor/ && bower install --allow-root
 RUN pip install -r requirements.txt
 
 RUN cd /www/gargantua \
-    && npm i
+    && yarn
 
 ADD . .
 RUN gulp
