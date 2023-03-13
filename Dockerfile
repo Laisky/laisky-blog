@@ -2,16 +2,16 @@
 FROM python:3.7.16-bullseye
 
 RUN apt update && apt upgrade -y \
-    && apt-get install -y --no-install-recommends g++ make gcc git build-essential ca-certificates \
+    && apt-get install -y --no-install-recommends --fix-missing g++ make gcc git build-essential ca-certificates \
         libbz2-dev libc6-dev libffi-dev liblapack-dev libldap2-dev libopenblas-dev libsasl2-dev \
         libsqlite3-dev libcurl4-openssl-dev libprotobuf-c-dev protobuf-c-compiler \
         libprotobuf-c1 zlib1g-dev libssl-dev libncurses-dev libreadline-dev liblzma-dev \
     && update-ca-certificates
     # && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get install -y npm ruby-dev \
-    && npm install -g gulp-cli bower@1.8.4 yarn \
-    && gem install compass
+RUN apt-get install -y --fix-missing npm ruby-dev
+RUN npm install -g gulp-cli bower@1.8.4 yarn
+RUN gem install compass
 
 WORKDIR /www/gargantua
 ADD requirements.txt requirements.txt
