@@ -88,7 +88,7 @@ class Application(tornado.web.Application):
             url(r'/.*', ReactRender, name='root'),
         ]
         # handlers.append(('/(.*)', PageNotFound))
-        self.setup_db()
+        # self.setup_db()
         if not options.debug:
             # FIXME: use telegram instead
             # self.setup_mail_handler()

@@ -1,4 +1,4 @@
-import motor
+# import motor
 import pymongo
 from bson import ObjectId
 
@@ -22,7 +22,7 @@ class BaseModel(object):
     @classmethod
     def make_connection(cls, host, port, db, username, passwd):
         mongo_url = f'mongodb://{username}:{passwd}@{host}:{port}/{db}'
-        cls._CONNECTION = motor.MotorClient(mongo_url)
+        # cls._CONNECTION = motor.MotorClient(mongo_url)
         cls._MONGO_CONNECTION = pymongo.MongoClient(mongo_url)
         return cls
 

@@ -133,7 +133,7 @@ export class Tagcloud extends BaseComponent {
     }
 
     async loadTags() {
-        let url = '/api/posts/keywords/',
+        let url = '/api/posts/keywords/',  // FIXME
             html = [];
 
         $.getJSON(url)
@@ -165,4 +165,3 @@ export class Tagcloud extends BaseComponent {
         );
     }
 }
-
