@@ -58,16 +58,29 @@ export class Post extends BaseComponent {
 
                 setTimeout(function () {
                     // $('body').scrollspy({ target: '#archive-menu' });
-                    window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+                    try {
+                        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+                    }catch(e) {
+                        console.error(e);
+                    }
                 }, 2000);
                 setTimeout(function () {
-                    window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+                    try {
+                        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+                    } catch(e) {
+                        console.error(e);
+                    }
                 }, 4000);
                 setTimeout(function () {
-                    window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+                    try {
+                        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+                    } catch(e) {
+                        console.error(e);
+                    }
                 }, 8000);
             })
-            .catch(() => {
+            .catch((err) => {
+                console.error(err);
                 this.setState({ hint: '读取数据失败，请刷新重试' });
             });
     }
