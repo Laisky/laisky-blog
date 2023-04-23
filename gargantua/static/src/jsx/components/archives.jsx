@@ -62,14 +62,14 @@ class ArchiveExtract extends BaseComponent {
         });
 
         parseAndReplacePostSeries();
-        $('.archive-tail .pay').popover({
-            html: true,
-            trigger: 'hover',
-            placement: 'top',
-            content: function () {
-                return '<img src="https://s3.laisky.com/uploads/2019/03/pay-merge.jpg" alt="pay"/>';
-            }
-        });
+        // $('.archive-tail .pay').popover({
+        //     html: true,
+        //     trigger: 'hover',
+        //     placement: 'top',
+        //     content: function () {
+        //         return '<img src="https://s3.laisky.com/uploads/2019/03/pay-merge.jpg" alt="pay"/>';
+        //     }
+        // });
 
         document.querySelectorAll('pre > code').forEach((block) => {
             window.hljs && window.hljs.highlightBlock(block);
