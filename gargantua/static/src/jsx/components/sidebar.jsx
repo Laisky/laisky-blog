@@ -133,21 +133,22 @@ export class Tagcloud extends BaseComponent {
     }
 
     async loadTags() {
-        let url = '/api/posts/keywords/',  // FIXME
-            html = [];
+        const resp = await request(window.graphqlAPI, `query {
+            BlogTags
+        }`);
 
-        $.getJSON(url)
-            .then(resp => {
-                resp.data.map(tag => html.push(<span onClick={this.getTagClickHandler()} className="label label-info">{`${tag}`}</span>));
-                this.setState({tags: html});
-            });
+        let html = [];
+        resp.BlogTags.map(tag => {
+            html.push(<span onClick={this.getTagClickHandler()} className="label label-info">{`${tag}`}</span>);
+        });
+        this.setState({tags: html});
     }
 
     getTagClickHandler() {
         return evt => {
             if (!google || !google.search.cse.element.getElement('post_search')) return;
 
-            let query = $(evt.target).text();
+            let query = evt.target.innerText;
             google.search.cse.element.getElement('post_search').execute(query);
 
             return false;
