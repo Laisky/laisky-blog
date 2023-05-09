@@ -47,7 +47,7 @@ export class Post extends BaseComponent {
                 }
                 let post = resp.BlogPosts[0];
 
-                document.title = 'laisky-blog: ' + post.title;
+                document.title = post.title;
                 if (post['type'] == 'slide') this.loadRevealJs();
                 // post.content = this.convertImg2Webp(post.content);
                 $(document.body).animate({ scrollTop: 0 }, 200);
@@ -81,7 +81,7 @@ export class Post extends BaseComponent {
             })
             .catch((err) => {
                 console.error(err);
-                this.setState({ hint: '读取数据失败，请刷新重试' });
+                // this.setState({ hint: '读取数据失败，请刷新重试' });
             });
     }
 
