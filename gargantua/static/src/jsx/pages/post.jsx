@@ -60,21 +60,21 @@ export class Post extends BaseComponent {
                     // $('body').scrollspy({ target: '#archive-menu' });
                     try {
                         window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
-                    }catch(e) {
+                    } catch (e) {
                         console.error(e);
                     }
                 }, 2000);
                 setTimeout(function () {
                     try {
                         window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
-                    } catch(e) {
+                    } catch (e) {
                         console.error(e);
                     }
                 }, 4000);
                 setTimeout(function () {
                     try {
                         window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
-                    } catch(e) {
+                    } catch (e) {
                         console.error(e);
                     }
                 }, 8000);

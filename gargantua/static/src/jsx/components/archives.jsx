@@ -84,9 +84,9 @@ class ArchiveExtract extends BaseComponent {
                     $nav: $(navSelector)
                 });
 
-                $('body').scrollspy({
-                    target: $(navSelector)
-                });
+                // $('body').scrollspy({
+                //     target: $(navSelector)
+                // });
             }
         }
     }
