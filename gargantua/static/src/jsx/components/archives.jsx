@@ -137,13 +137,13 @@ class ArchiveExtract extends BaseComponent {
                 </div>,
                 // payment,
                 articleEditable,
-                <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">评论</Link>
+                // <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">评论</Link>
             ];
         }
 
         return [
             articleEditable,
-            <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">评论</Link>
+            // <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">评论</Link>
         ];
     }
 
