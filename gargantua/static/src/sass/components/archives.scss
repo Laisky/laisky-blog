@@ -63,6 +63,10 @@
         margin-bottom: 10px;
         font-size: 17px !important;
 
+        .markdown-body pre code {
+            font-family: "JetBrains Mono",Menlo,Monaco,Consolas,"Courier New",monospace;
+        }
+
         .post_series {
             .panel-title {
                 margin: 0;
