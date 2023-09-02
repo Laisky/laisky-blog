@@ -25,7 +25,8 @@ body {
     background-image: url("https://s3.laisky.com/uploads/2020/01/background-white.jpeg");
     @include background-size(100% 100%);
     background-attachment: fixed;
-    word-break: break-all;
+    word-break: break-word;
+    word-wrap: break-word;
     letter-spacing: 1.5px;
     -webkit-font-smoothing: antialiased;
 

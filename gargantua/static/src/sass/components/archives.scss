@@ -64,7 +64,7 @@
         font-size: 17px !important;
 
         .markdown-body pre code {
-            font-family: "JetBrains Mono",Menlo,Monaco,Consolas,"Courier New",monospace;
+            font-family: Menlo, Monaco, 'MonacoRegular', 'Courier New', monospace !important;
         }
 
         .post_series {
