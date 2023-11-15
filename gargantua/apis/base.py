@@ -119,7 +119,6 @@ class APIHandler(BaseAPIHandler):
     _base_query_makers =tuple()
     _base_parsers =(DatetimeParser, MongoDataParser)
 
-    @tornado.web.asynchronous
     async def get(self, oid=None):
         if oid:
             return await self.retrieve(oid)

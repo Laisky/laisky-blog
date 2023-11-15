@@ -47,8 +47,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
 
     """APIs about posts"""
 
-    @tornado.web.asynchronous
-    def get(self, url=None, *args, **kw):
+    async def get(self, url=None, *args, **kw):
         logger.info('GET PostsHandler {}'.format(url))
 
         router = {
@@ -63,8 +62,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
         }
         router.get(url, self.redirect_404)(*args, **kw)
 
-    @tornado.web.asynchronous
-    def post(self, url=None, *args, **kw):
+    async def post(self, url=None, *args, **kw):
         logger.info('POST PostsHandler {}'.format(url))
 
         router = {
@@ -74,8 +72,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
         router.get(url, self.redirect_404)(*args, **kw)
 
     @tornado.web.authenticated
-    @tornado.web.asynchronous
-    def patch(self, url):
+    async def patch(self, url):
         """Update existed article
         """
         logger.info('PATCH PostsHandler for url {}'.format(url))

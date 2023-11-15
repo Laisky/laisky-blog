@@ -10,8 +10,7 @@ from gargantua.utils import debug_wrapper, validate_passwd, generate_token, \
 
 class UserHandler(BaseHandler):
 
-    @tornado.web.asynchronous
-    def get(self, url):
+    async def get(self, url):
         logger.info('GET UserHandler %s', url)
 
         router = {
@@ -21,8 +20,7 @@ class UserHandler(BaseHandler):
         }
         router.get(url, self.redirect_404)()
 
-    @tornado.web.asynchronous
-    def post(self, url):
+    async def post(self, url):
         logger.info('POST UserHandler %s', url)
 
         router = {
