@@ -34,6 +34,9 @@ class BaseEditComponent extends BaseComponent {
         }
     }
 
+    /** build submit post handler
+     *
+     */
     getHandleSubmit() {
         return (evt) => {
             evt.preventDefault();
@@ -50,7 +53,7 @@ class BaseEditComponent extends BaseComponent {
 
             if (formData.postType == 'markdown') {
                 switch (this.state.method) {
-                case 'POST':
+                case 'POST':  // create new post
                     variables = {
                         post: {
                             title: this.refs.postTitle.value,
@@ -67,13 +70,14 @@ class BaseEditComponent extends BaseComponent {
                         }
                     }`, variables);
                     break;
-                case 'PATCH':
+                case 'PATCH':  // amend post
                     variables = {
                         post: {
                             title: this.refs.postTitle.value,
                             name: this.refs.postName.value,
                             markdown: this.refs.postContent.value,
                             type: this.refs.postType.value,
+                            i18n: this.refs.postI18n.value,
                         },
                     };
                     req = request(this.state.action, `mutation($post: NewBlogPost!) {
@@ -120,22 +124,29 @@ class BaseEditComponent extends BaseComponent {
                 </div>
                 <form id="publishForm" action={this.state.action} method={this.state.method} className="row" >
                     <div className="form-group">
-                        <label for="post_title">文章标题</label>
+                        <label for="post_title">Title</label>
                         <input type="text" className="form-control" ref="postTitle" placeholder="文章标题" name="postTitle" />
                     </div>
                     <div className="form-group">
-                        <label for="post_name">文章链接</label>
+                        <label for="post_name">Like</label>
                         {postName}
                     </div>
                     <div className="form-group">
-                        <label for="post_content">文章内容</label>
+                        <label for="post_content">Content</label>
                         <textarea className="form-control" name="postContent" rows="20" placeholder="文章内容" ref="postContent"></textarea>
                     </div>
                     <div className="form-group">
-                        <label for="post_type">文章类型</label>
+                        <label for="post_type">Type</label>
                         <select className="form-control" ref="postType" name="postType" >
                             <option value="markdown">markdown</option>
                             <option value="slide">slide</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label for="post_i18n">i18n</label>
+                        <select className="form-control" ref="postI18n" name="postI18n" >
+                            <option value="zh_CN">zh_CN</option>
+                            <option value="en_US">en_US</option>
                         </select>
                     </div>
                     <input type="text" hidden="true" value={this.state.post_id} />

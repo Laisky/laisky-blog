@@ -42,10 +42,20 @@ class ArchivesCache {
     }
 
     async loadByPage(nPage) {
+        let language;
+        switch (this.getUserLanguage()) {
+        case 'zh':
+            language = 'zh_CN';
+            break;
+        default:
+            language = 'en_US';
+        }
+
         let postsReq = request(window.graphqlAPI, `query {
             BlogPosts(
                 length: 200,
                 page: {size: ${this.limit}, page: ${nPage - 1}},
+                language: "${language}"
             ) {
                 title
                 name
