@@ -55,7 +55,7 @@ class ArchivesCache {
             BlogPosts(
                 length: 200,
                 page: {size: ${this.limit}, page: ${nPage - 1}},
-                language: "${language}"
+                language: ${language}
             ) {
                 title
                 name
