@@ -43,7 +43,7 @@ class ArchivesCache {
 
     async loadByPage(nPage) {
         let language;
-        switch (this.getUserLanguage()) {
+        switch (window.getUserLanguage()) {
         case 'zh':
             language = 'zh_CN';
             break;
