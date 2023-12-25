@@ -24,9 +24,19 @@ export class Post extends BaseComponent {
             hint: '载入中...'
         };
 
+        let language;
+        switch (window.getUserLanguage()) {
+        case 'zh':
+            language = 'zh_CN';
+            break;
+        default:
+            language = 'en_US';
+        }
+
         request(window.graphqlAPI, `query {
             BlogPosts(
                 name: "${this.props.params.pid}",
+                language: ${language},
             ) {
                 title
                 type
