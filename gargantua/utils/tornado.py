@@ -129,17 +129,18 @@ class AuthHandlerMixin():
 
     def get_current_user(self):
         try:
-            cli_token = self.get_cookie('token')
+            cli_token = self.request.headers.get('Authorization', "")
             logger.debug(f'get_current_user with {cli_token}')
             if not cli_token:
                 logger.debug('token is missed')
                 return
 
-            uid = decode_token(cli_token)['uid']
-            user_docu = self.mongo_db.users.find_one(
-                {'_id': ObjectId(uid)}
-            )
-            assert user_docu, 'user not existed'
+            user_docu = decode_token(cli_token)
+            # uid = decode_token(cli_token)['sub']
+            # user_docu = self.mongo_db.users.find_one(
+            #     {'_id': ObjectId(uid)}
+            # )
+            # assert user_docu, 'user not existed'
             # assert cli_token == user_docu['token'], 'token incorrect'
             # validate_token(cli_token)
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError,

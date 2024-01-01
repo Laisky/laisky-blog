@@ -65,6 +65,7 @@ class BaseEditComponent extends BaseComponent {
                     req = request(this.state.action, `mutation($post: NewBlogPost!) {
                         BlogCreatePost(
                             post: $post,
+                            language: ${this.refs.language.value},
                         ) {
                             name
                         }
@@ -77,12 +78,12 @@ class BaseEditComponent extends BaseComponent {
                             name: this.refs.postName.value,
                             markdown: this.refs.postContent.value,
                             type: this.refs.postType.value,
-                            i18n: this.refs.postI18n.value,
                         },
                     };
                     req = request(this.state.action, `mutation($post: NewBlogPost!) {
                     BlogAmendPost(
                         post: $post,
+                        language: ${this.refs.language.value},
                     ) {
                         name
                     }
@@ -143,8 +144,8 @@ class BaseEditComponent extends BaseComponent {
                         </select>
                     </div>
                     <div className="form-group">
-                        <label for="post_i18n">i18n</label>
-                        <select className="form-control" ref="postI18n" name="postI18n" >
+                        <label for="post_i18n">language</label>
+                        <select className="form-control" ref="language" name="language" >
                             <option value="zh_CN">zh_CN</option>
                             <option value="en_US">en_US</option>
                         </select>

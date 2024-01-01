@@ -27,7 +27,7 @@ class ArchivesCache {
         let resp,
             _pContent = window.sessionStorage.getItem(`page-${nPage}`);
 
-        if (_pContent) {
+        if (_pContent && window.location.search.indexOf('force') < 0) {
             resp = JSON.parse(_pContent);
         } else {
             resp = await this.loadByPage(nPage);
