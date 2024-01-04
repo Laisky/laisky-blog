@@ -42,15 +42,7 @@ class ArchivesCache {
     }
 
     async loadByPage(nPage) {
-        let language;
-        switch (window.getUserLanguage()) {
-        case 'zh':
-            language = 'zh_CN';
-            break;
-        default:
-            language = 'en_US';
-        }
-
+        let language = window.getUserLanguage();
         let postsReq = request(window.graphqlAPI, `query {
             BlogPosts(
                 length: 200,

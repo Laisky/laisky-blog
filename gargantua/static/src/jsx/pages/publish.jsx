@@ -42,27 +42,27 @@ class BaseEditComponent extends BaseComponent {
             evt.preventDefault();
 
             let formData = {
-                    _xsrf: $.cookie('_xsrf'),
-                    postTitle: this.refs.postTitle.value,
-                    postName: this.refs.postName.value,
-                    postContent: this.refs.postContent.value,
-                    postType: this.refs.postType.value
-                },
+                _xsrf: $.cookie('_xsrf'),
+                postTitle: this.refs.postTitle.value,
+                postName: this.refs.postName.value,
+                postContent: this.refs.postContent.value,
+                postType: this.refs.postType.value
+            },
                 req,
                 variables;
 
             if (formData.postType == 'markdown') {
                 switch (this.state.method) {
-                case 'POST':  // create new post
-                    variables = {
-                        post: {
-                            title: this.refs.postTitle.value,
-                            name: this.refs.postName.value,
-                            markdown: this.refs.postContent.value,
-                            type: this.refs.postType.value,
-                        },
-                    };
-                    req = request(this.state.action, `mutation($post: NewBlogPost!) {
+                    case 'POST':  // create new post
+                        variables = {
+                            post: {
+                                title: this.refs.postTitle.value,
+                                name: this.refs.postName.value,
+                                markdown: this.refs.postContent.value,
+                                type: this.refs.postType.value,
+                            },
+                        };
+                        req = request(this.state.action, `mutation($post: NewBlogPost!) {
                         BlogCreatePost(
                             post: $post,
                             language: ${this.refs.language.value},
@@ -70,17 +70,17 @@ class BaseEditComponent extends BaseComponent {
                             name
                         }
                     }`, variables);
-                    break;
-                case 'PATCH':  // amend post
-                    variables = {
-                        post: {
-                            title: this.refs.postTitle.value,
-                            name: this.refs.postName.value,
-                            markdown: this.refs.postContent.value,
-                            type: this.refs.postType.value,
-                        },
-                    };
-                    req = request(this.state.action, `mutation($post: NewBlogPost!) {
+                        break;
+                    case 'PATCH':  // amend post
+                        variables = {
+                            post: {
+                                title: this.refs.postTitle.value,
+                                name: this.refs.postName.value,
+                                markdown: this.refs.postContent.value,
+                                type: this.refs.postType.value,
+                            },
+                        };
+                        req = request(this.state.action, `mutation($post: NewBlogPost!) {
                     BlogAmendPost(
                         post: $post,
                         language: ${this.refs.language.value},
@@ -88,7 +88,7 @@ class BaseEditComponent extends BaseComponent {
                         name
                     }
                 }`, variables);
-                    break;
+                        break;
                 }
             } else {  // for slide
                 req = fetch(this.state.action, {
@@ -175,38 +175,41 @@ class Publish extends BaseComponent {
 
 
 class Amend extends BaseComponent {
-    getInitData() {
-        let url = new URL(window.graphqlAPI);
-        url.searchParams.set("force", "");
-        request(url.toString(), `query {
-            BlogPosts(
-                name: "${this.props.params.postname}",
-            ) {
-                title
-                markdown
-                type
-            }
-        }`)
-            .then(resp => {
-                this.setState({
-                    post_name: this.props.params.postname,
-                    hint: '编辑文章',
-                });
-                if (resp.BlogPosts.length <= 0) {
-                    this.setState({ hint: 'post name not exists' });
-                    return;
-                }
-                let post = resp.BlogPosts[0];
+    async getInitData() {
+        let url = new URL(window.graphqlAPI),
+            language = window.getUserLanguage();
 
-                $(this.refs.postTitle).val(post.title);
-                $(this.refs.postContent).val(post.markdown);
-                $(this.refs.postType).val(post.type);
-            })
-            .catch(err => {
-                this.setState({
-                    hint: `加载失败，请刷新重试。\n${err}`,
-                });
+        url.searchParams.set('force', '');
+        try {
+            const resp = await request(url.toString(), `query {
+                BlogPosts(
+                    name: "${this.props.params.postname}",
+                    language: ${language},
+                ) {
+                    title
+                    markdown
+                    type
+                }
+            }`);
+
+            this.setState({
+                post_name: this.props.params.postname,
+                hint: '编辑文章',
             });
+            if (resp.BlogPosts.length <= 0) {
+                this.setState({ hint: 'post name not exists' });
+                return;
+            }
+            let post = resp.BlogPosts[0];
+
+            window.$(this.refs.postTitle).val(post.title);
+            window.$(this.refs.postContent).val(post.markdown);
+            window.$(this.refs.postType).val(post.type);
+        } catch (err) {
+            this.setState({
+                hint: `加载失败，请刷新重试。\n${err}`,
+            });
+        }
     }
 
     render() {
