@@ -10,7 +10,8 @@ window.Cookies = Cookies;
  * @return {string} language code, e.g. 'en_US', 'zh_CN'
  */
 window.getUserLanguage = () => {
-    let langSimple;
+    let url = new URL(window.location.href),
+        langSimple;
     if (url.searchParams.has('lang')) {
         langSimple = url.searchParams.get('lang');
     } else {
@@ -20,15 +21,14 @@ window.getUserLanguage = () => {
 
     let langBackend;
     switch (langSimple) {
-    case 'zh':
-        langBackend = 'zh_CN';
-        break;
-    default:
-        langBackend = 'en_US';
+        case 'zh':
+            langBackend = 'zh_CN';
+            break;
+        default:
+            langBackend = 'en_US';
     }
 
     // if lang not in url parameter, add it
-    let url = new URL(window.location.href);
     if (!url.searchParams.has('lang')) {
         url.searchParams.set('lang', langSimple);
         window.history.replaceState({}, '', url.toString());
