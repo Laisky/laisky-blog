@@ -34,5 +34,8 @@ window.getUserLanguage = () => {
         window.history.replaceState({}, '', url.toString());
     }
 
+    // change html lang
+    document.documentElement.lang = langBackend;
+
     return langBackend;
 };
