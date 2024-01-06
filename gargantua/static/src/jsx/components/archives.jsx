@@ -126,13 +126,13 @@ class ArchiveExtract extends BaseComponent {
         if (this.props['archive-object']) {
             return [
                 <div className="category">
-                    <span>分类：</span>
+                    <span>Categories: </span>
                     <Link to={{ pathname: postCategory ? `/cate/${postCategory['url']}/` : '/cate/' }}>
-                        {postCategory ? postCategory['name'] : '未分类'}
+                        {postCategory ? postCategory['name'] : 'TBD'}
                     </Link>
                 </div>,
                 <div className="tags">
-                    <span>标签：</span>
+                    <span>Tags: </span>
                     {tagHtml}
                 </div>,
                 // payment,
@@ -170,7 +170,7 @@ class ArchiveExtract extends BaseComponent {
                 <Link to={{ pathname: `/p/${archiveName}/` }}>{this.props['archive-title']}</Link>
             </h2>
             <div className="archive-meta">
-                <span>发布于：</span>
+                <span>published: </span>
                 <span>{window.moment(this.props['archive-created-at']).format('YYYY/MM/DD HH:MM')}</span>
             </div>
             <div className="archive-content" ref="archiveContent" id="archiveContent">
@@ -304,7 +304,7 @@ function parseAndReplacePostSeries() {
             html = `
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <h3 class="panel-title">${se.remark} 系列文章：</h3>
+                                <h3 class="panel-title">${se.remark} Serials: </h3>
                             </div>
                             <div class="panel-body">
                                 <ul>
@@ -361,7 +361,7 @@ async function parseSeriesChildren(seriesKey) {
 
     html = `
             <li><a class="btn btn-light" data-toggle="collapse" href="#${sid}">
-                <i class="bi bi-filter-left"></i>${se.remark} 系列文章：</a>
+                <i class="bi bi-filter-left"></i>${se.remark} Serials：</a>
                 <div id="${sid}" class="collapse">
                     <div class="card-body">
                         <ul>

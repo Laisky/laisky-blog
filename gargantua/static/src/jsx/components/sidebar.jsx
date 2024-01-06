@@ -77,7 +77,7 @@ export class Categories extends BaseComponent {
 
         return (
             <section className="row console categories">
-                <h2>分类</h2>
+                <h2>Categories</h2>
                 <div>{html}</div>
             </section>
         );
@@ -99,11 +99,11 @@ export class Login extends BaseComponent {
                 </div>
             );
         }else {
-            loginBtn = <Link to={{ pathname: '/login/' }}>登录</Link>
+            loginBtn = <Link to={{ pathname: '/login/' }}>Login</Link>
         }
         return (
             <section className="row console login">
-                <h2>登录管理</h2>
+                <h2>Admin</h2>
                 {loginBtn}
             </section>
         );
@@ -115,12 +115,12 @@ export class Profile extends BaseComponent {
     render() {
         return (
             <section className="row console profile">
-                <h2>个人介绍</h2>
+                <h2>Profile</h2>
                 <p>Laisky</p>
                 <p>Email: <img style={{width: '70%'}} src="https://s1.laisky.com/images/laisky-email.png" alt="email"/></p>
-                <p><label>Twitter: </label><a href="https://twitter.com/ppcelery" target="_blank">@ppcelery</a></p>
-                <p><label>Douban: </label><a href="https://www.douban.com/people/Laisky/" target="_blank">@Laisky</a></p>
                 <p><label>GitHub: </label><a href="https://github.com/Laisky" target="_blank">@Laisky</a></p>
+                <p><label>Threads: </label><a href="https://www.threads.net/@laiskycai" target="_blank">Laisky Cai</a></p>
+                <p><label>FaceBook: </label><a href="https://www.facebook.com/LaiskyCai" target="_blank">Laisky Cai</a></p>
             </section>
         );
     }
@@ -158,7 +158,7 @@ export class Tagcloud extends BaseComponent {
     render() {
         return (
             <section className="row console tag">
-                <h2>标签</h2>
+                <h2>Tags</h2>
                 <div className="tag-labels">
                     {this.state.tags}
                 </div>

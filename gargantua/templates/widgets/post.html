@@ -1,7 +1,7 @@
 <div id="{{ post.post_name }}" class="post post-container">
   <h2 class="post-title"><a href="/p/{{ post.post_name }}/" target="_blank">{{ post.post_title }}</a></h2>
   <div class="post-modified">
-    <span>发布于：</span>
+    <span>published: </span>
     <span>{{ post.post_created_at | utc2cst | time_format }}</span>
   </div>
   <div class="post-content">
@@ -10,7 +10,7 @@
     </article>
   </div>
   <div class="post-tail">
-    <a href="/amend/?post-name={{ post.post_name }}">编辑</a> {% if post.post_password %} {% elif posts|length != 1 %}
-    <a href="/p/{{ post.post_name }}/#disqus_thread" data-disqus-identifier="{{ post.post_name }}" target="_blank">评论</a> {% endif %} {% if not posts %} {% include "widgets/comment.html" %} {% endif %}
+    <a href="/amend/?post-name={{ post.post_name }}">edit</a> {% if post.post_password %} {% elif posts|length != 1 %}
+    <a href="/p/{{ post.post_name }}/#disqus_thread" data-disqus-identifier="{{ post.post_name }}" target="_blank">comments</a> {% endif %} {% if not posts %} {% include "widgets/comment.html" %} {% endif %}
   </div>
 </div>
