@@ -129,7 +129,7 @@ class BaseEditComponent extends BaseComponent {
                         <input type="text" className="form-control" ref="postTitle" placeholder="文章标题" name="postTitle" />
                     </div>
                     <div className="form-group">
-                        <label for="post_name">Like</label>
+                        <label for="post_name">Link</label>
                         {postName}
                     </div>
                     <div className="form-group">
