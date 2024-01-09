@@ -117,7 +117,7 @@ export class Profile extends BaseComponent {
             <section className="row console profile">
                 <h2>Profile</h2>
                 <p>Laisky</p>
-                <p>Email: <img style={{width: '70%'}} src="https://s1.laisky.com/images/laisky-email.png" alt="email"/></p>
+                <p>Email: <img style={{width: '70%'}} src="https://s3.laisky.com/uploads/images/laisky-email.png" alt="email"/></p>
                 <p><label>GitHub: </label><a href="https://github.com/Laisky" target="_blank">@Laisky</a></p>
                 <p><label>Threads: </label><a href="https://www.threads.net/@laiskycai" target="_blank">Laisky Cai</a></p>
                 <p><label>FaceBook: </label><a href="https://www.facebook.com/LaiskyCai" target="_blank">Laisky Cai</a></p>
