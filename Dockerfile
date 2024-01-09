@@ -1,5 +1,5 @@
 # docker build . -t ppcelery/laisky-blog:test
-FROM python:3.7.16-bullseye
+FROM python:3.11.7-bullseye
 
 RUN apt update && apt upgrade -y \
     && apt-get install -y --no-install-recommends --fix-missing g++ make gcc git build-essential ca-certificates \

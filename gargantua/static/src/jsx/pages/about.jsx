@@ -17,13 +17,13 @@ export class About extends BaseComponent {
                 {/* Tab title */}
                 <ul className="nav nav-tabs" ref="myTabs" role="tablist" id="myTab">
                     <li role="presentation" className="nav-item">
-                        <a className="nav-link active" role="tab" aria-controls="site" aria-selected="true" href="#site" data-toggle="tab">关于本站</a>
+                        <a className="nav-link active" role="tab" aria-controls="site" aria-selected="true" href="#site" data-toggle="tab">This Site</a>
                     </li>
                     <li className="nav-item" role="presentation">
-                        <a className="nav-link" role="tab" aria-controls="me" aria-selected="false" href="#me" data-toggle="tab">关于我</a>
+                        <a className="nav-link" role="tab" aria-controls="me" aria-selected="false" href="#me" data-toggle="tab">Me</a>
                     </li>
                     <li className="nav-item" role="presentation">
-                        <a className="nav-link" role="tab" aria-controls="right" aria-selected="false" href="#right" data-toggle="tab">授权</a>
+                        <a className="nav-link" role="tab" aria-controls="right" aria-selected="false" href="#right" data-toggle="tab">Copyright</a>
                     </li>
                 </ul>
 

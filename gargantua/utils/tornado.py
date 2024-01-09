@@ -9,7 +9,6 @@ from collections import namedtuple
 from functools import wraps
 
 import jwt
-from bson import ObjectId
 from gargantua.settings import LOG_NAME, OK
 from gargantua.utils import decode_token, validate_token
 
@@ -112,8 +111,8 @@ class RFCMixin():
 
         t = extract(self.ACC_NAME_REGX, accept)[0]
         q = float(extract(self.ACC_Q_REGX, accept)[0])
-        l = float(extract(self.ACC_LEVEL_REGX, accept)[0])
-        return self.Accept(name=t, quality=q, level=l)
+        lev = float(extract(self.ACC_LEVEL_REGX, accept)[0])
+        return self.Accept(name=t, quality=q, level=lev)
 
     @property
     def accept(self):
@@ -147,11 +146,10 @@ class AuthHandlerMixin():
                 AssertionError):
             logger.exception('token validate error')
             self.clear_cookie('token')
-        except AttributeError as err:
+        except AttributeError:
             logger.exception('get_current_user error')
             self.clear_cookie('token')
         except Exception:
-            err = traceback.format_exc()
             logger.exception('get_current_user error')
         else:
             logger.debug("authenticated user %s", user_docu['username'])
