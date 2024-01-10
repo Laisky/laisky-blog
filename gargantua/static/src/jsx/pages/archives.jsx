@@ -89,7 +89,7 @@ class Archives extends BaseComponent {
         super(props, context);
         this.state = {
             archives: [],
-            hint: '载入中...'
+            hint: 'loading...'
         };
         this.archiveCache = new ArchivesCache();
     }
@@ -124,7 +124,7 @@ class Archives extends BaseComponent {
                 });
             })
             .catch(e => {
-                this.setState({ hint: `读取数据失败，请刷新重试: ${e}` });
+                this.setState({ hint: `Data loading failed, please refresh and try again.: ${e}` });
             });
     }
 

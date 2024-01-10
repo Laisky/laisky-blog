@@ -182,7 +182,7 @@ class JinjaMixin(TemplateRendering):
             'min': min,
             'is_ajax': self.is_ajax,
             'is_https': self.is_https,
-            'current_user': self.current_user,
+            # 'current_user': self.current_user,
             'current_app': 'blog',
         })
         _kwargs.update(kwargs)

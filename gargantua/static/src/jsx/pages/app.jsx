@@ -63,7 +63,7 @@ class App extends BaseComponent {
                             </ul>
                             <ul className="nav navbar-nav navbar-right">
                                 <li>
-                                    <a>{this.getCurrentUsername()}</a>
+                                    <a>{window.getUserLanguage()}</a>
                                 </li>
                                 <li>
                                     <Link to="https://s3.laisky.com/public/rss.xml" target="_blank"><img src="https://s3.laisky.com/uploads/images/rss.png" className="rss"></img></Link>

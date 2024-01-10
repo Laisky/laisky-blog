@@ -20,7 +20,7 @@ body {
     height: initial;
     overflow-x: hidden;
     overflow-y: auto;
-    font-family: "Microsoft YaHei", "Helvetica Neue", "Helvetica", "Segoe UI", "Arial", "freesans", "sans-serif";
+    font-family: system-ui, -apple-system, Microsoft YaHei, Helvetica Neue, Helvetica, Segoe UI, Arial, freesans, sans-serif;
     // font-family: "JetBrains Mono", "-apple-system", "Microsoft YaHei", "Helvetica Neue", "Helvetica", "Segoe UI", "Arial", "freesans", "sans-serif";
     background-image: url("https://s3.laisky.com/uploads/2020/01/background-white.jpeg");
     @include background-size(100% 100%);
