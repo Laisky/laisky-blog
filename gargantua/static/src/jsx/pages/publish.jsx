@@ -8,7 +8,7 @@ import { request } from 'graphql-request';
 import React from 'react';
 import { BaseComponent } from '../components/base.jsx';
 
-
+const $ = window.$;
 
 class BaseEditComponent extends BaseComponent {
     constructor(props, context) {
@@ -22,7 +22,8 @@ class BaseEditComponent extends BaseComponent {
             post_title: this.props.post_title || '',
             post_markdown: this.props.post_markdown || '',
             post_content: this.props.post_content || '',
-            post_type: this.props.post_type || ''
+            post_type: this.props.post_type || '',
+            language: window.getUserLanguage()
         };
     }
 
@@ -30,7 +31,7 @@ class BaseEditComponent extends BaseComponent {
         if (!this.getCurrentUsername()) location.href = '/archives/1/';
 
         if (this.props.getInitData) {
-            this.props.getInitData.call(this)
+            this.props.getInitData.call(this);
         }
     }
 
@@ -42,53 +43,53 @@ class BaseEditComponent extends BaseComponent {
             evt.preventDefault();
 
             let formData = {
-                _xsrf: $.cookie('_xsrf'),
-                postTitle: this.refs.postTitle.value,
-                postName: this.refs.postName.value,
-                postContent: this.refs.postContent.value,
-                postType: this.refs.postType.value
-            },
+                    _xsrf: $.cookie('_xsrf'),
+                    postTitle: this.refs.postTitle.value,
+                    postName: this.refs.postName.value,
+                    postContent: this.refs.postContent.value,
+                    postType: this.refs.postType.value
+                },
                 req,
                 variables;
 
             if (formData.postType == 'markdown') {
                 switch (this.state.method) {
-                    case 'POST':  // create new post
-                        variables = {
-                            post: {
-                                title: this.refs.postTitle.value,
-                                name: this.refs.postName.value,
-                                markdown: this.refs.postContent.value,
-                                type: this.refs.postType.value,
-                            },
-                        };
-                        req = request(this.state.action, `mutation($post: NewBlogPost!) {
-                        BlogCreatePost(
-                            post: $post,
-                            language: ${this.refs.language.value},
-                        ) {
-                            name
-                        }
-                    }`, variables);
-                        break;
-                    case 'PATCH':  // amend post
-                        variables = {
-                            post: {
-                                title: this.refs.postTitle.value,
-                                name: this.refs.postName.value,
-                                markdown: this.refs.postContent.value,
-                                type: this.refs.postType.value,
-                            },
-                        };
-                        req = request(this.state.action, `mutation($post: NewBlogPost!) {
-                    BlogAmendPost(
-                        post: $post,
-                        language: ${this.refs.language.value},
-                    ) {
-                        name
-                    }
-                }`, variables);
-                        break;
+                case 'POST':  // create new post
+                    variables = {
+                        post: {
+                            title: this.refs.postTitle.value,
+                            name: this.refs.postName.value,
+                            markdown: this.refs.postContent.value,
+                            type: this.refs.postType.value,
+                        },
+                    };
+                    req = request(this.state.action, `mutation($post: NewBlogPost!) {
+                            BlogCreatePost(
+                                post: $post,
+                                language: ${this.refs.language.value},
+                            ) {
+                                name
+                            }
+                        }`, variables);
+                    break;
+                case 'PATCH':  // amend post
+                    variables = {
+                        post: {
+                            title: this.refs.postTitle.value,
+                            name: this.refs.postName.value,
+                            markdown: this.refs.postContent.value,
+                            type: this.refs.postType.value,
+                        },
+                    };
+                    req = request(this.state.action, `mutation($post: NewBlogPost!) {
+                            BlogAmendPost(
+                                post: $post,
+                                language: ${this.refs.language.value},
+                            ) {
+                                name
+                            }
+                        }`, variables);
+                    break;
                 }
             } else {  // for slide
                 req = fetch(this.state.action, {
@@ -100,7 +101,7 @@ class BaseEditComponent extends BaseComponent {
             req.then((resp) => {
                 this.setState({ hint: '发布成功，等待跳转' });
                 setTimeout(() => {
-                    location.href = `/p/${formData.postName}/`;
+                    location.href = `/p/${formData.postName}/&force`;
                 }, 2000);
             })
                 .catch((err) => {
@@ -145,7 +146,7 @@ class BaseEditComponent extends BaseComponent {
                     </div>
                     <div className="form-group">
                         <label for="post_i18n">language</label>
-                        <select className="form-control" ref="language" name="language" >
+                        <select className="form-control" ref="language" name="language" value={this.state.language}>
                             <option value="zh_CN">zh_CN</option>
                             <option value="en_US">en_US</option>
                         </select>

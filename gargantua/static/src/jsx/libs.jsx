@@ -21,11 +21,11 @@ window.getUserLanguage = () => {
 
     let langBackend;
     switch (langSimple) {
-        case 'zh':
-            langBackend = 'zh_CN';
-            break;
-        default:
-            langBackend = 'en_US';
+    case 'zh':
+        langBackend = 'zh_CN';
+        break;
+    default:
+        langBackend = 'en_US';
     }
 
     // if lang not in url parameter, add it
