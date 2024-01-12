@@ -146,7 +146,7 @@ class BaseEditComponent extends BaseComponent {
                     </div>
                     <div className="form-group">
                         <label for="post_i18n">language</label>
-                        <select className="form-control" ref="language" name="language" value={this.state.language}>
+                        <select className="form-control" ref="language" name="language" defaultValue={this.state.language}>
                             <option value="zh_CN">zh_CN</option>
                             <option value="en_US">en_US</option>
                         </select>
