@@ -13,6 +13,14 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
       -
+        name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       -
