@@ -68,7 +68,7 @@ export class Categories extends BaseComponent {
     }
 
     render() {
-        let html = [<p><Link to="/cate/">全部</Link></p>];
+        let html = [<p><Link to="/cate/">All</Link></p>];
         if(this.state.categories) {
             for(let cate of this.state.categories) {
                 html.push(<p><Link to={{ pathname: `/cate/${cate.url}/` }}>{`${cate.name}`}</Link></p>);
