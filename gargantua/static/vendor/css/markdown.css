@@ -43,7 +43,7 @@
 .markdown-body kbd,
 .markdown-body pre {
   font-family: monospace, monospace;
-  font-size: 1em;
+  font-size: 0.8em;
 }
 
 .markdown-body input {

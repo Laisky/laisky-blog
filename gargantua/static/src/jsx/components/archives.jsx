@@ -71,8 +71,9 @@ class ArchiveExtract extends BaseComponent {
         //     }
         // });
 
-        document.querySelectorAll('pre > code').forEach((block) => {
-            window.hljs && window.hljs.highlightBlock(block);
+        document.querySelectorAll('pre > code').forEach((ele) => {
+            window.Prism && window.Prism.highlightAllUnder(ele.closest('pre'));
+            // window.hljs && window.hljs.highlightBlock(block);
         });
 
         // init TOC
