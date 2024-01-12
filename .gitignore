@@ -78,7 +78,9 @@ assets/
 html
 
 # node
-node_modules/
+/node_modules/**
+!/node_modules
+!/node_modules/.gitkeep
 bower_components
 
 # sass
