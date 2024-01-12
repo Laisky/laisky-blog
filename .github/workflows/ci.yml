@@ -30,14 +30,6 @@ jobs:
       - name: Add SHORT_SHA env property with commit short sha
         run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
 
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       -
         name: Build and push latest
         uses: docker/build-push-action@v5
@@ -45,8 +37,8 @@ jobs:
           context: .
           push: true
           tags: ppcelery/laisky-blog:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       -
         name: Build and push hash label
         uses: docker/build-push-action@v5
@@ -54,5 +46,5 @@ jobs:
           context: .
           push: true
           tags: ppcelery/laisky-blog:${{ env.SHORT_SHA }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
