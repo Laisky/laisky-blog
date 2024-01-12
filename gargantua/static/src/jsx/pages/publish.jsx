@@ -101,7 +101,7 @@ class BaseEditComponent extends BaseComponent {
             req.then((resp) => {
                 this.setState({ hint: '发布成功，等待跳转' });
                 setTimeout(() => {
-                    location.href = `/p/${formData.postName}/&force`;
+                    location.href = `/p/${formData.postName}/?force`;
                 }, 2000);
             })
                 .catch((err) => {
