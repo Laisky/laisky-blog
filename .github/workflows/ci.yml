@@ -34,11 +34,11 @@ jobs:
         with:
           context: .
           push: true
-          tags: ppcelery/blog:latest
+          tags: ppcelery/laisky-blog:latest
       -
         name: Build and push hash label
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: ppcelery/blog:${{ env.SHORT_SHA }}
+          tags: ppcelery/laisky-blog:${{ env.SHORT_SHA }}
