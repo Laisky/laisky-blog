@@ -84,6 +84,15 @@ body {
         height: 20px;
         width: 20px;
     }
+
+    .dropdown.language .dropdown-menu {
+        min-width: auto;
+        padding: 0px;
+
+        li a {
+            padding: 10px;
+        }
+    }
 }
 
 .row {
