@@ -230,10 +230,12 @@ export class PostCategories extends BaseComponent {
     }
 
     async loadArticlesByCategoryURL(cateUrl) {
+        let language = window.getUserLanguage();
         let resp = await request(window.graphqlAPI, `query {
             BlogPosts(
                 category_url: ${cateUrl ? `"${cateUrl}"` : 'null'},
                 page: {size: 200, page: 0},
+                language: ${language},
             ) {
                 title
                 name
