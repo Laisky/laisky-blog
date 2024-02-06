@@ -75,7 +75,7 @@ class UserHandler(BaseHandler):
         email = self.get_argument('email', strip=True)
         passwd = self.get_argument('password')
         is_keep_login = self.get_argument('is_keep_login', bool=True)
-        logger.debug('login_api with email %s, passwd %s, is_keep_login %s', email, passwd, is_keep_login)
+        logger.debug('login_api with email %s, is_keep_login %s', email, is_keep_login)
 
         if not validate_email(email):
             logger.debug("invalidate email: %s", email)
@@ -90,7 +90,7 @@ class UserHandler(BaseHandler):
             self.finish()
             return
         elif not validate_passwd(passwd, user_docu['password']):
-            logger.debug('invalidate password: %s', passwd)
+            logger.debug('password not correct')
             self.http_400_bad_request(err='Wrong Account or Password')
             self.finish()
             return

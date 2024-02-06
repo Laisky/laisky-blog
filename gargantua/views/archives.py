@@ -240,8 +240,7 @@ class PostsHandler(BaseHandler, ArticleMixin):
 
         name = self.parse_post_name(self.get_argument('name', default='', strip=True))
         password = self.get_argument('password', strip=True)
-        logger.debug('post_article_password for name {}, password {}'
-                     .format(name, password))
+        logger.debug(f'post_article_password for {name=}')
 
         post = yield ArticlesModel.get({'post_name': name})
         if not post:
