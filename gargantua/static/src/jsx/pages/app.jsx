@@ -63,7 +63,10 @@ class App extends BaseComponent {
 
         let userLang = window.getUserLanguage();
         let dropdownBtn = <li className="dropdown language">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{userLang} <span className="caret"></span></a>
+            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="bi bi-translate"></i>
+                <span className="caret"></span>
+            </a>
             <ul className="dropdown-menu">
                 <li className={userLang == 'zh_CN' ? 'active' : ''} data-lang-simple='zh' data-lang='zh_CN'><a href="#">zh_CN</a></li>
                 <li className={userLang == 'en_US' ? 'active' : ''} data-lang-simple='en' data-lang='en_US'><a href="#">en_US</a></li>
