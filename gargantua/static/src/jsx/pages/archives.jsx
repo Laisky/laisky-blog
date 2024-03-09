@@ -24,8 +24,11 @@ class ArchivesCache {
 
     // 从缓存中取数据
     async getByPage(nPage) {
+
         let resp,
-            _pContent = window.sessionStorage.getItem(`page-${nPage}`);
+            language = window.getUserLanguage(),
+            cacheKey = `page-${nPage}-${language}`,
+            _pContent = window.sessionStorage.getItem(cacheKey);
 
         if (_pContent && window.location.search.indexOf('force') < 0) {
             resp = JSON.parse(_pContent);
@@ -37,8 +40,11 @@ class ArchivesCache {
     }
 
     saveByPage(nPage, obj) {
-        let _obj = JSON.stringify(obj);
-        window.sessionStorage.setItem(`page-${nPage}`, _obj);
+        let _obj = JSON.stringify(obj),
+            language = window.getUserLanguage(),
+            cacheKey = `page-${nPage}-${language}`;
+
+        window.sessionStorage.setItem(cacheKey, _obj);
     }
 
     async loadByPage(nPage) {
