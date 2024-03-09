@@ -50,7 +50,7 @@ class App extends BaseComponent {
 
                     let url = new URL(window.location.href);
                     url.searchParams.set('lang', target.dataset.langSimple);
-                    url.searchParams.set('force', 1);
+                    // url.searchParams.set('force', 1);
 
                     // reload page
                     window.location.href = url.toString();
