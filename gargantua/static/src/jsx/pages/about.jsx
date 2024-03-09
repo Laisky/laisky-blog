@@ -41,8 +41,9 @@ export class About extends BaseComponent {
                     <div role="tabpanel" aria-labelledby="me-tab" className="tab-pane" id="me">
                         <article>
                             <h2>AboutMe</h2>
-                            <p>Email: public@laisky.com</p>
-                            <p>AboutMe: <Link target="_blank" to="https://about.me/laisky">https://about.me/laisky</Link></p>
+                            <p><i className="bi bi-envelop"></i>Email: public@laisky.com</p>
+                            <p><i className="bi bi-telegram"></i>Channel: <Link target="_blank" to="https://t.me/laiskynotes">https://t.me/laiskynotes</Link></p>
+                            <p><i className="bi bi-telegram"></i>AboutMe: <Link target="_blank" to="https://about.me/laisky">https://about.me/laisky</Link></p>
                         </article>
                     </div>
                     <div role="tabpanel" aria-labelledby="right-tab" className="tab-pane" id="right">
