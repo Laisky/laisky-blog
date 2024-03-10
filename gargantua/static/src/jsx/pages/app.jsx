@@ -94,7 +94,6 @@ class App extends BaseComponent {
                                 <li className={this.getCurrentRouteName() == 'aboutme' ? 'active' : ''}><Link to={{ pathname: '/about/' }}>About</Link></li>
                                 {/* <li><a href="//laisky.github.io/laisky-blog/CHANGELOG/" target="_blank">ChangeLog</a></li> */}
                                 <li><a href="https://chat.laisky.com" target="_blank">AIChat</a></li>
-                                <li><a href="https://wiki.laisky.com/terms/" target="_blank">Glossary</a></li>
                                 <li><a href="https://status.laisky.com" target="_blank">Status</a></li>
                             </ul>
                             <ul className="nav navbar-nav navbar-right">
