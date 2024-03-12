@@ -47,43 +47,42 @@
         <!-- page_js -->
     </div>
 
-    <script src="https://s3.laisky.com/static/jquery/3.6.0/jquery-3.6.0.min.js"></script>
-    <script src="https://s3.laisky.com/static/twitter-bootstrap/3.4.1/dist/js/bootstrap.min.js"></script>
-    <!-- <script src="https://s3.laisky.com/static/twitter-bootstrap/4.6.2/dist/js/bootstrap.min.js"></script> -->
-    <!-- <script src="https://s3.laisky.com/static/twitter-bootstrap/5.2.3/js/bootstrap.min.js"></script> -->
-    <script defer src="https://s3.laisky.com/static/bootstrap-toc/v1.0.1/bootstrap-toc.min.js"></script>
-    <script src="https://s3.laisky.com/static/babel-polyfill/6.23.0/polyfill.min.js"></script>
-    <script src="https://s3.laisky.com/static/humane.min.js"></script>
-    <script src="https://s3.laisky.com/static/immutable/3.8.1/immutable.min.js"></script>
-    <script src="https://s3.laisky.com/static/jwt-decode/2.1.0/jwt-decode.min.js"></script>
-    <script src="https://s3.laisky.com/static/moment.js/2.12.0/moment-with-locales.min.js"></script>
-    <script src="https://s3.laisky.com/static/prism/1.29.0/prism.js"></script>
-    <script src="https://s3.laisky.com/static/gargantua/js/libs-94b83873d9.min.js" type="text/javascript"
-        charset="utf-8"></script>
-    <script defer src="https://blog.laisky.com/static/dist/js/reveallibs.min.js" type="text/javascript"
-        charset="utf-8"></script>
-    <script defer type="text/javascript"
-        src="https://s3.laisky.com/static/mathjax/2.7.3/MathJax-2.7.3/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-    <script async src="{{static_url('js/sites.min.js')}}" type="text/javascript" charset="utf-8"></script>
 
-    <script>
+    <script type="module">
         var revealLibUrl = 'https://s3.laisky.com/static/gargantua/js/reveallibs.min.js';
-    </script>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-BVS991NWWS');
-        </script>
-        <!-- Google tag (gtag.js) -->
+        const modules = [
+            "https://s3.laisky.com/static/jquery/3.6.0/jquery-3.6.0.min.js",
+            "https://s3.laisky.com/static/twitter-bootstrap/3.4.1/dist/js/bootstrap.min.js",
+            "https://s3.laisky.com/static/bootstrap-toc/v1.0.1/bootstrap-toc.min.js",
+            "https://s3.laisky.com/static/babel-polyfill/6.23.0/polyfill.min.js",
+            "https://s3.laisky.com/static/humane.min.js",
+            "https://s3.laisky.com/static/immutable/3.8.1/immutable.min.js",
+            "https://s3.laisky.com/static/jwt-decode/2.1.0/jwt-decode.min.js",
+            "https://s3.laisky.com/static/moment.js/2.12.0/moment-with-locales.min.js",
+            "https://s3.laisky.com/static/prism/1.29.0/prism.js",
+            "https://s3.laisky.com/static/gargantua/js/libs-94b83873d9.min.js",
+            // "https://blog.laisky.com/static/dist/js/reveallibs.min.js",
+            "https://s3.laisky.com/static/mathjax/2.7.3/MathJax-2.7.3/MathJax.js?config=TeX-MML-AM_CHTML",
+        ];
+
+        import * as libs from 'https://s3.laisky.com/static/laisky/libs.js';
+        await libs.LoadJsModules(modules);
+        await libs.LoadJsModules(["{{static_url('js/sites.min.js')}}"]);
+
+        // Google tag (gtag.js)
+        (async () => {
+            await libs.LoadJsModules(["https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS"]);
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-BVS991NWWS');
+        })();
+    </script>
 
     <div class="pagejs">
         {% block page_js %}
         {% endblock %}
-        <!-- page_js -->
     </div>
 </body>
 {% endblock %}

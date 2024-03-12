@@ -7,12 +7,12 @@ import React from 'react';
 import { Link } from 'react-router';
 import { BaseComponent } from '../components/base.jsx';
 
-
 /*
  * 页面主框架
  */
 class App extends BaseComponent {
     constructor(props, context) {
+
         super(props, context);
     }
 
