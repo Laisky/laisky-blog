@@ -66,9 +66,16 @@
             "https://s3.laisky.com/static/mathjax/2.7.3/MathJax-2.7.3/MathJax.js?config=TeX-MML-AM_CHTML",
         ];
 
-        import * as libs from 'https://s3.laisky.com/static/laisky/libs.js';
+        import * as libs from 'https://s3.laisky.com/static/laisky/libs.js?v=20240326-v3';
+
+        // load common js modules
         await libs.LoadJsModules(modules);
-        await libs.LoadJsModules(["{{static_url('js/sites.min.js')}}"]);
+
+        // load ecma modules
+        // await libs.LoadJsModules([], "module");
+
+        // load site js modules
+        await libs.LoadJsModules(["{{static_url('js/sites.min.js')}}"], "module");
 
         // Google tag (gtag.js)
         (async () => {
