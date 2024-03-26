@@ -10,7 +10,7 @@ RUN apt update && apt upgrade -y \
     # && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get install -y --fix-missing npm ruby-dev
-RUN npm install -g gulp-cli bower@1.8.4 yarn
+RUN npm install -g gulp@3.9.1 bower@1.8.4 yarn
 RUN gem install compass
 
 WORKDIR /www/gargantua
