@@ -68,6 +68,11 @@
 
         import * as libs from 'https://s3.laisky.com/static/laisky/libs.js?v=20240326-v3';
 
+        // load some optional modules asynchronously
+        libs.LoadJsModules([
+            'https://js.sentry-cdn.com/0a5aa56db9cb55dc305a90b5ec8a5c51.min.js'
+        ]);
+
         // load common js modules
         await libs.LoadJsModules(modules);
 
