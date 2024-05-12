@@ -30,6 +30,21 @@ $nav-title-clr: $post-title-clr;
         padding: 10px;
     }
 
+    .post-history {
+        padding-left: 5px;
+
+        button {
+            padding: 1px;
+        }
+
+        ul.dropdown-menu {
+            a {
+                margin: 0px;
+                padding: 1px;
+            }
+        }
+    }
+
     .page-nav {
         text-align: center;
     }

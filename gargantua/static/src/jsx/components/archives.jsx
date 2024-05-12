@@ -111,7 +111,7 @@ class ArchiveExtract extends BaseComponent {
             postTags = this.props['archive-object'] && this.props['archive-object']['tags'] || [];
 
         if (this.getCurrentUsername()) {
-            articleEditable = <Link to={{ pathname: `/amend/${archiveName}/` }}>编辑</Link>
+            articleEditable = <Link to={{ pathname: `/amend/${archiveName}/` }}>编辑</Link>;
         }
 
         let tagHtml = [];
@@ -123,6 +123,24 @@ class ArchiveExtract extends BaseComponent {
             <link rel="prefetch" href="https://s3.laisky.com/uploads/2019/03/pay-merge.jpg"></link>,
             <span className="pay">打赏</span>,
         ];
+
+        // dropdown options for history
+        let articleHistory = [];
+        if (this.props['archive-history']) {
+            for (let i = 0; i < this.props['archive-history'].length; i++) {
+                let history = this.props['archive-history'][i];
+                articleHistory.push(<li><a href={`https://arweave.net/${history.id}/`} target="_blank">{history.time}</a></li>);
+            }
+            articleHistory = <div className="dropdown post-history">
+                <button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    History
+                    <span className="caret"></span>
+                </button>
+                <ul className="dropdown-menu">
+                    {articleHistory}
+                </ul>
+            </div>;
+        }
 
         if (this.props['archive-object']) {
             return [
@@ -137,12 +155,14 @@ class ArchiveExtract extends BaseComponent {
                     {tagHtml}
                 </div>,
                 // payment,
+                articleHistory,
                 articleEditable,
                 // <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">评论</Link>
             ];
         }
 
         return [
+            articleHistory,
             articleEditable,
             // <Link to={{ pathname: `/p/${archiveName}/#disqus_thread` }} data-disqus-identifier={archiveName} target="_blank">评论</Link>
         ];

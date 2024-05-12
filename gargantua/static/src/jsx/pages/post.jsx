@@ -41,6 +41,10 @@ export class Post extends BaseComponent {
                     name
                     url
                 }
+                arweave_id {
+                    id
+                    time
+                }
             }
         }`)
             .then(resp => {
@@ -190,6 +194,7 @@ export class Post extends BaseComponent {
                 archive-name={this.state.post.name}
                 archive-title={this.state.post.title}
                 archive-created-at={this.state.post.created_at}
+                archive-history={this.state.post.arweave_id}
                 archive-content={this.state.post.content} />;
 
             if (this.state.post.menu) {
