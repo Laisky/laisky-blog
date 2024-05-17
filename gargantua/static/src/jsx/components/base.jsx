@@ -2,6 +2,9 @@
 
 import React from 'react';
 
+export const KvKeyLanguage = 'language';
+const $ = window.$;
+
 class BaseComponent extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -13,15 +16,15 @@ class BaseComponent extends React.Component {
     }
 
     getCurrentRoute() {
-        return this.props.routes[this.props.routes.length-1];
+        return this.props.routes[this.props.routes.length - 1];
     }
 
     getCurrentRouteName() {
-        return this.props.routes[this.props.routes.length-1].name;
+        return this.props.routes[this.props.routes.length - 1].name;
     }
 
     addXSRF(data) {
-        return Object.assign({}, {'_xsrf': $.cookie('_xsrf')}, data);
+        return Object.assign({}, { '_xsrf': $.cookie('_xsrf') }, data);
     }
 
     getCurrentUsername() {
@@ -30,8 +33,8 @@ class BaseComponent extends React.Component {
 
         try {
             userinfo = window.jwt_decode(token);
-            return userinfo['display_name'];
-        }catch(e) {
+            return userinfo["display_name"];
+        } catch (e) {
             return;
         }
     }
@@ -43,7 +46,7 @@ class BaseComponent extends React.Component {
         try {
             userinfo = window.jwt_decode(token);
             return userinfo['uid'];
-        }catch(e) {
+        } catch (e) {
             return;
         }
     }

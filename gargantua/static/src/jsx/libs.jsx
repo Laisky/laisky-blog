@@ -2,7 +2,6 @@
 
 import Cookies from 'js-cookie';
 
-
 window.Cookies = Cookies;
 
 /** get user language preference from browser
