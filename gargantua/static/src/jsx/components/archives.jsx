@@ -129,7 +129,7 @@ class ArchiveExtract extends BaseComponent {
         if (this.props['archive-history']) {
             for (let i = 0; i < this.props['archive-history'].length; i++) {
                 let history = this.props['archive-history'][i];
-                articleHistory.push(<li><a href={`https://arweave.net/${history.id}/`} target="_blank">{history.time}</a></li>);
+                articleHistory.push(<li><a href={`https://ario.laisky.com/${history.id}/`} target="_blank">{history.time}</a></li>);
             }
             articleHistory = <div className="dropdown post-history">
                 <button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
