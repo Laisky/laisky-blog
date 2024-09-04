@@ -21,11 +21,13 @@ export class Post extends BaseComponent {
         super(props, context);
         this.state = {
             post: null,
-            hint: '载入中...'
+            hint: 'loading...'
         };
+    }
 
-        let language = window.getUserLanguage();
-        request(window.graphqlAPI, `query {
+    async componentDidMount() {
+        let language = await window.getUserLanguage();
+        const resp = await request(window.graphqlAPI, `query {
             BlogPosts(
                 name: "${this.props.params.pid}",
                 language: ${language},
@@ -46,49 +48,44 @@ export class Post extends BaseComponent {
                     time
                 }
             }
-        }`)
-            .then(resp => {
-                if (resp.BlogPosts.length < 1) {
-                    this.setState({ hint: '文章不存在' });
-                }
-                let post = resp.BlogPosts[0];
+        }`);
 
-                document.title = post.title;
-                if (post['type'] == 'slide') this.loadRevealJs();
-                // post.content = this.convertImg2Webp(post.content);
-                $(document.body).animate({ scrollTop: 0 }, 200);
-                this.setState({
-                    post: post,
-                    hint: null
-                });
+        if (resp.BlogPosts.length < 1) {
+            this.setState({ hint: '文章不存在' });
+        }
+        let post = resp.BlogPosts[0];
 
-                setTimeout(function () {
-                    // $('body').scrollspy({ target: '#archive-menu' });
-                    try {
-                        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }, 2000);
-                setTimeout(function () {
-                    try {
-                        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }, 4000);
-                setTimeout(function () {
-                    try {
-                        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }, 8000);
-            })
-            .catch((err) => {
-                console.error(err);
-                // this.setState({ hint: '读取数据失败，请刷新重试' });
-            });
+        document.title = post.title;
+        if (post['type'] == 'slide') this.loadRevealJs();
+        // post.content = this.convertImg2Webp(post.content);
+        $(document.body).animate({ scrollTop: 0 }, 200);
+        this.setState({
+            post: post,
+            hint: null
+        });
+
+        setTimeout(function () {
+            // $('body').scrollspy({ target: '#archive-menu' });
+            try {
+                window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+            } catch (e) {
+                console.error(e);
+            }
+        }, 2000);
+        setTimeout(function () {
+            try {
+                window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+            } catch (e) {
+                console.error(e);
+            }
+        }, 4000);
+        setTimeout(function () {
+            try {
+                window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+            } catch (e) {
+                console.error(e);
+            }
+        }, 8000);
     }
 
     // http://blog.qiniu.com/archives/5793
@@ -217,7 +214,6 @@ export class Post extends BaseComponent {
             </div>
         );
     }
-
 }
 
 
@@ -235,7 +231,7 @@ export class PostCategories extends BaseComponent {
     }
 
     async loadArticlesByCategoryURL(cateUrl) {
-        let language = window.getUserLanguage();
+        let language = await window.getUserLanguage();
         let resp = await request(window.graphqlAPI, `query {
             BlogPosts(
                 category_url: ${cateUrl ? `"${cateUrl}"` : 'null'},

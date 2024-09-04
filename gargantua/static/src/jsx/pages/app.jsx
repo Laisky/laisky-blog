@@ -12,8 +12,10 @@ import { BaseComponent } from '../components/base.jsx';
  */
 class App extends BaseComponent {
     constructor(props, context) {
-
         super(props, context);
+        this.state = {
+            userLang: null
+        }
     }
 
     static get contextTypes() {
@@ -35,11 +37,16 @@ class App extends BaseComponent {
     }
 
     componentDidMount() {
+        (async () => {
+            let userLang = await window.getUserLanguage();
+            this.setState({ userLang: userLang });
+        })();
+
         document
             .querySelectorAll('.navbar-fixed-top .dropdown.language .dropdown-menu li')
             .forEach((ele) => {
-                ele.addEventListener('click', (evt) => {
-                    let userLang = window.getUserLanguage();
+                ele.addEventListener('click', async (evt) => {
+                    let userLang = await window.getUserLanguage();
 
                     let target = evt.target;
                     if (target.tagName != 'LI') {
@@ -48,12 +55,12 @@ class App extends BaseComponent {
 
                     if (userLang == target.dataset.lang) return;
 
-                    let url = new URL(window.location.href);
-                    url.searchParams.set('lang', target.dataset.langSimple);
-                    // url.searchParams.set('force', 1);
+                    await window.setUserLanguage(target.dataset.langSimple);
+                    window.location.reload();
 
                     // reload page
-                    window.location.href = url.toString();
+                    // let url = new URL(window.location.href);
+                    // window.location.href = url.toString();
                 });
             });
     }
@@ -61,7 +68,7 @@ class App extends BaseComponent {
     render() {
         let googleSearch = '<gcse:search className="google-search" gname="post_search" enableAutoComplete="true"></gcse:search>';
 
-        let userLang = window.getUserLanguage();
+        let userLang = this.state.userLang;
         let dropdownBtn = <li className="dropdown language">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <i className="bi bi-translate"></i>

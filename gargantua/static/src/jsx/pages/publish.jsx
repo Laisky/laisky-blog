@@ -23,8 +23,13 @@ class BaseEditComponent extends BaseComponent {
             post_markdown: this.props.post_markdown || '',
             post_content: this.props.post_content || '',
             post_type: this.props.post_type || '',
-            language: window.getUserLanguage()
+            language: ''
         };
+
+        (async () => {
+            let language = await window.getUserLanguage();
+            this.setState({ language: language });
+        })();
     }
 
     componentDidMount() {
@@ -178,7 +183,7 @@ class Publish extends BaseComponent {
 class Amend extends BaseComponent {
     async getInitData() {
         let url = new URL(window.graphqlAPI),
-            language = window.getUserLanguage();
+            language = await window.getUserLanguage();
 
         url.searchParams.set('force', '');
         try {

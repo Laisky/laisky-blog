@@ -26,7 +26,7 @@ class ArchivesCache {
     async getByPage(nPage) {
 
         let resp,
-            language = window.getUserLanguage(),
+            language = await window.getUserLanguage(),
             cacheKey = `page-${nPage}-${language}`,
             _pContent = window.sessionStorage.getItem(cacheKey);
 
@@ -39,16 +39,16 @@ class ArchivesCache {
         return resp;
     }
 
-    saveByPage(nPage, obj) {
+    async saveByPage(nPage, obj) {
         let _obj = JSON.stringify(obj),
-            language = window.getUserLanguage(),
+            language = await window.getUserLanguage(),
             cacheKey = `page-${nPage}-${language}`;
 
         window.sessionStorage.setItem(cacheKey, _obj);
     }
 
     async loadByPage(nPage) {
-        let language = window.getUserLanguage();
+        let language = await window.getUserLanguage();
         let postsReq = request(window.graphqlAPI, `query {
             BlogPosts(
                 length: 200,
@@ -84,7 +84,7 @@ class ArchivesCache {
             });
         }
 
-        this.saveByPage(nPage, resp);
+        await this.saveByPage(nPage, resp);
         return resp;
     }
 }

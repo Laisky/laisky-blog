@@ -9,6 +9,7 @@ RUN apt update && apt upgrade -y \
     && update-ca-certificates
     # && rm -rf /var/lib/apt/lists/*
 
+# ruby v3.0.7
 RUN apt-get install -y --fix-missing npm ruby-dev
 RUN npm install -g gulp@3.9.1 bower@1.8.4 yarn
 RUN gem install compass

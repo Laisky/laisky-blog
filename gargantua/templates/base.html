@@ -63,6 +63,7 @@
             "https://s3.laisky.com/static/moment.js/2.12.0/moment-with-locales.min.js",
             "https://s3.laisky.com/static/prism/1.29.0/prism.js",
             "https://s3.laisky.com/static/gargantua/js/libs-94b83873d9.min.js",
+            "https://s3.laisky.com/static/pouchdb/8.0.1/pouchdb.min.js",
             // "https://blog.laisky.com/static/dist/js/reveallibs.min.js",
             "https://s3.laisky.com/static/mathjax/2.7.3/MathJax-2.7.3/MathJax.js?config=TeX-MML-AM_CHTML",
         ];
@@ -70,6 +71,7 @@
         import * as libs from 'https://s3.laisky.com/static/laisky/libs.js?v=20240326-v3';
 
         // load common js modules
+        window.libs = libs;
         await libs.LoadJsModules(modules);
 
         // load ecma modules
