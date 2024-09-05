@@ -23,13 +23,8 @@ class BaseEditComponent extends BaseComponent {
             post_markdown: this.props.post_markdown || '',
             post_content: this.props.post_content || '',
             post_type: this.props.post_type || '',
-            language: ''
+            language: 'en_US'
         };
-
-        (async () => {
-            let language = await window.getUserLanguage();
-            this.setState({ language: language });
-        })();
     }
 
     componentDidMount() {
@@ -38,6 +33,7 @@ class BaseEditComponent extends BaseComponent {
         if (this.props.getInitData) {
             this.props.getInitData.call(this);
         }
+
     }
 
     /** build submit post handler
@@ -211,6 +207,7 @@ class Amend extends BaseComponent {
             window.$(this.refs.postTitle).val(post.title);
             window.$(this.refs.postContent).val(post.markdown);
             window.$(this.refs.postType).val(post.type);
+            window.$(this.refs.language).val(language);
         } catch (err) {
             this.setState({
                 hint: `加载失败，请刷新重试。\n${err}`,
