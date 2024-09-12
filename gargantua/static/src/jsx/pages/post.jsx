@@ -51,7 +51,7 @@ export class Post extends BaseComponent {
         }`);
 
         if (resp.BlogPosts.length < 1) {
-            this.setState({ hint: '文章不存在' });
+            this.setState({ hint: 'Post does not exist' });
         }
         let post = resp.BlogPosts[0];
 
