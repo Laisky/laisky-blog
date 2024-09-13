@@ -28,3 +28,4 @@ tornado~=6.4
 typing-extensions==3.10.0.2
 webassets==0.11.1
 dnspython>=2.6.0rc1 # not directly required, pinned by Snyk to avoid a vulnerability
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
