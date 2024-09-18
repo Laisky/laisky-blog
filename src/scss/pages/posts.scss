@@ -1,0 +1,25 @@
+#page-content .archive, #archives {
+    letter-spacing: normal;
+    max-width: 800px;
+    margin-bottom: 10px;
+    min-height: 800px;
+    background-color: none;
+
+    #archive-content, archive-content {
+        border-radius: 10px;
+        background-color: #F1F1F1;
+        padding: 0;
+
+        .hint {
+            margin: 10px;
+        }
+    }
+
+    #archive-sidebar {
+        padding-right: 0;
+    }
+
+    .page-nav {
+        text-align: center;
+    }
+}
