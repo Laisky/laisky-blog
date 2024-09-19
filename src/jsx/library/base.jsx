@@ -61,9 +61,9 @@ export const getCurrentUID = () => {
     }
 };
 
-export const setUserLanguage = async (langSimple) => {
+export const setUserLanguage = async (lang) => {
     try {
-        await libs.KvSet(KvKeyLanguage, langSimple);
+        await libs.KvSet(KvKeyLanguage, lang);
     } catch (e) {
         console.warn(`setUserLanguage: ${e}`);
     }
@@ -71,42 +71,41 @@ export const setUserLanguage = async (langSimple) => {
 
 export const getUserLanguage = async () => {
     let url = new URL(window.location.href),
-        langSimple;
+        lang;
 
     // get lang from url parameter
     if (url.searchParams.has('lang')) {
-        langSimple = url.searchParams.get('lang');
+        lang = url.searchParams.get('lang');
     }
 
     // get lang from kv storage
-    if (!langSimple) {
-        langSimple = await libs.KvGet(KvKeyLanguage);
+    if (!lang) {
+        lang = await libs.KvGet(KvKeyLanguage);
     }
 
     // get lang from browser
-    if (!langSimple) {
-        langSimple = navigator.language || navigator.userLanguage;
-        langSimple = langSimple.split('-')[0];
+    if (!lang) {
+        lang = navigator.language || navigator.userLanguage;
     }
 
     // update kv storage
-    if (langSimple) {
-        await setUserLanguage(langSimple);
+    if (lang) {
+        await setUserLanguage(lang);
     }
 
-    let langBackend;
-    switch (langSimple) {
+    switch (lang) {
         case 'zh':
-            langBackend = 'zh_CN';
+        case 'zh_CN':
+            lang = 'zh_CN';
             break;
         default:
-            langBackend = 'en_US';
+            lang = 'en_US';
     }
 
     // change html lang
-    document.documentElement.lang = langBackend;
+    document.documentElement.lang = lang;
 
-    return langBackend;
+    return lang;
 };
 
 export const formatTs = (ts) => {

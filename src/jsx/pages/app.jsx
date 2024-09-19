@@ -33,7 +33,7 @@ const App = () => {
 
                 if (currentLang === target.dataset.lang) return;
 
-                await setUserLanguage(target.dataset.langSimple);
+                await setUserLanguage(target.dataset.lang);
                 navigate(0);
             });
         });
@@ -57,7 +57,7 @@ const App = () => {
             target = target.parentElement;
         }
 
-        const newLang = target.dataset.langSimple;
+        const newLang = target.dataset.lang;
         if (userLang === target.dataset.lang) return;
 
         await setUserLanguage(newLang);
@@ -74,10 +74,10 @@ const App = () => {
                 {userLang}
             </a>
             <ul className="dropdown-menu">
-                <li className={getCurrentRouteName() === 'zh_CN' ? 'active' : ''} data-lang-simple="zh" data-lang="zh_CN" onClick={handleLanguageChange}>
+                <li className={getCurrentRouteName() === 'zh_CN' ? 'active' : ''} data-lang="zh_CN" onClick={handleLanguageChange}>
                     <a className="dropdown-item" href="#">zh_CN</a>
                 </li>
-                <li className={getCurrentRouteName() === 'en_US' ? 'active' : ''} data-lang-simple="en" data-lang="en_US" onClick={handleLanguageChange}>
+                <li className={getCurrentRouteName() === 'en_US' ? 'active' : ''} data-lang="en_US" onClick={handleLanguageChange}>
                     <a className="dropdown-item" href="#">en_US</a>
                 </li>
             </ul>

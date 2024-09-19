@@ -12,7 +12,7 @@ export const loader = async ({ params }) => {
         query {
             BlogPosts(
                 language: en_US
-                length: 200
+                length: 600
                 page: {
                     page: ${params.nPage}
                     size: 10
