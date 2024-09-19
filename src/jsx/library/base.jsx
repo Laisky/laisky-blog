@@ -18,6 +18,11 @@ export const useBaseComponent = () => {
     };
 
 
+    /**
+     * Get the current username.
+     *
+     * @returns {string|null} The username or null if not available.
+     */
     const getCurrentUsername = () => {
         let token = $.cookie('token'),
             userinfo;
@@ -26,10 +31,16 @@ export const useBaseComponent = () => {
             userinfo = jwtDecode(token);
             return userinfo["display_name"];
         } catch (e) {
+            console.warn(`getCurrentUsername: ${e}`);
             return;
         }
     };
 
+    /**
+     * Get the current user ID.
+     *
+     * @returns {string|null} The user ID or null if not available.
+     */
     const getCurrentUID = () => {
         let token = $.cookie('token'),
             userinfo;
@@ -38,6 +49,7 @@ export const useBaseComponent = () => {
             userinfo = window.jwt_decode(token);
             return userinfo['uid'];
         } catch (e) {
+            console.warn(`getCurrentUID: ${e}`);
             return;
         }
     };

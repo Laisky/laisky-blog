@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { useBaseComponent } from "./components/base";
+import { useBaseComponent } from "../library/base";
 
 const App = () => {
     const { getUserLanguage, setUserLanguage } = useBaseComponent();
@@ -10,11 +10,9 @@ const App = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const getScrollToTopHandle = (evt) => {
+    const scrollToTop = (evt) => {
         if (evt.target.tagName.toUpperCase() !== 'DIV' || evt.target.className.startsWith('gsc-')) return;
         document.body.scrollTo({ top: 0, behavior: 'smooth' }); // Use smooth scrolling for better UX
-
-        return false;
     };
 
     useEffect(() => {
@@ -90,7 +88,7 @@ const App = () => {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-top" id="headerbar">
+            <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-top" id="headerbar" onClick={scrollToTop}>
                 <div className="container-fluid">
                     <Link to="/pages/1/" className="navbar-brand">Laisky</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">

@@ -9,14 +9,14 @@ import {
 } from "react-router-dom";
 
 import "./scss/main.scss";
-import { App } from "./pages/app";
+import { App } from "./jsx/pages/app";
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      {/* <Route index element={<Navigate to="/archives/1/" />} />
-      <Route path="archives/:page" element={<Archives />} />
+      {/* <Route index element={<Navigate to="/pages/1/" />} />
+      <Route path="pages/:page" element={<Page />} />
       <Route path="publish" element={<Publish />} />
       <Route path="amend/:postname" element={<Amend />} />
       <Route path="p/:pid" element={<Post />} />
