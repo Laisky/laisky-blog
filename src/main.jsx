@@ -1,42 +1,89 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import {
-  createBrowserRouter,
-  RouterProvider,
-  createRoutesFromElements,
-  Route,
-  Navigate,
+    createBrowserRouter,
+    RouterProvider,
+    createRoutesFromElements,
+    Route,
+    Navigate,
 } from "react-router-dom";
 
 import "./scss/main.scss";
+
 import { App } from "./jsx/pages/app";
+import { Page, loader as pageLoader } from "./jsx/pages/page";
 
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<App />}>
-      {/* <Route index element={<Navigate to="/pages/1/" />} />
-      <Route path="pages/:page" element={<Page />} />
-      <Route path="publish" element={<Publish />} />
-      <Route path="amend/:postname" element={<Amend />} />
-      <Route path="p/:pid" element={<Post />} />
-      <Route path="cate/:cateURL?" element={<PostCategories />} />
-      <Route path="about" element={<About />} />
-      <Route path="login" element={<Login />} />
-      <Route path="404.html" element={<PageNotFound />} />
-      <Route path="admin" element={<AdminPage />}>
-        <Route path="cate" element={<CategoriesConsole />} />
-      </Route>
-      <Route path="twitter" element={<TwitterPage />}>
-        <Route path="status/:status_id" element={<Tweet />} />
-      </Route> */}
-    </Route>
-  )
-);
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <App />,
+        children: [
+            {
+                index: true,
+                element: <Navigate to="/pages/1/" />,
+            },
+            {
+                path: "pages/:nPage",
+                element: <Page />,
+                loader: pageLoader,
+            },
+            // Uncomment and add loaders/actions if needed
+            // {
+            //   path: "publish",
+            //   element: <Publish />,
+            // },
+            // {
+            //   path: "amend/:postname",
+            //   element: <Amend />,
+            // },
+            // {
+            //   path: "p/:pid",
+            //   element: <Post />,
+            // },
+            // {
+            //   path: "cate/:cateURL?",
+            //   element: <PostCategories />,
+            // },
+            // {
+            //   path: "about",
+            //   element: <About />,
+            // },
+            // {
+            //   path: "login",
+            //   element: <Login />,
+            // },
+            // {
+            //   path: "404.html",
+            //   element: <PageNotFound />,
+            // },
+            // {
+            //   path: "admin",
+            //   element: <AdminPage />,
+            //   children: [
+            //     {
+            //       path: "cate",
+            //       element: <CategoriesConsole />,
+            //     },
+            //   ],
+            // },
+            // {
+            //   path: "twitter",
+            //   element: <TwitterPage />,
+            //   children: [
+            //     {
+            //       path: "status/:status_id",
+            //       element: <Tweet />,
+            //     },
+            //   ],
+            // },
+        ],
+    },
+]);
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+    <React.StrictMode>
+        <RouterProvider router={router} />
+    </React.StrictMode>
 );

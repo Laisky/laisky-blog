@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { useBaseComponent } from "../library/base";
+import { getUserLanguage, setUserLanguage } from "../library/base";
 
 const App = () => {
-    const { getUserLanguage, setUserLanguage } = useBaseComponent();
-
     const [userLang, setUserLang] = useState(null);
     const location = useLocation();
     const navigate = useNavigate();

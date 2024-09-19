@@ -1,130 +1,114 @@
 'use strict';
 
-import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
+import moment from 'moment';
+
 import * as libs from './libs';
 
 export const KvKeyLanguage = 'language';
-const $ = window.$;
-
-export const useBaseComponent = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const [intervals, setIntervals] = React.useState([]);
-
-    const getCurrentPathName = () => {
-        return location.pathname;
-    };
+export const GraphqlAPI = 'https://gq.laisky.com/query/';
 
 
-    /**
-     * Get the current username.
-     *
-     * @returns {string|null} The username or null if not available.
-     */
-    const getCurrentUsername = () => {
-        let token = $.cookie('token'),
-            userinfo;
+/**
+ * Get the cookie value by name.
+ *
+ * @returns {string} The cookie value.
+ */
+export const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
-        try {
-            userinfo = jwtDecode(token);
-            return userinfo["display_name"];
-        } catch (e) {
-            console.warn(`getCurrentUsername: ${e}`);
-            return;
-        }
-    };
 
-    /**
-     * Get the current user ID.
-     *
-     * @returns {string|null} The user ID or null if not available.
-     */
-    const getCurrentUID = () => {
-        let token = $.cookie('token'),
-            userinfo;
+export const getCurrentPathName = () => {
+    return location.pathname;
+};
 
-        try {
-            userinfo = window.jwt_decode(token);
-            return userinfo['uid'];
-        } catch (e) {
-            console.warn(`getCurrentUID: ${e}`);
-            return;
-        }
-    };
+/**
+ * Get the current username.
+ *
+ * @returns {string|null} The username or null if not available.
+ */
+export const getCurrentUsername = () => {
+    let token = getCookie('token'),
+    userinfo;
 
-    const setUserLanguage = async (langSimple) => {
-        try {
-            await libs.KvSet(KvKeyLanguage, langSimple);
-        } catch (e) {
-            console.warn(`setUserLanguage: ${e}`);
-        }
-    };
+    try {
+        userinfo = jwtDecode(token);
+        return userinfo["display_name"];
+    } catch (e) {
+        console.warn(`getCurrentUsername: ${e}`);
+        return;
+    }
+};
 
-    const getUserLanguage = async () => {
-        let url = new URL(window.location.href),
-            langSimple;
+/**
+ * Get the current user ID.
+ *
+ * @returns {string|null} The user ID or null if not available.
+ */
+export const getCurrentUID = () => {
+    let token = getCookie('token'),
+        userinfo;
 
-        // get lang from url parameter
-        if (url.searchParams.has('lang')) {
-            langSimple = url.searchParams.get('lang');
-        }
+    try {
+        userinfo = jwtDecode(token);
+        return userinfo['uid'];
+    } catch (e) {
+        console.warn(`getCurrentUID: ${e}`);
+        return;
+    }
+};
 
-        // get lang from kv storage
-        if (!langSimple) {
-            langSimple = await libs.KvGet(KvKeyLanguage);
-        }
+export const setUserLanguage = async (langSimple) => {
+    try {
+        await libs.KvSet(KvKeyLanguage, langSimple);
+    } catch (e) {
+        console.warn(`setUserLanguage: ${e}`);
+    }
+};
 
-        // get lang from browser
-        if (!langSimple) {
-            langSimple = navigator.language || navigator.userLanguage;
-            langSimple = langSimple.split('-')[0];
-        }
+export const getUserLanguage = async () => {
+    let url = new URL(window.location.href),
+        langSimple;
 
-        // update kv storage
-        if (langSimple) {
-            await setUserLanguage(langSimple);
-        }
+    // get lang from url parameter
+    if (url.searchParams.has('lang')) {
+        langSimple = url.searchParams.get('lang');
+    }
 
-        let langBackend;
-        switch (langSimple) {
-            case 'zh':
-                langBackend = 'zh_CN';
-                break;
-            default:
-                langBackend = 'en_US';
-        }
+    // get lang from kv storage
+    if (!langSimple) {
+        langSimple = await libs.KvGet(KvKeyLanguage);
+    }
 
-        // change html lang
-        document.documentElement.lang = langBackend;
+    // get lang from browser
+    if (!langSimple) {
+        langSimple = navigator.language || navigator.userLanguage;
+        langSimple = langSimple.split('-')[0];
+    }
 
-        return langBackend;
-    };
+    // update kv storage
+    if (langSimple) {
+        await setUserLanguage(langSimple);
+    }
 
-    React.useEffect(() => {
-        return () => {
-            intervals.forEach(clearInterval);
-        };
-    }, [intervals]);
+    let langBackend;
+    switch (langSimple) {
+        case 'zh':
+            langBackend = 'zh_CN';
+            break;
+        default:
+            langBackend = 'en_US';
+    }
 
-    const setIntervalCustom = (...args) => {
-        const intervalId = setInterval(...args);
-        setIntervals([...intervals, intervalId]);
-    };
+    // change html lang
+    document.documentElement.lang = langBackend;
 
-    const formatTs = (ts) => {
-        return window.moment(Number.parseInt(ts) * 1000).format('YYYY/MM/DD HH:MM');
-    };
+    return langBackend;
+};
 
-    return {
-        getCurrentPathName,
-        getCurrentUsername,
-        getUserLanguage,
-        setUserLanguage,
-        getCurrentUID,
-        setIntervalCustom,
-        formatTs,
-        navigate
-    };
+export const formatTs = (ts) => {
+    return moment(Number.parseInt(ts) * 1000).format('YYYY/MM/DD HH:MM');
 };

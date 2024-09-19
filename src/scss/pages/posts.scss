@@ -1,25 +1,28 @@
-#page-content .archive, #archives {
+.posts {
     letter-spacing: normal;
     max-width: 800px;
     margin-bottom: 10px;
     min-height: 800px;
-    background-color: none;
+    background-color: #F1F1F1;
 
-    #archive-content, archive-content {
-        border-radius: 10px;
-        background-color: #F1F1F1;
-        padding: 0;
+    .post {
 
-        .hint {
-            margin: 10px;
+        #post-content {
+            border-radius: 10px;
+            background-color: #F1F1F1;
+            padding: 0;
+
+            .hint {
+                margin: 10px;
+            }
         }
-    }
 
-    #archive-sidebar {
-        padding-right: 0;
-    }
+        #post-sidebar {
+            padding-right: 0;
+        }
 
-    .page-nav {
-        text-align: center;
+        .page-nav {
+            text-align: center;
+        }
     }
 }
