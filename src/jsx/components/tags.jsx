@@ -10,8 +10,14 @@ export const Tags = () => {
 
     useEffect(() => {
         (async () => {
-            const tagsData = await loader();
-            setTags(tagsData);
+            const gqBody = gql`
+            query {
+                BlogTags
+            }
+        `;
+
+            const resp = await request(GraphqlAPI, gqBody);
+            setTags(resp.BlogTags);
         })();
     }, []);
 
@@ -20,17 +26,6 @@ export const Tags = () => {
 
         google.search.cse.element.getElement('post_search').execute(tag);
     };
-
-    const loader = async () => {
-        const gqBody = gql`
-            query {
-                BlogTags
-            }
-        `;
-
-        const resp = await request(GraphqlAPI, gqBody);
-        return resp.BlogTags;
-    }
 
     return (
         <section className="row console tags">

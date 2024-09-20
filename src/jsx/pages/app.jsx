@@ -18,12 +18,10 @@ const App = () => {
     };
 
     useEffect(() => {
-        const fetchUserLanguage = async () => {
+        (async () => {
             const lang = await getUserLanguage();
             setUserLang(lang);
-        };
-
-        fetchUserLanguage();
+        })();
     }, []);
 
     const getCurrentRouteName = () => {

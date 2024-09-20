@@ -93,8 +93,8 @@ export const Post = () => {
                         <Link to={`/p/${post.name}/`}>{post.title}</Link>
                     </h2>
                     <div className="post-meta">
-                        <span>published: </span>
-                        <span>{formatTimeStr(post.created_at)}</span>
+                        <span>published_at: </span>
+                        <span className="time">{formatTimeStr(post.created_at)}</span>
                     </div>
                     <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
                     </div>
