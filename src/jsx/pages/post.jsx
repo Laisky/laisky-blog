@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { Link, useParams, useLoaderData } from 'react-router-dom';
 import { gql, request } from 'graphql-request'
+import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
 import * as bootstrap from 'bootstrap'
 
 import { GraphqlAPI, formatTimeStr, getCurrentUsername, getUserLanguage } from '../library/base.jsx';
@@ -47,6 +48,7 @@ export const Post = () => {
 
     useEffect(() => {
         bindPostImageModal();
+        renderCode();
     }, []);
 
     const getPostTails = (post) => {
@@ -57,6 +59,12 @@ export const Post = () => {
 
         return articleEditable
     };
+
+    const renderCode = () => {
+        document.querySelectorAll('pre > code').forEach((ele) => {
+            window.Prism && window.Prism.highlightAllUnder(ele.closest('pre'));
+        });
+    }
 
     const bindPostImageModal = () => {
         if (imgModalBinded) return;
