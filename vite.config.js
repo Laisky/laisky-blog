@@ -19,13 +19,20 @@ export default defineConfig({
         },
     },
     css: {
-        // preprocessorOptions: {
-        //     scss: {
-        //         additionalData: `@import "src/styles/variables.scss";`
-        //     },
-        // },
+        preprocessorOptions: {
+            scss: {
+                // additionalData: `@import "src/scss/variables.scss";`
+            },
+        },
     },
     server: {
         port: 3000,
+        watch: {
+            // usePolling: true,
+            interval: 1000,
+            additionalPaths: (watcher) => {
+                watcher.add('./src/scss/**');
+            }
+        },
     },
 });

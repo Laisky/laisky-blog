@@ -27,6 +27,24 @@ const router = createBrowserRouter([
                 path: "pages/:nPage",
                 element: <Page />,
                 loader: pageLoader,
+                // children: [
+                //     {
+                //         element: <Sidebar />,
+                //         children: [
+                //             {
+                //                 element: <Categories />,
+                //                 loader: categoriesLoader,
+                //             },
+                //             {
+                //                 element: <Login />,
+                //             },
+                //             {
+                //                 element: <Tags />,
+                //                 loader: tagsLoader,
+                //             },
+                //         ],
+                //     },
+                // ],
             },
             // Uncomment and add loaders/actions if needed
             // {

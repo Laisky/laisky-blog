@@ -39,7 +39,40 @@
     }
 }
 
-nav.pagination {
+.sidebar {
+    max-width: 170px;
+    background-color: #F1F1F1;
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 10px;
+    font-size: small;
+
+    h2 {
+        font-size: large;
+    }
+
+    .categories {
+        li:not(:first-child) {
+            margin-top: 2px;
+        }
+    }
+
+    .tags {
+        .tag-labels {
+            font-size: x-small;
+
+            span {
+                cursor: pointer;
+                font-size: 90%;
+                float: left;
+                margin-right: 2px;
+                margin-bottom: 2px;
+            }
+        }
+    }
+}
+
+nav.footer {
     position: fixed;
     bottom: 5px;
 

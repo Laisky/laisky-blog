@@ -5,6 +5,7 @@ import { Link, useParams, useLoaderData } from 'react-router-dom';
 import { gql, request } from 'graphql-request'
 
 import { GraphqlAPI, formatTimeStr, getCurrentUsername } from '../library/base.jsx';
+import { Sidebar } from '../components/sidebar.jsx';
 
 
 export const loader = async ({ params }) => {
@@ -77,8 +78,9 @@ export const Page = () => {
     };
 
     return (
-        <>
-            <div className='container-fluid posts'>
+        <div className='row align-items-start'>
+            {/* blog posts */}
+            <div className='col-md-9 posts'>
                 {postsData.map((post) => (
                     <div className="container-fluid post" id={post.name} key={post.name}>
                         <h2 className="post-title">
@@ -98,10 +100,14 @@ export const Page = () => {
                 ))}
             </div>
 
+            {/* posts sidebar */}
+            <div className='col-md-3 sidebar'>
+                <Sidebar />
+            </div>
 
             {/* pagination as footer */}
-            <nav className="pagination">
-                <ul className="pagination">
+            <nav className="row footer">
+                <ul className="pagination col justify-content-center">
                     <li className={`page-item ${currentPage <= 1 ? 'disabled' : ''}`}>
                         <Link className="page-link" to={`/pages/${currentPage - 1}`} aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
@@ -133,6 +139,6 @@ export const Page = () => {
                     </li>
                 </ul>
             </nav>
-        </>
+        </div>
     )
 }
