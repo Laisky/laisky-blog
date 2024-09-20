@@ -111,3 +111,7 @@ export const getUserLanguage = async () => {
 export const formatTs = (ts) => {
     return moment(Number.parseInt(ts) * 1000).format('YYYY/MM/DD HH:MM');
 };
+
+export const formatTimeStr = (ts) => {
+    return moment(ts).format('YYYY/MM/DD HH:MM');
+}

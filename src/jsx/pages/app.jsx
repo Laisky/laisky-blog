@@ -9,8 +9,10 @@ const App = () => {
     const navigate = useNavigate();
 
     const scrollToTop = (evt) => {
-        if (evt.target.tagName.toUpperCase() !== 'DIV' || evt.target.className.startsWith('gsc-')) return;
-        document.body.scrollTo({ top: 0, behavior: 'smooth' }); // Use smooth scrolling for better UX
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     useEffect(() => {
@@ -86,14 +88,14 @@ const App = () => {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-top" id="headerbar" onClick={scrollToTop}>
+            <nav className="navbar navbar-expand-sm bg-body-tertiary fixed-top" id="headerbar" onClick={scrollToTop}>
                 <div className="container-fluid">
-                    <Link to="/pages/1/" className="navbar-brand">Laisky</Link>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                        <ul className="navbar-nav">
+                    <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+                        <Link to="/pages/1/" className="navbar-brand">Laisky</Link>
+                        <ul className="navbar-nav me-auto mb-lg-0">
                             <li className="nav-item">
                                 <Link to="/pages/1/" className={`nav-link ${getCurrentRouteName() === 'pages' ? 'active' : ''}`} aria-current="page">Blog</Link>
                             </li>
@@ -106,16 +108,16 @@ const App = () => {
                             <li className="nav-item">
                                 <a className="nav-link" href="https://status.laisky.com" target="_blank" rel="noopener noreferrer">Status</a>
                             </li>
-                            {dropdownBtn}
-                            <li className="nav-item">
-                                <Link to="https://s3.laisky.com/public/rss.xml" target="_blank" className="nav-link" rel="noopener noreferrer">
-                                    <img src="https://s3.laisky.com/uploads/images/rss.png" className="rss" alt="RSS" />
-                                </Link>
-                            </li>
                         </ul>
-                        <div className="navbar-form navbar-right nav-bar-search">
-                            <div dangerouslySetInnerHTML={{ __html: googleSearch }} />
-                        </div>
+                        <ul className="navbar-nav">
+                            {dropdownBtn}
+                            <div className="navbar-form navbar-right nav-bar-search">
+                                <div dangerouslySetInnerHTML={{ __html: googleSearch }} />
+                            </div>
+                            <Link to="https://s3.laisky.com/public/rss.xml" target="_blank" className="nav-link" rel="noopener noreferrer">
+                                <img src="https://s3.laisky.com/uploads/images/rss.png" className="rss" alt="RSS" />
+                            </Link>
+                        </ul>
                     </div>
                 </div>
             </nav>

@@ -4,7 +4,7 @@ import React from 'react';
 import { Link, useParams, useLoaderData } from 'react-router-dom';
 import { gql, request } from 'graphql-request'
 
-import { GraphqlAPI, formatTs, getCurrentUsername } from '../library/base.jsx';
+import { GraphqlAPI, formatTimeStr, getCurrentUsername } from '../library/base.jsx';
 
 
 export const loader = async ({ params }) => {
@@ -63,6 +63,7 @@ export const loader = async ({ params }) => {
 
 export const Page = () => {
     const { nPage } = useParams();
+    const currentPage = parseInt(nPage, 10);
     const { postsData, nPosts } = useLoaderData();
     const totalPage = Math.ceil(nPosts / 10);
 
@@ -76,56 +77,62 @@ export const Page = () => {
     };
 
     return (
-        <div className='container-fluid posts'>
-            {postsData.map((post) => (
-                <div className="container-fluid post" id={post.name} key={post.name}>
-                    <h2 className="post-title">
-                        <Link to={`/p/${post.name}/`}>{post.title}</Link>
-                    </h2>
-                    <div className="post-meta">
-                        <span>published: </span>
-                        <span>{formatTs(post.created_at)}</span>
+        <>
+            <div className='container-fluid posts'>
+                {postsData.map((post) => (
+                    <div className="container-fluid post" id={post.name} key={post.name}>
+                        <h2 className="post-title">
+                            <Link to={`/p/${post.name}/`}>{post.title}</Link>
+                        </h2>
+                        <div className="post-meta">
+                            <span>published: </span>
+                            <span>{formatTimeStr(post.created_at)}</span>
+                        </div>
+                        <div className="post-content">
+                            {post.content}
+                        </div>
+                        <div className="post-tail">
+                            {getPostTails(post)}
+                        </div>
                     </div>
-                    <div className="post-content">
-                        {post.content}
-                    </div>
-                    <div className="post-tail">
-                        {getPostTails(post)}
-                    </div>
-                </div>
-            ))}
+                ))}
+            </div>
+
 
             {/* pagination as footer */}
-            <nav aria-label="Page navigation example">
+            <nav className="pagination">
                 <ul className="pagination">
-                    <li className={`page-item ${nPage <= 1 ? 'disabled' : ''}`}>
-                        <Link className="page-link" to={`/page/${nPage - 1}`} aria-label="Previous">
+                    <li className={`page-item ${currentPage <= 1 ? 'disabled' : ''}`}>
+                        <Link className="page-link" to={`/pages/${currentPage - 1}`} aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </Link>
                     </li>
+
                     {Array.from({ length: totalPage }, (_, i) => {
                         const page = i + 1;
-                        const startPage = Math.max(1, nPage - 2);
-                        const endPage = Math.min(totalPage, nPage + 2);
+                        const startPage = Math.max(1, currentPage - 2);
+                        const endPage = Math.min(totalPage, currentPage + 2);
+
                         if (page >= startPage && page <= endPage) {
                             return (
-                                <li key={page} className={`page-item ${nPage == page ? 'active' : ''}`}>
-                                    <Link className="page-link" to={`/page/${page}`}>
+                                <li key={page} className={`page-item ${currentPage == page ? 'active' : ''}`}>
+                                    <Link className="page-link" to={`/pages/${page}`}>
                                         {page}
                                     </Link>
                                 </li>
                             );
                         }
+
                         return null;
                     })}
-                    <li className={`page-item ${nPage >= totalPage ? 'disabled' : ''}`}>
-                        <Link className="page-link" to={`/page/${parseInt(nPage) + 1}`} aria-label="Next">
+
+                    <li className={`page-item ${currentPage >= totalPage ? 'disabled' : ''}`}>
+                        <Link className="page-link" to={`/pages/${parseInt(currentPage) + 1}`} aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </Link>
                     </li>
                 </ul>
             </nav>
-
-        </div>
+        </>
     )
 }

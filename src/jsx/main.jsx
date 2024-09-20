@@ -8,10 +8,10 @@ import {
     Navigate,
 } from "react-router-dom";
 
-import "./scss/main.scss";
+import "../scss/main.scss";
 
-import { App } from "./jsx/pages/app";
-import { Page, loader as pageLoader } from "./jsx/pages/page";
+import { App } from "./pages/app";
+import { Page, loader as pageLoader } from "./pages/pages";
 
 
 const router = createBrowserRouter([
