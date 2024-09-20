@@ -4,7 +4,7 @@ import React from 'react';
 import { Link, useParams, useLoaderData } from 'react-router-dom';
 import { gql, request } from 'graphql-request'
 
-import { GraphqlAPI, formatTimeStr, getCurrentUsername } from '../library/base.jsx';
+import { GraphqlAPI, formatTimeStr, getCurrentUsername, getUserLanguage } from '../library/base.jsx';
 import { Sidebar } from '../components/sidebar.jsx';
 
 
@@ -14,7 +14,7 @@ export const loader = async ({ params }) => {
         const gqBody = gql`
             query {
                 BlogPosts(
-                    language: en_US
+                    language: ${await getUserLanguage()}
                     length: 600
                     page: {
                         page: ${params.nPage}
@@ -27,7 +27,7 @@ export const loader = async ({ params }) => {
                     type
                     title
                     menu
-                    content
+                    markdown
                     tags
                     category {
                         name
@@ -91,7 +91,7 @@ export const Page = () => {
                             <span>{formatTimeStr(post.created_at)}</span>
                         </div>
                         <div className="post-content">
-                            {post.content}
+                            {post.markdown}
                         </div>
                         <div className="post-tail">
                             {getPostTails(post)}

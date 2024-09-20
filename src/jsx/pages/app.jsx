@@ -9,6 +9,8 @@ const App = () => {
     const navigate = useNavigate();
 
     const scrollToTop = (evt) => {
+        if (evt.target.tagName.toUpperCase() != 'DIV' || evt.target.className.startsWith('gsc-')) return;
+
         evt.preventDefault();
         evt.stopPropagation();
 
@@ -22,24 +24,7 @@ const App = () => {
         };
 
         fetchUserLanguage();
-
-        const languageDropdownItems = document.querySelectorAll('.navbar-fixed-top .dropdown.language .dropdown-menu li');
-        languageDropdownItems.forEach((ele) => {
-            ele.addEventListener('click', async (evt) => {
-                const currentLang = await getUserLanguage();
-
-                let target = evt.target;
-                if (target.tagName !== 'LI') {
-                    target = target.parentElement;
-                }
-
-                if (currentLang === target.dataset.lang) return;
-
-                await setUserLanguage(target.dataset.lang);
-                navigate(0);
-            });
-        });
-    }, []); // Empty dependency array ensures this runs only once after mounting
+    }, []);
 
     const getCurrentRouteName = () => {
         // Extract the route name based on the current location
@@ -60,7 +45,7 @@ const App = () => {
         }
 
         const newLang = target.dataset.lang;
-        if (userLang === target.dataset.lang) return;
+        if (userLang === newLang) return;
 
         await setUserLanguage(newLang);
         setUserLang(newLang); // Update the state immediately

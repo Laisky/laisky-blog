@@ -32,7 +32,7 @@ export const getCurrentPathName = () => {
  */
 export const getCurrentUsername = () => {
     let token = getCookie('token'),
-    userinfo;
+        userinfo;
 
     try {
         userinfo = jwtDecode(token);
@@ -62,6 +62,7 @@ export const getCurrentUID = () => {
 };
 
 export const setUserLanguage = async (lang) => {
+    console.debug(`setUserLanguage: ${lang}`);
     try {
         await libs.KvSet(KvKeyLanguage, lang);
     } catch (e) {
@@ -86,11 +87,6 @@ export const getUserLanguage = async () => {
     // get lang from browser
     if (!lang) {
         lang = navigator.language || navigator.userLanguage;
-    }
-
-    // update kv storage
-    if (lang) {
-        await setUserLanguage(lang);
     }
 
     switch (lang) {

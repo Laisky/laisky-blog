@@ -157,7 +157,7 @@ export const KvRemoveListener = (keyPrefix, callbackName) => {
  */
 export const KvSet = async (key, val) => {
     initKv();
-    console.debug(`KvSet: ${key}`);
+    console.debug(`KvSet: ${key}: ${val}`);
     const marshaledVal = JSON.stringify(val);
 
     let oldVal;
