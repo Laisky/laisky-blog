@@ -23,7 +23,7 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Navigate to="/pages/1/" />,
+                element: <Navigate to="/pages/0/" />,
             },
             {
                 path: "pages/:nPage/",

@@ -29,6 +29,7 @@
 
             img {
                 max-width: 85%;
+                cursor: pointer;
             }
         }
 
@@ -38,6 +39,16 @@
 
         .page-nav {
             text-align: center;
+        }
+    }
+}
+
+#showImageModal {
+    .modal-dialog {
+        max-width: 90%;
+
+        .modal-body {
+            overflow: auto;
         }
     }
 }

@@ -109,7 +109,7 @@ export const Page = () => {
             <nav className="row footer">
                 <ul className="pagination col justify-content-center">
                     <li className={`page-item ${currentPage <= 1 ? 'disabled' : ''}`}>
-                        <Link className="page-link" to={`/pages/${currentPage - 1}`} aria-label="Previous">
+                        <Link className="page-link" to={`/pages/${currentPage - 1}/`} aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </Link>
                     </li>
@@ -122,7 +122,7 @@ export const Page = () => {
                         if (page >= startPage && page <= endPage) {
                             return (
                                 <li key={page} className={`page-item ${currentPage == page ? 'active' : ''}`}>
-                                    <Link className="page-link" to={`/pages/${page}`}>
+                                    <Link className="page-link" to={`/pages/${page}/`}>
                                         {page}
                                     </Link>
                                 </li>
@@ -133,7 +133,7 @@ export const Page = () => {
                     })}
 
                     <li className={`page-item ${currentPage >= totalPage ? 'disabled' : ''}`}>
-                        <Link className="page-link" to={`/pages/${parseInt(currentPage) + 1}`} aria-label="Next">
+                        <Link className="page-link" to={`/pages/${parseInt(currentPage) + 1}/`} aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </Link>
                     </li>

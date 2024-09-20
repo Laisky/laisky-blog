@@ -79,10 +79,10 @@ const App = () => {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                        <Link to="/pages/1/" className="navbar-brand">Laisky</Link>
+                        <Link to="/pages/0/" className="navbar-brand">Laisky</Link>
                         <ul className="navbar-nav me-auto mb-lg-0">
                             <li className="nav-item">
-                                <Link to="/pages/1/" className={`nav-link ${getCurrentRouteName() === 'pages' ? 'active' : ''}`} aria-current="page">Posts</Link>
+                                <Link to="/pages/0/" className={`nav-link ${getCurrentRouteName() === 'pages' ? 'active' : ''}`} aria-current="page">Posts</Link>
                             </li>
                             <li className="nav-item">
                                 <Link to="/about/" className={`nav-link ${getCurrentRouteName() === 'aboutme' ? 'active' : ''}`}>About</Link>

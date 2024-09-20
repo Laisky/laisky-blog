@@ -1,15 +1,33 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <title>Laisky's Blog</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="https://s3.laisky.com/static/favicon.ico" />
     <link rel="alternate" type="application/rss+xml" title="Articles" href="https://s3.laisky.com/public/rss.xml" />
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="root" class="container-fluid"></div>
     <script type="module" src="/src/jsx/main.jsx"></script>
-  </body>
+
+    <!-- Modal -->
+    <div class="modal fade" id="showImageModal" tabindex="-1" aria-labelledby="showImageModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>
