@@ -12,6 +12,7 @@ import "../scss/main.scss";
 
 import { App } from "./pages/app";
 import { Page, loader as pageLoader } from "./pages/pages";
+import { Post, loader as postLoader } from "./pages/post";
 
 
 const router = createBrowserRouter([
@@ -24,27 +25,14 @@ const router = createBrowserRouter([
                 element: <Navigate to="/pages/1/" />,
             },
             {
-                path: "pages/:nPage",
+                path: "pages/:nPage/",
                 element: <Page />,
                 loader: pageLoader,
-                // children: [
-                //     {
-                //         element: <Sidebar />,
-                //         children: [
-                //             {
-                //                 element: <Categories />,
-                //                 loader: categoriesLoader,
-                //             },
-                //             {
-                //                 element: <Login />,
-                //             },
-                //             {
-                //                 element: <Tags />,
-                //                 loader: tagsLoader,
-                //             },
-                //         ],
-                //     },
-                // ],
+            },
+            {
+                path: "p/:name/",
+                element: <Post />,
+                loader: postLoader,
             },
             // Uncomment and add loaders/actions if needed
             // {

@@ -26,6 +26,10 @@
             .hint {
                 margin: 10px;
             }
+
+            img {
+                max-width: 80%;
+            }
         }
 
         .post-sidebar {
@@ -47,6 +51,7 @@
     font-size: small;
     position: fixed;
     right: 5%;
+
     h2 {
         font-size: large;
     }

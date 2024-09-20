@@ -78,7 +78,7 @@ export const Page = () => {
     };
 
     return (
-        <div className='row align-items-start'>
+        <div id="pages" className='row align-items-start'>
             {/* blog posts */}
             <div className='col-md-9 posts'>
                 {postsData.map((post) => (
