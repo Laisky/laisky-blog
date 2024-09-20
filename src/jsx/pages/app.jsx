@@ -82,7 +82,7 @@ const App = () => {
                         <Link to="/pages/1/" className="navbar-brand">Laisky</Link>
                         <ul className="navbar-nav me-auto mb-lg-0">
                             <li className="nav-item">
-                                <Link to="/pages/1/" className={`nav-link ${getCurrentRouteName() === 'pages' ? 'active' : ''}`} aria-current="page">Blog</Link>
+                                <Link to="/pages/1/" className={`nav-link ${getCurrentRouteName() === 'pages' ? 'active' : ''}`} aria-current="page">Posts</Link>
                             </li>
                             <li className="nav-item">
                                 <Link to="/about/" className={`nav-link ${getCurrentRouteName() === 'aboutme' ? 'active' : ''}`}>About</Link>

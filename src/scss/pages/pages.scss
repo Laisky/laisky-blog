@@ -47,11 +47,6 @@
     font-size: small;
     position: fixed;
     right: 5%;
-
-    @media (max-width: 768px) {
-        display: none;
-    }
-
     h2 {
         font-size: large;
     }
