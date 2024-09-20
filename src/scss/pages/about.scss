@@ -1,0 +1,37 @@
+@import '../variables.scss';
+
+#about {
+    border-radius: 4px;
+    background-color: $background-color;
+    position: relative;
+    max-width: 800px;
+    padding-bottom: 10px;
+
+    .tab-pane {
+        padding: 10px;
+        margin-bottom: 10px;
+
+        h2 {
+            margin-top: 0;
+            font-size: 2em;
+            text-align: center;
+        }
+
+        &.profile {
+            p {
+                margin: 0;
+            }
+        }
+    }
+
+    #me {
+        .pay {
+            img {
+                float: left;
+                margin-left: 5px;
+                max-width: 200px;
+                max-height: 200px;
+            }
+        }
+    }
+}

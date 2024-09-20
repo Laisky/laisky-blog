@@ -13,6 +13,7 @@ import "../scss/main.scss";
 import { App } from "./pages/app";
 import { Page, loader as pageLoader } from "./pages/pages";
 import { Post, loader as postLoader } from "./pages/post";
+import { About } from "./pages/about";
 
 
 const router = createBrowserRouter([
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
                 path: "p/:name/",
                 element: <Post />,
                 loader: postLoader,
+            },
+            {
+                path: "about/",
+                element: <About />,
             },
             // Uncomment and add loaders/actions if needed
             // {

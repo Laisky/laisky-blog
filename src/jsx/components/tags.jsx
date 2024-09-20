@@ -13,7 +13,7 @@ export const Tags = () => {
             const tagsData = await loader();
             setTags(tagsData);
         })();
-    });
+    }, []);
 
     const getTagClickHandler = (tag) => () => {
         if (!google || !google.search.cse.element.getElement('post_search')) return;

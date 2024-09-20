@@ -1,8 +1,10 @@
+@import '../variables.scss';
+
 .posts {
     letter-spacing: normal;
     max-width: 850px;
     margin-bottom: 10px;
-    background-color: #F1F1F1;
+    background-color: $background-color;
     height: inherit;
     margin-bottom: 65px;
 
@@ -44,7 +46,7 @@
 
 .sidebar {
     max-width: 170px;
-    background-color: #F1F1F1;
+    background-color: $background-color;
     border-radius: 5px;
     padding: 5px;
     // margin-left: 10px;
