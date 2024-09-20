@@ -1,10 +1,9 @@
 .posts {
     letter-spacing: normal;
-    max-width: 800px;
+    max-width: 850px;
     margin-bottom: 10px;
     background-color: #F1F1F1;
     height: inherit;
-    overflow-y: hidden;
     margin-bottom: 65px;
 
     .post {
@@ -44,8 +43,14 @@
     background-color: #F1F1F1;
     border-radius: 5px;
     padding: 5px;
-    margin-left: 10px;
+    // margin-left: 10px;
     font-size: small;
+    position: fixed;
+    right: 5%;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 
     h2 {
         font-size: large;
