@@ -115,9 +115,9 @@ export const Page = () => {
                     </li>
 
                     {Array.from({ length: totalPage }, (_, i) => {
-                        const page = i + 1;
-                        const startPage = Math.max(1, currentPage - 2);
-                        const endPage = Math.min(totalPage, currentPage + 2);
+                        const page = i;
+                        const startPage = Math.max(0, currentPage - 3);
+                        const endPage = Math.min(totalPage, currentPage + 3);
 
                         if (page >= startPage && page <= endPage) {
                             return (
