@@ -13,6 +13,7 @@ import { Page, loader as pageLoader } from "./pages/pages";
 import { Post, loader as postLoader } from "./pages/post";
 import { About } from "./pages/about";
 import { PostEdit, loader as postEditLoader } from "./pages/edit";
+import { Login } from "./pages/login";
 
 
 const router = createBrowserRouter([
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
             {
                 path: "about/",
                 element: <About />,
+            },
+            {
+                path: "login/",
+                element: <Login />,
             },
             // Uncomment and add loaders/actions if needed
             // {
