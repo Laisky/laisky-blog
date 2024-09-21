@@ -5,20 +5,21 @@ import moment from 'moment';
 
 import * as libs from './libs';
 
-export const KvKeyLanguage = 'language';
 export const GraphqlAPI = 'https://gq.laisky.com/query/';
 
+export const KvKeyLanguage = 'language';
+export const KvKeyAuthUser = 'auth_user';
 
-/**
- * Get the cookie value by name.
- *
- * @returns {string} The cookie value.
- */
-export const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
+// /**
+//  * Get the cookie value by name.
+//  *
+//  * @returns {string} The cookie value.
+//  */
+// export const getCookie = (name) => {
+//     const value = `; ${document.cookie}`;
+//     const parts = value.split(`; ${name}=`);
+//     if (parts.length === 2) return parts.pop().split(';').shift();
+// }
 
 
 export const getCurrentPathName = () => {
@@ -30,36 +31,15 @@ export const getCurrentPathName = () => {
  *
  * @returns {string|null} The username or null if not available.
  */
-export const getCurrentUsername = () => {
-    let token = getCookie('token'),
-        userinfo;
-
-    try {
-        userinfo = jwtDecode(token);
-        return userinfo["display_name"];
-    } catch (e) {
-        console.warn(`getCurrentUsername: ${e}`);
+export const getCurrentUsername = async () => {
+    let userinfo =  await libs.KvGet(KvKeyAuthUser);
+    if (!userinfo) {
         return;
     }
+
+    return userinfo['display_name'];
 };
 
-/**
- * Get the current user ID.
- *
- * @returns {string|null} The user ID or null if not available.
- */
-export const getCurrentUID = () => {
-    let token = getCookie('token'),
-        userinfo;
-
-    try {
-        userinfo = jwtDecode(token);
-        return userinfo['uid'];
-    } catch (e) {
-        console.warn(`getCurrentUID: ${e}`);
-        return;
-    }
-};
 
 export const setUserLanguage = async (lang) => {
     console.debug(`setUserLanguage: ${lang}`);

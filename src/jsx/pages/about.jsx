@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { useState } from 'react';
-import { Link, useParams, useLoaderData } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 export const About = () => {

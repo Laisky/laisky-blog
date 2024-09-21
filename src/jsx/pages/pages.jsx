@@ -1,11 +1,11 @@
 'use strict';
 
-import React from 'react';
-import { Link, useParams, useLoaderData } from 'react-router-dom';
-import { gql, request } from 'graphql-request'
+import { gql, request } from 'graphql-request';
+import React, { useEffect, useState } from 'react';
+import { Link, useLoaderData, useParams } from 'react-router-dom';
 
-import { GraphqlAPI, formatTimeStr, getCurrentUsername, getUserLanguage } from '../library/base.jsx';
 import { Sidebar } from '../components/sidebar.jsx';
+import { GraphqlAPI, formatTimeStr, getCurrentUsername, getUserLanguage } from '../library/base.jsx';
 
 
 export const loader = async ({ params }) => {
@@ -67,21 +67,13 @@ export const Page = () => {
     const currentPage = parseInt(nPage, 10);
     const { postsData, nPosts } = useLoaderData();
     const totalPage = Math.ceil(nPosts / 10);
+    const [ postsContent, setPostsContent ] = useState(null);
 
-    const getPostTails = (post) => {
-        let articleEditable;
-        if (getCurrentUsername()) {
-            articleEditable = <Link to={`/amend/${post.name}/`}>编辑</Link>;
-        }
-
-        return articleEditable
-    };
-
-    return (
-        <div id="pages" className='row align-items-start'>
-            {/* blog posts */}
-            <div className='col-md-9 posts'>
-                {postsData.map((post) => (
+    useEffect(() => {
+        const generatePostsContent = async () => {
+            const content = await Promise.all(postsData.map(async (post) => {
+                const postTail = await getPostTails(post);
+                return (
                     <div className="container-fluid post" id={post.name} key={post.name}>
                         <h2 className="post-title">
                             <Link to={`/p/${post.name}/`}>{post.title}</Link>
@@ -94,10 +86,32 @@ export const Page = () => {
                             {post.markdown}
                         </div>
                         <div className="post-tail">
-                            {getPostTails(post)}
+                            {postTail}
                         </div>
                     </div>
-                ))}
+                );
+            }));
+            setPostsContent(content);
+        };
+
+        generatePostsContent();
+    }, [postsData]);
+
+
+    const getPostTails = async (post) => {
+        let articleEditable;
+        if (await getCurrentUsername()) {
+            articleEditable = <Link to={`/amend/${post.name}/`}>编辑</Link>;
+        }
+
+        return articleEditable
+    };
+
+    return (
+        <div id="pages" className='row align-items-start'>
+            {/* blog posts */}
+            <div className='col-md-9 posts'>
+                {postsContent}
             </div>
 
             {/* posts sidebar */}

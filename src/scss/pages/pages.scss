@@ -18,6 +18,12 @@
         font-size: large;
     }
 
+    .admin {
+        p {
+            margin-bottom: 2px;
+        }
+    }
+
     .categories {
         li:not(:first-child) {
             margin-top: 2px;

@@ -3,8 +3,6 @@ import * as ReactDOM from "react-dom/client";
 import {
     createBrowserRouter,
     RouterProvider,
-    createRoutesFromElements,
-    Route,
     Navigate,
 } from "react-router-dom";
 
@@ -14,6 +12,7 @@ import { App } from "./pages/app";
 import { Page, loader as pageLoader } from "./pages/pages";
 import { Post, loader as postLoader } from "./pages/post";
 import { About } from "./pages/about";
+import { PostEdit, loader as postEditLoader } from "./pages/edit";
 
 
 const router = createBrowserRouter([
@@ -34,6 +33,11 @@ const router = createBrowserRouter([
                 path: "p/:name/",
                 element: <Post />,
                 loader: postLoader,
+            },
+            {
+                path: "edit/:name/",
+                element: <PostEdit />,
+                loader: postEditLoader,
             },
             {
                 path: "about/",

@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams, useLoaderData } from 'react-router-dom';
 import { gql, request } from 'graphql-request'
 import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
@@ -44,20 +44,22 @@ export const loader = async ({ params }) => {
 export const Post = () => {
     const { name } = useParams();
     const post = useLoaderData();
+    const { postTail, setPostTail } = useState('');
     let imgModalBinded = false;
 
     useEffect(() => {
+        loadPostTails();
         bindPostImageModal();
         renderCode();
     }, []);
 
-    const getPostTails = (post) => {
+    const loadPostTails = async () => {
         let articleEditable;
         if (getCurrentUsername()) {
             articleEditable = <Link to={`/amend/${post.name}/`}>编辑</Link>;
         }
 
-        return articleEditable
+        setPostTail(articleEditable);
     };
 
     const renderCode = () => {
@@ -94,7 +96,6 @@ export const Post = () => {
 
     return (
         <div id="post" className='row align-items-start'>
-            {/* blog posts */}
             <div className='col-md-9 posts'>
                 <div className="container-fluid post" id={post.name} key={post.name}>
                     <h2 className="post-title">
@@ -107,7 +108,7 @@ export const Post = () => {
                     <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
                     </div>
                     <div className="post-tail">
-                        {getPostTails(post)}
+                        {postTail}
                     </div>
                 </div>
             </div>
