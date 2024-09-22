@@ -90,8 +90,8 @@ export const Post = () => {
 
     const loadPostTails = async () => {
         let articleEditable;
-        if (getCurrentUsername()) {
-            articleEditable = <Link to={`/amend/${params.name}/`}>编辑</Link>;
+        if (await getCurrentUsername()) {
+            articleEditable = <Link to={`/amend/${params.name}/`}>Edit</Link>;
         }
 
         return articleEditable;

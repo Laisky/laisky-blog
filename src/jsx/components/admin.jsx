@@ -1,12 +1,15 @@
 'use strict';
 
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, useLoaderData } from 'react-router-dom';
+import { Link, useParams, useLoaderData, useNavigate } from 'react-router-dom';
 
-import { getCurrentUsername } from '../library/base';
+import { getCurrentUsername, KvKeyAuthUser } from '../library/base';
+import { KvDel } from '../library/libs';
 
 export const Admin = () => {
     const [loginBtn, setLoginBtn] = useState('');
+    const [username, setUsername] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
@@ -16,9 +19,10 @@ export const Admin = () => {
             if (username) {
                 element = (
                     <div>
+                        <p>Welcome, {username}</p>
                         <p><Link to="/publish/">Publish</Link></p>
                         <p><Link to="/admin/">Manage</Link></p>
-                        <p><Link>Logout</Link></p>
+                        <p><Link onClick={logoutHandler}>Logout</Link></p>
                     </div>
                 );
             } else {
@@ -26,8 +30,17 @@ export const Admin = () => {
             }
 
             setLoginBtn(element);
+            setUsername(username);
         })();
-    }, []);
+    }, [username]);
+
+    const logoutHandler = async (evt) => {
+        evt.preventDefault();
+        await KvDel(KvKeyAuthUser);
+        setUsername(null);
+        navigate(0);
+    }
+
 
     return (
         <section className="row console admin">

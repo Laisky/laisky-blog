@@ -22,9 +22,9 @@ export const Login = () => {
                 UserLogin(
                     account: "${email}"
                     password: "${password}"
-                )
-            } {
+                ) {
                 token
+                }
             }
         `;
         const resp = await request(GraphqlAPI, gqBody);

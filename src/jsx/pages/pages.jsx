@@ -5,13 +5,19 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLoaderData, useParams } from 'react-router-dom';
 
 import { Sidebar } from '../components/sidebar.jsx';
-import { GraphqlAPI, KvKeyLanguage, formatTimeStr, getCurrentUsername, getUserLanguage } from '../library/base.jsx';
-import { KvAddListener, KvOp } from '../library/libs.js';
+import { DurationDay, DurationWeek, GraphqlAPI, KvKeyLanguage, KvKeyPrefixCache, formatTimeStr, getCurrentUsername, getUserLanguage } from '../library/base.jsx';
+import { KvAddListener, KvGet, KvOp, KvSet, SHA256, SetCache, GetCache } from '../library/libs.js';
 
 
 export const loader = async ({ params }) => {
+    const cacheKey = KvKeyPrefixCache + await SHA256(`${await getUserLanguage()}:${params.nPage}`);
+    const cacheData = await GetCache(cacheKey);
+    if (cacheData) {
+        return cacheData;
+    }
+
     let postsData, nPosts;
-    const f1 = (async() => {
+    const f1 = (async () => {
         const gqBody = gql`
             query {
                 BlogPosts(
@@ -46,7 +52,7 @@ export const loader = async ({ params }) => {
         postsData = resp.BlogPosts;
     })();
 
-    const f2 = (async() => {
+    const f2 = (async () => {
         const gqBody = gql`
             query postinfo {
                 BlogPostInfo {
@@ -60,12 +66,17 @@ export const loader = async ({ params }) => {
     })();
 
     await Promise.all([f1, f2]);
-    return { postsData, nPosts };
+    const result = { postsData, nPosts };
+
+    // update cache
+    await SetCache(cacheKey, result, DurationDay);
+
+    return result;
 }
 
 export const Page = () => {
-    const [ content, setContent ] = useState(null);
-    const  params  = useParams();
+    const [content, setContent] = useState(null);
+    const params = useParams();
 
     useEffect(() => {
         generatePostsContent();
@@ -101,7 +112,7 @@ export const Page = () => {
             postsContent.push(postElement);
         }
 
-        const cnt =  <>
+        const cnt = <>
             {/* blog posts */}
             <div className='col-md-9 posts'>
                 {postsContent}
@@ -164,7 +175,7 @@ export const Page = () => {
     const getPostTails = async (post) => {
         let articleEditable;
         if (await getCurrentUsername()) {
-            articleEditable = <Link to={`/amend/${post.name}/`}>编辑</Link>;
+            articleEditable = <Link to={`/amend/${post.name}/`}>Edit</Link>;
         }
 
         return articleEditable

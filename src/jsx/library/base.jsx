@@ -9,6 +9,10 @@ export const GraphqlAPI = 'https://gq.laisky.com/query/';
 
 export const KvKeyLanguage = 'language';
 export const KvKeyAuthUser = 'auth_user';
+export const KvKeyPrefixCache = '@cache_';
+
+export const DurationDay = 24 * 60 * 60 * 1000;
+export const DurationWeek = 7 * DurationDay;
 
 // /**
 //  * Get the cookie value by name.

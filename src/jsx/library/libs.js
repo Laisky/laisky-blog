@@ -2,7 +2,7 @@
 
 import PouchDB from 'pouchdb';
 import * as marked from 'marked';
-import * as sha1 from 'sha1';
+import { sha256 } from 'js-sha256';
 import * as bootstrap from 'bootstrap';
 
 /**
@@ -393,15 +393,15 @@ export const RenderStr2HTML = (str) => {
         .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
 };
 
-export const getSHA1 = async (str) => {
+export const SHA256 = async (str) => {
     // http do not support crypto
     if (!crypto || !crypto.subtle) { // http do not support crypto
-        return sha1(str);
+        return sha256(str);
     }
 
     const encoder = new TextEncoder();
     const data = encoder.encode(str);
-    const hash = await crypto.subtle.digest('SHA-1', data);
+    const hash = await crypto.subtle.digest('SHA-256', data);
     return Array.from(new Uint8Array(hash))
         .map(b => b.toString(16).padStart(2, '0'))
         .join('');
@@ -589,4 +589,37 @@ export const DownloadImage = (b64EncodedImage) => {
  */
 export const IsTouchDevice = () => {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+}
+
+
+/**
+ * Get current username
+ *
+ * @param {string} key
+ * @param {string} val
+ * @param {number} ttlSeconds
+ */
+export const SetCache = async (key, val, ttlSeconds) => {
+    const cache = {
+        val,
+        expireAt: Date.now() + ttlSeconds * 1000
+    };
+
+    await KvSet(key, cache);
+};
+
+/**
+ * Get cache
+ *
+ * @param {string} key
+ * @returns null if not found or expired
+ */
+export const GetCache = async (key) => {
+    const cache = await KvGet(key);
+    if (!cache || cache.expireAt < Date.now()) {
+        await KvDel(key);
+        return null;
+    }
+
+    return cache.val;
 }
