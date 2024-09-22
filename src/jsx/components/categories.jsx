@@ -15,11 +15,11 @@ export const Categories = () => {
             let html = (
                 <ul>
                     <li key="all">
-                        <Link to="/cate/">All</Link>
+                        <Link to="/categories/all/">All</Link>
                     </li>
                     {categoriesData && categoriesData.map(cate => (
                         <li key={cate.url}>
-                            <Link to={`/cate/${cate.url}/`}>{cate.name}</Link>
+                            <Link to={`/categories/${cate.url}/`}>{cate.name}</Link>
                         </li>
                     ))}
                 </ul>

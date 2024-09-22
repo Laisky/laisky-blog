@@ -2,18 +2,19 @@ import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import {
     createBrowserRouter,
-    RouterProvider,
     Navigate,
+    RouterProvider,
 } from "react-router-dom";
 
 import "../scss/main.scss";
 
-import { App } from "./pages/app";
-import { Page, loader as pageLoader } from "./pages/pages";
-import { Post, loader as postLoader } from "./pages/post";
 import { About } from "./pages/about";
+import { App } from "./pages/app";
 import { PostEdit, loader as postEditLoader } from "./pages/edit";
 import { Login } from "./pages/login";
+import { Page, loader as pageLoader } from "./pages/pages";
+import { Post, loader as postLoader } from "./pages/post";
+import { Categories, loader as categoriesLoader } from "./pages/categories";
 
 
 const router = createBrowserRouter([
@@ -48,55 +49,11 @@ const router = createBrowserRouter([
                 path: "login/",
                 element: <Login />,
             },
-            // Uncomment and add loaders/actions if needed
-            // {
-            //   path: "publish",
-            //   element: <Publish />,
-            // },
-            // {
-            //   path: "amend/:postname",
-            //   element: <Amend />,
-            // },
-            // {
-            //   path: "p/:pid",
-            //   element: <Post />,
-            // },
-            // {
-            //   path: "cate/:cateURL?",
-            //   element: <PostCategories />,
-            // },
-            // {
-            //   path: "about",
-            //   element: <About />,
-            // },
-            // {
-            //   path: "login",
-            //   element: <Login />,
-            // },
-            // {
-            //   path: "404.html",
-            //   element: <PageNotFound />,
-            // },
-            // {
-            //   path: "admin",
-            //   element: <AdminPage />,
-            //   children: [
-            //     {
-            //       path: "cate",
-            //       element: <CategoriesConsole />,
-            //     },
-            //   ],
-            // },
-            // {
-            //   path: "twitter",
-            //   element: <TwitterPage />,
-            //   children: [
-            //     {
-            //       path: "status/:status_id",
-            //       element: <Tweet />,
-            //     },
-            //   ],
-            // },
+            {
+                path: "categories/:category",
+                element: <Categories />,
+                loader: categoriesLoader,
+            },
         ],
     },
 ]);

@@ -117,7 +117,7 @@ const App = () => {
             </div>
 
             {/* page content */}
-            <div className="container" id="container">
+            <div className="container-fluid" id="container">
                 <Outlet />
             </div>
         </>
