@@ -1,3 +1,9 @@
+#post {
+    overflow-y: auto;
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .posts {
     letter-spacing: normal;
     max-width: 850px;
@@ -5,6 +11,8 @@
     background-color: $background-color;
     height: inherit;
     margin-bottom: 65px;
+    padding: 10px;
+    border-radius: 5px;
 
     .post {
         &:not(:first-child) {

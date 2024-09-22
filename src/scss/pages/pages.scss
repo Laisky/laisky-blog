@@ -1,18 +1,20 @@
 @import '../variables.scss';
 
-.sidebar {
-    max-width: 170px;
-    background-color: $background-color;
-    border-radius: 5px;
-    padding: 5px;
-    // margin-left: 10px;
-    font-size: small;
-    position: fixed;
-    right: 5%;
+#pages {
+    overflow-y: auto;
+    display: flex;
+    justify-content: space-evenly;
+}
 
-    @media (max-width: 768px) {
-        display: none;
-    }
+.sidebar {
+    position: sticky;
+    top: 0;
+    font-size: small;
+    // height: 100vh; /* Full viewport height */
+    padding-top: 20px;
+    background-color: $background-color;
+    margin-left: 20px;
+    border-radius: 5px;
 
     h2 {
         font-size: large;

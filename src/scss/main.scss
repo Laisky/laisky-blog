@@ -5,6 +5,10 @@
 @import "./pages/about.scss";
 @import "./pages/categories.scss";
 
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
 
 body {
     font-family: system-ui, -apple-system, Microsoft YaHei, Helvetica Neue, Helvetica, Segoe UI, Arial, freesans, sans-serif;
@@ -15,8 +19,6 @@ body {
     word-wrap: break-word;
     letter-spacing: 1.5px;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-    overflow-y: auto;
 
     #root {
         height: inherit;

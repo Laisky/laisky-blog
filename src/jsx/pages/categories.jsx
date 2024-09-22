@@ -4,12 +4,18 @@ import { gql, request } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
 import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 
-import { GraphqlAPI, formatTimeStr, getUserLanguage, KvKeyLanguage } from '../library/base.jsx';
+import { GraphqlAPI, formatTimeStr, getUserLanguage, KvKeyLanguage, KvKeyPrefixCache, DurationDay } from '../library/base.jsx';
 import { Sidebar } from '../components/sidebar.jsx';
-import { KvAddListener, KvOp } from '../library/libs.js';
+import { GetCache, KvAddListener, KvOp, SetCache, SHA256 } from '../library/libs.js';
 
 
 export const loader = async ({ params }) => {
+    const cacheKey = KvKeyPrefixCache + await SHA256(`${await getUserLanguage()}:${params.category}`);
+    const cacheData = await GetCache(cacheKey);
+    if (cacheData) {
+        return cacheData;
+    }
+
     let gqBody;
     if (params.category === 'all') {
         gqBody = gql`
@@ -47,9 +53,14 @@ export const loader = async ({ params }) => {
     }
 
     const resp = await request(GraphqlAPI, gqBody);
-    return {
+    const result =  {
         postsData: resp.BlogPosts,
     };
+
+    // update cache
+    SetCache(cacheKey, result, DurationDay);
+
+    return result;
 }
 
 export const Categories = () => {
@@ -88,12 +99,12 @@ export const Categories = () => {
     return (
         <div id="categories" className='row align-items-start'>
             {/* blog posts */}
-            <div className='col-md-9 posts'>
+            <div className='col-md-8 col-lg-9 posts'>
                 {content}
             </div>
 
             {/* posts sidebar */}
-            <div className='col-md-3 sidebar'>
+            <div className='d-none d-md-block col-md-3 col-lg-2 sidebar'>
                 <Sidebar />
             </div>
         </div>

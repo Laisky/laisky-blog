@@ -114,12 +114,12 @@ export const Page = () => {
 
         const cnt = <>
             {/* blog posts */}
-            <div className='col-md-9 posts'>
+            <div className='col-md-8 col-lg-9 posts'>
                 {postsContent}
             </div>
 
             {/* posts sidebar */}
-            <div className='col-md-3 sidebar'>
+            <div className='d-none d-md-block col-md-3 col-lg-2 sidebar'>
                 <Sidebar />
             </div>
 
