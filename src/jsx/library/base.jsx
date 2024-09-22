@@ -3,7 +3,7 @@
 import { jwtDecode } from "jwt-decode";
 import moment from 'moment';
 
-import * as libs from './libs';
+import { KvGet, KvSet } from './libs.js';
 
 export const GraphqlAPI = 'https://gq.laisky.com/query/';
 
@@ -32,7 +32,7 @@ export const getCurrentPathName = () => {
  * @returns {string|null} The username or null if not available.
  */
 export const getCurrentUsername = async () => {
-    let userinfo =  await libs.KvGet(KvKeyAuthUser);
+    let userinfo =  await KvGet(KvKeyAuthUser);
     if (!userinfo) {
         return;
     }
@@ -44,7 +44,7 @@ export const getCurrentUsername = async () => {
 export const setUserLanguage = async (lang) => {
     console.debug(`setUserLanguage: ${lang}`);
     try {
-        await libs.KvSet(KvKeyLanguage, lang);
+        await KvSet(KvKeyLanguage, lang);
     } catch (e) {
         console.warn(`setUserLanguage: ${e}`);
     }
@@ -61,7 +61,7 @@ export const getUserLanguage = async () => {
 
     // get lang from kv storage
     if (!lang) {
-        lang = await libs.KvGet(KvKeyLanguage);
+        lang = await KvGet(KvKeyLanguage);
     }
 
     // get lang from browser

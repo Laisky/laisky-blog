@@ -6,7 +6,7 @@ import { getUserLanguage, setUserLanguage } from "../library/base";
 const App = () => {
     const [userLang, setUserLang] = useState(null);
     const location = useLocation();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const scrollToTop = (evt) => {
         if (evt.target.tagName.toUpperCase() != 'DIV' || evt.target.className.startsWith('gsc-')) return;
@@ -47,7 +47,7 @@ const App = () => {
 
         await setUserLanguage(newLang);
         setUserLang(newLang); // Update the state immediately
-        navigate(0); // Refresh the page to apply the new language
+        // navigate(0); // Refresh the page to apply the new language
     };
 
     const googleSearch = '<gcse:search className="google-search" gname="post_search" enableAutoComplete="true"></gcse:search>';

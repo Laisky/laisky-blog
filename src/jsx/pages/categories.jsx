@@ -2,10 +2,11 @@
 
 import { gql, request } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
-import { Link, useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 
-import { GraphqlAPI, formatTimeStr, getUserLanguage } from '../library/base.jsx';
+import { GraphqlAPI, formatTimeStr, getUserLanguage, KvKeyLanguage } from '../library/base.jsx';
 import { Sidebar } from '../components/sidebar.jsx';
+import { KvAddListener, KvOp } from '../library/libs.js';
 
 
 export const loader = async ({ params }) => {
@@ -52,25 +53,37 @@ export const loader = async ({ params }) => {
 }
 
 export const Categories = () => {
-    const [ content, setContent ] = useState(null);
-    const { postsData } = useLoaderData();
+    const [content, setContent] = useState(null);
+    const params = useParams();
 
     useEffect(() => {
-        const generatecontent = async () => {
-            const content = await Promise.all(postsData.map(async (post) => {
-                return (
-                    <div className="container-fluid post" id={post.name} key={post.name}>
-                        <span>{formatTimeStr(post.created_at)}</span>
-                        <Link to={`/p/${post.name}/`}>{post.title}</Link>
-                    </div>
-                );
-            }));
+        updateContent();
+        watchLanguageChange();
+    }, []);
 
-            setContent(content);
-        };
+    const updateContent = async () => {
+        const { postsData } = await loader({ params });
+        const content = await Promise.all(postsData.map(async (post) => {
+            return (
+                <div className="container-fluid post" id={post.name} key={post.name}>
+                    <span>{formatTimeStr(post.created_at)}</span>
+                    <Link to={`/p/${post.name}/`}>{post.title}</Link>
+                </div>
+            );
+        }));
 
-        generatecontent();
-    }, [postsData]);
+        setContent(content);
+    };
+
+    const watchLanguageChange = () => {
+        KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
+            if (op !== KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+                return;
+            }
+
+            updateContent();
+        }, "page_categories")
+    };
 
     return (
         <div id="categories" className='row align-items-start'>
