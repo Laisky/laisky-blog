@@ -55,8 +55,8 @@ export const About = () => {
                 <div role="tabpanel" aria-labelledby="site-tab" className={`tab-pane ${activeTab === 'site' ? 'active' : ''}`} id="site">
                     <article>
                         <h2>About this site</h2>
-                        <p>built with Nginx & Tornado & GraphQL & MongoDB (long neglected)</p>
-                        <p>Backend: <Link target="_blank" to="https://github.com/Laisky/laisky-blog">https://github.com/Laisky/laisky-blog</Link></p>
+                        <p>built with React & GraphQL & MongoDB</p>
+                        <p>Backend: <Link target="_blank" to="https://github.com/Laisky/laisky-blog/tree/v2">https://github.com/Laisky/laisky-blog</Link></p>
                         <p>GraphQL UI: <Link target="_blank" to="https://gq.laisky.com/ui/">https://gq.laisky.com/ui/</Link></p>
                         <p>GraphQL Repo: <Link target="_blank" to="https://github.com/Laisky/laisky-blog-graphql">https://github.com/Laisky/laisky-blog-graphql</Link></p>
                     </article>
