@@ -6,7 +6,8 @@ import { gql, request } from 'graphql-request'
 import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
 import * as bootstrap from 'bootstrap'
 
-import { GraphqlAPI, formatTimeStr, getCurrentUsername, getUserLanguage } from '../library/base.jsx';
+import { GraphqlAPI, KvKeyLanguage, formatTimeStr, getCurrentUsername, getUserLanguage } from '../library/base.jsx';
+import { KvAddListener, KvOp } from '../library/libs.js';
 
 
 export const loader = async ({ params }) => {
@@ -42,24 +43,58 @@ export const loader = async ({ params }) => {
 }
 
 export const Post = () => {
-    const { name } = useParams();
-    const post = useLoaderData();
-    const { postTail, setPostTail } = useState('');
+    const params = useParams();
+    const [content, setContent] = useState('');
+    const [language, setLanguage] = useState(null);
     let imgModalBinded = false;
 
     useEffect(() => {
-        loadPostTails();
-        bindPostImageModal();
-        renderCode();
-    }, []);
+        (async () => {
+            const post = await loader({ params });
+            const postTail = await loadPostTails();
+
+            bindPostImageModal();
+            renderCode();
+            watchLanguageChange()
+
+            const content = <div className='col-md-9 posts'>
+                <div className="container-fluid post" id={post.name} key={post.name}>
+                    <h2 className="post-title">
+                        <Link to={`/p/${post.name}/`}>{post.title}</Link>
+                    </h2>
+                    <div className="post-meta">
+                        <span>published_at: </span>
+                        <span className="time">{formatTimeStr(post.created_at)}</span>
+                    </div>
+                    <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
+                    </div>
+                    <div className="post-tail">
+                        {postTail}
+                    </div>
+                </div>
+            </div>;
+
+            setContent(content);
+        })();
+    }, [params.name, language]);
+
+    const watchLanguageChange = () => {
+        KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
+            if (op !== KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+                return;
+            }
+
+            setLanguage(newVal);
+        }, "page_post")
+    };
 
     const loadPostTails = async () => {
         let articleEditable;
         if (getCurrentUsername()) {
-            articleEditable = <Link to={`/amend/${post.name}/`}>编辑</Link>;
+            articleEditable = <Link to={`/amend/${params.name}/`}>编辑</Link>;
         }
 
-        setPostTail(articleEditable);
+        return articleEditable;
     };
 
     const renderCode = () => {
@@ -96,22 +131,7 @@ export const Post = () => {
 
     return (
         <div id="post" className='row align-items-start'>
-            <div className='col-md-9 posts'>
-                <div className="container-fluid post" id={post.name} key={post.name}>
-                    <h2 className="post-title">
-                        <Link to={`/p/${post.name}/`}>{post.title}</Link>
-                    </h2>
-                    <div className="post-meta">
-                        <span>published_at: </span>
-                        <span className="time">{formatTimeStr(post.created_at)}</span>
-                    </div>
-                    <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
-                    </div>
-                    <div className="post-tail">
-                        {postTail}
-                    </div>
-                </div>
-            </div>
+            {content}
         </div>
     )
 }

@@ -59,7 +59,7 @@ export const Categories = () => {
     useEffect(() => {
         updateContent();
         watchLanguageChange();
-    }, []);
+    }, [params.category]);
 
     const updateContent = async () => {
         const { postsData } = await loader({ params });
