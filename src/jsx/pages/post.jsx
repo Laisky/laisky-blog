@@ -56,7 +56,6 @@ export const Post = () => {
     const params = useParams();
     const [content, setContent] = useState('');
     const [language, setLanguage] = useState(null);
-    let imgModalBinded = false;
 
     useEffect(() => {
         (async () => {
@@ -122,15 +121,20 @@ export const Post = () => {
     }
 
     const bindPostImageModal = () => {
-        if (imgModalBinded) return;
-        imgModalBinded = true;
-
         const imgModal = new bootstrap.Modal(document.getElementById('showImageModal'));
 
         // bind click event to post images
-        const postImgs = document.querySelectorAll('.post-content img');
+        const postImgs = document.querySelectorAll('.post-content p > img');
         postImgs.forEach(img => {
-            img.addEventListener('click', () => {
+            if (img.dataset.bindmodal) {
+                return;
+            }
+            img.dataset.bindmodal = 'true';
+
+            img.addEventListener('click', (evt) => {
+                evt.preventDefault();
+                evt.stopPropagation();
+
                 // Create a new img element
                 const newImg = document.createElement('img');
                 newImg.src = img.src;

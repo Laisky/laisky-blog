@@ -80,6 +80,10 @@
 
         .modal-body {
             overflow: auto;
+
+            img {
+                max-width: none;
+            }
         }
     }
 }
