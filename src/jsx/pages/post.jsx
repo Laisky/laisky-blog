@@ -6,7 +6,7 @@ import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import { DurationDay, formatTimeStr, getCurrentUsername, getGraphqlAPI, getUserLanguage, KvKeyLanguage, KvKeyPrefixCache } from '../library/base.jsx';
+import { DurationDay, formatTs, getCurrentUsername, getGraphqlAPI, getUserLanguage, KvKeyLanguage, KvKeyPrefixCache, ts2UTC } from '../library/base.jsx';
 import { GetCache, KvAddListener, KvOp, SetCache, SHA256 } from '../library/libs.js';
 
 
@@ -73,8 +73,9 @@ export const Post = () => {
                         <Link to={`/p/${post.name}/`}>{post.title}</Link>
                     </h2>
                     <div className="post-meta">
-                        <span>published_at: </span>
-                        <span className="time">{formatTimeStr(post.created_at)}</span>
+                        <span >published_at: </span>
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title={`"${ts2UTC(post.created_at)}"`}>{formatTs(post.created_at)}
+                        </span>
                     </div>
                     <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
                     </div>
@@ -85,6 +86,10 @@ export const Post = () => {
             </div>;
 
             setContent(content);
+
+            // enable tooltips
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         })();
     }, [params.name, language]);
 

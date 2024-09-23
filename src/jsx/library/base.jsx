@@ -99,10 +99,11 @@ export const getUserLanguage = async () => {
     return lang;
 };
 
-export const formatTs = (ts) => {
-    return moment(Number.parseInt(ts) * 1000).format('YYYY/MM/DD HH:MM');
-};
 
-export const formatTimeStr = (ts) => {
-    return moment(ts).format('YYYY/MM/DD HH:MM');
+export const formatTs = (ts) => {
+    return moment(ts).format('YYYY-MM-DD HH:MM');
+}
+
+export const ts2UTC = (ts) => {
+    return moment(ts).utc().format('YYYY-MM-DDTHH:MM[Z]');
 }

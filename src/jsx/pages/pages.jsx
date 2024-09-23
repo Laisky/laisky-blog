@@ -1,11 +1,12 @@
 'use strict';
 
+import * as bootstrap from 'bootstrap';
 import { gql, request } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { Sidebar } from '../components/sidebar.jsx';
-import { DurationDay, KvKeyLanguage, KvKeyPrefixCache, formatTimeStr, getCurrentUsername, getGraphqlAPI, getUserLanguage } from '../library/base.jsx';
+import { DurationDay, KvKeyLanguage, KvKeyPrefixCache, formatTs, getCurrentUsername, getGraphqlAPI, getUserLanguage, ts2UTC } from '../library/base.jsx';
 import { GetCache, KvAddListener, KvOp, SHA256, SetCache } from '../library/libs.js';
 
 
@@ -79,8 +80,14 @@ export const Page = () => {
     const params = useParams();
 
     useEffect(() => {
-        generatePostsContent();
-        watchLanguageChange();
+        (async () => {
+            await generatePostsContent();
+            watchLanguageChange();
+
+            // enable tooltips
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        })();
     }, [params.nPage]);
 
     const generatePostsContent = async () => {
@@ -97,8 +104,9 @@ export const Page = () => {
                         <Link to={`/p/${post.name}/`}>{post.title}</Link>
                     </h2>
                     <div className="post-meta">
-                        <span>published: </span>
-                        <span>{formatTimeStr(post.created_at)}</span>
+                        <span >published_at: </span>
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title={`"${ts2UTC(post.created_at)}"`}>{formatTs(post.created_at)}
+                        </span>
                     </div>
                     <div className="post-content">
                         {post.markdown}

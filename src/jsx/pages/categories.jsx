@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { Sidebar } from '../components/sidebar.jsx';
-import { DurationDay, formatTimeStr, getGraphqlAPI, getUserLanguage, KvKeyLanguage, KvKeyPrefixCache } from '../library/base.jsx';
+import { DurationDay, formatTs, getGraphqlAPI, getUserLanguage, KvKeyLanguage, KvKeyPrefixCache } from '../library/base.jsx';
 import { GetCache, KvAddListener, KvOp, SetCache, SHA256 } from '../library/libs.js';
 
 
@@ -77,7 +77,7 @@ export const Categories = () => {
         const content = await Promise.all(postsData.map(async (post) => {
             return (
                 <div className="container-fluid post" id={post.name} key={post.name}>
-                    <span>{formatTimeStr(post.created_at)}</span>
+                    <span>{formatTs(post.created_at)}</span>
                     <Link to={`/p/${post.name}/`}>{post.title}</Link>
                 </div>
             );
