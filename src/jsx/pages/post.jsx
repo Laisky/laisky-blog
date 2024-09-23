@@ -63,18 +63,14 @@ export const Post = () => {
             const post = await loader({ params });
             const postTail = await loadPostTails();
 
-            bindPostImageModal();
-            renderCode();
-            watchLanguageChange()
-
             const content = <div className='col-md-9 col-lg-10 posts'>
                 <div className="container-fluid post" id={post.name} key={post.name}>
                     <h2 className="post-title">
                         <Link to={`/p/${post.name}/`}>{post.title}</Link>
                     </h2>
                     <div className="post-meta">
-                        <span >published_at: </span>
-                        <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title={`"${ts2UTC(post.created_at)}"`}>{formatTs(post.created_at)}
+                        <span >published: </span>
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title={`"${post.created_at}"`}>{formatTs(post.created_at)}
                         </span>
                     </div>
                     <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
@@ -86,12 +82,19 @@ export const Post = () => {
             </div>;
 
             setContent(content);
-
-            // enable tooltips
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         })();
     }, [params.name, language]);
+
+    // after render
+    useEffect(() => {
+        bindPostImageModal();
+        renderCode();
+        watchLanguageChange()
+
+        // enable tooltips
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    }, [content]);
 
     const watchLanguageChange = () => {
         KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {

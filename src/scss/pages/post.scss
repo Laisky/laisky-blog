@@ -76,6 +76,7 @@
 #showImageModal {
     .modal-dialog {
         max-width: 90%;
+        width: fit-content;
 
         .modal-body {
             overflow: auto;

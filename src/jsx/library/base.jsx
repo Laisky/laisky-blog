@@ -101,7 +101,7 @@ export const getUserLanguage = async () => {
 
 
 export const formatTs = (ts) => {
-    return moment(ts).format('YYYY-MM-DD HH:MM');
+    return moment(ts).format('YYYY-MM-DD');
 }
 
 export const ts2UTC = (ts) => {

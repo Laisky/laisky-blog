@@ -104,8 +104,8 @@ export const Page = () => {
                         <Link to={`/p/${post.name}/`}>{post.title}</Link>
                     </h2>
                     <div className="post-meta">
-                        <span >published_at: </span>
-                        <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title={`"${ts2UTC(post.created_at)}"`}>{formatTs(post.created_at)}
+                        <span >published: </span>
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title={`"${post.created_at}"`}>{formatTs(post.created_at)}
                         </span>
                     </div>
                     <div className="post-content">
