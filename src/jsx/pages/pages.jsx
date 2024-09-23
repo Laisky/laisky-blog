@@ -182,7 +182,7 @@ export const Page = () => {
     };
 
     return (
-        <div id="pages" className='row align-items-start'>
+        <div id="pages" className='row align-items-start scrollable-content'>
             {content}
         </div>
     )

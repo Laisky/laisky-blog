@@ -97,7 +97,7 @@ export const Categories = () => {
     };
 
     return (
-        <div id="categories" className='row align-items-start'>
+        <div id="categories" className='row align-items-start scrollable-content'>
             {/* blog posts */}
             <div className='col-md-8 col-lg-9 posts'>
                 {content}

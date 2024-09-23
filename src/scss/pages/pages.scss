@@ -1,11 +1,5 @@
 @import '../variables.scss';
 
-#pages {
-    overflow-y: auto;
-    display: flex;
-    justify-content: space-evenly;
-}
-
 .sidebar {
     position: sticky;
     top: 0;
@@ -15,6 +9,7 @@
     background-color: $background-color;
     margin-left: 20px;
     border-radius: 5px;
+    max-width: 200px;
 
     h2 {
         font-size: large;

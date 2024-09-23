@@ -1,17 +1,22 @@
 'use strict';
 
-import React, { useEffect, useState } from 'react';
-import { Link, useParams, useLoaderData } from 'react-router-dom';
-import { gql, request } from 'graphql-request'
+import * as bootstrap from 'bootstrap';
+import { gql, request } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
-import * as bootstrap from 'bootstrap'
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-import { GraphqlAPI, KvKeyLanguage, formatTimeStr, getCurrentUsername, getUserLanguage } from '../library/base.jsx';
-import { KvAddListener, KvOp } from '../library/libs.js';
+import { DurationDay, formatTimeStr, getCurrentUsername, getUserLanguage, GraphqlAPI, KvKeyLanguage, KvKeyPrefixCache } from '../library/base.jsx';
+import { GetCache, KvAddListener, KvOp, SetCache, SHA256 } from '../library/libs.js';
 
 
 export const loader = async ({ params }) => {
-    console.log('loader', params);
+    const cacheKey = KvKeyPrefixCache + await SHA256(`${await getUserLanguage()}:${params.name}`);
+    const cacheData = await GetCache(cacheKey);
+    if (cacheData) {
+        return cacheData;
+    }
+
     const gqBody = gql`
         query {
             BlogPosts(
@@ -39,7 +44,12 @@ export const loader = async ({ params }) => {
     `;
 
     const resp = await request(GraphqlAPI, gqBody);
-    return resp.BlogPosts[0];
+    const result = resp.BlogPosts[0];
+
+    // update cache
+    await SetCache(cacheKey, result, DurationDay);
+
+    return result;
 }
 
 export const Post = () => {
@@ -57,7 +67,7 @@ export const Post = () => {
             renderCode();
             watchLanguageChange()
 
-            const content = <div className='col-md-9 posts'>
+            const content = <div className='col-md-9 col-lg-10 posts'>
                 <div className="container-fluid post" id={post.name} key={post.name}>
                     <h2 className="post-title">
                         <Link to={`/p/${post.name}/`}>{post.title}</Link>
@@ -130,7 +140,7 @@ export const Post = () => {
     };
 
     return (
-        <div id="post" className='row align-items-start'>
+        <div id="post" className='row align-items-start scrollable-content'>
             {content}
         </div>
     )

@@ -1,20 +1,33 @@
-#post {
+.scrollable-content {
     overflow-y: auto;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    width: 100%;
+
+    /* Hide scrollbar for Chrome, Safari, and Opera */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge, and Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
 .posts {
     letter-spacing: normal;
-    max-width: 850px;
     margin-bottom: 10px;
     background-color: $background-color;
     height: inherit;
     margin-bottom: 65px;
     padding: 10px;
     border-radius: 5px;
+    max-width: 850px;
 
     .post {
+
         &:not(:first-child) {
             margin-top: 20px;
         }

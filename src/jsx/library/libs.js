@@ -615,6 +615,14 @@ export const SetCache = async (key, val, ttlSeconds) => {
  * @returns null if not found or expired
  */
 export const GetCache = async (key) => {
+    // Check if 'force' exists in the URL query parameters, ignore cache if true
+    if (typeof window !== 'undefined' && window.location) {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('force')) {
+            return null;
+        }
+    }
+
     const cache = await KvGet(key);
     if (!cache || cache.expireAt < Date.now()) {
         await KvDel(key);
