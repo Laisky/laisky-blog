@@ -1,4 +1,6 @@
-# Refactor by React + Vite
+# Refactor My personal blog by React + Vite
+
+<https://blog.laisky.com/>
 
 ## Usage
 
