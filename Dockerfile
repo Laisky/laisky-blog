@@ -18,6 +18,6 @@ RUN npm run build
 FROM nginx:1.21.3-alpine
 
 COPY --from=vitebuilder /app/dist /app
-ADD ./assets/nginx.conf /etc/nginx/conf.d/default.conf
+ADD ./deploy/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
