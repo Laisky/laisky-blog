@@ -5,9 +5,11 @@ import moment from 'moment';
 
 import { KvGet, KvSet } from './libs.js';
 
-export const GraphqlAPI = 'https://gq.laisky.com/query/';
+// export const GraphqlAPI = 'https://gq.laisky.com/query/';
+export const GraphqlAPI = 'http://100.75.198.70:18080/query/';
 
 export const KvKeyLanguage = 'language';
+export const KvKeyUserToken = 'user_token';
 export const KvKeyAuthUser = 'auth_user';
 export const KvKeyPrefixCache = '@cache_';
 

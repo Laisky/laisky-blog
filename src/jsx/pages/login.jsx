@@ -4,7 +4,7 @@ import { gql, request } from 'graphql-request';
 import { jwtDecode } from 'jwt-decode';
 import React, { useState } from 'react';
 
-import { GraphqlAPI, KvKeyAuthUser } from '../library/base.jsx';
+import { GraphqlAPI, KvKeyAuthUser, KvKeyUserToken } from '../library/base.jsx';
 import * as libs from '../library/libs';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,7 +23,7 @@ export const Login = () => {
                     account: "${email}"
                     password: "${password}"
                 ) {
-                token
+                    token
                 }
             }
         `;
@@ -31,6 +31,7 @@ export const Login = () => {
         const token = resp.UserLogin.token;
         const authUser = jwtDecode(token);
         await libs.KvSet(KvKeyAuthUser, authUser);
+        await libs.KvSet(KvKeyUserToken, token);
 
         // after login, redirect to the page where user clicked login
         const queryParams = new URLSearchParams(window.location.search);

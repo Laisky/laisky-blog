@@ -18,13 +18,12 @@
 
 .posts {
     letter-spacing: normal;
-    margin-bottom: 10px;
-    background-color: $background-color;
     height: inherit;
     margin-bottom: 65px;
     padding: 10px;
     border-radius: 5px;
     max-width: 850px;
+    background-color: $background-color;
 
     .post {
 
@@ -53,7 +52,7 @@
                 cursor: pointer;
             }
 
-            pre > code {
+            pre>code {
                 font-family: monospace;
                 font-size: small;
             }
@@ -84,6 +83,37 @@
             img {
                 max-width: none;
             }
+        }
+    }
+}
+
+.post-menu {
+    position: sticky;
+    top: 0;
+    padding: 5px;
+    font-size: small;
+    border-radius: 5px;
+    background-color: $background-color;
+    margin-left: 20px;
+    max-width: 200px;
+
+    li {
+        margin-left: 5px;
+    }
+
+    a {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+        padding: 0px;
+        margin: 0px;
+
+        &:hover {
+            &::before {
+                content: ">";
+            }
+
+            background-color: lighten($background-color, 10%);
         }
     }
 }

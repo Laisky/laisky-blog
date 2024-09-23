@@ -1,11 +1,11 @@
 'use strict';
 
 import * as bootstrap from 'bootstrap';
+import { DiscussionEmbed } from 'disqus-react';
 import { gql, request } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { DiscussionEmbed } from 'disqus-react';
 
 import {
     DurationDay,
@@ -18,8 +18,7 @@ import {
 } from '../library/base.jsx';
 import {
     GetCache,
-    KvAddListener,
-    KvOp,
+    KvAddListener, KvOp,
     SetCache,
     SHA256
 } from '../library/libs.js';
@@ -69,7 +68,7 @@ export const loader = async ({ params }) => {
 
 export const Post = () => {
     const params = useParams();
-    const [content, setContent] = useState('');
+    const [content, setContent] = useState(null);
     const [language, setLanguage] = useState(null);
     const navigate = useNavigate();
 
@@ -78,21 +77,27 @@ export const Post = () => {
             const post = await loader({ params });
             const postTail = await loadPostTails(post);
 
-            const content = <div className='col-md-9 col-lg-10 posts'>
-                <div className="container-fluid post" id={post.name} key={post.name}>
-                    <h2 className="post-title">
-                        <Link to={`/p/${post.name}/`}>{post.title}</Link>
-                    </h2>
-                    <div className="post-meta">
-                        <span >published: </span>
-                        <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title={`"${post.created_at}"`}>{formatTs(post.created_at)}
-                        </span>
+            const content = (
+                <>
+                    <div className='col-md-8 col-lg-9 posts'>
+                        <div className="container-fluid post" id={post.name} key={post.name}>
+                            <h2 className="post-title">
+                                <Link to={`/p/${post.name}/`}>{post.title}</Link>
+                            </h2>
+                            <div className="post-meta">
+                                <span >published: </span>
+                                <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title={`"${post.created_at}"`}>{formatTs(post.created_at)}
+                                </span>
+                            </div>
+                            <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
+                            </div>
+                            {postTail}
+                        </div>
                     </div>
-                    <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
+                    <div className="d-none d-md-block col-md-3 col-lg-2 post-menu" dangerouslySetInnerHTML={{ __html: post.menu }}>
                     </div>
-                    {postTail}
-                </div>
-            </div>;
+                </>
+            );
 
             setContent(content);
         })();
@@ -100,6 +105,10 @@ export const Post = () => {
 
     // after render
     useEffect(() => {
+        if (!content) {
+            return;
+        }
+
         bindPostImageModal();
         renderCode();
         watchLanguageChange()
@@ -107,6 +116,18 @@ export const Post = () => {
         // enable tooltips
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+        // enable menu
+        try {
+            const scrollSpy = new bootstrap.ScrollSpy(
+                document.querySelector('#post'),
+                {
+                    target: '#post-menu',
+                    smoothScroll: true,
+                });
+        } catch (e) {
+            console.error(`failed to enable scrollspy: ${e}`);
+        }
     }, [content]);
 
     const watchLanguageChange = () => {

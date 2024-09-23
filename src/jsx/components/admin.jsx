@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams, useLoaderData, useNavigate } from 'react-router-dom';
 
-import { getCurrentUsername, KvKeyAuthUser } from '../library/base';
+import { getCurrentUsername, KvKeyAuthUser, KvKeyUserToken } from '../library/base';
 import { KvDel } from '../library/libs';
 
 export const Admin = () => {
@@ -37,6 +37,7 @@ export const Admin = () => {
     const logoutHandler = async (evt) => {
         evt.preventDefault();
         await KvDel(KvKeyAuthUser);
+        await KvDel(KvKeyUserToken);
         setUsername(null);
         navigate(0);
     }
