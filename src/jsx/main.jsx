@@ -15,6 +15,7 @@ import { Login } from "./pages/login";
 import { Page, loader as pageLoader } from "./pages/pages";
 import { Post, loader as postLoader } from "./pages/post";
 import { Categories, loader as categoriesLoader } from "./pages/categories";
+import NotFound from "./pages/notfound";
 
 
 const router = createBrowserRouter([
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
                 element: <Categories />,
                 loader: categoriesLoader,
             },
+            {
+                path: "*",
+                element: <NotFound />,
+            }
         ],
     },
 ]);
