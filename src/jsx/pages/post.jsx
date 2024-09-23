@@ -6,8 +6,22 @@ import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import { DurationDay, formatTs, getCurrentUsername, getGraphqlAPI, getUserLanguage, KvKeyLanguage, KvKeyPrefixCache, ts2UTC } from '../library/base.jsx';
-import { GetCache, KvAddListener, KvOp, SetCache, SHA256 } from '../library/libs.js';
+import {
+    DurationDay,
+    formatTs,
+    getCurrentUsername,
+    getGraphqlAPI,
+    getUserLanguage,
+    KvKeyLanguage,
+    KvKeyPrefixCache
+} from '../library/base.jsx';
+import {
+    GetCache,
+    KvAddListener,
+    KvOp,
+    SetCache,
+    SHA256
+} from '../library/libs.js';
 
 
 export const loader = async ({ params }) => {
@@ -108,7 +122,7 @@ export const Post = () => {
     const loadPostTails = async () => {
         let articleEditable;
         if (await getCurrentUsername()) {
-            articleEditable = <Link to={`/amend/${params.name}/`}>Edit</Link>;
+            articleEditable = <Link to={`/edit/${params.name}/`}>Edit</Link>;
         }
 
         return articleEditable;

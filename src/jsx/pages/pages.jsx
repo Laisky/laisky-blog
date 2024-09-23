@@ -6,8 +6,23 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { Sidebar } from '../components/sidebar.jsx';
-import { DurationDay, KvKeyLanguage, KvKeyPrefixCache, formatTs, getCurrentUsername, getGraphqlAPI, getUserLanguage, ts2UTC } from '../library/base.jsx';
-import { GetCache, KvAddListener, KvOp, SHA256, SetCache } from '../library/libs.js';
+import {
+    DurationDay,
+    KvKeyLanguage,
+    KvKeyPrefixCache,
+    formatTs,
+    getCurrentUsername,
+    getGraphqlAPI,
+    getUserLanguage,
+    ts2UTC
+} from '../library/base.jsx';
+import {
+    GetCache,
+    KvAddListener,
+    KvOp,
+    SHA256,
+    SetCache
+} from '../library/libs.js';
 
 
 export const loader = async ({ params }) => {
@@ -183,7 +198,7 @@ export const Page = () => {
     const getPostTails = async (post) => {
         let articleEditable;
         if (await getCurrentUsername()) {
-            articleEditable = <Link to={`/amend/${post.name}/`}>Edit</Link>;
+            articleEditable = <Link to={`/edit/${post.name}/`}>Edit</Link>;
         }
 
         return articleEditable

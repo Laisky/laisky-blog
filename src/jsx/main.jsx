@@ -10,7 +10,7 @@ import "../scss/main.scss";
 
 import { About } from "./pages/about";
 import { App } from "./pages/app";
-import { PostEdit, loader as postEditLoader } from "./pages/edit";
+import { PostEdit, postEditLoader, postPublishLoader } from "./pages/edit";
 import { Login } from "./pages/login";
 import { Page, loader as pageLoader } from "./pages/pages";
 import { Post, loader as postLoader } from "./pages/post";
@@ -40,6 +40,11 @@ const router = createBrowserRouter([
                 path: "edit/:name/",
                 element: <PostEdit />,
                 loader: postEditLoader,
+            },
+            {
+                path: "publish/",
+                element: <PostEdit />,
+                loader: postPublishLoader,
             },
             {
                 path: "about/",

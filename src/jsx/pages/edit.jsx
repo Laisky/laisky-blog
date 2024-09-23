@@ -5,11 +5,10 @@ import { useLoaderData, useNavigate } from 'react-router-dom';
 import { gql, request } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
 
-import { GraphqlAPI, getUserLanguage } from '../library/base.jsx';
+import { getGraphqlAPI, getUserLanguage } from '../library/base.jsx';
 
 
-export const loader = async ({ params }) => {
-    console.log('loader', params);
+export const postEditLoader = async ({ params }) => {
     const gqBody = gql`
         query {
             BlogPosts(
@@ -36,30 +35,54 @@ export const loader = async ({ params }) => {
         }
     `;
 
-    const resp = await request(GraphqlAPI, gqBody);
-    return resp.BlogPosts[0];
+    const resp = await request(getGraphqlAPI(), gqBody);
+    return {
+        isPublish: false,
+        post: resp.BlogPosts[0]
+    };
+}
+
+export const postPublishLoader = async ({ params }) => {
+    return {
+        isPublish: true,
+        post: {
+            name: '',
+            type: 'markdown',
+            title: '',
+            language: 'zh_CN',
+            markdown: '',
+        }
+    }
 }
 
 export const PostEdit = () => {
-    const post = useLoaderData();
+    const { isPublish, post } = useLoaderData();
     const navigate = useNavigate();
 
-    const submitHandler = async () => {
-        const language = document.getElementById("#postEdit")
-            .querySelector('postLanguage').value;
+    const submitHandler = async (evt) => {
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        const postEle = document.getElementById("postEdit");
+        const language = postEle.querySelector('.input.postLanguage').value;
 
         const variables = {
             post: {
-                title: document.getElementById("#postEdit")
-                    .querySelector('postTitle').value,
-                name: document.getElementById("#postEdit")
-                    .querySelector('postName').value,
-                markdown: document.getElementById("#postEdit")
-                    .querySelector('postMarkdown').value,
-                type: document.getElementById("#postEdit")
-                    .querySelector('postType').value,
+                title: postEle.querySelector('.input.postTitle').value,
+                name: postEle.querySelector('.input.postName').value,
+                markdown: postEle.querySelector('.input.postMarkdown').value,
+                type: postEle.querySelector('.input.postType').value,
             },
         };
+
+        // check empty
+        for (const k in variables.post) {
+            if (!variables.post[k]) {
+                alert(`Empty field: ${k}`);
+                return;
+            }
+        }
+
         const gqBody = gql`
             mutation($post: NewBlogPost!) {
                 BlogAmendPost(
@@ -71,12 +94,12 @@ export const PostEdit = () => {
             }
         `;
 
-        const resp = await request(GraphqlAPI, gqBody, variables);
+        const resp = await request(getGraphqlAPI(), gqBody, variables);
         navigate(`/p/${resp.BlogAmendPost.name}/?force=1`);
     };
 
     return (
-        <div id="postEdit" className='row align-items-start'>
+        <div id="postEdit" className='row align-items-start scrollable-content'>
             {/* blog posts */}
             <div className='col-md-9 posts'>
                 <div className="container-fluid post" id={post.name} key={post.name}>
@@ -84,31 +107,32 @@ export const PostEdit = () => {
                         <label htmlFor="postTitle" className="form-label">Title</label>
                         <input
                             type="text"
-                            className="form-control postTitle"
-                            value={post.title}
+                            className="form-control input postTitle"
+                            defaultValue={post.title}
                         />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="postName" className="form-label">Name</label>
                         <input
                             type="text"
-                            className="form-control postName"
-                            value={post.name}
+                            className="form-control input postName"
+                            {...isPublish ? {} : { readOnly: true }}
+                            defaultValue={post.name}
                         />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="postMarkdown" className="form-label">Markdown</label>
                         <textarea
-                            className="form-control postMarkdown"
-                            value={post.markdown}
+                            className="form-control input postMarkdown"
+                            defaultValue={post.markdown}
                             rows="10"
                         />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="postLanguage" className="form-label">Language</label>
                         <select
-                            className="form-select postLanguage"
-                            value={post.language}
+                            className="form-select input postLanguage"
+                            defaultValue={post.language}
                         >
                             <option value="en_US">en_US</option>
                             <option value="zh_CN">zh_CN</option>
@@ -117,8 +141,8 @@ export const PostEdit = () => {
                     <div className="mb-3">
                         <label htmlFor="postType" className="form-label">Type</label>
                         <select
-                            className="form-select postType"
-                            defaultValue="markdown"
+                            className="form-select input postType"
+                            defaultValue={post.type}
                         >
                             <option value="markdown">Markdown</option>
                             <option value="slide">Slide</option>
