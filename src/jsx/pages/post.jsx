@@ -6,7 +6,7 @@ import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import { DurationDay, formatTimeStr, getCurrentUsername, getUserLanguage, GraphqlAPI, KvKeyLanguage, KvKeyPrefixCache } from '../library/base.jsx';
+import { DurationDay, formatTimeStr, getCurrentUsername, getGraphqlAPI, getUserLanguage, KvKeyLanguage, KvKeyPrefixCache } from '../library/base.jsx';
 import { GetCache, KvAddListener, KvOp, SetCache, SHA256 } from '../library/libs.js';
 
 
@@ -43,7 +43,7 @@ export const loader = async ({ params }) => {
         }
     `;
 
-    const resp = await request(GraphqlAPI, gqBody);
+    const resp = await request(getGraphqlAPI(), gqBody);
     const result = resp.BlogPosts[0];
 
     // update cache

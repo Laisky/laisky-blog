@@ -2,11 +2,11 @@
 
 import { gql, request } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
-import { Link, useLoaderData, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { Sidebar } from '../components/sidebar.jsx';
-import { DurationDay, DurationWeek, GraphqlAPI, KvKeyLanguage, KvKeyPrefixCache, formatTimeStr, getCurrentUsername, getUserLanguage } from '../library/base.jsx';
-import { KvAddListener, KvGet, KvOp, KvSet, SHA256, SetCache, GetCache } from '../library/libs.js';
+import { DurationDay, KvKeyLanguage, KvKeyPrefixCache, formatTimeStr, getCurrentUsername, getGraphqlAPI, getUserLanguage } from '../library/base.jsx';
+import { GetCache, KvAddListener, KvOp, SHA256, SetCache } from '../library/libs.js';
 
 
 export const loader = async ({ params }) => {
@@ -48,7 +48,7 @@ export const loader = async ({ params }) => {
             }
         `;
 
-        const resp = await request(GraphqlAPI, gqBody);
+        const resp = await request(getGraphqlAPI(), gqBody);
         postsData = resp.BlogPosts;
     })();
 
@@ -61,7 +61,7 @@ export const loader = async ({ params }) => {
             }
         `;
 
-        const resp = await request(GraphqlAPI, gqBody);
+        const resp = await request(getGraphqlAPI(), gqBody);
         nPosts = resp.BlogPostInfo.total;
     })();
 

@@ -25,6 +25,17 @@ export const DurationWeek = 7 * DurationDay;
 //     if (parts.length === 2) return parts.pop().split(';').shift();
 // }
 
+export const getGraphqlAPI = () => {
+    if (typeof window !== 'undefined' && window.location) {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('force')) {
+            return `${GraphqlAPI}?force=1`;
+        }
+    }
+
+    return GraphqlAPI;
+};
+
 
 export const getCurrentPathName = () => {
     return location.pathname;

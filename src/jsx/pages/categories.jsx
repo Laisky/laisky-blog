@@ -2,10 +2,10 @@
 
 import { gql, request } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
-import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-import { GraphqlAPI, formatTimeStr, getUserLanguage, KvKeyLanguage, KvKeyPrefixCache, DurationDay } from '../library/base.jsx';
 import { Sidebar } from '../components/sidebar.jsx';
+import { DurationDay, formatTimeStr, getGraphqlAPI, getUserLanguage, KvKeyLanguage, KvKeyPrefixCache } from '../library/base.jsx';
 import { GetCache, KvAddListener, KvOp, SetCache, SHA256 } from '../library/libs.js';
 
 
@@ -52,7 +52,7 @@ export const loader = async ({ params }) => {
         `;
     }
 
-    const resp = await request(GraphqlAPI, gqBody);
+    const resp = await request(getGraphqlAPI(), gqBody);
     const result =  {
         postsData: resp.BlogPosts,
     };
