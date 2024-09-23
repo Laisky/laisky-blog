@@ -4,7 +4,8 @@ import * as bootstrap from 'bootstrap';
 import { gql, request } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { DiscussionEmbed } from 'disqus-react';
 
 import {
     DurationDay,
@@ -70,11 +71,12 @@ export const Post = () => {
     const params = useParams();
     const [content, setContent] = useState('');
     const [language, setLanguage] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
             const post = await loader({ params });
-            const postTail = await loadPostTails();
+            const postTail = await loadPostTails(post);
 
             const content = <div className='col-md-9 col-lg-10 posts'>
                 <div className="container-fluid post" id={post.name} key={post.name}>
@@ -88,9 +90,7 @@ export const Post = () => {
                     </div>
                     <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
                     </div>
-                    <div className="post-tail">
-                        {postTail}
-                    </div>
+                    {postTail}
                 </div>
             </div>;
 
@@ -119,13 +119,30 @@ export const Post = () => {
         }, "page_post")
     };
 
-    const loadPostTails = async () => {
+    const loadPostTails = async (post) => {
         let articleEditable;
         if (await getCurrentUsername()) {
             articleEditable = <Link to={`/edit/${params.name}/`}>Edit</Link>;
         }
 
-        return articleEditable;
+        const postComment = <DiscussionEmbed
+            shortname='laisky'
+            config={
+                {
+                    url: `https://laisky.com/p/${params.name}/`,
+                    identifier: params.name,
+                    title: params.name,
+                    language: 'en_US' //e.g. for Traditional Chinese (Taiwan)
+                }
+            }
+        />;
+
+        return (
+            <div className="post-tail">
+                {articleEditable}
+                {postComment}
+            </div>
+        );
     };
 
     const renderCode = () => {
