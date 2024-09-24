@@ -92,6 +92,17 @@ export const Post = () => {
                             <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
                             </div>
                             {postTail}
+                            <DiscussionEmbed
+                                shortname='laisky'
+                                config={
+                                    {
+                                        url: `https://laisky.com/p/${params.name}/`,
+                                        identifier: params.name,
+                                        title: params.name,
+                                        language: 'en_US' //e.g. for Traditional Chinese (Taiwan)
+                                    }
+                                }
+                            />;
                         </div>
                     </div>
                     <div className="d-none d-md-block col-md-3 col-lg-2 post-menu" dangerouslySetInnerHTML={{ __html: post.menu }}>
@@ -146,22 +157,37 @@ export const Post = () => {
             articleEditable = <Link to={`/edit/${params.name}/`}>Edit</Link>;
         }
 
-        const postComment = <DiscussionEmbed
-            shortname='laisky'
-            config={
-                {
-                    url: `https://laisky.com/p/${params.name}/`,
-                    identifier: params.name,
-                    title: params.name,
-                    language: 'en_US' //e.g. for Traditional Chinese (Taiwan)
+
+        // dropdown options for history
+        let articleHistory = [];
+        let maxHistory = 10;
+        if (post['arweave_id']) {
+            for (let i = 0; i < post['arweave_id'].length; i++) {
+                if (i >= maxHistory) {
+                    break;
                 }
+
+                let history = post['arweave_id'][i];
+                articleHistory.push(<li key={history.id}><a href={`https://ario.laisky.com/${history.id}/`} target="_blank" rel="noopener noreferrer">{history.time}</a></li>);
             }
-        />;
+
+            articleHistory = (
+                <div className="dropdown post-history">
+                    <button className="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        History
+                        <span className="caret"></span>
+                    </button>
+                    <ul className="dropdown-menu">
+                        {articleHistory}
+                    </ul>
+                </div>
+            );
+        }
 
         return (
             <div className="post-tail">
+                {articleHistory}
                 {articleEditable}
-                {postComment}
             </div>
         );
     };

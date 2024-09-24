@@ -14,7 +14,7 @@ const App = () => {
         evt.preventDefault();
         evt.stopPropagation();
 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.querySelector('.scrollable-content').scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     useEffect(() => {

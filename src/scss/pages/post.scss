@@ -32,6 +32,7 @@
     background-color: $background-color;
 
     .post {
+        padding: 0px;
 
         &:not(:first-child) {
             margin-top: 20px;
@@ -55,7 +56,13 @@
 
             img {
                 max-width: 85%;
+                max-height: 500px;
                 cursor: pointer;
+            }
+
+            video {
+                max-width: 85%;
+                max-height: 500px;
             }
 
             pre>code {
@@ -69,7 +76,14 @@
         }
 
         .post-tail {
-            text-align: right;
+            display: flex;
+
+            .post-history {
+                .dropdown-menu {
+                    padding: 5px;
+                    width: max-content;
+                }
+            }
         }
 
         .page-nav {
