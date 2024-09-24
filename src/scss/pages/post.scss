@@ -16,10 +16,16 @@
     /* Firefox */
 }
 
+#post {
+    .posts {
+        margin-bottom: 0px;
+    }
+}
+
 .posts {
     letter-spacing: normal;
     height: max-content;
-    margin-bottom: 65px;
+    margin-bottom: 50px;
     padding: 10px;
     border-radius: 5px;
     max-width: 850px;

@@ -27,11 +27,13 @@ body {
         overflow: hidden;
         display: flex;
         justify-content: space-around;
+        padding: 0px;
 
         #container {
             margin: 0px;
             height: inherit;
-            padding-top: 50px;
+            padding: 0px;
+            padding-top: 40px;
             overflow: hidden;
             display: flex;
             justify-content: space-around;
