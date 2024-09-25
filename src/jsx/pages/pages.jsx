@@ -32,8 +32,9 @@ export const loader = async ({ params }) => {
     ]);
 
     // preload surrounding pages
-    const preloadFrom = Math.max(0, params.nPage - 3);
-    const preloadTo = Math.min(nPosts, params.nPage + 3);
+    const nPage = parseInt(params.nPage, 10);
+    const preloadFrom = Math.max(0, nPage - 3);
+    const preloadTo = Math.min(nPosts, nPage + 3);
     for (let i = preloadFrom; i < preloadTo; i++) {
         loadPage(i);
     }
@@ -163,6 +164,7 @@ export const Page = () => {
 }
 
 const loadPage = async (nPage) => {
+    console.debug(`loadPage: ${nPage}`);
     const cacheKey = KvKeyPrefixCache + await SHA256(`loadPage:${await getUserLanguage()}:${nPage}`);
     const cacheData = await GetCache(cacheKey);
     if (cacheData) {
