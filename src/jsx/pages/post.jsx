@@ -9,6 +9,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import {
     DurationDay,
+    DurationWeek,
     formatTs,
     getCurrentUsername,
     getGraphqlAPI,
@@ -139,6 +140,8 @@ export const Post = () => {
         } catch (e) {
             console.error(`failed to enable scrollspy: ${e}`);
         }
+
+        parseAndReplacePostSeries();
     }, [content]);
 
     const watchLanguageChange = () => {
@@ -234,4 +237,112 @@ export const Post = () => {
             {content}
         </div>
     )
+}
+
+
+// render post series
+async function parseAndReplacePostSeries() {
+    const seriesElements = document.querySelectorAll('.post .post-content div.post_series');
+    const tasks = Array.from(seriesElements).map(async (seEle) => {
+        const postkey = seEle.getAttribute('key');
+        const se = await loadSeries(postkey);
+        if (!se) {
+            return;
+        }
+
+        let html = parseSeriesHTML(se);
+        for (let i = 0; i < se.children.length; i++) {
+            html += await parseSeriesChildren(se.children[i].key);
+        }
+
+        html = `
+            <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">${se.remark} Serials</h5>
+                <ul class="card-text">
+                    ${html}
+                </ul>
+            </div>
+            </div>`;
+        seEle.innerHTML = html;
+    });
+
+    await Promise.all(tasks);
+}
+
+
+async function loadSeries(postkey) {
+    const cacheKey = KvKeyPrefixCache + await SHA256(`${postkey}`);
+    const cacheData = await GetCache(cacheKey);
+    if (cacheData) {
+        return cacheData;
+    }
+
+    const gqBody = gql`
+        query {
+            GetBlogPostSeries(
+                key: "${postkey}"
+            ) {
+                remark
+                posts {
+                    name
+                    title
+                }
+                children {
+                    key
+                }
+            }
+        }
+    `;
+
+    const resp = await request(getGraphqlAPI(), gqBody);
+
+    if (resp.GetBlogPostSeries.length < 1) {
+        return null;
+    }
+
+    const result = resp.GetBlogPostSeries[0];
+
+    // update cache
+    await SetCache(cacheKey, result, DurationWeek);
+
+    return result;
+}
+
+function parseSeriesHTML(se) {
+    let html = '';
+    for (let i = 0; i < se.posts.length; i++) {
+        let p = se.posts[i];
+        html += `<li><a href="https://blog.laisky.com/p/${p.name}/">${p.title}</a></li>`;
+    }
+
+    return html;
+}
+
+async function parseSeriesChildren(seriesKey) {
+    let se = await loadSeries(seriesKey);
+    let sid = `series-${se.remark}`;
+    let html = parseSeriesHTML(se);
+    if (se.children.length != 0) {
+        for (i = 0; i < se.children.length; i++) {
+            html += parseSeriesChildren(se.children[i].key);
+        }
+    }
+
+    html = `
+            <li>
+                <a class="btn btn-light" data-bs-toggle="collapse" href="#${sid}" role="button" aria-expanded="false" aria-controls="${sid}">
+                    <i class="bi bi-filter-left"></i>${se.remark} Serials：
+                </a>
+                <div id="${sid}" class="collapse">
+                    <div class="card card-body">
+                        <ul>
+                            ${html}
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        `
+
+    return html;
 }

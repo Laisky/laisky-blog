@@ -69,6 +69,28 @@
                 font-family: monospace;
                 font-size: small;
             }
+
+            .post_series {
+                width: 100%;
+                overflow: auto;
+                display: flex;
+                justify-content: center;
+
+                .card {
+                    width: max-content;
+
+                    .card-title {
+                        margin: 0;
+                        font-size: 1em;
+                    }
+
+                    .card-body {
+                        ul {
+                            margin: 0px;
+                        }
+                    }
+                }
+            }
         }
 
         .post-sidebar {
