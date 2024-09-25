@@ -23,7 +23,7 @@ import {
 
 
 export const loader = async ({ params }) => {
-    const cacheKey = KvKeyPrefixCache + await SHA256(`${await getUserLanguage()}:${params.category}`);
+    const cacheKey = KvKeyPrefixCache + await SHA256(`categories:${await getUserLanguage()}:${params.category}`);
     const cacheData = await GetCache(cacheKey);
     if (cacheData) {
         return cacheData;

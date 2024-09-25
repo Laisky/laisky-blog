@@ -26,7 +26,7 @@ import {
 
 
 export const loader = async ({ params }) => {
-    const cacheKey = KvKeyPrefixCache + await SHA256(`${await getUserLanguage()}:${params.name}`);
+    const cacheKey = KvKeyPrefixCache + await SHA256(`post:${await getUserLanguage()}:${params.name}`);
     const cacheData = await GetCache(cacheKey);
     if (cacheData) {
         return cacheData;
@@ -144,93 +144,11 @@ export const Post = () => {
         parseAndReplacePostSeries();
     }, [content]);
 
-    const watchLanguageChange = () => {
-        KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
-            if (op !== KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
-                return;
-            }
-
-            setLanguage(newVal);
-        }, "page_post")
-    };
-
-    const loadPostTails = async (post) => {
-        let articleEditable;
-        if (await getCurrentUsername()) {
-            articleEditable = <Link to={`/edit/${params.name}/`}>Edit</Link>;
-        }
-
-
-        // dropdown options for history
-        let articleHistory = [];
-        let maxHistory = 10;
-        if (post['arweave_id']) {
-            for (let i = 0; i < post['arweave_id'].length; i++) {
-                if (i >= maxHistory) {
-                    break;
-                }
-
-                let history = post['arweave_id'][i];
-                articleHistory.push(<li key={history.id}><a href={`https://ario.laisky.com/${history.id}/`} target="_blank" rel="noopener noreferrer">{history.time}</a></li>);
-            }
-
-            articleHistory = (
-                <div className="dropdown post-history">
-                    <button className="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        History
-                        <span className="caret"></span>
-                    </button>
-                    <ul className="dropdown-menu">
-                        {articleHistory}
-                    </ul>
-                </div>
-            );
-        }
-
-        return (
-            <div className="post-tail">
-                {articleHistory}
-                {articleEditable}
-            </div>
-        );
-    };
-
     const renderCode = () => {
         document.querySelectorAll('pre > code').forEach((ele) => {
             window.Prism && window.Prism.highlightAllUnder(ele.closest('pre'));
         });
     }
-
-    const bindPostImageModal = () => {
-        const imgModal = new bootstrap.Modal(document.getElementById('showImageModal'));
-
-        // bind click event to post images
-        const postImgs = document.querySelectorAll('.post-content p > img');
-        postImgs.forEach(img => {
-            if (img.dataset.bindmodal) {
-                return;
-            }
-            img.dataset.bindmodal = 'true';
-
-            img.addEventListener('click', (evt) => {
-                evt.preventDefault();
-                evt.stopPropagation();
-
-                // Create a new img element
-                const newImg = document.createElement('img');
-                newImg.src = img.src;
-                newImg.classList.add('img-fluid'); // Add any necessary classes
-
-                // Clear the existing content in the modal body and append the new img element
-                const modalBody = document.getElementById('showImageModal').querySelector('.modal-body');
-                modalBody.innerHTML = ''; // Clear existing content
-                modalBody.appendChild(newImg);
-
-                // Show the modal
-                imgModal.show();
-            });
-        });
-    };
 
     return (
         <div id="post" className='row align-items-start scrollable-content'>
@@ -239,9 +157,104 @@ export const Post = () => {
     )
 }
 
+const watchLanguageChange = () => {
+    KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
+        if (op !== KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+            return;
+        }
+
+        setLanguage(newVal);
+    }, "page_post")
+};
+
+const loadPostTails = async (post) => {
+    let articleEditable;
+    if (await getCurrentUsername()) {
+        articleEditable = <Link to={`/edit/${params.name}/`}>Edit</Link>;
+    }
+
+
+    // dropdown options for history
+    let articleHistory = [];
+    let maxHistory = 10;
+    if (post['arweave_id']) {
+        for (let i = 0; i < post['arweave_id'].length; i++) {
+            if (i >= maxHistory) {
+                break;
+            }
+
+            let history = post['arweave_id'][i];
+            articleHistory.push(<li key={history.id}><a href={`https://ario.laisky.com/${history.id}/`} target="_blank" rel="noopener noreferrer">{history.time}</a></li>);
+        }
+
+        articleHistory = (
+            <div className="dropdown post-history">
+                <button className="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    History
+                    <span className="caret"></span>
+                </button>
+                <ul className="dropdown-menu">
+                    {articleHistory}
+                </ul>
+            </div>
+        );
+    }
+
+    return (
+        <div className="post-tail">
+            {articleHistory}
+            {articleEditable}
+        </div>
+    );
+};
+
+
+let imgModal;
+
+const bindPostImageModal = () => {
+    if (!imgModal) {
+        const modalEle = document.getElementById('showImageModal');
+        imgModal = new bootstrap.Modal(modalEle);
+
+        modalEle.addEventListener('click', (evt) => {
+            evt.preventDefault();
+            evt.stopPropagation();
+
+            imgModal.hide();
+        });
+    }
+
+    // bind click event to post images
+    const postImgs = document.querySelectorAll('.post-content p > img');
+    postImgs.forEach(img => {
+        if (img.dataset.bindmodal) {
+            return;
+        }
+        img.dataset.bindmodal = 'true';
+
+        img.addEventListener('click', (evt) => {
+            evt.preventDefault();
+            evt.stopPropagation();
+
+            // Create a new img element
+            const newImg = document.createElement('img');
+            newImg.src = img.src;
+            newImg.classList.add('img-fluid'); // Add any necessary classes
+
+            // Clear the existing content in the modal body and append the new img element
+            const modalBody = document.getElementById('showImageModal').querySelector('.modal-body');
+            modalBody.innerHTML = ''; // Clear existing content
+            modalBody.appendChild(newImg);
+
+            // Show the modal
+            imgModal.show();
+        });
+    });
+};
+
 
 // render post series
-async function parseAndReplacePostSeries() {
+const parseAndReplacePostSeries = async () => {
     const seriesElements = document.querySelectorAll('.post .post-content div.post_series');
     const tasks = Array.from(seriesElements).map(async (seEle) => {
         const postkey = seEle.getAttribute('key');
@@ -272,7 +285,7 @@ async function parseAndReplacePostSeries() {
 
 
 async function loadSeries(postkey) {
-    const cacheKey = KvKeyPrefixCache + await SHA256(`${postkey}`);
+    const cacheKey = KvKeyPrefixCache + await SHA256(`postSeries:${postkey}`);
     const cacheData = await GetCache(cacheKey);
     if (cacheData) {
         return cacheData;

@@ -8,13 +8,13 @@ import { Link, useParams } from 'react-router-dom';
 import { Sidebar } from '../components/sidebar.jsx';
 import {
     DurationDay,
+    DurationWeek,
     KvKeyLanguage,
     KvKeyPrefixCache,
     formatTs,
     getCurrentUsername,
     getGraphqlAPI,
-    getUserLanguage,
-    ts2UTC
+    getUserLanguage
 } from '../library/base.jsx';
 import {
     GetCache,
@@ -26,68 +26,19 @@ import {
 
 
 export const loader = async ({ params }) => {
-    const cacheKey = KvKeyPrefixCache + await SHA256(`${await getUserLanguage()}:${params.nPage}`);
-    const cacheData = await GetCache(cacheKey);
-    if (cacheData) {
-        return cacheData;
+    const [postsData, nPosts] = await Promise.all([
+        loadPage(params.nPage),
+        loadPostInfo(),
+    ]);
+
+    // preload surrounding pages
+    const preloadFrom = Math.max(0, params.nPage - 3);
+    const preloadTo = Math.min(nPosts, params.nPage + 3);
+    for (let i = preloadFrom; i < preloadTo; i++) {
+        loadPage(i);
     }
 
-    let postsData, nPosts;
-    const f1 = (async () => {
-        const gqBody = gql`
-            query {
-                BlogPosts(
-                    language: ${await getUserLanguage()}
-                    length: 600
-                    page: {
-                        page: ${params.nPage}
-                        size: 10
-                    }
-                ) {
-                    name
-                    created_at
-                    modified_at
-                    type
-                    title
-                    menu
-                    markdown
-                    tags
-                    category {
-                        name
-                        url
-                    }
-                    arweave_id {
-                        id
-                        time
-                    }
-                }
-            }
-        `;
-
-        const resp = await request(getGraphqlAPI(), gqBody);
-        postsData = resp.BlogPosts;
-    })();
-
-    const f2 = (async () => {
-        const gqBody = gql`
-            query postinfo {
-                BlogPostInfo {
-                    total
-                }
-            }
-        `;
-
-        const resp = await request(getGraphqlAPI(), gqBody);
-        nPosts = resp.BlogPostInfo.total;
-    })();
-
-    await Promise.all([f1, f2]);
-    const result = { postsData, nPosts };
-
-    // update cache
-    await SetCache(cacheKey, result, DurationDay);
-
-    return result;
+    return { postsData, nPosts };
 }
 
 export const Page = () => {
@@ -209,4 +160,74 @@ export const Page = () => {
             {content}
         </div>
     )
+}
+
+const loadPage = async (nPage) => {
+    const cacheKey = KvKeyPrefixCache + await SHA256(`loadPage:${await getUserLanguage()}:${nPage}`);
+    const cacheData = await GetCache(cacheKey);
+    if (cacheData) {
+        return cacheData;
+    }
+
+    const gqBody = gql`
+        query {
+            BlogPosts(
+                language: ${await getUserLanguage()}
+                length: 600
+                page: {
+                    page: ${nPage}
+                    size: 10
+                }
+            ) {
+                name
+                created_at
+                modified_at
+                type
+                title
+                menu
+                markdown
+                tags
+                category {
+                    name
+                    url
+                }
+                arweave_id {
+                    id
+                    time
+                }
+            }
+        }
+    `;
+
+    const resp = await request(getGraphqlAPI(), gqBody);
+    const result = resp.BlogPosts;
+
+    // update cache
+    await SetCache(cacheKey, result, DurationDay);
+
+    return result;
+};
+
+const loadPostInfo = async () => {
+    const cacheKey = KvKeyPrefixCache + await SHA256(`loadPostInfo`);
+    const cacheData = await GetCache(cacheKey);
+    if (cacheData) {
+        return cacheData;
+    }
+
+    const gqBody = gql`
+        query postinfo {
+            BlogPostInfo {
+                total
+            }
+        }
+    `;
+
+    const resp = await request(getGraphqlAPI(), gqBody);
+    const result =  resp.BlogPostInfo.total;
+
+    // update cache
+    await SetCache(cacheKey, result, DurationWeek);
+
+    return result;
 }
