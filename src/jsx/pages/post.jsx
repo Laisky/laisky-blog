@@ -68,7 +68,7 @@ export const loader = async ({ params }) => {
 
 export const Post = () => {
     const params = useParams();
-    const [content, setContent] = useState(null);
+    const [content, setContent] = useState('waiting to load...');
     const [language, setLanguage] = useState(null);
     const navigate = useNavigate();
 

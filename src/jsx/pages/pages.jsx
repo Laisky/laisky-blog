@@ -91,7 +91,7 @@ export const loader = async ({ params }) => {
 }
 
 export const Page = () => {
-    const [content, setContent] = useState(null);
+    const [content, setContent] = useState('waiting to load...');
     const params = useParams();
 
     useEffect(() => {
