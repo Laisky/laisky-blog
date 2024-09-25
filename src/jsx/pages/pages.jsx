@@ -1,7 +1,7 @@
 'use strict';
 
 import * as bootstrap from 'bootstrap';
-import { gql, request } from 'graphql-request';
+import { gql } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
@@ -12,9 +12,8 @@ import {
     KvKeyLanguage,
     KvKeyPrefixCache,
     formatTs,
-    getCurrentUsername,
-    getGraphqlAPI,
-    getUserLanguage
+    getCurrentUsername, getUserLanguage,
+    graphqlQuery
 } from '../library/base.jsx';
 import {
     GetCache,
@@ -201,7 +200,7 @@ const loadPage = async (nPage) => {
         }
     `;
 
-    const resp = await request(getGraphqlAPI(), gqBody);
+    const resp = await graphqlQuery(gqBody);
     const result = resp.BlogPosts;
 
     // update cache
@@ -225,8 +224,8 @@ const loadPostInfo = async () => {
         }
     `;
 
-    const resp = await request(getGraphqlAPI(), gqBody);
-    const result =  resp.BlogPostInfo.total;
+    const resp = await graphqlQuery(gqBody);
+    const result = resp.BlogPostInfo.total;
 
     // update cache
     await SetCache(cacheKey, result, DurationWeek);

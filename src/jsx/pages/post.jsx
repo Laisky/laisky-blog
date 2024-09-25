@@ -2,7 +2,7 @@
 
 import * as bootstrap from 'bootstrap';
 import { DiscussionEmbed } from 'disqus-react';
-import { gql, request } from 'graphql-request';
+import { gql } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -11,9 +11,8 @@ import {
     DurationDay,
     DurationWeek,
     formatTs,
-    getCurrentUsername,
-    getGraphqlAPI,
-    getUserLanguage,
+    getCurrentUsername, getUserLanguage,
+    graphqlQuery,
     KvKeyLanguage,
     KvKeyPrefixCache
 } from '../library/base.jsx';
@@ -58,7 +57,7 @@ export const loader = async ({ params }) => {
         }
     `;
 
-    const resp = await request(getGraphqlAPI(), gqBody);
+    const resp = await graphqlQuery( gqBody);
     const result = resp.BlogPosts[0];
 
     // update cache
@@ -308,7 +307,7 @@ async function loadSeries(postkey) {
         }
     `;
 
-    const resp = await request(getGraphqlAPI(), gqBody);
+    const resp = await graphqlQuery( gqBody);
 
     if (resp.GetBlogPostSeries.length < 1) {
         return null;

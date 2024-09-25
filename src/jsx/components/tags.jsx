@@ -1,8 +1,8 @@
 'use strict';
 
-import { gql, request } from 'graphql-request';
+import { gql } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
-import { getGraphqlAPI } from '../library/base';
+import { graphqlQuery } from '../library/base';
 
 export const Tags = () => {
     const [tags, setTags] = useState([]);
@@ -15,7 +15,7 @@ export const Tags = () => {
             }
         `;
 
-            const resp = await request(getGraphqlAPI(), gqBody);
+            const resp = await graphqlQuery(gqBody);
             setTags(resp.BlogTags);
         })();
     }, []);

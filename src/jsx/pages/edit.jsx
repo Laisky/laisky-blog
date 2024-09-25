@@ -1,11 +1,16 @@
 'use strict';
 
-import { gql, request } from 'graphql-request';
+import { gql } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
 import React from 'react';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 
-import { getGraphqlAPI, getUserLanguage, KvKeyUserToken } from '../library/base.jsx';
+import {
+    getUserLanguage,
+    graphqlMutation,
+    graphqlQuery,
+    KvKeyUserToken
+} from '../library/base.jsx';
 import { KvGet } from '../library/libs.js';
 
 
@@ -36,7 +41,7 @@ export const postEditLoader = async ({ params }) => {
         }
     `;
 
-    const resp = await request(getGraphqlAPI(), gqBody);
+    const resp = await graphqlQuery(gqBody);
     return {
         isPublish: false,
         post: resp.BlogPosts[0]
@@ -95,7 +100,7 @@ export const PostEdit = () => {
             }
         `;
 
-        const resp = await request(getGraphqlAPI(), gqBody, variables, {
+        const resp = await graphqlMutation(gqBody, variables, {
             Authorization: `Bearer ${await KvGet(KvKeyUserToken)}`
         });
         navigate(`/p/${resp.BlogAmendPost.name}/?force=1`);

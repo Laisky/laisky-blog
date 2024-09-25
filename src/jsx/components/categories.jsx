@@ -1,9 +1,9 @@
 'use strict';
 
-import { gql, request } from 'graphql-request';
+import { gql } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getGraphqlAPI } from '../library/base';
+import { graphqlQuery } from '../library/base';
 
 
 export const Categories = () => {
@@ -40,7 +40,7 @@ export const Categories = () => {
             }
         `;
 
-        const resp = await request(getGraphqlAPI(), gqBody);
+        const resp = await graphqlQuery(gqBody);
         return resp.BlogPostCategories;
     }
 

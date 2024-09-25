@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import moment from 'moment';
 
 import { KvGet, KvSet } from './libs.js';
+import request, { GraphQLClient } from "graphql-request";
 
 export const GraphqlAPI = 'https://gq.laisky.com/query/';
 // export const GraphqlAPI = 'http://100.75.198.70:18080/query/';
@@ -27,6 +28,33 @@ export const DurationWeek = 7 * DurationDay;
 //     if (parts.length === 2) return parts.pop().split(';').shift();
 // }
 
+/**
+ * Get the current user token.
+ *
+ * @param {string} body - The graphql query body.
+ * @param {object} vars - The graphql query variables.
+ * @param {object} headers - The graphql query headers.
+ *
+ */
+export const graphqlQuery = async (body, vars, headers) => {
+    const client = new GraphQLClient(getGraphqlAPI(), {
+        method: 'GET',
+    });
+
+    return await client.request(body, vars, headers);
+}
+
+/**
+ * Get the current user token.
+ *
+ * @param {string} body - The graphql mutation body.
+ * @param {object} vars - The graphql mutation variables.
+ * @param {object} headers - The graphql mutation headers.
+ */
+export const graphqlMutation = async (body, vars, headers) => {
+    return await request(getGraphqlAPI(), body, vars, headers);
+}
+
 export const getGraphqlAPI = () => {
     if (typeof window !== 'undefined' && window.location) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -49,7 +77,7 @@ export const getCurrentPathName = () => {
  * @returns {string|null} The username or null if not available.
  */
 export const getCurrentUsername = async () => {
-    let userinfo =  await KvGet(KvKeyAuthUser);
+    let userinfo = await KvGet(KvKeyAuthUser);
     if (!userinfo) {
         return;
     }

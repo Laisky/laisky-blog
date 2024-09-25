@@ -1,15 +1,14 @@
 'use strict';
 
-import { gql, request } from 'graphql-request';
+import { gql } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { Sidebar } from '../components/sidebar.jsx';
 import {
     DurationDay,
-    formatTs,
-    getGraphqlAPI,
-    getUserLanguage,
+    formatTs, getUserLanguage,
+    graphqlQuery,
     KvKeyLanguage,
     KvKeyPrefixCache
 } from '../library/base.jsx';
@@ -65,7 +64,7 @@ export const loader = async ({ params }) => {
         `;
     }
 
-    const resp = await request(getGraphqlAPI(), gqBody);
+    const resp = await graphqlQuery(gqBody);
     const result = {
         postsData: resp.BlogPosts,
     };
