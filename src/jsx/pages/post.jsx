@@ -143,6 +143,16 @@ export const Post = () => {
         parseAndReplacePostSeries();
     }, [content]);
 
+    const watchLanguageChange = () => {
+        KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
+            if (op !== KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+                return;
+            }
+
+            setLanguage(newVal);
+        }, "page_post")
+    };
+
     const renderCode = () => {
         document.querySelectorAll('pre > code').forEach((ele) => {
             window.Prism && window.Prism.highlightAllUnder(ele.closest('pre'));
@@ -155,16 +165,6 @@ export const Post = () => {
         </div>
     )
 }
-
-const watchLanguageChange = () => {
-    KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
-        if (op !== KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
-            return;
-        }
-
-        setLanguage(newVal);
-    }, "page_post")
-};
 
 const loadPostTails = async (post) => {
     let articleEditable;

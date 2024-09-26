@@ -39,13 +39,12 @@ const router = createBrowserRouter([
             },
             {
                 path: "edit/:name/",
-                element: <PostEdit />,
-                loader: postEditLoader,
+                element: <PostEdit isPublish="false" />,
+                // loader: postEditLoader,
             },
             {
                 path: "publish/",
-                element: <PostEdit />,
-                loader: postPublishLoader,
+                element: <PostEdit isPublish="true" />,
             },
             {
                 path: "about/",

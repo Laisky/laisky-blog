@@ -2,16 +2,17 @@
 
 import { gql } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
-import React from 'react';
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import {
     getUserLanguage,
     graphqlMutation,
     graphqlQuery,
+    KvKeyLanguage,
     KvKeyUserToken
 } from '../library/base.jsx';
-import { KvGet } from '../library/libs.js';
+import { KvAddListener, KvGet, KvOp } from '../library/libs.js';
 
 
 export const postEditLoader = async ({ params }) => {
@@ -42,28 +43,31 @@ export const postEditLoader = async ({ params }) => {
     `;
 
     const resp = await graphqlQuery(gqBody);
-    return {
-        isPublish: false,
-        post: resp.BlogPosts[0]
-    };
+    return resp.BlogPosts[0];
 }
 
 export const postPublishLoader = async ({ params }) => {
     return {
-        isPublish: true,
-        post: {
-            name: '',
-            type: 'markdown',
-            title: '',
-            language: 'zh_CN',
-            markdown: '',
-        }
+        name: '',
+        type: 'markdown',
+        title: '',
+        language: 'zh_CN',
+        markdown: '',
     }
 }
 
-export const PostEdit = () => {
-    const { isPublish, post } = useLoaderData();
+export const PostEdit = (isPublish) => {
+    isPublish = isPublish === 'true';
+    const [language, setLanguage] = useState(null);
+    const [content, setContent] = useState(null);
     const navigate = useNavigate();
+    const params = useParams();
+
+    useEffect(() => {
+        (async () => {
+            setContent(await renderContent());
+        })();
+    }, [params.name, language]);
 
     const submitHandler = async (evt) => {
         evt.preventDefault();
@@ -106,9 +110,26 @@ export const PostEdit = () => {
         navigate(`/p/${resp.BlogAmendPost.name}/?force=1`);
     };
 
-    return (
-        <div id="postEdit" className='row align-items-start scrollable-content'>
-            {/* blog posts */}
+    const watchLanguageChange = () => {
+        KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
+            if (op !== KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+                return;
+            }
+
+            navigate(0);
+        }, "page_post")
+    };
+    watchLanguageChange();
+
+    const renderContent = async () => {
+        let post;
+        if (isPublish) {
+            post = await postPublishLoader({ params });
+        } else {
+            post = await postEditLoader({ params });
+        }
+
+        return (
             <div className='col-md-9 posts'>
                 <div className="container-fluid post" id={post.name} key={post.name}>
                     <div className="mb-3">
@@ -133,7 +154,7 @@ export const PostEdit = () => {
                         <textarea
                             className="form-control input postMarkdown"
                             defaultValue={post.markdown}
-                            rows="10"
+                            rows="50"
                         />
                     </div>
                     <div className="mb-3">
@@ -159,6 +180,13 @@ export const PostEdit = () => {
                     <button type="submit" className="btn btn-primary" onClick={submitHandler}>Submit</button>
                 </div>
             </div>
+        );
+    };
+
+    return (
+        <div id="postEdit" className='row align-items-start scrollable-content'>
+            {/* blog posts */}
+            {content}
         </div>
     )
 }
