@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { getUserLanguage, setUserLanguage } from "../library/base";
+import { LoadJsModules } from '../library/libs';
 
 const App = () => {
     const [userLang, setUserLang] = useState(null);
@@ -21,6 +22,13 @@ const App = () => {
         (async () => {
             const lang = await getUserLanguage();
             setUserLang(lang);
+
+            // add google analytics
+            await LoadJsModules(["https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS"]);
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-BVS991NWWS');
         })();
     }, []);
 
