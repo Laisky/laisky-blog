@@ -57,7 +57,7 @@ export const loader = async ({ params }) => {
         }
     `;
 
-    const resp = await graphqlQuery( gqBody);
+    const resp = await graphqlQuery(gqBody);
     const result = resp.BlogPosts[0];
 
     // update cache
@@ -120,27 +120,30 @@ export const Post = () => {
             return;
         }
 
-        bindPostImageModal();
-        renderCode();
-        watchLanguageChange()
+        (async () => {
+            bindPostImageModal();
+            renderCode();
+            await renderMathjax();
+            watchLanguageChange()
 
-        // enable tooltips
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+            // enable tooltips
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
-        // enable menu
-        try {
-            const scrollSpy = new bootstrap.ScrollSpy(
-                document.querySelector('#post'),
-                {
-                    target: '#post-menu',
-                    smoothScroll: true,
-                });
-        } catch (e) {
-            console.error(`failed to enable scrollspy: ${e}`);
-        }
+            // enable menu
+            try {
+                const scrollSpy = new bootstrap.ScrollSpy(
+                    document.querySelector('#post'),
+                    {
+                        target: '#post-menu',
+                        smoothScroll: true,
+                    });
+            } catch (e) {
+                console.error(`failed to enable scrollspy: ${e}`);
+            }
 
-        parseAndReplacePostSeries();
+            parseAndReplacePostSeries();
+        })();
     }, [content]);
 
     const watchLanguageChange = () => {
@@ -153,18 +156,35 @@ export const Post = () => {
         }, "page_post")
     };
 
-    const renderCode = () => {
-        document.querySelectorAll('pre > code').forEach((ele) => {
-            window.Prism && window.Prism.highlightAllUnder(ele.closest('pre'));
-        });
-    }
-
     return (
         <div id="post" className='row align-items-start scrollable-content'>
             {content}
         </div>
     )
 }
+
+const renderCode = () => {
+    document.querySelectorAll('pre > code').forEach((ele) => {
+        window.Prism && window.Prism.highlightAllUnder(ele.closest('pre'));
+    });
+}
+
+const renderMathjax = () => {
+    if (!window.MathJax) {
+        const script = document.createElement('script');
+        script.src = "https://s3.laisky.com/static/mathjax/2.7.3/MathJax-2.7.3/MathJax.js?config=TeX-MML-AM_CHTML";
+        script.async = true;
+        script.onload = () => {
+            window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+        };
+        script.onerror = (e) => {
+            console.error(`failed to load mathjax: ${e}`);
+        };
+        document.head.appendChild(script);
+    } else {
+        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+    }
+};
 
 const loadPostTails = async (post) => {
     let articleEditable;
@@ -307,7 +327,7 @@ async function loadSeries(postkey) {
         }
     `;
 
-    const resp = await graphqlQuery( gqBody);
+    const resp = await graphqlQuery(gqBody);
 
     if (resp.GetBlogPostSeries.length < 1) {
         return null;
