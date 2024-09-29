@@ -33,7 +33,6 @@
 
     .post {
         padding: 0px;
-        overflow-x: auto;
 
         &:not(:first-child) {
             margin-top: 20px;
@@ -53,6 +52,10 @@
 
             .hint {
                 margin: 10px;
+            }
+
+            .MJXc-display {
+                overflow-x: auto;
             }
 
             img {
