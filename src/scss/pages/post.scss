@@ -33,6 +33,7 @@
 
     .post {
         padding: 0px;
+        overflow-x: auto;
 
         &:not(:first-child) {
             margin-top: 20px;
