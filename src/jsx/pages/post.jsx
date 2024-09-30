@@ -164,25 +164,33 @@ export const Post = () => {
 }
 
 const renderCode = () => {
-    document.querySelectorAll('pre > code').forEach((ele) => {
-        window.Prism && window.Prism.highlightAllUnder(ele.closest('pre'));
-    });
+    try {
+        document.querySelectorAll('pre > code').forEach((ele) => {
+            window.Prism && window.Prism.highlightAllUnder(ele.closest('pre'));
+        });
+    } catch (e) {
+        console.error(`failed to render code: ${e}`);
+    }
 }
 
 const renderMathjax = () => {
-    if (!window.MathJax) {
-        const script = document.createElement('script');
-        script.src = "https://s3.laisky.com/static/mathjax/2.7.3/MathJax-2.7.3/MathJax.js?config=TeX-MML-AM_CHTML";
-        script.async = true;
-        script.onload = () => {
+    try {
+        if (!window.MathJax) {
+            const script = document.createElement('script');
+            script.src = "https://s3.laisky.com/static/mathjax/2.7.3/MathJax-2.7.3/MathJax.js?config=TeX-MML-AM_CHTML";
+            script.async = true;
+            script.onload = () => {
+                window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+            };
+            script.onerror = (e) => {
+                console.error(`failed to load mathjax: ${e}`);
+            };
+            document.head.appendChild(script);
+        } else {
             window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
-        };
-        script.onerror = (e) => {
-            console.error(`failed to load mathjax: ${e}`);
-        };
-        document.head.appendChild(script);
-    } else {
-        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+        }
+    } catch (e) {
+        console.error(`failed to render mathjax: ${e}`);
     }
 };
 
