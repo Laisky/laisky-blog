@@ -85,7 +85,7 @@ export const DateStr = () => {
 const kvListeners = {};
 let kv;
 
-function initKv () {
+function initKv() {
     if (!kv) {
         kv = new PouchDB('mydatabase');
     }
@@ -605,7 +605,11 @@ export const SetCache = async (key, val, ttlSeconds) => {
         expireAt: Date.now() + ttlSeconds * 1000
     };
 
-    await KvSet(key, cache);
+    try {
+        await KvSet(key, cache);
+    } catch (error) {
+        console.error(`SetCache failed: ${error}`);
+    }
 };
 
 /**
@@ -623,11 +627,16 @@ export const GetCache = async (key) => {
         }
     }
 
-    const cache = await KvGet(key);
-    if (!cache || cache.expireAt < Date.now()) {
-        await KvDel(key);
+    try {
+        const cache = await KvGet(key);
+        if (!cache || cache.expireAt < Date.now()) {
+            await KvDel(key);
+            return null;
+        }
+
+        return cache.val;
+    } catch (error) {
+        console.error(`GetCache failed: ${error}`);
         return null;
     }
-
-    return cache.val;
-}
+};
