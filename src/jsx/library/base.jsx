@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import { KvGet, KvSet } from './libs.js';
 import request, { GraphQLClient } from "graphql-request";
+import { isJsxFragment } from "typescript";
 
 export const GraphqlAPI = 'https://gq.laisky.com/query/';
 // export const GraphqlAPI = 'http://100.75.198.70:18080/query/';
@@ -41,6 +42,12 @@ export const graphqlQuery = async (body, vars, headers) => {
         method: 'GET',
     });
 
+    if (isForce()) {
+        // disable cache
+        headers = headers || {};
+        headers['Cache-Control'] = 'no-cache';
+    }
+
     return await client.request(body, vars, headers);
 }
 
@@ -55,12 +62,18 @@ export const graphqlMutation = async (body, vars, headers) => {
     return await request(getGraphqlAPI(), body, vars, headers);
 }
 
-export const getGraphqlAPI = () => {
+export const isForce = () => {
     if (typeof window !== 'undefined' && window.location) {
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('force')) {
-            return `${GraphqlAPI}?force=1`;
-        }
+        return urlParams.get('force');
+    }
+
+    return false;
+}
+
+export const getGraphqlAPI = () => {
+    if (isForce()) {
+        return `${GraphqlAPI}?force=1`;
     }
 
     return GraphqlAPI;
