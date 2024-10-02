@@ -58,13 +58,14 @@
                 overflow-x: auto;
             }
 
-            p:has(> img) {
+            p:has(img), th:has(img), td:has(img) {
                 text-align: center;
-                img {
-                    max-width: 85%;
-                    max-height: 500px;
-                    cursor: pointer;
-                }
+            }
+
+            img {
+                max-width: 85%;
+                max-height: 500px;
+                cursor: pointer;
             }
 
             video {
