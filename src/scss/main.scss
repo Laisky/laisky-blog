@@ -42,5 +42,12 @@ body {
 
     nav.fixed-top {
         padding: 0px;
+
+        .gsc-control-cse {
+            padding: 0;
+
+            form[role="search"] {
+            }
+        }
     }
 }

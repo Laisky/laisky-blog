@@ -77,6 +77,9 @@ export const Post = () => {
             const post = await loader({ params });
             const postTail = await loadPostTails(post);
 
+            // change page title
+            document.title = post.title;
+
             const content = (
                 <>
                     <div className='col-md-8 col-lg-9 posts'>

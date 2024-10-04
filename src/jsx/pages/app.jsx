@@ -24,11 +24,22 @@ const App = () => {
             setUserLang(lang);
 
             // add google analytics
-            await LoadJsModules(["https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS"]);
-            window.dataLayer = window.dataLayer || [];
-            function gtag() { dataLayer.push(arguments); }
-            gtag('js', new Date());
-            gtag('config', 'G-BVS991NWWS');
+            {
+                await LoadJsModules(["https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS"]);
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-BVS991NWWS');
+            }
+
+            // enable google site search
+            {
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.async = true;
+                script.src = (document.location.protocol === 'https:' ? 'https:' : 'http:') + '//cse.google.com/cse.js?cx=004733495569415005684:-c6y46kjqva';
+                document.getElementsByTagName('script')[0].parentNode.insertBefore(script, document.getElementsByTagName('script')[0]);
+            }
         })();
     }, []);
 
@@ -58,7 +69,6 @@ const App = () => {
         // navigate(0); // Refresh the page to apply the new language
     };
 
-    const googleSearch = '<gcse:search className="google-search" gname="post_search" enableAutoComplete="true"></gcse:search>';
     const dropdownBtn = (
         <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -101,10 +111,10 @@ const App = () => {
                             </li>
                         </ul>
                         <ul className="navbar-nav">
+                            <form class="d-flex" role="search">
+                                <gcse:search class="google-search" gname="post_search" enableAutoComplete="true"></gcse:search>
+                            </form>
                             {dropdownBtn}
-                            <div className="navbar-form navbar-right nav-bar-search">
-                                <div dangerouslySetInnerHTML={{ __html: googleSearch }} />
-                            </div>
                             <Link to="https://s3.laisky.com/public/rss.xml" target="_blank" className="nav-link" rel="noopener noreferrer">
                                 <img src="https://s3.laisky.com/uploads/images/rss.png" className="rss" alt="RSS" />
                             </Link>
