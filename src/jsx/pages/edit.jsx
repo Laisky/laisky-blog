@@ -56,7 +56,7 @@ export const postPublishLoader = async ({ params }) => {
     }
 }
 
-export const PostEdit = (isPublish) => {
+export const PostEdit = ({ isPublish }) => {
     isPublish = isPublish === 'true';
     const [language, setLanguage] = useState(null);
     const [content, setContent] = useState(null);
@@ -131,7 +131,7 @@ export const PostEdit = (isPublish) => {
 
         return (
             <div className='col-md-9 posts'>
-                <div className="container-fluid post" id={post.name} key={post.name}>
+                <div className="container-fluid post">
                     <div className="mb-3">
                         <label htmlFor="postTitle" className="form-label">Title</label>
                         <input
