@@ -200,7 +200,7 @@ const renderMathjax = () => {
 const loadPostTails = async (post) => {
     let articleEditable;
     if (await getCurrentUsername()) {
-        articleEditable = <Link to={`/edit/${params.name}/`}>Edit</Link>;
+        articleEditable = <Link to={`/edit/${post.name}/`}>Edit</Link>;
     }
 
 
