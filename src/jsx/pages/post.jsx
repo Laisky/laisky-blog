@@ -299,10 +299,10 @@ const parseAndReplacePostSeries = async () => {
         }
 
         html = `
-            <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">${se.remark} Serials</h5>
-                <ul class="card-text">
+            <div className="card">
+            <div className="card-body">
+                <h5 className="card-title">${se.remark} Serials</h5>
+                <ul className="card-text">
                     ${html}
                 </ul>
             </div>
@@ -374,11 +374,11 @@ async function parseSeriesChildren(seriesKey) {
 
     html = `
             <li>
-                <a class="btn btn-light" data-bs-toggle="collapse" href="#${sid}" role="button" aria-expanded="false" aria-controls="${sid}">
-                    <i class="bi bi-filter-left"></i>${se.remark} Serials：
+                <a className="btn btn-light" data-bs-toggle="collapse" href="#${sid}" role="button" aria-expanded="false" aria-controls="${sid}">
+                    <i className="bi bi-filter-left"></i>${se.remark} Serials：
                 </a>
-                <div id="${sid}" class="collapse">
-                    <div class="card card-body">
+                <div id="${sid}" className="collapse">
+                    <div className="card card-body">
                         <ul>
                             ${html}
                         </ul>

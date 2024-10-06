@@ -87,6 +87,9 @@ const App = () => {
         </li>
     );
 
+    // GCSE is a non-standard tag; avoid placing it directly in JSX to prevent browser errors.
+    const googleSearch = `<gcse:search className="google-search" gname="post_search" enableAutoComplete="true"></gcse:search>`;
+
     return (
         <>
             <nav className="navbar navbar-expand-sm bg-body-tertiary fixed-top" id="headerbar" onClick={scrollToTop}>
@@ -111,8 +114,7 @@ const App = () => {
                             </li>
                         </ul>
                         <ul className="navbar-nav">
-                            <form class="d-flex" role="search">
-                                <gcse:search class="google-search" gname="post_search" enableAutoComplete="true"></gcse:search>
+                            <form className="d-flex" role="search" dangerouslySetInnerHTML={{ __html: googleSearch }}>
                             </form>
                             {dropdownBtn}
                             <Link to="https://s3.laisky.com/public/rss.xml" target="_blank" className="nav-link" rel="noopener noreferrer">
