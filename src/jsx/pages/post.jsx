@@ -374,11 +374,11 @@ async function parseSeriesChildren(seriesKey) {
 
     html = `
             <li>
-                <a className="btn btn-light" data-bs-toggle="collapse" href="#${sid}" role="button" aria-expanded="false" aria-controls="${sid}">
-                    <i className="bi bi-filter-left"></i>${se.remark} Serials：
+                <a class="btn btn-light" data-bs-toggle="collapse" href="#${sid}" role="button" aria-expanded="false" aria-controls="${sid}">
+                    <i class="bi bi-filter-left"></i>${se.remark} Serials：
                 </a>
-                <div id="${sid}" className="collapse">
-                    <div className="card card-body">
+                <div id="${sid}" class="collapse">
+                    <div class="card card-body">
                         <ul>
                             ${html}
                         </ul>
