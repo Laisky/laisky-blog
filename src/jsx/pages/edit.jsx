@@ -93,21 +93,36 @@ export const PostEdit = ({ isPublish }) => {
             }
         }
 
-        const gqBody = gql`
-            mutation($post: NewBlogPost!) {
-                BlogAmendPost(
-                    post: $post,
-                    language: ${language},
-                ) {
-                    name
+        let gqBody;
+        if (isPublish) {
+            gqBody = gql`
+                mutation($post: NewBlogPost!) {
+                    BlogCreatePost(
+                        post: $post,
+                        language: ${language},
+                    ) {
+                        name
+                    }
                 }
-            }
-        `;
+            `;
+        } else {
+            gqBody = gql`
+                mutation($post: NewBlogPost!) {
+                    BlogAmendPost(
+                        post: $post,
+                        language: ${language},
+                    ) {
+                        name
+                    }
+                }
+            `;
+        }
 
-        const resp = await graphqlMutation(gqBody, variables, {
+        await graphqlMutation(gqBody, variables, {
             Authorization: `Bearer ${await KvGet(KvKeyUserToken)}`
         });
-        navigate(`/p/${resp.BlogAmendPost.name}/?force=1`);
+
+        navigate(`/p/${variables.post.name}/?force=1`);
     };
 
     const watchLanguageChange = () => {
