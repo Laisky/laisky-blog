@@ -299,10 +299,10 @@ const parseAndReplacePostSeries = async () => {
         }
 
         html = `
-            <div className="card">
-            <div className="card-body">
-                <h5 className="card-title">${se.remark} Serials</h5>
-                <ul className="card-text">
+            <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">${se.remark} Serials</h5>
+                <ul class="card-text">
                     ${html}
                 </ul>
             </div>
