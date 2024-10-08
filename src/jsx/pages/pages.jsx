@@ -22,6 +22,7 @@ import {
     SHA256,
     SetCache
 } from '../library/libs.js';
+import {loader as postLoader} from './post.jsx';
 
 
 export const loader = async ({ params }) => {
@@ -66,6 +67,9 @@ export const Page = () => {
 
         const postsContent = [];
         for (const post of postsData) {
+            // preload post to cache
+            postLoader({ params: { name: post.name } });
+
             const postTail = await getPostTails(post);
             const postElement = (
                 <div className="container-fluid post" id={post.name} key={post.name}>
