@@ -24,22 +24,20 @@ const App = () => {
             setUserLang(lang);
 
             // add google analytics
-            {
+            const f1 = (async() => {
                 await LoadJsModules(["https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS"]);
                 window.dataLayer = window.dataLayer || [];
                 function gtag() { dataLayer.push(arguments); }
                 gtag('js', new Date());
                 gtag('config', 'G-BVS991NWWS');
-            }
+            })();
 
-            // enable google site search
-            {
-                const script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.async = true;
-                script.src = (document.location.protocol === 'https:' ? 'https:' : 'http:') + '//cse.google.com/cse.js?cx=004733495569415005684:-c6y46kjqva';
-                document.getElementsByTagName('script')[0].parentNode.insertBefore(script, document.getElementsByTagName('script')[0]);
-            }
+            // load google search
+            const f2 = LoadJsModules([
+                "https://cse.google.com/cse.js?cx=004733495569415005684:-c6y46kjqva"
+            ]);
+
+            await Promise.all([f1, f2]);
         })();
     }, []);
 
@@ -87,8 +85,13 @@ const App = () => {
         </li>
     );
 
-    // GCSE is a non-standard tag; avoid placing it directly in JSX to prevent browser errors.
-    const googleSearch = `<gcse:search className="google-search" gname="post_search" enableAutoComplete="true"></gcse:search>`;
+    // enableAutoComplete is a non-standard tag;
+    // avoid placing it directly in JSX to prevent browser errors.
+    const googleSearch = `<div class="gcse-search"
+            data-gname="post_search"
+            data-enableHistory="true"
+            data-enableAutoComplete="true"
+        ></div>`;
 
     return (
         <>

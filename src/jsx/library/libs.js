@@ -8,11 +8,10 @@ import * as bootstrap from 'bootstrap';
 /**
  * load js modules by urls
  *
- * @param {*} moduleUrls array of module urls
- * @param {*} moduleType script type, default is 'text/javascript'
+ * @param {Array} moduleUrls array of module urls
+ * @param {string} moduleType script type, default is 'text/javascript'
  */
-export const LoadJsModules = async (moduleUrls, moduleType) => {
-    moduleType = moduleType || 'text/javascript';
+export const LoadJsModules = async (moduleUrls, moduleType = 'text/javascript') => {
     const promises = moduleUrls.map((moduleUrl) => {
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');

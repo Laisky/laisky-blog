@@ -20,10 +20,13 @@ export const Tags = () => {
         })();
     }, []);
 
-    const getTagClickHandler = (tag) => () => {
-        if (!google || !google.search.cse.element.getElement('post_search')) return;
+    const getTagClickHandler = (tag) => async (evt) => {
+        evt.preventDefault();
+        evt.stopPropagation();
 
-        google.search.cse.element.getElement('post_search').execute(tag);
+        if (window.google && window.google.search.cse.element.getElement('post_search')) {
+            google.search.cse.element.getElement('post_search').execute(tag);
+        }
     };
 
     return (
