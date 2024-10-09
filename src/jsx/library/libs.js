@@ -4,6 +4,7 @@ import PouchDB from 'pouchdb';
 import * as marked from 'marked';
 import { sha256 } from 'js-sha256';
 import * as bootstrap from 'bootstrap';
+import { DurationDay } from './base';
 
 /**
  * load js modules by urls
@@ -596,9 +597,9 @@ export const IsTouchDevice = () => {
  *
  * @param {string} key
  * @param {string} val
- * @param {number} ttlSeconds
+ * @param {number} ttlSeconds - time to live in seconds, default is 1 day
  */
-export const SetCache = async (key, val, ttlSeconds) => {
+export const SetCache = async (key, val, ttlSeconds = DurationDay) => {
     const cache = {
         val,
         expireAt: Date.now() + ttlSeconds * 1000

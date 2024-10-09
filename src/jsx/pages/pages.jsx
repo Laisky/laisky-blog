@@ -7,8 +7,6 @@ import { Link, useParams } from 'react-router-dom';
 
 import { Sidebar } from '../components/sidebar.jsx';
 import {
-    DurationDay,
-    DurationWeek,
     KvKeyLanguage,
     KvKeyPrefixCache,
     formatTs,
@@ -22,7 +20,7 @@ import {
     SHA256,
     SetCache
 } from '../library/libs.js';
-import {loader as postLoader} from './post.jsx';
+import { loader as postLoader } from './post.jsx';
 
 
 export const loader = async ({ params }) => {
@@ -211,7 +209,7 @@ const loadPage = async (nPage) => {
     const result = resp.BlogPosts;
 
     // update cache
-    await SetCache(cacheKey, result, DurationDay);
+    await SetCache(cacheKey, result);
 
     return result;
 };
@@ -235,7 +233,7 @@ const loadPostInfo = async () => {
     const result = resp.BlogPostInfo.total;
 
     // update cache
-    await SetCache(cacheKey, result, DurationWeek);
+    await SetCache(cacheKey, result);
 
     return result;
 }

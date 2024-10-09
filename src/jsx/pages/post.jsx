@@ -8,8 +8,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import {
-    DurationDay,
-    DurationWeek,
     formatTs,
     getCurrentUsername, getUserLanguage,
     graphqlQuery,
@@ -61,7 +59,7 @@ export const loader = async ({ params }) => {
     const result = resp.BlogPosts[0];
 
     // update cache
-    await SetCache(cacheKey, result, DurationDay);
+    await SetCache(cacheKey, result);
 
     return result;
 }
@@ -347,7 +345,7 @@ async function loadSeries(postkey) {
     const result = resp.GetBlogPostSeries[0];
 
     // update cache
-    await SetCache(cacheKey, result, DurationWeek);
+    await SetCache(cacheKey, result);
 
     return result;
 }
