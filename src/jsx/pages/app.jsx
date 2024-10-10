@@ -6,6 +6,7 @@ import { KvGet, KvSet, LoadJsModules } from '../library/libs';
 
 export const App = () => {
     const [userLang, setUserLang] = useState(null);
+    const [theme, setTheme] = useState('light');
     const location = useLocation();
     // const navigate = useNavigate();
 
@@ -39,11 +40,15 @@ export const App = () => {
                 "https://cse.google.com/cse.js?cx=004733495569415005684:-c6y46kjqva"
             ]));
 
-            fs.push(enableDarkModeTheme('auto'));
-
             await Promise.all(fs);
         })();
+
+        watchThemeChange(setTheme);
     }, []);
+
+    useEffect(() => {
+        document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+    }, [theme]);
 
     const getCurrentRouteName = () => {
         // Extract the route name based on the current location
@@ -152,26 +157,16 @@ export const App = () => {
 };
 
 
-export const enableDarkModeTheme = async (theme) => {
-    const getStoredTheme = async () => await KvGet('theme');
-    const setStoredTheme = async (theme) => await KvSet('theme', theme);
+let _watchThemeChanged = false;
 
-    const getPreferredTheme = async () => {
-        const storedTheme = await getStoredTheme();
-        if (storedTheme) {
-            return storedTheme;
-        }
+const watchThemeChange = (setTheme) => {
+    if (_watchThemeChanged) {
+        return;
+    }
 
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    };
-
-    const setTheme = theme => {
-        if (theme === 'auto') {
-            document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-        } else {
-            document.documentElement.setAttribute('data-bs-theme', theme);
-        }
-    };
-
-    setTheme(await getPreferredTheme());
+    _watchThemeChanged = true;
+    setInterval(() => {
+        const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        setTheme(theme);
+    }, 1000);
 };
