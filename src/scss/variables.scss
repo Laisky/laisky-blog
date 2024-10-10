@@ -1,1 +1,7 @@
-$background-color: #F1F1F1;
+:root {
+    --background-color: #F1F1F1;
+}
+
+[data-bs-theme=dark] {
+    --background-color: #343a40;
+}

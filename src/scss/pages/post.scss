@@ -1,3 +1,5 @@
+@import '../variables.scss';
+
 .scrollable-content {
     overflow-y: auto;
     display: flex;
@@ -29,7 +31,7 @@
     padding: 10px;
     border-radius: 5px;
     max-width: 800px;
-    background-color: $background-color;
+    background-color: var(--background-color);
 
     .post {
         padding: 0px;
@@ -47,7 +49,6 @@
 
         .post-content {
             border-radius: 10px;
-            background-color: #F1F1F1;
             padding: 0;
 
             .hint {
@@ -145,7 +146,7 @@
     padding: 5px;
     font-size: small;
     border-radius: 5px;
-    background-color: $background-color;
+    background-color: var(--background-color);
     margin-left: 20px;
     max-width: 200px;
 
@@ -178,8 +179,6 @@
             &::before {
                 content: ">";
             }
-
-            background-color: lighten($background-color, 10%);
         }
     }
 }

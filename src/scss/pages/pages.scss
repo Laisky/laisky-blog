@@ -6,7 +6,7 @@
     font-size: small;
     // height: 100vh; /* Full viewport height */
     padding-top: 20px;
-    background-color: $background-color;
+    background-color: var(--background-color);
     margin-left: 20px;
     border-radius: 5px;
     max-width: 200px;

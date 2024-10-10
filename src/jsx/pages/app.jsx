@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { getUserLanguage, setUserLanguage } from "../library/base";
-import { LoadJsModules } from '../library/libs';
+import { KvGet, KvSet, LoadJsModules } from '../library/libs';
 
-const App = () => {
+export const App = () => {
     const [userLang, setUserLang] = useState(null);
     const location = useLocation();
     // const navigate = useNavigate();
@@ -23,21 +23,25 @@ const App = () => {
             const lang = await getUserLanguage();
             setUserLang(lang);
 
+            let fs = [];
+
             // add google analytics
-            const f1 = (async() => {
+            fs.push((async () => {
                 await LoadJsModules(["https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS"]);
                 window.dataLayer = window.dataLayer || [];
                 function gtag() { dataLayer.push(arguments); }
                 gtag('js', new Date());
                 gtag('config', 'G-BVS991NWWS');
-            })();
+            })());
 
             // load google search
-            const f2 = LoadJsModules([
+            fs.push(LoadJsModules([
                 "https://cse.google.com/cse.js?cx=004733495569415005684:-c6y46kjqva"
-            ]);
+            ]));
 
-            await Promise.all([f1, f2]);
+            fs.push(enableDarkModeTheme('auto'));
+
+            await Promise.all(fs);
         })();
     }, []);
 
@@ -147,4 +151,27 @@ const App = () => {
     );
 };
 
-export { App };
+
+export const enableDarkModeTheme = async (theme) => {
+    const getStoredTheme = async () => await KvGet('theme');
+    const setStoredTheme = async (theme) => await KvSet('theme', theme);
+
+    const getPreferredTheme = async () => {
+        const storedTheme = await getStoredTheme();
+        if (storedTheme) {
+            return storedTheme;
+        }
+
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    };
+
+    const setTheme = theme => {
+        if (theme === 'auto') {
+            document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+        } else {
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        }
+    };
+
+    setTheme(await getPreferredTheme());
+};
