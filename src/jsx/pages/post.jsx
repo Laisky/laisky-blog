@@ -66,7 +66,15 @@ export const loader = async ({ params }) => {
 
 export const Post = () => {
     const params = useParams();
-    const [content, setContent] = useState('waiting to load...');
+    const [content, setContent] = useState(
+        <div className='col-md-8 col-lg-9 posts placeholder-glow'>
+            <span class="placeholder col-7"></span>
+            <span class="placeholder col-4"></span>
+            <span class="placeholder col-4"></span>
+            <span class="placeholder col-6"></span>
+            <span class="placeholder col-8"></span>
+        </div>
+    );
     const [language, setLanguage] = useState(null);
     const navigate = useNavigate();
 
