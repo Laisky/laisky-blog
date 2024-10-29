@@ -20,6 +20,7 @@ import {
     SetCache,
     SHA256
 } from '../library/libs.js';
+import mermaid from 'mermaid';
 
 
 export const loader = async ({ params }) => {
@@ -152,6 +153,7 @@ export const Post = () => {
             }
 
             parseAndReplacePostSeries();
+            mermaid.initialize();
         })();
     }, [content]);
 
