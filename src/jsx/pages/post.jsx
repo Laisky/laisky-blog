@@ -153,7 +153,11 @@ export const Post = () => {
             }
 
             parseAndReplacePostSeries();
-            mermaid.initialize();
+            try {
+                mermaid.run();
+            } catch (e) {
+                console.error(`failed to render mermaid: ${e}`);
+            }
         })();
     }, [content]);
 
