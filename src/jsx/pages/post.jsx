@@ -267,7 +267,7 @@ const bindPostImageModal = () => {
     }
 
     // bind click event to post images
-    const postImgs = document.querySelectorAll('.post-content p > img');
+    const postImgs = document.querySelectorAll('.post-content p img');
     postImgs.forEach(img => {
         if (img.dataset.bindmodal) {
             return;
