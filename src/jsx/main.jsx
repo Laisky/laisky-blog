@@ -13,7 +13,7 @@ import { App } from "./pages/app";
 import { PostEdit, postEditLoader, postPublishLoader } from "./pages/edit";
 import { Login } from "./pages/login";
 import { Page, loader as pageLoader } from "./pages/pages";
-import { Post, loader as postLoader } from "./pages/post";
+import { Post, loader as postLoader, historyLoader as postHistoryLoader } from "./pages/post";
 import { Categories, loader as categoriesLoader } from "./pages/categories";
 import NotFound from "./pages/notfound";
 
@@ -34,8 +34,13 @@ const router = createBrowserRouter([
             },
             {
                 path: "p/:name/",
-                element: <Post />,
-                loader: postLoader,
+                element: <Post isHistory="false" />,
+                // loader: postLoader,
+            },
+            {
+                path: "p/history/:name/",
+                element: <Post isHistory="true" />,
+                // loader: postHistoryLoader,
             },
             {
                 path: "edit/:name/",

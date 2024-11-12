@@ -65,7 +65,49 @@ export const loader = async ({ params }) => {
     return result;
 }
 
-export const Post = () => {
+export const historyLoader = async ({ params }) => {
+    const cacheKey = KvKeyPrefixCache + await SHA256(`postHistory:${await getUserLanguage()}:${params.name}`);
+    const cacheData = await GetCache(cacheKey);
+    if (cacheData) {
+        return cacheData;
+    }
+
+    const gqBody = gql`
+        query Blog {
+            BlogPostHistory(
+                file_id: "${params.name}"
+            ) {
+                name
+                created_at
+                modified_at
+                type
+                title
+                menu
+                content
+                tags
+                category {
+                    name
+                    url
+                }
+                arweave_id {
+                    id
+                    time
+                }
+            }
+        }`;
+
+    const resp = await graphqlQuery(gqBody);
+    const result = resp.BlogPostHistory;
+
+    // update cache
+    await SetCache(cacheKey, result);
+
+    return result;
+};
+
+
+export const Post = ({ isHistory }) => {
+    isHistory = isHistory === 'true';
     const params = useParams();
     const [content, setContent] = useState(
         <div className='col-md-8 col-lg-9 posts placeholder-glow'>
@@ -81,7 +123,13 @@ export const Post = () => {
 
     useEffect(() => {
         (async () => {
-            const post = await loader({ params });
+            let post;
+            if (isHistory) {
+                post = await historyLoader({ params });
+            } else {
+                post = await loader({ params });
+            }
+
             const postTail = await loadPostTails(post);
 
             // change page title
@@ -226,7 +274,7 @@ const loadPostTails = async (post) => {
             }
 
             let history = post['arweave_id'][i];
-            articleHistory.push(<li key={history.id}><a href={`https://ario.laisky.com/${history.id}/`} target="_blank" rel="noopener noreferrer">{history.time}</a></li>);
+            articleHistory.push(<li key={history.id}><a href={`https://blog.laisky.com/p/history/${history.id}/`} target="_blank" rel="noopener noreferrer">{history.time}</a></li>);
         }
 
         articleHistory = (
