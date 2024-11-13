@@ -2,7 +2,8 @@ FROM node:22-bullseye AS vitebuilder
 
 WORKDIR /app
 
-RUN npm install -g yarn
+# yarn already installed in the node image
+# RUN npm install -g yarn
 
 # Copy package.json and package-lock.json first to leverage Docker cache
 ADD package.json ./
