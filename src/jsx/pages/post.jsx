@@ -275,7 +275,9 @@ const loadPostTails = async (post) => {
             }
 
             let history = post['arweave_id'][i];
-            articleHistory.push(<li key={history.id}><a href={`https://blog.laisky.com/p/history/${history.id}/`} target="_blank" rel="noopener noreferrer">{history.time}</a></li>);
+            articleHistory.push(
+                <li key={history.id}><Link to={`/p/history/${history.id}/`}>{history.time}</Link></li>
+            );
         }
 
         articleHistory = (
