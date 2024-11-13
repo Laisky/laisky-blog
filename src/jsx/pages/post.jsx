@@ -76,6 +76,7 @@ export const historyLoader = async ({ params }) => {
         query Blog {
             BlogPostHistory(
                 file_id: "${params.name}"
+                language: ${await getUserLanguage()}
             ) {
                 name
                 created_at
