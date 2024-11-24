@@ -134,14 +134,14 @@ export const Post = ({ isHistory }) => {
             const postTail = await loadPostTails(post);
 
             // change page title
-            document.title = post.title;
+            document.title = isHistory ? `[History] ${post.title}` : post.title;
 
             const content = (
                 <>
                     <div className='col-md-8 col-lg-9 posts'>
                         <div className="container-fluid post" id={post.name} key={post.name}>
                             <h2 className="post-title">
-                                <Link to={`/p/${post.name}/`}>{post.title}</Link>
+                                <Link to={`/p/${post.name}/`}>{isHistory ? `[History] ${post.title}` : post.title}</Link>
                             </h2>
                             <div className="post-meta">
                                 <span >published: </span>

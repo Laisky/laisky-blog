@@ -607,6 +607,7 @@ export const SetCache = async (key, val, ttlSeconds = DurationDay) => {
 
     try {
         await KvSet(key, cache);
+        console.debug(`cache set: ${key}`);
     } catch (error) {
         console.error(`SetCache failed: ${error}`);
     }
@@ -630,10 +631,12 @@ export const GetCache = async (key) => {
     try {
         const cache = await KvGet(key);
         if (!cache || cache.expireAt < Date.now()) {
+            console.debug(`cache miss: ${key}`);
             await KvDel(key);
             return null;
         }
 
+        console.debug(`cache hit: ${key}`);
         return cache.val;
     } catch (error) {
         console.error(`GetCache failed: ${error}`);
