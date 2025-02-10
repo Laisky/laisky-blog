@@ -161,7 +161,7 @@ export const Post = ({ isHistory }) => {
                                         language: 'en_US' //e.g. for Traditional Chinese (Taiwan)
                                     }
                                 }
-                            />;
+                            />
                         </div>
                     </div>
                     <div className="d-none d-md-block col-md-3 col-lg-2 post-menu" dangerouslySetInnerHTML={{ __html: post.menu }}>
