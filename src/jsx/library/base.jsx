@@ -99,6 +99,11 @@ export const getCurrentUsername = async () => {
 };
 
 
+/**
+ * Set the user language.
+ *
+ * @param {string} lang - The user language.
+ */
 export const setUserLanguage = async (lang) => {
     console.debug(`setUserLanguage: ${lang}`);
     try {
@@ -108,40 +113,33 @@ export const setUserLanguage = async (lang) => {
     }
 };
 
+/**
+ * Get the current user language.
+ *
+ * @returns {string} The user language.
+ */
 export const getUserLanguage = async () => {
-    let url = new URL(window.location.href),
-        lang;
+    // Get language from the URL parameter, kv storage, or browser settings in that order.
+    const url = new URL(window.location.href);
+    let lang = url.searchParams.get('lang')
+        || await KvGet(KvKeyLanguage)
+        || (navigator.language || navigator.userLanguage);
 
-    // get lang from url parameter
-    if (url.searchParams.has('lang')) {
-        lang = url.searchParams.get('lang');
-    }
+    // Normalize language: treat 'zh' variants as 'zh_CN' and default all others to 'en_US'
+    lang = (lang === 'zh' || lang === 'zh_CN') ? 'zh_CN' : 'en_US';
 
-    // get lang from kv storage
-    if (!lang) {
-        lang = await KvGet(KvKeyLanguage);
-    }
-
-    // get lang from browser
-    if (!lang) {
-        lang = navigator.language || navigator.userLanguage;
-    }
-
-    switch (lang) {
-        case 'zh':
-        case 'zh_CN':
-            lang = 'zh_CN';
-            break;
-        default:
-            lang = 'en_US';
-    }
-
-    // change html lang
+    // Update the html document language attribute
     document.documentElement.lang = lang;
+
+    // Persist the language setting, and warn if it fails
+    try {
+        await setUserLanguage(lang);
+    } catch (error) {
+        console.warn(`setUserLanguage failed: ${error}`);
+    }
 
     return lang;
 };
-
 
 export const formatTs = (ts) => {
     return moment(ts).format('YYYY-MM-DD');
