@@ -149,8 +149,8 @@ export const Page = () => {
         setContent(cnt);
     };
 
-    const watchLanguageChange = () => {
-        KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
+    const watchLanguageChange = async () => {
+        await KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
             if (op !== KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
                 return;
             }

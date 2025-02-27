@@ -125,8 +125,8 @@ export const PostEdit = ({ isPublish }) => {
         navigate(`/p/${variables.post.name}/?force=1`);
     };
 
-    const watchLanguageChange = () => {
-        KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
+    const watchLanguageChange = async () => {
+        await KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
             if (op !== KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
                 return;
             }
