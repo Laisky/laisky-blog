@@ -6,6 +6,7 @@ import { gql } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Comments } from '../components/comments.jsx';
 
 import {
     formatTs,
@@ -151,7 +152,8 @@ export const Post = ({ isHistory }) => {
                             <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
                             </div>
                             {postTail}
-                            <DiscussionEmbed
+                            <Comments postId={params.name} />
+                            {/* <DiscussionEmbed
                                 shortname='laisky'
                                 config={
                                     {
@@ -161,7 +163,7 @@ export const Post = ({ isHistory }) => {
                                         language: 'en_US' //e.g. for Traditional Chinese (Taiwan)
                                     }
                                 }
-                            />
+                            /> */}
                         </div>
                     </div>
                     <div className="d-none d-md-block col-md-3 col-lg-2 post-menu" dangerouslySetInnerHTML={{ __html: post.menu }}>

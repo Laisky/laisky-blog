@@ -130,7 +130,7 @@ let kvInitialized = false;
  * @param {Function} operation - The database operation function to execute
  * @param {Number} maxRetries - Maximum number of retries
  */
-async function executeWithRetry (operation, maxRetries = 3) {
+async function executeWithRetry(operation, maxRetries = 3) {
     for (let attempt = 0; attempt < maxRetries; attempt++) {
         try {
             return await operation();
@@ -155,7 +155,7 @@ async function executeWithRetry (operation, maxRetries = 3) {
  * @returns {Promise<object>} PouchDB instance ready for use
  * @throws {Error} If database initialization fails
  */
-async function initKv () {
+async function initKv() {
     // If database is already initialized, return immediately
     if (kvInitialized && kv) {
         return kv;
@@ -177,7 +177,7 @@ async function initKv () {
     kvInitializing = true;
 
     try {
-    // Create new PouchDB instance
+        // Create new PouchDB instance
         kv = new PouchDB('mydatabase');
         kvInitialized = true;
         return kv;
@@ -522,10 +522,10 @@ export const Markdown2HTML = async (markdownString) => {
         extensions: [{
             name: 'math',
             level: 'inline',
-            start (src) {
+            start(src) {
                 return src.match(/\\\[|\\\(|\$\$|\$/)?.index;
             },
-            tokenizer (src) {
+            tokenizer(src) {
                 // Display math \[...\] or $$...$$
                 const displayMatch = src.match(/^\\\[([\s\S]*?)\\\]/) || src.match(/^\$\$([\s\S]*?)\$\$/);
                 if (displayMatch) {
@@ -548,7 +548,7 @@ export const Markdown2HTML = async (markdownString) => {
                     };
                 }
             },
-            renderer (token) {
+            renderer(token) {
                 if (token.display) {
                     return `<span class="mathjax-display">\\[${token.text}\\]</span>`;
                 }
@@ -982,4 +982,42 @@ export const GetCache = async (key) => {
         console.error(`GetCache failed: ${error}`);
         return null;
     }
+};
+
+/**
+ * Format a timestamp as a relative time string (e.g., "2 hours ago")
+ * @param {string|Date} timestamp - The timestamp to format
+ * @returns {string} A relative time string
+ */
+export const formatRelativeTime = (timestamp) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffSeconds = Math.floor((now - date) / 1000);
+
+    if (diffSeconds < 60) {
+        return 'just now';
+    }
+
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    if (diffMinutes < 60) {
+        return `${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''} ago`;
+    }
+
+    const diffHours = Math.floor(diffMinutes / 60);
+    if (diffHours < 24) {
+        return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+    }
+
+    const diffDays = Math.floor(diffHours / 24);
+    if (diffDays < 30) {
+        return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+    }
+
+    const diffMonths = Math.floor(diffDays / 30);
+    if (diffMonths < 12) {
+        return `${diffMonths} month${diffMonths !== 1 ? 's' : ''} ago`;
+    }
+
+    const diffYears = Math.floor(diffMonths / 12);
+    return `${diffYears} year${diffYears !== 1 ? 's' : ''} ago`;
 };
