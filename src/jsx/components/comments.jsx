@@ -1,10 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { gql } from 'graphql-request';
 import { graphqlQuery } from '../library/base.jsx';
-import { formatRelativeTime } from '../library/libs.js';
+import { formatRelativeTime, SetCache, GetCache } from '../library/libs.js';
 
-// Main Comments component
-export const Comments = ({ postId }) => {
+// Cache keys for user data
+const CACHE_KEY_AUTHOR_NAME = 'comment_author_name';
+const CACHE_KEY_AUTHOR_EMAIL = 'comment_author_email';
+const CACHE_KEY_AUTHOR_WEBSITE = 'comment_author_website';
+
+/**
+ * Main Comments component
+ */
+export const Comments = ({ postName }) => {
     const [comments, setComments] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -19,6 +26,42 @@ export const Comments = ({ postId }) => {
     const [authorEmail, setAuthorEmail] = useState('');
     const [authorWebsite, setAuthorWebsite] = useState('');
     const [commentContent, setCommentContent] = useState('');
+    const [formDataLoaded, setFormDataLoaded] = useState(false);
+
+    // Load user data from cache when component mounts
+    useEffect(() => {
+        const loadUserData = async () => {
+            try {
+                const cachedName = await GetCache(CACHE_KEY_AUTHOR_NAME);
+                const cachedEmail = await GetCache(CACHE_KEY_AUTHOR_EMAIL);
+                const cachedWebsite = await GetCache(CACHE_KEY_AUTHOR_WEBSITE);
+
+                if (cachedName) setAuthorName(cachedName);
+                if (cachedEmail) setAuthorEmail(cachedEmail);
+                if (cachedWebsite) setAuthorWebsite(cachedWebsite);
+
+                setFormDataLoaded(true);
+            } catch (error) {
+                console.error("Failed to load cached user data:", error);
+            }
+        };
+
+        loadUserData();
+    }, []);
+
+    // Save user data to cache
+    const saveUserDataToCache = async () => {
+        try {
+            await SetCache(CACHE_KEY_AUTHOR_NAME, authorName);
+            await SetCache(CACHE_KEY_AUTHOR_EMAIL, authorEmail);
+            if (authorWebsite) {
+                await SetCache(CACHE_KEY_AUTHOR_WEBSITE, authorWebsite);
+            }
+            console.debug("User comment data saved to cache");
+        } catch (error) {
+            console.error("Failed to cache user data:", error);
+        }
+    };
 
     // Load comments for the current post
     useEffect(() => {
@@ -29,7 +72,7 @@ export const Comments = ({ postId }) => {
                 const commentsQuery = gql`
                     query {
                         BlogComments(
-                        post_id: "${postId}"
+                        postName: "${postName}"
                         page: { page: ${page}, size: 10 }
                         sort: { sort_by: "created_at", order: DESC }
                         ) {
@@ -52,7 +95,7 @@ export const Comments = ({ postId }) => {
                         }
                         }
 
-                        BlogCommentCount(post_id: "${postId}")
+                        BlogCommentCount(postName: "${postName}")
                     }`;
 
                 const resp = await graphqlQuery(commentsQuery);
@@ -75,7 +118,7 @@ export const Comments = ({ postId }) => {
         };
 
         fetchComments();
-    }, [postId, page]);
+    }, [postName, page]);
 
     // Submit a new comment
     const handleSubmitComment = async (e) => {
@@ -89,7 +132,7 @@ export const Comments = ({ postId }) => {
             const createCommentMutation = gql`
                 mutation {
                 BlogCreateComment(
-                    post_id: "${postId}"
+                    postName: "${postName}"
                     content: "${commentContent.replace(/"/g, '\\"')}"
                     authorName: "${authorName.replace(/"/g, '\\"')}"
                     authorEmail: "${authorEmail.replace(/"/g, '\\"')}"
@@ -111,6 +154,9 @@ export const Comments = ({ postId }) => {
             const resp = await graphqlQuery(createCommentMutation);
             const newComment = resp.BlogCreateComment;
 
+            // Save user data to cache after successful comment submission
+            await saveUserDataToCache();
+
             // Update comments state with the new comment
             if (replyTo) {
                 // Add the reply to the appropriate parent comment
@@ -129,7 +175,7 @@ export const Comments = ({ postId }) => {
                 setComments(prevComments => [newComment, ...prevComments]);
             }
 
-            // Reset form
+            // Reset form (but keep user info)
             setCommentContent('');
             setReplyTo(null);
 
@@ -147,7 +193,7 @@ export const Comments = ({ postId }) => {
             const likeCommentMutation = gql`
                 mutation {
                 BlogToggleCommentLike(
-                    comment_id: "${commentId}"
+                    commentId: "${commentId}"
                 ) {
                     id
                     likes
@@ -163,7 +209,14 @@ export const Comments = ({ postId }) => {
                 prevComments.map(comment =>
                     comment.id === commentId
                         ? { ...comment, likes: updatedComment.likes }
-                        : comment
+                        : {
+                            ...comment,
+                            replies: comment.replies?.map(reply =>
+                                reply.id === commentId
+                                    ? { ...reply, likes: updatedComment.likes }
+                                    : reply
+                            ) || []
+                        }
                 )
             );
         } catch (err) {
@@ -245,9 +298,16 @@ export const Comments = ({ postId }) => {
                             required
                         ></textarea>
                     </div>
-                    <button type="submit" className="btn btn-primary">
-                        Post Comment
-                    </button>
+                    <div className="d-flex justify-content-between align-items-center">
+                        <button type="submit" className="btn btn-primary">
+                            Post Comment
+                        </button>
+                        {formDataLoaded && (authorName || authorEmail || authorWebsite) && (
+                            <small className="text-muted">
+                                Your information is saved for next time
+                            </small>
+                        )}
+                    </div>
                 </form>
             </div>
 
@@ -288,7 +348,7 @@ export const Comments = ({ postId }) => {
     );
 };
 
-// Individual comment component
+// Individual comment component remains the same
 const CommentItem = ({ comment, onReply, onLike }) => {
     const [showReplies, setShowReplies] = useState(true);
 

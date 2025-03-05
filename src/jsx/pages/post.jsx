@@ -152,7 +152,7 @@ export const Post = ({ isHistory }) => {
                             <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
                             </div>
                             {postTail}
-                            <Comments postId={params.name} />
+                            <Comments postName={params.name} />
                             {/* <DiscussionEmbed
                                 shortname='laisky'
                                 config={
