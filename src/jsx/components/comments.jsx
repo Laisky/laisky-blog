@@ -7,6 +7,71 @@ import { formatRelativeTime, SetCache, GetCache } from '../library/libs.js';
 const CACHE_KEY_AUTHOR_NAME = 'comment_author_name';
 const CACHE_KEY_AUTHOR_EMAIL = 'comment_author_email';
 const CACHE_KEY_AUTHOR_WEBSITE = 'comment_author_website';
+const CACHE_KEY_LIKED_COMMENTS = 'comment_liked_comments';
+
+/**
+ * Update a comment's likes count by adding the specified delta
+ * @param {Array} comments - The comments array
+ * @param {string} commentId - The ID of the comment to update
+ * @param {number} delta - The amount to change the likes by (+1 or -1)
+ * @returns {Array} - Updated comments array
+ */
+const updateCommentLikes = (comments, commentId, delta) => {
+    return comments.map(comment => {
+        if (comment.id === commentId) {
+            return {
+                ...comment,
+                likes: comment.likes + delta
+            };
+        } else if (comment.replies && comment.replies.length > 0) {
+            return {
+                ...comment,
+                replies: comment.replies.map(reply => {
+                    if (reply.id === commentId) {
+                        return {
+                            ...reply,
+                            likes: reply.likes + delta
+                        };
+                    }
+                    return reply;
+                })
+            };
+        }
+        return comment;
+    });
+};
+
+/**
+ * Update a comment's likes count to a specific value from server
+ * @param {Array} comments - The comments array
+ * @param {string} commentId - The ID of the comment to update
+ * @param {number} likesCount - The new likes count from server
+ * @returns {Array} - Updated comments array
+ */
+const updateCommentWithActualLikes = (comments, commentId, likesCount) => {
+    return comments.map(comment => {
+        if (comment.id === commentId) {
+            return {
+                ...comment,
+                likes: likesCount
+            };
+        } else if (comment.replies && comment.replies.length > 0) {
+            return {
+                ...comment,
+                replies: comment.replies.map(reply => {
+                    if (reply.id === commentId) {
+                        return {
+                            ...reply,
+                            likes: likesCount
+                        };
+                    }
+                    return reply;
+                })
+            };
+        }
+        return comment;
+    });
+};
 
 /**
  * Main Comments component
@@ -19,6 +84,7 @@ export const Comments = ({ postName }) => {
     const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [replyTo, setReplyTo] = useState(null);
+    const [likedComments, setLikedComments] = useState({});
     const commentInputRef = useRef(null);
 
     // Form state
@@ -27,6 +93,20 @@ export const Comments = ({ postName }) => {
     const [authorWebsite, setAuthorWebsite] = useState('');
     const [commentContent, setCommentContent] = useState('');
     const [formDataLoaded, setFormDataLoaded] = useState(false);
+
+    // Add this useEffect to load liked comments
+    useEffect(() => {
+        const loadLikedComments = async () => {
+            try {
+                const cachedLikedComments = await GetCache(CACHE_KEY_LIKED_COMMENTS) || {};
+                setLikedComments(cachedLikedComments);
+            } catch (error) {
+                console.error("Failed to load liked comments data:", error);
+            }
+        };
+
+        loadLikedComments();
+    }, []);
 
     // Load user data from cache when component mounts
     useEffect(() => {
@@ -100,15 +180,20 @@ export const Comments = ({ postName }) => {
 
                 const resp = await graphqlQuery(commentsQuery);
 
-                // Update state with fetched comments
-                if (page === 0) {
-                    setComments(resp.BlogComments);
-                } else {
-                    setComments(prevComments => [...prevComments, ...resp.BlogComments]);
+                // Validate response
+                if (!resp || !resp.BlogComments) {
+                    throw new Error("Invalid response from server");
                 }
 
-                setCommentCount(resp.BlogCommentCount);
-                setHasMore(resp.BlogComments.length === 10);
+                // Update state with fetched comments
+                if (page === 0) {
+                    setComments(resp.BlogComments || []);
+                } else {
+                    setComments(prevComments => [...prevComments, ...(resp.BlogComments || [])]);
+                }
+
+                setCommentCount(resp.BlogCommentCount || 0);
+                setHasMore((resp.BlogComments || []).length === 10);
             } catch (err) {
                 console.error("Error fetching comments:", err);
                 setError("Failed to load comments. Please try again later.");
@@ -131,23 +216,23 @@ export const Comments = ({ postName }) => {
         try {
             const createCommentMutation = gql`
                 mutation {
-                BlogCreateComment(
-                    postName: "${postName}"
-                    content: "${commentContent.replace(/"/g, '\\"')}"
-                    authorName: "${authorName.replace(/"/g, '\\"')}"
-                    authorEmail: "${authorEmail.replace(/"/g, '\\"')}"
-                    authorWebsite: "${authorWebsite.replace(/"/g, '\\"')}"
-                    ${replyTo ? `parentId: "${replyTo}"` : ''}
-                ) {
-                    id
-                    content
-                    authorName
-                    authorWebsite
-                    createdAt
-                    isApproved
-                    likes
-                    parentId
-                }
+                    BlogCreateComment(
+                        postName: "${postName}"
+                        content: ${JSON.stringify(commentContent).slice(1, -1)}
+                        authorName: ${JSON.stringify(authorName).slice(1, -1)}
+                        authorEmail: ${JSON.stringify(authorEmail).slice(1, -1)}
+                        authorWebsite: ${JSON.stringify(authorWebsite).slice(1, -1)}
+                        ${replyTo ? `parentId: "${replyTo}"` : ''}
+                    ) {
+                        id
+                        content
+                        authorName
+                        authorWebsite
+                        createdAt
+                        isApproved
+                        likes
+                        parentId
+                    }
                 }
             `;
 
@@ -189,7 +274,15 @@ export const Comments = ({ postName }) => {
 
     // Toggle like on a comment
     const handleLikeComment = async (commentId) => {
+        // Check if already liked to prevent duplicate likes
+        if (likedComments[commentId]) {
+            return; // Don't allow liking again
+        }
+
         try {
+            // Show temporary optimistic UI update
+            setComments(prevComments => updateCommentLikes(prevComments, commentId, 1));
+
             const likeCommentMutation = gql`
                 mutation {
                 BlogToggleCommentLike(
@@ -202,25 +295,27 @@ export const Comments = ({ postName }) => {
             `;
 
             const resp = await graphqlQuery(likeCommentMutation);
+
+            if (!resp || !resp.BlogToggleCommentLike) {
+                throw new Error("Invalid response from server");
+            }
+
             const updatedComment = resp.BlogToggleCommentLike;
 
-            // Update the likes count in the state
+            // Update liked comments state and save to cache
+            const newLikedComments = { ...likedComments, [commentId]: true };
+            setLikedComments(newLikedComments);
+            await SetCache(CACHE_KEY_LIKED_COMMENTS, newLikedComments);
+
+            // Update with actual server value
             setComments(prevComments =>
-                prevComments.map(comment =>
-                    comment.id === commentId
-                        ? { ...comment, likes: updatedComment.likes }
-                        : {
-                            ...comment,
-                            replies: comment.replies?.map(reply =>
-                                reply.id === commentId
-                                    ? { ...reply, likes: updatedComment.likes }
-                                    : reply
-                            ) || []
-                        }
-                )
+                updateCommentWithActualLikes(prevComments, commentId, updatedComment.likes)
             );
         } catch (err) {
             console.error("Error liking comment:", err);
+            // Revert optimistic update
+            setComments(prevComments => updateCommentLikes(prevComments, commentId, -1));
+            setError("Failed to like comment. Please try again later.");
         }
     };
 
@@ -325,6 +420,8 @@ export const Comments = ({ postName }) => {
                                 comment={comment}
                                 onReply={handleReply}
                                 onLike={handleLikeComment}
+                                isLiked={likedComments[comment.id] || false}
+                                likedComments={likedComments}
                             />
                         ))}
 
@@ -349,7 +446,7 @@ export const Comments = ({ postName }) => {
 };
 
 // Individual comment component remains the same
-const CommentItem = ({ comment, onReply, onLike }) => {
+const CommentItem = ({ comment, onReply, onLike, isLiked, likedComments }) => {
     const [showReplies, setShowReplies] = useState(true);
 
     return (
@@ -373,7 +470,11 @@ const CommentItem = ({ comment, onReply, onLike }) => {
                 <button className="btn btn-sm btn-link" onClick={() => onReply(comment.id)}>
                     Reply
                 </button>
-                <button className="btn btn-sm btn-link like-button" onClick={() => onLike(comment.id)}>
+                <button
+                    className={`btn btn-sm btn-link like-button ${isLiked ? 'liked' : ''}`}
+                    onClick={() => onLike(comment.id)}
+                    disabled={isLiked}
+                >
                     <span className="like-icon">❤</span> {comment.likes}
                 </button>
             </div>
@@ -396,6 +497,8 @@ const CommentItem = ({ comment, onReply, onLike }) => {
                                     comment={reply}
                                     onReply={onReply}
                                     onLike={onLike}
+                                    isLiked={likedComments?.[reply.id] || false}
+                                    likedComments={likedComments}
                                 />
                             ))}
                         </div>
