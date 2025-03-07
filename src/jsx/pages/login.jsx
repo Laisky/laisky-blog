@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import React, { useState } from 'react';
 
 import { GraphqlAPI, KvKeyAuthUser, KvKeyUserToken } from '../library/base.jsx';
-import * as libs from '../library/libs';
+import * as libs from '@laisky/js-utils';
 import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {

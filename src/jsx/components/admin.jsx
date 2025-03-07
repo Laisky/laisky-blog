@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link, useParams, useLoaderData, useNavigate } from 'react-router-dom';
+import jsutils from '@laisky/js-utils';
 
 import { getCurrentUsername, KvKeyAuthUser, KvKeyUserToken } from '../library/base';
-import { KvDel } from '../library/libs';
 
 export const Admin = () => {
     const [loginBtn, setLoginBtn] = useState('');
@@ -36,8 +36,8 @@ export const Admin = () => {
 
     const logoutHandler = async (evt) => {
         evt.preventDefault();
-        await KvDel(KvKeyAuthUser);
-        await KvDel(KvKeyUserToken);
+        await jsutils.KvDel(KvKeyAuthUser);
+        await jsutils.KvDel(KvKeyUserToken);
         setUsername(null);
         navigate(0);
     }

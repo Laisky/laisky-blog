@@ -2,8 +2,7 @@
 
 import { jwtDecode } from "jwt-decode";
 import moment from 'moment';
-
-import { KvGet, KvSet } from './libs.js';
+import jsutils from '@laisky/js-utils';
 import request, { GraphQLClient } from "graphql-request";
 import { isJsxFragment } from "typescript";
 
@@ -90,7 +89,7 @@ export const getCurrentPathName = () => {
  * @returns {string|null} The username or null if not available.
  */
 export const getCurrentUsername = async () => {
-    let userinfo = await KvGet(KvKeyAuthUser);
+    let userinfo = await jsutils.KvGet(KvKeyAuthUser);
     if (!userinfo) {
         return;
     }
@@ -107,7 +106,7 @@ export const getCurrentUsername = async () => {
 export const setUserLanguage = async (lang) => {
     console.debug(`setUserLanguage: ${lang}`);
     try {
-        await KvSet(KvKeyLanguage, lang);
+        await jsutils.KvSet(KvKeyLanguage, lang);
     } catch (e) {
         console.warn(`setUserLanguage: ${e}`);
     }
@@ -122,7 +121,7 @@ export const getUserLanguage = async () => {
     // Get language from the URL parameter, kv storage, or browser settings in that order.
     const url = new URL(window.location.href);
     let lang = url.searchParams.get('lang')
-        || await KvGet(KvKeyLanguage)
+        || await jsutils.KvGet(KvKeyLanguage)
         || (navigator.language || navigator.userLanguage);
 
     // Normalize language: treat 'zh' variants as 'zh_CN' and default all others to 'en_US'

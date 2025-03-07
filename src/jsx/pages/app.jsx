@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import jsutils from '@laisky/js-utils';
 
 import { getUserLanguage, setUserLanguage } from "../library/base";
-import { KvGet, KvSet, LoadJsModules } from '../library/libs';
 
 export const App = () => {
     const [userLang, setUserLang] = useState(null);
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState('light');0
     const location = useLocation();
     // const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ export const App = () => {
 
             // add google analytics
             fs.push((async () => {
-                await LoadJsModules(["https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS"]);
+                await jsutils.LoadJsModules(["https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS"]);
                 window.dataLayer = window.dataLayer || [];
                 function gtag() { dataLayer.push(arguments); }
                 gtag('js', new Date());
@@ -36,7 +36,7 @@ export const App = () => {
             })());
 
             // load google search
-            fs.push(LoadJsModules([
+            fs.push(jsutils.LoadJsModules([
                 "https://cse.google.com/cse.js?cx=004733495569415005684:-c6y46kjqva"
             ]));
 

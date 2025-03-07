@@ -12,7 +12,7 @@ import {
     KvKeyLanguage,
     KvKeyUserToken
 } from '../library/base.jsx';
-import { KvAddListener, KvGet, KvOp } from '../library/libs.js';
+import jsutils from '@laisky/js-utils';
 
 
 export const postEditLoader = async ({ params }) => {
@@ -119,15 +119,15 @@ export const PostEdit = ({ isPublish }) => {
         }
 
         await graphqlMutation(gqBody, variables, {
-            Authorization: `Bearer ${await KvGet(KvKeyUserToken)}`
+            Authorization: `Bearer ${await jsutils.KvGet(KvKeyUserToken)}`
         });
 
         navigate(`/p/${variables.post.name}/?force=1`);
     };
 
     const watchLanguageChange = async () => {
-        await KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
-            if (op !== KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+        await jsutils.KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
+            if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
                 return;
             }
 

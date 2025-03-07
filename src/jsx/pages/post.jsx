@@ -1,12 +1,12 @@
 'use strict';
 
 import * as bootstrap from 'bootstrap';
-import { DiscussionEmbed } from 'disqus-react';
 import { gql } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Comments } from '../components/comments.jsx';
+import jsutils from '@laisky/js-utils';
 
 import {
     formatTs,
@@ -15,18 +15,12 @@ import {
     KvKeyLanguage,
     KvKeyPrefixCache
 } from '../library/base.jsx';
-import {
-    GetCache,
-    KvAddListener, KvOp,
-    SetCache,
-    SHA256
-} from '../library/libs.js';
 import mermaid from 'mermaid';
 
 
 export const loader = async ({ params }) => {
-    const cacheKey = KvKeyPrefixCache + await SHA256(`post:${await getUserLanguage()}:${params.name}`);
-    const cacheData = await GetCache(cacheKey);
+    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`post:${await getUserLanguage()}:${params.name}`);
+    const cacheData = await jsutils.GetCache(cacheKey);
     if (cacheData) {
         return cacheData;
     }
@@ -61,14 +55,14 @@ export const loader = async ({ params }) => {
     const result = resp.BlogPosts[0];
 
     // update cache
-    await SetCache(cacheKey, result);
+    await jsutils.SetCache(cacheKey, result);
 
     return result;
 }
 
 export const historyLoader = async ({ params }) => {
-    const cacheKey = KvKeyPrefixCache + await SHA256(`postHistory:${await getUserLanguage()}:${params.name}`);
-    const cacheData = await GetCache(cacheKey);
+    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`postHistory:${await getUserLanguage()}:${params.name}`);
+    const cacheData = await jsutils.GetCache(cacheKey);
     if (cacheData) {
         return cacheData;
     }
@@ -102,7 +96,7 @@ export const historyLoader = async ({ params }) => {
     const result = resp.BlogPostHistory;
 
     // update cache
-    await SetCache(cacheKey, result);
+    await jsutils.SetCache(cacheKey, result);
 
     return result;
 };
@@ -213,8 +207,8 @@ export const Post = ({ isHistory }) => {
     }, [content]);
 
     const watchLanguageChange = async () => {
-        await KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
-            if (op !== KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+        await jsutils.KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
+            if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
                 return;
             }
 
@@ -380,8 +374,8 @@ const parseAndReplacePostSeries = async () => {
 
 
 async function loadSeries(postkey) {
-    const cacheKey = KvKeyPrefixCache + await SHA256(`postSeries:${postkey}`);
-    const cacheData = await GetCache(cacheKey);
+    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`postSeries:${postkey}`);
+    const cacheData = await jsutils.GetCache(cacheKey);
     if (cacheData) {
         return cacheData;
     }
@@ -412,7 +406,7 @@ async function loadSeries(postkey) {
     const result = resp.GetBlogPostSeries[0];
 
     // update cache
-    await SetCache(cacheKey, result);
+    await jsutils.SetCache(cacheKey, result);
 
     return result;
 }

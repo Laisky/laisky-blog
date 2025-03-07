@@ -3,6 +3,7 @@
 import { gql } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import jsutils from '@laisky/js-utils';
 
 import { Sidebar } from '../components/sidebar.jsx';
 import {
@@ -12,18 +13,11 @@ import {
     KvKeyLanguage,
     KvKeyPrefixCache
 } from '../library/base.jsx';
-import {
-    GetCache,
-    KvAddListener,
-    KvOp,
-    SetCache,
-    SHA256
-} from '../library/libs.js';
 
 
 export const loader = async ({ params }) => {
-    const cacheKey = KvKeyPrefixCache + await SHA256(`categories:${await getUserLanguage()}:${params.category}`);
-    const cacheData = await GetCache(cacheKey);
+    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`categories:${await getUserLanguage()}:${params.category}`);
+    const cacheData = await jsutils.GetCache(cacheKey);
     if (cacheData) {
         return cacheData;
     }
@@ -70,7 +64,7 @@ export const loader = async ({ params }) => {
     };
 
     // update cache
-    SetCache(cacheKey, result, DurationDay);
+    jsutils.SetCache(cacheKey, result, DurationDay);
 
     return result;
 }
@@ -99,8 +93,8 @@ export const Categories = () => {
     };
 
     const watchLanguageChange = async () => {
-        await KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
-            if (op !== KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+        await jsutils.KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
+            if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
                 return;
             }
 

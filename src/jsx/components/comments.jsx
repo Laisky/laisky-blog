@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { gql } from 'graphql-request';
 import { graphqlQuery } from '../library/base.jsx';
-import { formatRelativeTime, SetCache, GetCache } from '../library/libs.js';
+import jsutils from '@laisky/js-utils';
 
 // Cache keys for user data
 const CACHE_KEY_AUTHOR_NAME = 'comment_author_name';
@@ -98,7 +98,7 @@ export const Comments = ({ postName }) => {
     useEffect(() => {
         const loadLikedComments = async () => {
             try {
-                const cachedLikedComments = await GetCache(CACHE_KEY_LIKED_COMMENTS) || {};
+                const cachedLikedComments = await jsutils.GetCache(CACHE_KEY_LIKED_COMMENTS) || {};
                 setLikedComments(cachedLikedComments);
             } catch (error) {
                 console.error("Failed to load liked comments data:", error);
@@ -112,9 +112,9 @@ export const Comments = ({ postName }) => {
     useEffect(() => {
         const loadUserData = async () => {
             try {
-                const cachedName = await GetCache(CACHE_KEY_AUTHOR_NAME);
-                const cachedEmail = await GetCache(CACHE_KEY_AUTHOR_EMAIL);
-                const cachedWebsite = await GetCache(CACHE_KEY_AUTHOR_WEBSITE);
+                const cachedName = await jsutils.GetCache(CACHE_KEY_AUTHOR_NAME);
+                const cachedEmail = await jsutils.GetCache(CACHE_KEY_AUTHOR_EMAIL);
+                const cachedWebsite = await jsutils.GetCache(CACHE_KEY_AUTHOR_WEBSITE);
 
                 if (cachedName) setAuthorName(cachedName);
                 if (cachedEmail) setAuthorEmail(cachedEmail);
@@ -132,10 +132,10 @@ export const Comments = ({ postName }) => {
     // Save user data to cache
     const saveUserDataToCache = async () => {
         try {
-            await SetCache(CACHE_KEY_AUTHOR_NAME, authorName);
-            await SetCache(CACHE_KEY_AUTHOR_EMAIL, authorEmail);
+            await jsutils.SetCache(CACHE_KEY_AUTHOR_NAME, authorName);
+            await jsutils.SetCache(CACHE_KEY_AUTHOR_EMAIL, authorEmail);
             if (authorWebsite) {
-                await SetCache(CACHE_KEY_AUTHOR_WEBSITE, authorWebsite);
+                await jsutils.SetCache(CACHE_KEY_AUTHOR_WEBSITE, authorWebsite);
             }
             console.debug("User comment data saved to cache");
         } catch (error) {
@@ -305,7 +305,7 @@ export const Comments = ({ postName }) => {
             // Update liked comments state and save to cache
             const newLikedComments = { ...likedComments, [commentId]: true };
             setLikedComments(newLikedComments);
-            await SetCache(CACHE_KEY_LIKED_COMMENTS, newLikedComments);
+            await jsutils.SetCache(CACHE_KEY_LIKED_COMMENTS, newLikedComments);
 
             // Update with actual server value
             setComments(prevComments =>
@@ -462,7 +462,7 @@ const CommentItem = ({ comment, onReply, onLike, isLiked, likedComments }) => {
                     )}
                 </div>
                 <div className="comment-date" title={new Date(comment.createdAt).toLocaleString()}>
-                    {formatRelativeTime(comment.createdAt)}
+                    {jsutils.formatRelativeTime(comment.createdAt)}
                 </div>
             </div>
             <div className="comment-content" dangerouslySetInnerHTML={{ __html: comment.content }}></div>

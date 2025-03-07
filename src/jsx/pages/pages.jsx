@@ -4,6 +4,7 @@ import * as bootstrap from 'bootstrap';
 import { gql } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import jsutils from '@laisky/js-utils';
 
 import { Sidebar } from '../components/sidebar.jsx';
 import {
@@ -13,13 +14,6 @@ import {
     getCurrentUsername, getUserLanguage,
     graphqlQuery
 } from '../library/base.jsx';
-import {
-    GetCache,
-    KvAddListener,
-    KvOp,
-    SHA256,
-    SetCache
-} from '../library/libs.js';
 import { loader as postLoader } from './post.jsx';
 
 
@@ -150,8 +144,8 @@ export const Page = () => {
     };
 
     const watchLanguageChange = async () => {
-        await KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
-            if (op !== KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+        await jsutils.KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
+            if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
                 return;
             }
 
@@ -177,8 +171,8 @@ export const Page = () => {
 
 const loadPage = async (nPage) => {
     console.debug(`loadPage: ${nPage}`);
-    const cacheKey = KvKeyPrefixCache + await SHA256(`loadPage:${await getUserLanguage()}:${nPage}`);
-    const cacheData = await GetCache(cacheKey);
+    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`loadPage:${await getUserLanguage()}:${nPage}`);
+    const cacheData = await jsutils.GetCache(cacheKey);
     if (cacheData) {
         return cacheData;
     }
@@ -217,14 +211,14 @@ const loadPage = async (nPage) => {
     const result = resp.BlogPosts;
 
     // update cache
-    await SetCache(cacheKey, result);
+    await jsutils.SetCache(cacheKey, result);
 
     return result;
 };
 
 const loadPostInfo = async () => {
-    const cacheKey = KvKeyPrefixCache + await SHA256(`loadPostInfo`);
-    const cacheData = await GetCache(cacheKey);
+    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`loadPostInfo`);
+    const cacheData = await jsutils.GetCache(cacheKey);
     if (cacheData) {
         return cacheData;
     }
@@ -241,7 +235,7 @@ const loadPostInfo = async () => {
     const result = resp.BlogPostInfo.total;
 
     // update cache
-    await SetCache(cacheKey, result);
+    await jsutils.SetCache(cacheKey, result);
 
     return result;
 }
