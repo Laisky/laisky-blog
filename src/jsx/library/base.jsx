@@ -114,30 +114,35 @@ export const setUserLanguage = async (lang) => {
 
 /**
  * Get the current user language.
+ * Supports detecting language by prefix to handle variants like "zh-Hans-CN".
  *
- * @returns {string} The user language.
+ * @returns {string} The normalized user language code (either "zh_CN" or "en_US")
  */
 export const getUserLanguage = async () => {
-    // Get language from the URL parameter, kv storage, or browser settings in that order.
+    // Get language from the URL parameter, kv storage, or browser settings in that order
     const url = new URL(window.location.href);
     let lang = url.searchParams.get('lang')
-        || await jsutils.KvGet(KvKeyLanguage)
+        // || await jsutils.KvGet(KvKeyLanguage)
         || (navigator.language || navigator.userLanguage);
 
-    // Normalize language: treat 'zh' variants as 'zh_CN' and default all others to 'en_US'
-    lang = (lang === 'zh' || lang === 'zh_CN') ? 'zh_CN' : 'en_US';
+    // Convert to lowercase for consistent comparison
+    const langLower = lang ? lang.toLowerCase() : '';
 
-    // Update the html document language attribute
-    document.documentElement.lang = lang;
+    // Normalize language: treat any Chinese variant as 'zh_CN', all others as 'en_US'
+    // This handles variants like zh-Hans-CN, zh-TW, zh-HK, etc.
+    const normalizedLang = langLower.startsWith('zh') ? 'zh_CN' : 'en_US';
+
+    // Update the html document language attribute with the normalized code
+    document.documentElement.lang = normalizedLang;
 
     // Persist the language setting, and warn if it fails
     try {
-        await setUserLanguage(lang);
+        await setUserLanguage(normalizedLang);
     } catch (error) {
         console.warn(`setUserLanguage failed: ${error}`);
     }
 
-    return lang;
+    return normalizedLang;
 };
 
 export const formatTs = (ts) => {
@@ -145,5 +150,5 @@ export const formatTs = (ts) => {
 }
 
 export const ts2UTC = (ts) => {
-    return moment(ts).utc().format('YYYY-MM-DDTHH:MM[Z]');
+    return moment(ts).utc().format('YYYY-MM-DDTHH:mm[Z]');
 }
