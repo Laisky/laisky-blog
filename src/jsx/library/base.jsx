@@ -122,7 +122,7 @@ export const getUserLanguage = async () => {
     // Get language from the URL parameter, kv storage, or browser settings in that order
     const url = new URL(window.location.href);
     let lang = url.searchParams.get('lang')
-        // || await jsutils.KvGet(KvKeyLanguage)
+        || await jsutils.KvGet(KvKeyLanguage)
         || (navigator.language || navigator.userLanguage);
 
     // Convert to lowercase for consistent comparison
