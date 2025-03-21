@@ -136,11 +136,11 @@ export const getUserLanguage = async () => {
     document.documentElement.lang = normalizedLang;
 
     // Persist the language setting, and warn if it fails
-    try {
-        await setUserLanguage(normalizedLang);
-    } catch (error) {
-        console.warn(`setUserLanguage failed: ${error}`);
-    }
+    // try {
+    //     await setUserLanguage(normalizedLang);
+    // } catch (error) {
+    //     console.warn(`setUserLanguage failed: ${error}`);
+    // }
 
     return normalizedLang;
 };
