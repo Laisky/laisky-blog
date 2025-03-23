@@ -197,6 +197,9 @@ export const Post = ({ isHistory }) => {
                 console.error(`failed to enable scrollspy: ${e}`);
             }
 
+            // Add this line to enhance menu items with tooltips
+            enhancePostMenu();
+
             parseAndReplacePostSeries();
             try {
                 mermaid.run();
@@ -205,6 +208,21 @@ export const Post = ({ isHistory }) => {
             }
         })();
     }, [content]);
+
+    // Also add a window resize listener to the component
+    useEffect(() => {
+        // Re-check for overflowing text when window resizes
+        const handleResize = () => {
+            enhancePostMenu();
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        // Clean up the event listener
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     const watchLanguageChange = async () => {
         await jsutils.KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
@@ -222,6 +240,89 @@ export const Post = ({ isHistory }) => {
         </div>
     )
 }
+
+
+
+/**
+ * Enhance post menu with tooltip to display full text
+ */
+const enhancePostMenu = () => {
+    try {
+        // Delay the execution to ensure DOM is fully rendered
+        setTimeout(() => {
+            // Select all links in the post-menu
+            const menuLinks = document.querySelectorAll('.post-menu a');
+
+            // First dispose all existing tooltips to prevent duplicate instances
+            menuLinks.forEach(link => {
+                const tooltip = bootstrap.Tooltip.getInstance(link);
+                if (tooltip) {
+                    tooltip.dispose();
+                }
+            });
+
+            menuLinks.forEach(link => {
+                // Get dimensions
+                const linkText = link.textContent.trim();
+
+                // Create temp element to measure text width accurately
+                const tempSpan = document.createElement('span');
+                tempSpan.style.visibility = 'hidden';
+                tempSpan.style.position = 'absolute';
+                tempSpan.style.whiteSpace = 'nowrap';
+                tempSpan.style.font = window.getComputedStyle(link).font;
+                tempSpan.textContent = linkText;
+                document.body.appendChild(tempSpan);
+
+                // Compare text width with available width
+                const textWidth = tempSpan.offsetWidth;
+                const availableWidth = link.offsetWidth - 20; // Account for padding
+                document.body.removeChild(tempSpan);
+
+                // Only set up tooltip if text is actually truncated
+                if (textWidth > availableWidth) {
+                    // Use a data attribute to mark this as having a tooltip
+                    link.setAttribute('data-bs-toggle', 'tooltip');
+                    link.setAttribute('data-bs-placement', 'right');
+                    link.setAttribute('data-bs-title', linkText);
+                    link.setAttribute('data-bs-container', 'body');
+
+                    // Initialize the tooltip with simpler options
+                    new bootstrap.Tooltip(link, {
+                        trigger: 'hover focus',
+                        boundary: 'window',
+                        offset: [0, 10]
+                    });
+
+                    // Ensure tooltip hides on mouseleave
+                    link.addEventListener('mouseleave', () => {
+                        const tooltip = bootstrap.Tooltip.getInstance(link);
+                        if (tooltip) {
+                            tooltip.hide();
+                        }
+                    });
+
+                    // Hide tooltip on click
+                    link.addEventListener('click', () => {
+                        const tooltip = bootstrap.Tooltip.getInstance(link);
+                        if (tooltip) {
+                            tooltip.hide();
+                        }
+                    });
+                } else {
+                    // Remove tooltip attributes if not needed
+                    link.removeAttribute('data-bs-toggle');
+                    link.removeAttribute('data-bs-placement');
+                    link.removeAttribute('data-bs-title');
+                    link.removeAttribute('data-bs-container');
+                }
+            });
+        }, 500);
+    } catch (e) {
+        console.error('Failed to enhance post menu:', e);
+    }
+};
+
 
 const renderCode = () => {
     try {
