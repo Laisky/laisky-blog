@@ -1,12 +1,27 @@
 @import "~bootstrap/scss/bootstrap";
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600&display=swap');
 
 @import "./components/comments.scss";
-
 @import "./pages/pages.scss";
 @import "./pages/post.scss";
 @import "./pages/about.scss";
 @import "./pages/categories.scss";
 @import "./pages/edit.scss";
+
+:root {
+  --code-font: 'Fira Code', monospace;
+  --body-font: 'Inter', system-ui, -apple-system, sans-serif;
+  --content-width: 800px;
+  --sidebar-width: 280px;
+  --accent-color: #3b82f6;
+  --subtle-bg: rgba(242, 242, 242, 0.7);
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+[data-bs-theme="dark"] {
+  --subtle-bg: rgba(30, 30, 30, 0.8);
+  --accent-color: #60a5fa;
+}
 
 html,
 body {
@@ -15,13 +30,14 @@ body {
 }
 
 body {
-    font-family: system-ui, -apple-system, Microsoft YaHei, Helvetica Neue, Helvetica, Segoe UI, Arial, freesans, sans-serif;
+    font-family: var(--body-font);
     background-image: url("https://s3.laisky.com/uploads/2020/01/background-white.jpeg");
-    background-size: 100% 100%;
+    background-size: cover;
     background-attachment: fixed;
     word-break: break-word;
     word-wrap: break-word;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.3px;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
 
     #root {
@@ -35,7 +51,7 @@ body {
             margin: 0px;
             height: inherit;
             padding: 0px;
-            padding-top: 40px;
+            padding-top: 56px; /* Match Bootstrap navbar height */
             overflow: hidden;
             display: flex;
             justify-content: space-around;
@@ -44,12 +60,28 @@ body {
 
     nav.fixed-top {
         padding: 0px;
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid rgba(230, 230, 230, 0.2);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+
+        .navbar-brand {
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
 
         .gsc-control-cse {
             padding: 0;
-
-            form[role="search"] {
-            }
         }
     }
+
+    code, pre {
+        font-family: var(--code-font);
+        font-size: 0.9em;
+    }
+}
+
+.scrollable-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
 }

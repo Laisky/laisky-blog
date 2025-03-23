@@ -4,6 +4,11 @@ import jsutils from '@laisky/js-utils';
 
 import { getUserLanguage, setUserLanguage } from "../library/base";
 
+const isActiveRoute = (routeName, currentRoute) => {
+    return routeName === currentRoute ? 'active' : '';
+};
+
+
 export const App = () => {
     const [userLang, setUserLang] = useState(null);
     const [theme, setTheme] = useState('light');0
@@ -111,32 +116,45 @@ export const App = () => {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                        <Link to="/pages/0/" className="navbar-brand">Laisky</Link>
+                        <Link to="/pages/0/" className="navbar-brand d-flex align-items-center">
+                            <span className="d-flex align-items-center">
+                                <i className="bi bi-terminal me-2"></i> Laisky
+                            </span>
+                        </Link>
                         <ul className="navbar-nav me-auto mb-lg-0">
                             <li className="nav-item">
-                                <Link to="/pages/0/" className={`nav-link ${getCurrentRouteName() === 'pages' ? 'active' : ''}`} aria-current="page">Posts</Link>
+                                <Link to="/pages/0/" className={`nav-link ${isActiveRoute('posts', getCurrentRouteName())}`} aria-current="page">
+                                    <i className="bi bi-file-text me-1"></i> Posts
+                                </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/about/" className={`nav-link ${getCurrentRouteName() === 'aboutme' ? 'active' : ''}`}>About</Link>
+                                <Link to="/about/" className={`nav-link ${isActiveRoute('aboutme', getCurrentRouteName())}`}>
+                                    <i className="bi bi-person me-1"></i> About
+                                </Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="https://chat.laisky.com" target="_blank" rel="noopener noreferrer">AIChat</a>
+                                <a className="nav-link" href="https://chat.laisky.com" target="_blank" rel="noopener noreferrer">
+                                    <i className="bi bi-chat-dots me-1"></i> AIChat
+                                </a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="https://status.laisky.com" target="_blank" rel="noopener noreferrer">Status</a>
+                                <a className="nav-link" href="https://status.laisky.com" target="_blank" rel="noopener noreferrer">
+                                    <i className="bi bi-heart-pulse me-1"></i> Status
+                                </a>
                             </li>
                         </ul>
                         <ul className="navbar-nav">
-                            <form className="d-flex" role="search" dangerouslySetInnerHTML={{ __html: googleSearch }}>
+                            <form className="d-flex me-2" role="search" dangerouslySetInnerHTML={{ __html: googleSearch }}>
                             </form>
                             {dropdownBtn}
                             <Link to="https://s3.laisky.com/public/rss.xml" target="_blank" className="nav-link" rel="noopener noreferrer">
-                                <img src="https://s3.laisky.com/uploads/images/rss.png" className="rss" alt="RSS" />
+                                <i className="bi bi-rss"></i>
                             </Link>
                         </ul>
                     </div>
                 </div>
             </nav>
+
 
             {/* page modal */}
             <div className="modal" id="img-modal" role="dialog" tabIndex="-1">
