@@ -397,7 +397,8 @@
 .post-menu {
     position: sticky;
     top: 75px;
-    padding: 1.5rem;
+    padding: 0.5rem;
+    padding-right: 0 !important;
     font-size: 0.85rem;
     background-color: var(--subtle-bg);
     margin-left: 20px;
@@ -459,14 +460,12 @@
         }
     }
 
-    // Display nested menus when parent is active or hovered
-    .nav-pills .nav-pills:has(.nav-link.active),
-    .nav-pills .nav-pills:hover {
+    .nav-pills .nav-pills.expanded,
+    .nav-pills .nav-pills:has(.nav-link.active) {
         display: block;
     }
 
-    .nav-link.active+.nav-pills,
-    .nav-link:hover+.nav-pills {
+    .nav-link.active+.nav-pills {
         display: block;
     }
 
@@ -495,13 +494,12 @@
         border-radius: 4px;
         transition: background-color 0.15s, color 0.15s;
         margin: 0;
+        margin-left: 0 !important;
         line-height: 1.4;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         position: relative;
-
-
 
         &:hover {
             background-color: rgba(200, 200, 200, 0.2);

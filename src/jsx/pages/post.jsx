@@ -200,6 +200,9 @@ export const Post = ({ isHistory }) => {
             // Add this line to enhance menu items with tooltips
             enhancePostMenu();
 
+            // Add this line to improve menu interaction
+            improveMenuInteraction();
+
             parseAndReplacePostSeries();
             try {
                 mermaid.run();
@@ -323,6 +326,56 @@ const enhancePostMenu = () => {
     }
 };
 
+/**
+ * Improve menu interaction by adding persistent expansion
+ */
+const improveMenuInteraction = () => {
+    try {
+        const postMenu = document.querySelector('.post-menu');
+        if (!postMenu) return;
+
+        // Add mouseenter event to parent items
+        const parentItems = postMenu.querySelectorAll('.nav-link');
+        parentItems.forEach(item => {
+            // Check if this item has children
+            const subMenu = item.nextElementSibling;
+            if (!subMenu || !subMenu.classList.contains('nav-pills')) return;
+
+            // Add hover behavior that persists
+            item.addEventListener('mouseenter', () => {
+                // First remove expanded class from all submenus
+                postMenu.querySelectorAll('.nav-pills .nav-pills').forEach(menu => {
+                    if (!menu.querySelector('.nav-link.active')) {
+                        menu.classList.remove('expanded');
+                    }
+                });
+
+                // Expand this submenu
+                subMenu.classList.add('expanded');
+            });
+        });
+
+        // Add event to the menu container to handle mouse leaving the entire menu
+        postMenu.addEventListener('mouseleave', () => {
+            postMenu.querySelectorAll('.nav-pills .nav-pills').forEach(menu => {
+                if (!menu.querySelector('.nav-link.active')) {
+                    menu.classList.remove('expanded');
+                }
+            });
+        });
+
+        // Add mouseenter event to submenu to keep it expanded
+        const subMenus = postMenu.querySelectorAll('.nav-pills .nav-pills');
+        subMenus.forEach(menu => {
+            menu.addEventListener('mouseenter', () => {
+                menu.classList.add('expanded');
+            });
+        });
+
+    } catch (e) {
+        console.error('Failed to improve menu interaction:', e);
+    }
+};
 
 const renderCode = () => {
     try {
