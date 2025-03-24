@@ -387,6 +387,9 @@ const renderCode = () => {
     }
 }
 
+/**
+ * Render MathJax for mathematical expressions
+ */
 const renderMathjax = () => {
     try {
         if (!window.MathJax) {
@@ -395,6 +398,8 @@ const renderMathjax = () => {
             script.async = true;
             script.onload = () => {
                 window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+                // Add callback to handle math elements after rendering
+                window.MathJax.Hub.Queue(optimizeMathDisplay);
             };
             script.onerror = (e) => {
                 console.error(`failed to load mathjax: ${e}`);
@@ -402,9 +407,56 @@ const renderMathjax = () => {
             document.head.appendChild(script);
         } else {
             window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+            // Add callback to handle math elements after rendering
+            window.MathJax.Hub.Queue(optimizeMathDisplay);
         }
     } catch (e) {
         console.error(`failed to render mathjax: ${e}`);
+    }
+};
+
+const optimizeMathDisplay = () => {
+    try {
+        // Find all inline math elements
+        const inlineMathElements = document.querySelectorAll('.math.inline, .math-inline, span.mjx-chtml');
+
+        inlineMathElements.forEach(element => {
+            // Ensure proper display property
+            if (element.style.display !== 'inline-block') {
+                element.style.display = 'inline-block';
+            }
+
+            // Check if the element needs horizontal scrolling
+            const parentWidth = element.parentElement.offsetWidth;
+            const contentWidth = element.scrollWidth;
+
+            if (contentWidth > parentWidth) {
+                // If content is wider than container, ensure it's set for scrolling
+                element.style.maxWidth = '100%';
+                element.style.overflowX = 'auto';
+                element.style.overflowY = 'hidden';
+
+                // Add a hint to users that this is scrollable (subtle visual cue)
+                if (!element.classList.contains('scrollable-math')) {
+                    element.classList.add('scrollable-math');
+
+                    // For math in list items, ensure the li can handle it
+                    if (element.closest('li')) {
+                        element.closest('li').style.overflow = 'visible';
+                    }
+                }
+            }
+        });
+
+        // Also handle display math blocks
+        const displayMathElements = document.querySelectorAll('.MJXc-display');
+        displayMathElements.forEach(element => {
+            element.style.overflowX = 'auto';
+            element.style.overflowY = 'hidden';
+        });
+
+    } catch (e) {
+        console.error(`Failed to optimize math display: ${e}`);
     }
 };
 

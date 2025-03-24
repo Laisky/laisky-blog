@@ -11,6 +11,9 @@
             max-width: var(--content-width); // Constrained width on larger screens
         }
     }
+
+    // Prevent horizontal scrolling of the entire post container
+    overflow-x: hidden;
 }
 
 .posts {
@@ -76,6 +79,64 @@
             font-size: 1rem;
             line-height: 1.7;
 
+            // Make sure content doesn't overflow horizontally
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+
+            // Handle math inline elements
+            .math,
+            .math-inline,
+            .math.inline,
+            .mjx-chtml {
+                max-width: 100%;
+                overflow-x: auto;
+                overflow-y: hidden;
+                display: inline-block;
+                vertical-align: middle;
+
+                // Add subtle visual cue for scrollable content
+                &::-webkit-scrollbar {
+                    height: 4px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: rgba(0, 0, 0, 0.05);
+                    border-radius: 2px;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: rgba(0, 0, 0, 0.2);
+                    border-radius: 2px;
+                }
+            }
+
+            // Specific MathJax elements
+            .MJXc-display {
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding: 1rem 0;
+                margin: 0.5rem 0;
+            }
+
+            .mjx-math {
+                display: inline-block;
+                min-width: min-content;
+            }
+
+            // Fix for lists containing math
+            li {
+                overflow-x: visible;
+
+                // Make sure span.math inside li elements scrolls properly
+                .math,
+                .math-inline,
+                .math.inline,
+                .mjx-chtml {
+                    max-width: 100%;
+                }
+            }
+
             .hint {
                 margin: 1.5rem 0;
                 padding: 1rem;
@@ -92,12 +153,6 @@
                 color: #4b5563;
                 background-color: rgba(240, 240, 240, 0.3);
                 border-radius: 0 6px 6px 0;
-            }
-
-            .MJXc-display {
-                overflow-x: auto;
-                overflow-y: hidden;
-                padding: 1rem 0;
             }
 
             h1,
@@ -132,12 +187,12 @@
             }
 
             img {
-                max-width: 100%;  // Full width on mobile
-                max-height: 400px;  // Slightly shorter height on mobile
+                max-width: 100%; // Full width on mobile
+                max-height: 400px; // Slightly shorter height on mobile
                 cursor: pointer;
-                border-radius: 0;  // No border radius on mobile
-                margin: 1rem 0;  // Smaller margin on mobile
-                box-shadow: none;  // No shadow on mobile
+                border-radius: 0; // No border radius on mobile
+                margin: 1rem 0; // Smaller margin on mobile
+                box-shadow: none; // No shadow on mobile
 
                 @media (min-width: 768px) {
                     max-width: 85%;
