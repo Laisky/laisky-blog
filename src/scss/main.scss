@@ -9,18 +9,18 @@
 @import "./pages/edit.scss";
 
 :root {
-  --code-font: 'Fira Code', monospace;
-  --body-font: 'Inter', system-ui, -apple-system, sans-serif;
-  --content-width: 800px;
-  --sidebar-width: 280px;
-  --accent-color: #3b82f6;
-  --subtle-bg: rgba(242, 242, 242, 1);
-  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --code-font: 'Fira Code', monospace;
+    --body-font: 'Inter', system-ui, -apple-system, sans-serif;
+    --content-width: 800px;
+    --sidebar-width: 280px;
+    --accent-color: #3b82f6;
+    --subtle-bg: rgba(242, 242, 242, 1);
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 [data-bs-theme="dark"] {
-  --subtle-bg: rgba(30, 30, 30, 0.8);
-  --accent-color: #60a5fa;
+    --subtle-bg: rgba(30, 30, 30, 0.8);
+    --accent-color: #60a5fa;
 }
 
 html,
@@ -31,14 +31,22 @@ body {
 
 body {
     font-family: var(--body-font);
-    background-image: url("https://s3.laisky.com/uploads/2020/01/background-white.jpeg");
-    background-size: cover;
-    background-attachment: fixed;
     word-break: break-word;
     word-wrap: break-word;
     letter-spacing: 0.3px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+
+    @media (max-width: 767px) {
+        background-image: none !important; // Hide background on mobile
+        background-color: var(--subtle-bg); // Use solid background color instead
+    }
+
+    @media (min-width: 768px) {
+        background-image: url("https://s3.laisky.com/uploads/2020/01/background-white.jpeg");
+        background-size: cover;
+        background-attachment: fixed;
+    }
 
     #root {
         height: inherit;
@@ -46,15 +54,18 @@ body {
         display: flex;
         justify-content: space-around;
         padding: 0px;
+        width: 100%; // Ensure full width
 
         #container {
             margin: 0px;
             height: inherit;
             padding: 0px;
-            padding-top: 56px; /* Match Bootstrap navbar height */
+            padding-top: 56px;
+            /* Match Bootstrap navbar height */
             overflow: hidden;
             display: flex;
             justify-content: space-around;
+            width: 100%; // Ensure full width
         }
     }
 
@@ -62,7 +73,7 @@ body {
         padding: 0px;
         backdrop-filter: blur(8px);
         border-bottom: 1px solid rgba(230, 230, 230, 0.2);
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 
         .navbar-brand {
             font-weight: 600;
@@ -74,14 +85,33 @@ body {
         }
     }
 
-    code, pre {
+    code,
+    pre {
         font-family: var(--code-font);
         font-size: 0.9em;
     }
 }
 
 .scrollable-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 0; // Remove default padding
+    max-height: calc(100vh - 56px);
+
+    @media (min-width: 768px) {
+        padding: 0 15px; // Add padding back for larger screens
+    }
+
+    /* Hide scrollbar for Chrome, Safari, and Opera */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge, and Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }

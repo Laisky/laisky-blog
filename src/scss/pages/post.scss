@@ -1,30 +1,15 @@
 @import '../variables.scss';
 
-.scrollable-content {
-    overflow-y: auto;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding: 0 15px;
-    max-height: calc(100vh - 56px);
-
-    /* Hide scrollbar for Chrome, Safari, and Opera */
-    &::-webkit-scrollbar {
-        display: none;
-    }
-
-    /* Hide scrollbar for IE, Edge, and Firefox */
-    -ms-overflow-style: none;
-    /* IE and Edge */
-    scrollbar-width: none;
-    /* Firefox */
-}
-
 #post {
     .posts {
         margin-bottom: 0px;
-        max-width: var(--content-width);
+        max-width: 100%; // Full width on mobile
+        width: 100%;
         padding: 0;
+
+        @media (min-width: 768px) {
+            max-width: var(--content-width); // Constrained width on larger screens
+        }
     }
 }
 
@@ -34,12 +19,23 @@
     margin-bottom: 50px;
 
     .post {
-        padding: 1.75rem;
-        margin-bottom: 3rem;
+        padding: 1rem; // Smaller padding on mobile
+        margin-bottom: 2rem;
         background-color: var(--subtle-bg);
-        border-radius: 8px;
-        box-shadow: var(--card-shadow);
-        // transition: transform 0.15s, box-shadow 0.15s;
+        border-radius: 0; // No border radius on mobile
+        box-shadow: none; // No shadow on mobile
+
+        @media (min-width: 768px) {
+            padding: 1.75rem;
+            margin-bottom: 3rem;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+
+            &:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+        }
 
         &:hover {
             transform: translateY(-3px);
@@ -136,17 +132,24 @@
             }
 
             img {
-                max-width: 85%;
-                max-height: 500px;
+                max-width: 100%;  // Full width on mobile
+                max-height: 400px;  // Slightly shorter height on mobile
                 cursor: pointer;
-                border-radius: 6px;
-                margin: 1.5rem 0;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-                transition: transform 0.2s, box-shadow 0.2s;
+                border-radius: 0;  // No border radius on mobile
+                margin: 1rem 0;  // Smaller margin on mobile
+                box-shadow: none;  // No shadow on mobile
 
-                &:hover {
-                    transform: scale(1.01);
-                    box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                @media (min-width: 768px) {
+                    max-width: 85%;
+                    max-height: 500px;
+                    border-radius: 6px;
+                    margin: 1.5rem 0;
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+                    &:hover {
+                        transform: scale(1.01);
+                        box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                    }
                 }
             }
 
@@ -256,13 +259,13 @@
                     }
 
                     .card-body {
-                        padding: 1.25rem;
+                        // padding: 1.25rem;
 
                         ul {
                             margin: 0;
 
                             li {
-                                margin-bottom: 0.5rem;
+                                margin-bottom: 0rem;
                             }
 
                             a {
