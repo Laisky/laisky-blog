@@ -1,7 +1,16 @@
 #categories {
     .posts {
+        background-color: var(--subtle-bg);
+        padding: 1em;
+        font-size: small;
+        border-radius: 8px;
+
         .post {
-            margin-top: 2px;
+            border-radius: 0;
+            box-shadow: none;
+            margin: 0px;
+            padding: 2px;
+            border: none;
             // font-size: smaller;
 
             span {
