@@ -27,6 +27,7 @@ export const App = () => {
     useEffect(() => {
         (async () => {
             const lang = await getUserLanguage();
+            setUserLanguage(lang);
             setUserLang(lang);
 
             let fs = [];
@@ -73,6 +74,11 @@ export const App = () => {
         if (target.tagName !== 'LI') {
             target = target.parentElement;
         }
+
+        // remove query parameter `lang=`
+        const url = new URL(window.location.href);
+        url.searchParams.delete('lang');
+        window.history.replaceState({}, document.title, url);
 
         const newLang = target.dataset.lang;
         if (userLang === newLang) return;
