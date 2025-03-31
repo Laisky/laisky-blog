@@ -12,7 +12,8 @@ import {
     KvKeyPrefixCache,
     formatTs,
     getCurrentUsername, getUserLanguage,
-    graphqlQuery
+    graphqlQuery,
+    isForce
 } from '../library/base.jsx';
 import { loader as postLoader } from './post.jsx';
 
