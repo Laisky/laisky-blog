@@ -20,8 +20,8 @@ import mermaid from 'mermaid';
 
 
 export const loader = async ({ params }) => {
+    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`post:${await getUserLanguage()}:${params.name}`);
     if (!isForce()) {
-        const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`post:${await getUserLanguage()}:${params.name}`);
         const cacheData = await jsutils.GetCache(cacheKey);
         if (cacheData) {
             return cacheData;
@@ -64,8 +64,8 @@ export const loader = async ({ params }) => {
 }
 
 export const historyLoader = async ({ params }) => {
+    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`postHistory:${await getUserLanguage()}:${params.name}`);
     if (!isForce()) {
-        const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`postHistory:${await getUserLanguage()}:${params.name}`);
         const cacheData = await jsutils.GetCache(cacheKey);
         if (cacheData) {
             return cacheData;
@@ -589,8 +589,8 @@ const parseAndReplacePostSeries = async () => {
 
 
 async function loadSeries(postkey) {
+    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`postSeries:${postkey}`);
     if (!isForce()) {
-        const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`postSeries:${postkey}`);
         const cacheData = await jsutils.GetCache(cacheKey);
         if (cacheData) {
             return cacheData;
@@ -635,9 +635,9 @@ function parseSeriesHTML(se) {
             let p = se.posts[i];
             html += `<li><a href="https://blog.laisky.com/p/${p.name}/">${p.title}</a></li>`;
         }
-}
+    }
 
-return html;
+    return html;
 }
 
 async function parseSeriesChildren(seriesKey) {
