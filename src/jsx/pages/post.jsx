@@ -6,7 +6,7 @@ import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Comments } from '../components/comments.jsx';
-import jsutils from '@laisky/js-utils';
+import jsutils, { RandomString } from '@laisky/js-utils';
 
 import {
     formatTs,
@@ -642,11 +642,11 @@ function parseSeriesHTML(se) {
 
 async function parseSeriesChildren(seriesKey) {
     let se = await loadSeries(seriesKey);
-    let sid = `series-${se.remark}`;
+    let sid = `series-${RandomString(16)}`;
     let html = parseSeriesHTML(se);
-    if (se.children.length != 0) {
-        for (i = 0; i < se.children.length; i++) {
-            html += parseSeriesChildren(se.children[i].key);
+    if (se.children && se.children.length != 0) {
+        for (let i = 0; i < se.children.length; i++) {
+            html += await parseSeriesChildren(se.children[i].key);
         }
     }
 
