@@ -548,7 +548,9 @@ const bindPostImageModal = () => {
 };
 
 
-// render post series
+/**
+ * Parse and replace post series in the post content
+ */
 const parseAndReplacePostSeries = async () => {
     const seriesElements = document.querySelectorAll('.post .post-content div.post_series');
     const tasks = Array.from(seriesElements).map(async (seEle) => {
@@ -559,8 +561,10 @@ const parseAndReplacePostSeries = async () => {
         }
 
         let html = parseSeriesHTML(se);
-        for (let i = 0; i < se.children.length; i++) {
-            html += await parseSeriesChildren(se.children[i].key);
+        if (se.children && se.children.length > 0) {
+            for (let i = 0; i < se.children.length; i++) {
+                html += await parseSeriesChildren(se.children[i].key);
+            }
         }
 
         html = `
