@@ -630,12 +630,14 @@ async function loadSeries(postkey) {
 
 function parseSeriesHTML(se) {
     let html = '';
-    for (let i = 0; i < se.posts.length; i++) {
-        let p = se.posts[i];
-        html += `<li><a href="https://blog.laisky.com/p/${p.name}/">${p.title}</a></li>`;
-    }
+    if (se.posts && se.posts.length > 0) {
+        for (let i = 0; i < se.posts.length; i++) {
+            let p = se.posts[i];
+            html += `<li><a href="https://blog.laisky.com/p/${p.name}/">${p.title}</a></li>`;
+        }
+}
 
-    return html;
+return html;
 }
 
 async function parseSeriesChildren(seriesKey) {
