@@ -171,10 +171,13 @@ export const Page = () => {
 
 const loadPage = async (nPage) => {
     console.debug(`loadPage: ${nPage}`);
-    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`loadPage:${await getUserLanguage()}:${nPage}`);
-    const cacheData = await jsutils.GetCache(cacheKey);
-    if (cacheData) {
-        return cacheData;
+
+    if (!isForce()) {
+        const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`loadPage:${await getUserLanguage()}:${nPage}`);
+        const cacheData = await jsutils.GetCache(cacheKey);
+        if (cacheData) {
+            return cacheData;
+        }
     }
 
     const gqBody = gql`
@@ -217,10 +220,12 @@ const loadPage = async (nPage) => {
 };
 
 const loadPostInfo = async () => {
-    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`loadPostInfo`);
-    const cacheData = await jsutils.GetCache(cacheKey);
-    if (cacheData) {
-        return cacheData;
+    if (!isForce()) {
+        const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`loadPostInfo`);
+        const cacheData = await jsutils.GetCache(cacheKey);
+        if (cacheData) {
+            return cacheData;
+        }
     }
 
     const gqBody = gql`

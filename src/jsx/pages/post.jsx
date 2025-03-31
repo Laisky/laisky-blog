@@ -12,6 +12,7 @@ import {
     formatTs,
     getCurrentUsername, getUserLanguage,
     graphqlQuery,
+    isForce,
     KvKeyLanguage,
     KvKeyPrefixCache
 } from '../library/base.jsx';
@@ -19,10 +20,12 @@ import mermaid from 'mermaid';
 
 
 export const loader = async ({ params }) => {
-    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`post:${await getUserLanguage()}:${params.name}`);
-    const cacheData = await jsutils.GetCache(cacheKey);
-    if (cacheData) {
-        return cacheData;
+    if (!isForce()) {
+        const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`post:${await getUserLanguage()}:${params.name}`);
+        const cacheData = await jsutils.GetCache(cacheKey);
+        if (cacheData) {
+            return cacheData;
+        }
     }
 
     const gqBody = gql`
@@ -61,10 +64,12 @@ export const loader = async ({ params }) => {
 }
 
 export const historyLoader = async ({ params }) => {
-    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`postHistory:${await getUserLanguage()}:${params.name}`);
-    const cacheData = await jsutils.GetCache(cacheKey);
-    if (cacheData) {
-        return cacheData;
+    if (!isForce()) {
+        const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`postHistory:${await getUserLanguage()}:${params.name}`);
+        const cacheData = await jsutils.GetCache(cacheKey);
+        if (cacheData) {
+            return cacheData;
+        }
     }
 
     const gqBody = gql`
@@ -584,10 +589,12 @@ const parseAndReplacePostSeries = async () => {
 
 
 async function loadSeries(postkey) {
-    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`postSeries:${postkey}`);
-    const cacheData = await jsutils.GetCache(cacheKey);
-    if (cacheData) {
-        return cacheData;
+    if (!isForce()) {
+        const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`postSeries:${postkey}`);
+        const cacheData = await jsutils.GetCache(cacheKey);
+        if (cacheData) {
+            return cacheData;
+        }
     }
 
     const gqBody = gql`

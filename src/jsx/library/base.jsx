@@ -61,6 +61,9 @@ export const graphqlMutation = async (body, vars, headers) => {
     return await request(getGraphqlAPI(), body, vars, headers);
 }
 
+/**
+ * Check is bypass all cache
+ */
 export const isForce = () => {
     if (typeof window !== 'undefined' && window.location) {
         const urlParams = new URLSearchParams(window.location.search);

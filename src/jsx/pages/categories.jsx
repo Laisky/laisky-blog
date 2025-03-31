@@ -16,10 +16,12 @@ import {
 
 
 export const loader = async ({ params }) => {
-    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`categories:${await getUserLanguage()}:${params.category}`);
-    const cacheData = await jsutils.GetCache(cacheKey);
-    if (cacheData) {
-        return cacheData;
+    if (!isForce()) {
+        const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`categories:${await getUserLanguage()}:${params.category}`);
+        const cacheData = await jsutils.GetCache(cacheKey);
+        if (cacheData) {
+            return cacheData;
+        }
     }
 
     let gqBody;
