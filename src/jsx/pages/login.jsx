@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import React, { useState } from 'react';
 
 import { GraphqlAPI, KvKeyAuthUser, KvKeyUserToken } from '../library/base.jsx';
-import * as libs from '@laisky/js-utils';
+import jsUtils from '@laisky/js-utils';
 import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
@@ -30,12 +30,12 @@ export const Login = () => {
         const resp = await request(GraphqlAPI, gqBody);
         const token = resp.UserLogin.token;
         const authUser = jwtDecode(token);
-        await libs.KvSet(KvKeyAuthUser, authUser);
-        await libs.KvSet(KvKeyUserToken, token);
+        await jsUtils.KvSet(KvKeyAuthUser, authUser);
+        await jsUtils.KvSet(KvKeyUserToken, token);
 
         // after login, redirect to the page where user clicked login
         const queryParams = new URLSearchParams(window.location.search);
-        const redirectTo = queryParams.get('redirect') || '/';
+        const redirectTo = queryParams.get('redirect') || '/pages/0/';
         navigate(redirectTo);
     };
 
