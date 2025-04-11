@@ -2,7 +2,7 @@
 
 import * as bootstrap from 'bootstrap';
 import { gql } from 'graphql-request';
-import 'https://s3.laisky.com/static/prism/1.29.0/prism.js';
+import 'https://s3.laisky.com/static/prism/1.30.0/prism.js';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Comments } from '../components/comments.jsx';
