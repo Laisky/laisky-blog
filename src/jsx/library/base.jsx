@@ -6,7 +6,7 @@ import jsutils from '@laisky/js-utils';
 import request, { GraphQLClient } from "graphql-request";
 import { isJsxFragment } from "typescript";
 
-export const GraphqlAPI = 'https://gq.laisky.com/query/';
+export const GraphqlAPI = 'https://gq_v2.laisky.com/query/';
 // export const GraphqlAPI = 'http://100.75.198.70:18080/query/';
 
 export const KvKeyLanguage = 'language';
