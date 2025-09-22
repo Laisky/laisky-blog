@@ -111,12 +111,14 @@ export const Post = ({ isHistory }) => {
     isHistory = isHistory === 'true';
     const params = useParams();
     const [content, setContent] = useState(
-        <div className='col-md-8 col-lg-9 posts placeholder-glow'>
-            <span className="placeholder col-7"></span>
-            <span className="placeholder col-4"></span>
-            <span className="placeholder col-4"></span>
-            <span className="placeholder col-6"></span>
-            <span className="placeholder col-8"></span>
+        <div className='col-12 col-xl-9'>
+            <div className='posts placeholder-glow'>
+                <span className="placeholder col-7"></span>
+                <span className="placeholder col-4"></span>
+                <span className="placeholder col-4"></span>
+                <span className="placeholder col-6"></span>
+                <span className="placeholder col-8"></span>
+            </div>
         </div>
     );
     const [language, setLanguage] = useState(null);
@@ -138,8 +140,9 @@ export const Post = ({ isHistory }) => {
 
             const content = (
                 <>
-                    <div className='col-md-8 col-lg-9 posts'>
-                        <div className="container-fluid post" id={post.name} key={post.name}>
+                    <div className='col-12 col-xl-9'>
+                        <div className='posts'>
+                            <div className="container-fluid post" id={post.name} key={post.name}>
                             <h2 className="post-title">
                                 <Link to={`/p/${post.name}/`}>{isHistory ? `[History] ${post.title}` : post.title}</Link>
                             </h2>
@@ -163,9 +166,11 @@ export const Post = ({ isHistory }) => {
                                     }
                                 }
                             /> */}
+                            </div>
                         </div>
                     </div>
-                    <div className="d-none d-md-block col-md-3 col-lg-2 post-menu" dangerouslySetInnerHTML={{ __html: post.menu }}>
+                    <div className="d-none d-xl-block col-xl-3">
+                        <aside id="post-menu" className="post-menu" dangerouslySetInnerHTML={{ __html: post.menu }} />
                     </div>
                 </>
             );
@@ -243,8 +248,10 @@ export const Post = ({ isHistory }) => {
     };
 
     return (
-        <div id="post" className='row align-items-start scrollable-content'>
-            {content}
+        <div className="container-xl px-3 px-xl-0 scrollable-content">
+            <div id="post" className='row g-3 g-xl-4 align-items-start'>
+                {content}
+            </div>
         </div>
     )
 }

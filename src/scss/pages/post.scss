@@ -1,11 +1,19 @@
 @import '../variables.scss';
 
 #post {
+    /* Ensure row uses full container width */
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
     .posts {
         margin-bottom: 0px;
         max-width: 100%; // Full width on mobile
         width: 100%;
         padding: 0;
+        /* Center the post content inside its grid column */
+        margin-left: auto;
+        margin-right: auto;
 
         @media (min-width: 768px) {
             max-width: var(--content-width); // Constrained width on larger screens
@@ -459,12 +467,13 @@
     padding-right: 0 !important;
     font-size: 0.85rem;
     background-color: var(--subtle-bg);
-    margin-left: 20px;
     border-radius: 8px;
-    max-width: var(--sidebar-width);
+    /* Let the grid define the width; do not force widths here */
     max-height: calc(100vh - 100px);
     overflow-y: auto;
     box-shadow: var(--card-shadow);
+
+    /* No explicit widths; the column controls width */
 
     /* Custom scrollbar styling */
     &::-webkit-scrollbar {
