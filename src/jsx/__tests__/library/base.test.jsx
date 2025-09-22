@@ -3,15 +3,19 @@ import {
     formatTs,
     getCurrentPathName,
     isForce,
+    isJwtExpired,
+    getCurrentUsername,
     ts2UTC
 } from '../../library/base';
+import jsutils from '@laisky/js-utils';
 
 
 // Mock dependencies
 vi.mock('@laisky/js-utils', () => ({
     default: {
         KvGet: vi.fn(),
-        KvSet: vi.fn()
+        KvSet: vi.fn(),
+        KvDel: vi.fn()
     }
 }));
 
@@ -55,6 +59,70 @@ describe('base.jsx', () => {
     afterEach(() => {
         // Restore window.location
         window.location = originalLocation;
+    });
+
+    describe('isJwtExpired', () => {
+        const b64url = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64url');
+        const makeToken = (payload) => `${b64url({ alg: 'none', typ: 'JWT' })}.${b64url(payload)}.`;
+
+        test('returns true for invalid token', () => {
+            expect(isJwtExpired('not.a.token')).toBe(true);
+        });
+
+        test('returns true when exp missing', () => {
+            const token = makeToken({ sub: 'u1' });
+            expect(isJwtExpired(token)).toBe(true);
+        });
+
+        test('returns true when token expired', () => {
+            const past = Math.floor(Date.now() / 1000) - 60;
+            const token = makeToken({ exp: past });
+            expect(isJwtExpired(token)).toBe(true);
+        });
+
+        test('returns false when token valid (future exp)', () => {
+            const future = Math.floor(Date.now() / 1000) + 60;
+            const token = makeToken({ exp: future });
+            expect(isJwtExpired(token)).toBe(false);
+        });
+    });
+
+    describe('getCurrentUsername', () => {
+        const b64url = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64url');
+        const makeToken = (payload) => `${b64url({ alg: 'none', typ: 'JWT' })}.${b64url(payload)}.`;
+
+        beforeEach(() => {
+            vi.clearAllMocks();
+        });
+
+        test('returns undefined and clears storage when token missing', async () => {
+            jsutils.KvGet.mockResolvedValueOnce(null); // token
+            const name = await getCurrentUsername();
+            expect(name).toBeUndefined();
+        });
+
+        test('returns undefined and clears storage when token expired', async () => {
+            const past = Math.floor(Date.now() / 1000) - 10;
+            const token = makeToken({ exp: past, display_name: 'User' });
+            jsutils.KvGet
+                .mockResolvedValueOnce(token); // token
+
+            const name = await getCurrentUsername();
+            expect(name).toBeUndefined();
+            expect(jsutils.KvDel).toHaveBeenCalledTimes(2);
+        });
+
+        test('decodes token to get username when cache missing and token valid', async () => {
+            const future = Math.floor(Date.now() / 1000) + 300;
+            const token = makeToken({ exp: future, display_name: 'Alice' });
+            jsutils.KvGet
+                .mockResolvedValueOnce(token) // token
+                .mockResolvedValueOnce(null);  // auth_user missing
+
+            const name = await getCurrentUsername();
+            expect(name).toBe('Alice');
+            expect(jsutils.KvSet).toHaveBeenCalled();
+        });
     });
 
     describe('isForce', () => {

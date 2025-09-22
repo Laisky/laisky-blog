@@ -87,17 +87,58 @@ export const getCurrentPathName = () => {
 };
 
 /**
+ * Check if a JWT token is expired based on its `exp` claim.
+ *
+ * @param {string} token - The JWT token string.
+ * @returns {boolean} - True if expired or invalid, false otherwise.
+ */
+export const isJwtExpired = (token) => {
+    try {
+        const payload = jwtDecode(token);
+        if (!payload || typeof payload.exp !== 'number') {
+            // No exp means we treat it as invalid for safety
+            return true;
+        }
+        const now = Date.now(); // ms
+        const expMs = payload.exp * 1000; // exp is in seconds
+        return now >= expMs;
+    } catch (e) {
+        // Bad token format
+        return true;
+    }
+};
+
+/**
  * Get the current username.
  *
  * @returns {string|null} The username or null if not available.
  */
 export const getCurrentUsername = async () => {
-    let userinfo = await jsutils.KvGet(KvKeyAuthUser);
-    if (!userinfo) {
+    // Ensure we have a valid, non-expired token before trusting cached user info
+    const token = await jsutils.KvGet(KvKeyUserToken);
+    if (!token || isJwtExpired(token)) {
+        try {
+            await jsutils.KvDel(KvKeyAuthUser);
+            await jsutils.KvDel(KvKeyUserToken);
+        } catch (_) { /* ignore */ }
         return;
     }
 
-    return userinfo['display_name'];
+    // Try to read cached auth user; if missing, decode from token and cache it
+    let userinfo = await jsutils.KvGet(KvKeyAuthUser);
+    if (!userinfo) {
+        try {
+            userinfo = jwtDecode(token);
+            if (userinfo) {
+                await jsutils.KvSet(KvKeyAuthUser, userinfo);
+            }
+        } catch (_) {
+            return;
+        }
+    }
+
+    // Prefer display_name; fall back to common fields
+    return userinfo['display_name'] || userinfo['username'] || userinfo['name'] || userinfo['sub'];
 };
 
 
