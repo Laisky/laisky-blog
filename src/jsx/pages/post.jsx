@@ -4,7 +4,7 @@ import * as bootstrap from 'bootstrap';
 import { gql } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.30.0/prism.js';
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Comments } from '../components/comments.jsx';
 import jsutils, { RandomString } from '@laisky/js-utils';
 
@@ -122,7 +122,6 @@ export const Post = ({ isHistory }) => {
         </div>
     );
     const [language, setLanguage] = useState(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
@@ -138,24 +137,26 @@ export const Post = ({ isHistory }) => {
             // change page title
             document.title = isHistory ? `[History] ${post.title}` : post.title;
 
+            const hasMenu = typeof post.menu === 'string' && post.menu.trim() !== '';
+
             const content = (
                 <>
                     <div className='col-12 col-xl-9'>
                         <div className='posts'>
                             <div className="container-fluid post" id={post.name} key={post.name}>
-                            <h2 className="post-title">
-                                <Link to={`/p/${post.name}/`}>{isHistory ? `[History] ${post.title}` : post.title}</Link>
-                            </h2>
-                            <div className="post-meta">
-                                <span >published: </span>
-                                <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title={`"${post.created_at}"`}>{formatTs(post.created_at)}
-                                </span>
-                            </div>
-                            <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
-                            </div>
-                            {postTail}
-                            <Comments postName={params.name} />
-                            {/* <DiscussionEmbed
+                                <h2 className="post-title">
+                                    <Link to={`/p/${post.name}/`}>{isHistory ? `[History] ${post.title}` : post.title}</Link>
+                                </h2>
+                                <div className="post-meta">
+                                    <span >published: </span>
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title={`"${post.created_at}"`}>{formatTs(post.created_at)}
+                                    </span>
+                                </div>
+                                <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
+                                </div>
+                                {postTail}
+                                <Comments postName={params.name} />
+                                {/* <DiscussionEmbed
                                 shortname='laisky'
                                 config={
                                     {
@@ -169,9 +170,11 @@ export const Post = ({ isHistory }) => {
                             </div>
                         </div>
                     </div>
-                    <div className="d-none d-xl-block col-xl-3">
-                        <aside id="post-menu" className="post-menu" dangerouslySetInnerHTML={{ __html: post.menu }} />
-                    </div>
+                    {hasMenu && (
+                        <div className="d-none d-xl-block col-xl-3">
+                            <aside id="post-menu" className="post-menu" dangerouslySetInnerHTML={{ __html: post.menu }} />
+                        </div>
+                    )}
                 </>
             );
 
@@ -185,6 +188,10 @@ export const Post = ({ isHistory }) => {
             return;
         }
 
+    let cleanupScrollSpy;
+    let cleanupMenuScroll;
+    let cleanupActiveState;
+
         (async () => {
             bindPostImageModal();
             renderCode();
@@ -193,25 +200,15 @@ export const Post = ({ isHistory }) => {
 
             // enable tooltips
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+            Array.from(tooltipTriggerList).forEach(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
-            // enable menu
-            try {
-                const scrollSpy = new bootstrap.ScrollSpy(
-                    document.querySelector('#post'),
-                    {
-                        target: '#post-menu',
-                        smoothScroll: true,
-                    });
-            } catch (e) {
-                console.error(`failed to enable scrollspy: ${e}`);
-            }
-
-            // Add this line to enhance menu items with tooltips
+            // configure post menu behavior
             enhancePostMenu();
-
-            // Add this line to improve menu interaction
             improveMenuInteraction();
+
+            cleanupScrollSpy = setupPostMenuScrollSpy();
+            cleanupMenuScroll = setupPostMenuLinkScrolling();
+            cleanupActiveState = setupPostMenuActiveState();
 
             parseAndReplacePostSeries();
             try {
@@ -220,6 +217,18 @@ export const Post = ({ isHistory }) => {
                 console.error(`failed to render mermaid: ${e}`);
             }
         })();
+
+        return () => {
+            if (cleanupScrollSpy) {
+                cleanupScrollSpy();
+            }
+            if (cleanupMenuScroll) {
+                cleanupMenuScroll();
+            }
+            if (cleanupActiveState) {
+                cleanupActiveState();
+            }
+        };
     }, [content]);
 
     // Also add a window resize listener to the component
@@ -265,8 +274,18 @@ const enhancePostMenu = () => {
     try {
         // Delay the execution to ensure DOM is fully rendered
         setTimeout(() => {
-            // Select all links in the post-menu
-            const menuLinks = document.querySelectorAll('.post-menu a');
+            const postMenu = document.querySelector('.post-menu');
+            if (!postMenu) {
+                return;
+            }
+
+            const menuLinks = postMenu.querySelectorAll('a');
+
+            if (menuLinks.length === 0) {
+                postMenu.classList.add('is-hidden');
+            } else {
+                postMenu.classList.remove('is-hidden');
+            }
 
             // First dispose all existing tooltips to prevent duplicate instances
             menuLinks.forEach(link => {
@@ -386,6 +405,317 @@ const improveMenuInteraction = () => {
 
     } catch (e) {
         console.error('Failed to improve menu interaction:', e);
+    }
+};
+
+const POST_MENU_SCROLL_OFFSET = 120;
+
+const getScrollContext = () => {
+    const explicitContainer = document.querySelector('.scrollable-content');
+    if (explicitContainer) {
+        const canScroll = explicitContainer.scrollHeight - explicitContainer.clientHeight > 4;
+        if (canScroll) {
+            return {
+                type: 'element',
+                element: explicitContainer,
+            };
+        }
+    }
+
+    const docEl = document.scrollingElement || document.documentElement || document.body;
+    return {
+        type: 'document',
+        element: docEl,
+    };
+};
+
+const setupPostMenuScrollSpy = () => {
+    try {
+        const postMenu = document.querySelector('#post-menu');
+        if (!postMenu || postMenu.classList.contains('is-hidden')) {
+            return;
+        }
+
+        const { element } = getScrollContext();
+        const scrollElement = element;
+
+        if (!scrollElement) {
+            return;
+        }
+
+        const existingInstance = bootstrap.ScrollSpy.getInstance(scrollElement);
+        if (existingInstance) {
+            existingInstance.dispose();
+        }
+
+        const scrollSpy = new bootstrap.ScrollSpy(scrollElement, {
+            target: '#post-menu',
+            smoothScroll: false,
+            offset: POST_MENU_SCROLL_OFFSET,
+        });
+
+        let lastActiveLink = postMenu.querySelector('.nav-link.active');
+        if (lastActiveLink) {
+            lastActiveLink.classList.add('is-current');
+        }
+
+        const handleActivate = () => {
+            const current = postMenu.querySelector('.nav-link.active');
+            if (!current) {
+                return;
+            }
+
+            if (lastActiveLink && lastActiveLink !== current) {
+                lastActiveLink.classList.remove('is-current');
+            }
+
+            current.classList.add('is-current');
+            lastActiveLink = current;
+        };
+
+        const handleClear = () => {
+            if (lastActiveLink && !lastActiveLink.classList.contains('is-current')) {
+                lastActiveLink.classList.add('is-current');
+            }
+        };
+
+        const handleResize = () => {
+            if (typeof scrollSpy.refresh === 'function') {
+                scrollSpy.refresh();
+            }
+        };
+
+        postMenu.addEventListener('activate.bs.scrollspy', handleActivate);
+        postMenu.addEventListener('clear.bs.scrollspy', handleClear);
+        window.addEventListener('resize', handleResize);
+
+        // Allow dynamic content to settle before refreshing scrollspy
+        setTimeout(() => {
+            if (typeof scrollSpy.refresh === 'function') {
+                scrollSpy.refresh();
+            }
+        }, 400);
+
+        return () => {
+            postMenu.removeEventListener('activate.bs.scrollspy', handleActivate);
+            postMenu.removeEventListener('clear.bs.scrollspy', handleClear);
+            window.removeEventListener('resize', handleResize);
+            postMenu.querySelectorAll('.is-current').forEach(link => link.classList.remove('is-current'));
+            if (typeof scrollSpy.dispose === 'function') {
+                scrollSpy.dispose();
+            }
+        };
+    } catch (e) {
+        console.error('failed to setup post menu scrollspy:', e);
+    }
+};
+
+const escapeSelector = (value = '') => {
+    try {
+        if (window.CSS && typeof window.CSS.escape === 'function') {
+            return window.CSS.escape(value);
+        }
+    } catch (err) {
+        // ignore and fallback
+    }
+
+    return value.replace(/[\0-\x1F\x7F-\x9F!"#$%&'()*+,./:;<=>?@[\\\]^`{|}~]/g, '\\$&');
+};
+
+const setupPostMenuLinkScrolling = () => {
+    try {
+        const postMenu = document.querySelector('#post-menu');
+        if (!postMenu || postMenu.classList.contains('is-hidden')) {
+            return;
+        }
+
+        const { type, element } = getScrollContext();
+
+        const handleClick = (event) => {
+            const link = event.target.closest('a');
+            if (!link) {
+                return;
+            }
+
+            let url;
+            try {
+                url = new URL(link.href, window.location.href);
+            } catch (err) {
+                return;
+            }
+
+            if (url.pathname !== window.location.pathname) {
+                return;
+            }
+
+            const hash = url.hash;
+            if (!hash) {
+                return;
+            }
+
+            const target = document.querySelector(hash);
+            if (!target) {
+                return;
+            }
+
+            event.preventDefault();
+
+            const targetRect = target.getBoundingClientRect();
+            const offset = POST_MENU_SCROLL_OFFSET - 16;
+
+            if (type === 'element' && element) {
+                const containerRect = element.getBoundingClientRect();
+                const currentScrollTop = element.scrollTop;
+                const desiredScrollTop = currentScrollTop + (targetRect.top - containerRect.top) - offset;
+
+                element.scrollTo({
+                    top: Math.max(desiredScrollTop, 0),
+                    behavior: 'smooth',
+                });
+            } else {
+                const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                const desiredScrollTop = scrollTop + targetRect.top - offset;
+
+                window.scrollTo({
+                    top: Math.max(desiredScrollTop, 0),
+                    behavior: 'smooth',
+                });
+            }
+
+            if (window?.history?.replaceState) {
+                window.history.replaceState(null, '', hash);
+            }
+        };
+
+        postMenu.addEventListener('click', handleClick);
+
+        return () => {
+            postMenu.removeEventListener('click', handleClick);
+        };
+    } catch (e) {
+        console.error('failed to bind post menu smooth scrolling:', e);
+    }
+};
+
+const setupPostMenuActiveState = () => {
+    try {
+        const postMenu = document.querySelector('#post-menu');
+        if (!postMenu || postMenu.classList.contains('is-hidden')) {
+            return;
+        }
+
+        const headingSelector = '#post .post-content h1[id],#post .post-content h2[id],#post .post-content h3[id],#post .post-content h4[id],#post .post-content h5[id],#post .post-content h6[id]';
+        const headings = Array.from(document.querySelectorAll(headingSelector));
+        if (!headings.length) {
+            return;
+        }
+
+        const { type, element } = getScrollContext();
+        const scrollElement = type === 'element' ? element : window;
+        if (!scrollElement) {
+            return;
+        }
+
+    let lastHighlightedLink = null;
+    let manualActiveLink = null;
+        let rafId = null;
+
+        const highlightLink = (link) => {
+            if (lastHighlightedLink && lastHighlightedLink !== link) {
+                lastHighlightedLink.classList.remove('is-current');
+            }
+            if (link) {
+                link.classList.add('is-current');
+            }
+            lastHighlightedLink = link || null;
+        };
+
+        const isNearBottom = () => {
+            if (type === 'element' && element) {
+                return element.scrollTop + element.clientHeight >= element.scrollHeight - 2;
+            }
+
+            const doc = document.documentElement;
+            const body = document.body;
+            const scrollTop = window.scrollY || doc.scrollTop || 0;
+            const viewportHeight = window.innerHeight || doc.clientHeight;
+            const scrollHeight = Math.max(doc.scrollHeight, body.scrollHeight);
+            return scrollTop + viewportHeight >= scrollHeight - 2;
+        };
+
+        const updateCurrentLink = () => {
+            const activeFromSpy = postMenu.querySelector('.nav-link.active');
+            if (activeFromSpy && activeFromSpy !== manualActiveLink) {
+                if (manualActiveLink && manualActiveLink !== activeFromSpy) {
+                    manualActiveLink.classList.remove('active');
+                    manualActiveLink = null;
+                }
+                highlightLink(activeFromSpy);
+                manualActiveLink = null;
+                return;
+            }
+
+            const rootRect = type === 'element' && element ? element.getBoundingClientRect() : { top: 0 };
+            const targetLine = rootRect.top + POST_MENU_SCROLL_OFFSET + 1;
+
+            let activeHeading = headings[0];
+            for (const heading of headings) {
+                const headingTop = heading.getBoundingClientRect().top;
+                if (headingTop <= targetLine) {
+                    activeHeading = heading;
+                } else {
+                    break;
+                }
+            }
+
+            if (isNearBottom()) {
+                activeHeading = headings[headings.length - 1];
+            }
+
+            const link = activeHeading ? postMenu.querySelector(`.nav-link[href="#${escapeSelector(activeHeading.id)}"]`) : null;
+            if (link) {
+                if (manualActiveLink && manualActiveLink !== link) {
+                    manualActiveLink.classList.remove('active');
+                }
+                link.classList.add('active');
+                manualActiveLink = link;
+            }
+            highlightLink(link);
+        };
+
+        const scheduleUpdate = () => {
+            if (rafId !== null) {
+                return;
+            }
+            rafId = window.requestAnimationFrame(() => {
+                rafId = null;
+                updateCurrentLink();
+            });
+        };
+
+        scheduleUpdate();
+
+        const scrollTarget = type === 'element' && element ? element : window;
+        scrollTarget.addEventListener('scroll', scheduleUpdate, { passive: true });
+        window.addEventListener('resize', scheduleUpdate);
+
+        return () => {
+            if (scrollTarget) {
+                scrollTarget.removeEventListener('scroll', scheduleUpdate);
+            }
+            window.removeEventListener('resize', scheduleUpdate);
+            if (rafId !== null) {
+                window.cancelAnimationFrame(rafId);
+            }
+            if (lastHighlightedLink) {
+                lastHighlightedLink.classList.remove('is-current');
+            }
+            if (manualActiveLink) {
+                manualActiveLink.classList.remove('active');
+            }
+        };
+    } catch (e) {
+        console.error('failed to maintain post menu active state:', e);
     }
 };
 

@@ -1,4 +1,4 @@
-@import '../variables.scss';
+@use '../variables' as *;
 
 #post {
     /* Ensure row uses full container width */
@@ -463,13 +463,12 @@
 .post-menu {
     position: sticky;
     top: 75px;
-    padding: 0.5rem;
-    padding-right: 0 !important;
+    padding: 0.5rem 0.75rem;
     font-size: 0.85rem;
     background-color: var(--subtle-bg);
     border-radius: 8px;
     /* Let the grid define the width; do not force widths here */
-    max-height: calc(100vh - 100px);
+    max-height: calc(100vh - var(--navbar-height) - 40px);
     overflow-y: auto;
     box-shadow: var(--card-shadow);
 
@@ -554,12 +553,12 @@
 
     a {
         display: block;
-        width: 100%;
+        width: calc(100% - 0.5rem);
         color: inherit;
         text-decoration: none;
-        padding: 0.35rem 0.5rem !important;
-        border-radius: 4px;
-        transition: background-color 0.15s, color 0.15s;
+        padding: 0.35rem 1rem 0.35rem 0.75rem !important;
+        border-radius: 6px;
+        transition: background-color 0.15s, color 0.15s, box-shadow 0.15s;
         margin: 0;
         margin-left: 0 !important;
         line-height: 1.4;
@@ -573,15 +572,22 @@
             color: var(--accent-color);
         }
 
-        &.active {
-            background-color: var(--accent-color) !important;
-            color: white !important;
-            font-weight: 500;
+        &.active,
+        &.is-current {
+            background-color: rgba(var(--accent-color-rgb), 0.18) !important;
+            color: var(--accent-color) !important;
+            font-weight: 600;
+            box-shadow: inset 0 0 0 1px rgba(var(--accent-color-rgb), 0.25);
 
             &::before {
                 content: "•";
                 margin-right: 0.3rem;
             }
+        }
+
+        &.is-current:not(.active) {
+            background-color: rgba(var(--accent-color-rgb), 0.12) !important;
+            opacity: 1;
         }
     }
 
@@ -612,6 +618,28 @@
         to {
             opacity: 1;
         }
+    }
+
+    &.is-hidden {
+        display: none;
+    }
+}
+
+@media (min-width: 1200px) {
+    #post>.col-xl-3 {
+        position: relative;
+        display: flex !important;
+        justify-content: flex-end;
+        flex: 0 0 auto;
+        align-self: stretch;
+    }
+
+    #post>.col-xl-3 .post-menu {
+        position: fixed;
+        top: calc(var(--navbar-height) + 28px);
+        right: max(16px, calc((100vw - var(--container-xl-max)) / 2));
+        width: min(var(--sidebar-width), 320px);
+        max-height: calc(100vh - var(--navbar-height) - 60px);
     }
 }
 

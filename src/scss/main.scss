@@ -1,12 +1,13 @@
-@import "~bootstrap/scss/bootstrap";
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600&display=swap');
+@use "bootstrap/scss/bootstrap";
+@use "./variables";
+@use "./components/comments";
+@use "./pages/pages";
+@use "./pages/post";
+@use "./pages/about";
+@use "./pages/categories";
+@use "./pages/edit";
 
-@import "./components/comments.scss";
-@import "./pages/pages.scss";
-@import "./pages/post.scss";
-@import "./pages/about.scss";
-@import "./pages/categories.scss";
-@import "./pages/edit.scss";
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600&display=swap');
 
 :root {
     --code-font: 'Fira Code', monospace;
@@ -14,13 +15,17 @@
     --content-width: 800px;
     --sidebar-width: 280px;
     --accent-color: #3b82f6;
+    --accent-color-rgb: 59, 130, 246;
     --subtle-bg: rgba(242, 242, 242, 1);
     --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --navbar-height: 56px;
+    --container-xl-max: 1140px;
 }
 
 [data-bs-theme="dark"] {
     --subtle-bg: rgba(30, 30, 30, 0.8);
     --accent-color: #60a5fa;
+    --accent-color-rgb: 96, 165, 250;
 }
 
 html,
@@ -93,12 +98,14 @@ body {
 }
 
 .scrollable-content {
+    display: block;
+    flex: 1 1 auto;
+    min-height: 0;
+    height: calc(100vh - var(--navbar-height));
     overflow-y: auto;
-    display: flex;
-    justify-content: center;
     width: 100%;
+    margin: 0 auto;
     padding: 0; // Remove default padding
-    max-height: calc(100vh - 56px);
 
     @media (min-width: 768px) {
         padding: 0 15px; // Add padding back for larger screens
