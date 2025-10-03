@@ -106,39 +106,41 @@ export const Page = () => {
             </div>
 
             {/* pagination as footer */}
-            <nav className="row footer">
-                <ul className="pagination col justify-content-center">
-                    <li className={`page-item ${currentPage <= 1 ? 'disabled' : ''}`}>
-                        <Link className="page-link" to={`/pages/${currentPage - 1}/`} aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </Link>
-                    </li>
+            <div className='col-12'>
+                <nav className="footer">
+                    <ul className="pagination justify-content-center">
+                        <li className={`page-item ${currentPage <= 1 ? 'disabled' : ''}`}>
+                            <Link className="page-link" to={`/pages/${currentPage - 1}/`} aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </Link>
+                        </li>
 
-                    {Array.from({ length: totalPage }, (_, i) => {
-                        const page = i;
-                        const startPage = Math.max(0, currentPage - 3);
-                        const endPage = Math.min(totalPage, currentPage + 3);
+                        {Array.from({ length: totalPage }, (_, i) => {
+                            const page = i;
+                            const startPage = Math.max(0, currentPage - 3);
+                            const endPage = Math.min(totalPage, currentPage + 3);
 
-                        if (page >= startPage && page <= endPage) {
-                            return (
-                                <li key={page} className={`page-item ${currentPage == page ? 'active' : ''}`}>
-                                    <Link className="page-link" to={`/pages/${page}/`}>
-                                        {page}
-                                    </Link>
-                                </li>
-                            );
-                        }
+                            if (page >= startPage && page <= endPage) {
+                                return (
+                                    <li key={page} className={`page-item ${currentPage == page ? 'active' : ''}`}>
+                                        <Link className="page-link" to={`/pages/${page}/`}>
+                                            {page}
+                                        </Link>
+                                    </li>
+                                );
+                            }
 
-                        return null;
-                    })}
+                            return null;
+                        })}
 
-                    <li className={`page-item ${currentPage >= totalPage ? 'disabled' : ''}`}>
-                        <Link className="page-link" to={`/pages/${parseInt(currentPage) + 1}/`} aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </Link>
-                    </li>
-                </ul>
-            </nav>
+                        <li className={`page-item ${currentPage >= totalPage ? 'disabled' : ''}`}>
+                            <Link className="page-link" to={`/pages/${parseInt(currentPage) + 1}/`} aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </Link>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </>;
 
         setContent(cnt);
@@ -164,8 +166,10 @@ export const Page = () => {
     };
 
     return (
-        <div id="pages" className='row align-items-start scrollable-content'>
-            {content}
+        <div className="container-xl px-3 px-xl-0 scrollable-content">
+            <div id="pages" className='row g-3 g-xl-4 align-items-start'>
+                {content}
+            </div>
         </div>
     )
 }
