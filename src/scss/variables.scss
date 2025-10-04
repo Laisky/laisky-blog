@@ -1,7 +1,73 @@
 :root {
-    --background-color: #F1F1F1;
+    --page-bg: #eef2ff;
+    --page-bg-alt: #e0f2fe;
+    --page-bg-gradient: linear-gradient(135deg, #f7f9fc 0%, #eef2ff 40%, #e0f2fe 100%);
+
+    --surface-primary: #ffffff;
+    --surface-secondary: #fafbfc;
+    --surface-muted: rgba(246, 248, 253, 0.85);
+    --surface-elevated: rgba(255, 255, 255, 0.9);
+    --surface-strong: #f8fafc;
+
+    --border-subtle: rgba(15, 23, 42, 0.08);
+    --border-strong: rgba(15, 23, 42, 0.12);
+
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-tertiary: #64748b;
+    --text-muted: #94a3b8;
+    --text-inverse: #f8fafc;
+
+    --accent-color: #6366f1;
+    --accent-color-rgb: 99, 102, 241;
+    --accent-gradient: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
+    --accent-muted: rgba(99, 102, 241, 0.12);
+
+    --code-font: 'Fira Code', monospace;
+    --body-font: 'Inter', system-ui, -apple-system, sans-serif;
+
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+
+    --shadow-sm: 0 10px 20px -15px rgba(15, 23, 42, 0.35);
+    --shadow-md: 0 30px 40px -30px rgba(15, 23, 42, 0.35);
+    --shadow-lg: 0 40px 60px -35px rgba(15, 23, 42, 0.4);
+    --shadow-xl: 0 50px 80px -50px rgba(15, 23, 42, 0.4);
+
+    --content-width: 880px;
+    --sidebar-width: 320px;
+    --navbar-height: 64px;
+    --container-xl-max: 1180px;
 }
 
 [data-bs-theme=dark] {
-    --background-color: #343a40;
+    --page-bg: #0f172a;
+    --page-bg-alt: #111e35;
+    --page-bg-gradient: linear-gradient(160deg, #0f172a 0%, #111e35 50%, #0b1120 100%);
+
+    --surface-primary: rgba(17, 24, 39, 0.92);
+    --surface-secondary: rgba(15, 23, 42, 0.95);
+    --surface-muted: rgba(23, 33, 55, 0.85);
+    --surface-elevated: rgba(23, 35, 58, 0.95);
+    --surface-strong: rgba(15, 23, 42, 0.98);
+
+    --border-subtle: rgba(226, 232, 240, 0.1);
+    --border-strong: rgba(148, 163, 184, 0.18);
+
+    --text-primary: #e2e8f0;
+    --text-secondary: #cbd5f5;
+    --text-tertiary: #94a3b8;
+    --text-muted: #64748b;
+    --text-inverse: #0b1120;
+
+    --accent-color: #22d3ee;
+    --accent-color-rgb: 34, 211, 238;
+    --accent-gradient: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 50%, #818cf8 100%);
+    --accent-muted: rgba(56, 189, 248, 0.18);
+
+    --shadow-sm: 0 12px 24px -16px rgba(2, 6, 23, 0.7);
+    --shadow-md: 0 30px 55px -35px rgba(15, 23, 42, 0.75);
+    --shadow-lg: 0 45px 70px -40px rgba(15, 23, 42, 0.78);
+    --shadow-xl: 0 55px 88px -45px rgba(15, 23, 42, 0.8);
 }

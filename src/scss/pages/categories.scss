@@ -1,20 +1,48 @@
 #categories {
     .posts {
-        background-color: var(--subtle-bg);
-        padding: 1em;
+        background: var(--surface-primary);
+        padding: clamp(1.5rem, 2.4vw, 2.25rem);
         font-size: medium;
-        border-radius: 8px;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: var(--shadow-md);
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
 
         .post {
             border-radius: 0;
             box-shadow: none;
             margin: 0px;
-            padding: 2px;
-            border: none;
-            // font-size: smaller;
+            padding: 0 0 1rem 0;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+
+            &:last-child {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
 
             span {
                 margin-right: 10px;
+                font-size: 0.85rem;
+                font-weight: 600;
+                color: var(--text-tertiary);
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            }
+
+            a {
+                color: var(--text-primary);
+                font-weight: 600;
+                font-size: 1rem;
+                letter-spacing: -0.01em;
+
+                &:hover {
+                    color: rgba(var(--accent-color-rgb), 0.95);
+                }
             }
         }
     }

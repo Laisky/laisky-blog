@@ -37,12 +37,15 @@ export const loader = async ({ params }) => {
 
 export const Page = () => {
     const [content, setContent] = useState(
-        <div className='col-md-8 col-lg-9 posts placeholder-glow'>
-            <span className="placeholder col-7"></span>
-            <span className="placeholder col-4"></span>
-            <span className="placeholder col-4"></span>
-            <span className="placeholder col-6"></span>
+        <div className='col-12 col-xl-8 posts placeholder-glow'>
+            <div className="page-heading">
+                <span className="placeholder col-6"></span>
+                <span className="placeholder col-4"></span>
+            </div>
+            <span className="placeholder col-10"></span>
             <span className="placeholder col-8"></span>
+            <span className="placeholder col-7"></span>
+            <span className="placeholder col-9"></span>
         </div>
     );
     const params = useParams();
@@ -53,7 +56,8 @@ export const Page = () => {
             watchLanguageChange();
 
             // update page title
-            document.title = `Page ${params.nPage}`;
+            const currentPage = parseInt(params.nPage, 10) + 1;
+            document.title = `Page ${currentPage}`;
 
             // enable tooltips
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -64,7 +68,10 @@ export const Page = () => {
     const generatePostsContent = async () => {
         const currentPage = parseInt(params.nPage, 10);
         const { postsData, nPosts } = await loader({ params });
-        const totalPage = Math.ceil(nPosts / 10);
+        const totalPage = Math.max(1, Math.ceil(nPosts / 10));
+        const isFirstPage = currentPage <= 0;
+        const isLastPage = currentPage >= totalPage - 1;
+        const humanPage = currentPage + 1;
 
         const postsContent = [];
         for (const post of postsData) {
@@ -96,12 +103,16 @@ export const Page = () => {
 
         const cnt = <>
             {/* blog posts */}
-            <div className='col-md-8 col-lg-9 posts'>
+            <div className='col-12 col-xl-8 posts'>
+                <header className="page-heading">
+                    <h1>Articles</h1>
+                    <p>{`Page ${humanPage} of ${totalPage}`}</p>
+                </header>
                 {postsContent}
             </div>
 
             {/* posts sidebar */}
-            <div className='d-none d-md-block col-md-3 col-lg-2 sidebar'>
+            <div className='col-12 col-xl-3 sidebar'>
                 <Sidebar />
             </div>
 
@@ -109,8 +120,8 @@ export const Page = () => {
             <div className='col-12'>
                 <nav className="footer">
                     <ul className="pagination justify-content-center">
-                        <li className={`page-item ${currentPage <= 1 ? 'disabled' : ''}`}>
-                            <Link className="page-link" to={`/pages/${currentPage - 1}/`} aria-label="Previous">
+                        <li className={`page-item ${isFirstPage ? 'disabled' : ''}`}>
+                            <Link className="page-link" to={`/pages/${isFirstPage ? currentPage : currentPage - 1}/`} aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </Link>
                         </li>
@@ -118,13 +129,13 @@ export const Page = () => {
                         {Array.from({ length: totalPage }, (_, i) => {
                             const page = i;
                             const startPage = Math.max(0, currentPage - 3);
-                            const endPage = Math.min(totalPage, currentPage + 3);
+                            const endPage = Math.min(totalPage - 1, currentPage + 3);
 
                             if (page >= startPage && page <= endPage) {
                                 return (
-                                    <li key={page} className={`page-item ${currentPage == page ? 'active' : ''}`}>
+                                    <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
                                         <Link className="page-link" to={`/pages/${page}/`}>
-                                            {page}
+                                            {page + 1}
                                         </Link>
                                     </li>
                                 );
@@ -133,8 +144,8 @@ export const Page = () => {
                             return null;
                         })}
 
-                        <li className={`page-item ${currentPage >= totalPage ? 'disabled' : ''}`}>
-                            <Link className="page-link" to={`/pages/${parseInt(currentPage) + 1}/`} aria-label="Next">
+                        <li className={`page-item ${isLastPage ? 'disabled' : ''}`}>
+                            <Link className="page-link" to={`/pages/${isLastPage ? currentPage : currentPage + 1}/`} aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </Link>
                         </li>
@@ -167,7 +178,7 @@ export const Page = () => {
 
     return (
         <div className="container-xl px-3 px-xl-0 scrollable-content">
-            <div id="pages" className='row g-3 g-xl-4 align-items-start'>
+            <div id="pages" className='row align-items-start'>
                 {content}
             </div>
         </div>

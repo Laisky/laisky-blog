@@ -73,7 +73,8 @@ export const loader = async ({ params }) => {
 }
 
 export const Categories = () => {
-    const [content, setContent] = useState(null);
+    const [posts, setPosts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const params = useParams();
 
     useEffect(() => {
@@ -82,17 +83,10 @@ export const Categories = () => {
     }, [params.category]);
 
     const updateContent = async () => {
+        setIsLoading(true);
         const { postsData } = await loader({ params });
-        const content = await Promise.all(postsData.map(async (post) => {
-            return (
-                <div className="container-fluid post" id={post.name} key={post.name}>
-                    <span>{formatTs(post.created_at)}</span>
-                    <Link to={`/p/${post.name}/`}>{post.title}</Link>
-                </div>
-            );
-        }));
-
-        setContent(content);
+        setPosts(postsData);
+        setIsLoading(false);
     };
 
     const watchLanguageChange = async () => {
@@ -105,16 +99,41 @@ export const Categories = () => {
         }, "page_categories")
     };
 
-    return (
-        <div id="categories" className='row align-items-start scrollable-content'>
-            {/* blog posts */}
-            <div className='col-md-8 col-lg-9 posts'>
-                {content}
-            </div>
+    const categorySlug = params.category || 'all';
+    const categoryName = categorySlug === 'all'
+        ? 'All Posts'
+        : categorySlug.replace(/[-_]/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 
-            {/* posts sidebar */}
-            <div className='d-none d-md-block col-md-3 col-lg-2 sidebar'>
-                <Sidebar />
+    return (
+        <div className="container-xl px-3 px-xl-0 scrollable-content">
+            <div id="categories" className='row g-3 g-xl-4 align-items-start'>
+                {/* category posts */}
+                <div className='col-12 col-xl-8 posts'>
+                    <header className="page-heading">
+                        <h1>{categoryName}</h1>
+                        <p>{isLoading ? 'Loading posts…' : `${posts.length} post${posts.length === 1 ? '' : 's'}`}</p>
+                    </header>
+
+                    {isLoading && (
+                        <div className="section-card placeholder-glow">
+                            <span className="placeholder col-8"></span>
+                            <span className="placeholder col-6"></span>
+                            <span className="placeholder col-5"></span>
+                        </div>
+                    )}
+
+                    {!isLoading && posts.map((post) => (
+                        <div className="post" id={post.name} key={post.name}>
+                            <span>{formatTs(post.created_at)}</span>
+                            <Link to={`/p/${post.name}/`}>{post.title}</Link>
+                        </div>
+                    ))}
+                </div>
+
+                {/* posts sidebar */}
+                <div className='col-12 col-xl-3 sidebar'>
+                    <Sidebar />
+                </div>
             </div>
         </div>
     )

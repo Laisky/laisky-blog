@@ -122,6 +122,7 @@ export const Post = ({ isHistory }) => {
         </div>
     );
     const [language, setLanguage] = useState(null);
+    const [menuHtml, setMenuHtml] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -138,6 +139,13 @@ export const Post = ({ isHistory }) => {
             document.title = isHistory ? `[History] ${post.title}` : post.title;
 
             const hasMenu = typeof post.menu === 'string' && post.menu.trim() !== '';
+
+            // Store menu HTML in state for rendering outside scrollable-content
+            if (hasMenu) {
+                setMenuHtml(post.menu);
+            } else {
+                setMenuHtml(null);
+            }
 
             const content = (
                 <>
@@ -170,11 +178,6 @@ export const Post = ({ isHistory }) => {
                             </div>
                         </div>
                     </div>
-                    {hasMenu && (
-                        <div className="d-none d-xl-block col-xl-3">
-                            <aside id="post-menu" className="post-menu" dangerouslySetInnerHTML={{ __html: post.menu }} />
-                        </div>
-                    )}
                 </>
             );
 
@@ -188,9 +191,9 @@ export const Post = ({ isHistory }) => {
             return;
         }
 
-    let cleanupScrollSpy;
-    let cleanupMenuScroll;
-    let cleanupActiveState;
+        let cleanupScrollSpy;
+        let cleanupMenuScroll;
+        let cleanupActiveState;
 
         (async () => {
             bindPostImageModal();
@@ -257,11 +260,16 @@ export const Post = ({ isHistory }) => {
     };
 
     return (
-        <div className="container-xl px-3 px-xl-0 scrollable-content">
-            <div id="post" className='row g-3 g-xl-4 align-items-start'>
-                {content}
+        <>
+            <div className="container-xl px-3 px-xl-0 scrollable-content">
+                <div id="post" className='row g-3 g-xl-4 align-items-start'>
+                    {content}
+                </div>
             </div>
-        </div>
+            {menuHtml && (
+                <aside id="post-menu" className="post-menu d-none d-xl-block" dangerouslySetInnerHTML={{ __html: menuHtml }} />
+            )}
+        </>
     )
 }
 
@@ -616,8 +624,8 @@ const setupPostMenuActiveState = () => {
             return;
         }
 
-    let lastHighlightedLink = null;
-    let manualActiveLink = null;
+        let lastHighlightedLink = null;
+        let manualActiveLink = null;
         let rafId = null;
 
         const highlightLink = (link) => {
@@ -910,13 +918,13 @@ const parseAndReplacePostSeries = async () => {
         }
 
         html = `
-            <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">${se.remark} Serials</h5>
-                <ul class="card-text">
-                    ${html}
-                </ul>
-            </div>
+            <div class="card post-series-card">
+                <div class="card-body post-series-card-body">
+                    <h5 class="card-title post-series-title">${se.remark} Serials</h5>
+                    <ul class="card-text post-series-list">
+                        ${html}
+                    </ul>
+                </div>
             </div>`;
         seEle.innerHTML = html;
     });
@@ -970,7 +978,7 @@ function parseSeriesHTML(se) {
     if (se.posts && se.posts.length > 0) {
         for (let i = 0; i < se.posts.length; i++) {
             let p = se.posts[i];
-            html += `<li><a href="https://blog.laisky.com/p/${p.name}/">${p.title}</a></li>`;
+            html += `<li class="post-series-entry"><a class="post-series-link" href="https://blog.laisky.com/p/${p.name}/">${p.title}</a></li>`;
         }
     }
 
@@ -988,15 +996,18 @@ async function parseSeriesChildren(seriesKey) {
     }
 
     html = `
-            <li>
-                <a class="btn btn-light" data-bs-toggle="collapse" href="#${sid}" role="button" aria-expanded="false" aria-controls="${sid}">
-                    <i class="bi bi-filter-left"></i>${se.remark} Serials：
+            <li class="post-series-entry post-series-entry--nested">
+                <a class="series-toggle" data-bs-toggle="collapse" href="#${sid}" role="button" aria-expanded="false" aria-controls="${sid}">
+                    <i class="bi bi-filter-left"></i>
+                    <span>${se.remark} Serials：</span>
                 </a>
-                <div id="${sid}" class="collapse">
-                    <div class="card card-body">
-                        <ul>
-                            ${html}
-                        </ul>
+                <div id="${sid}" class="collapse series-collapse">
+                    <div class="card post-series-card post-series-card--nested">
+                        <div class="card-body post-series-card-body">
+                            <ul class="post-series-list">
+                                ${html}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </li>

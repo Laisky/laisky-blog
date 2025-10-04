@@ -40,12 +40,14 @@ export const Login = () => {
     };
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100">
-            <form onSubmit={handleSubmit} className="p-4 border rounded bg-light">
-                <h2 className="mb-4">Login</h2>
+        <div className="scrollable-content auth-page">
+            <form onSubmit={handleSubmit} className="auth-card" autoComplete="off">
+                <h2>Welcome back</h2>
+                <p className="text-muted mb-4">Sign in with your author credentials to continue.</p>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email address</label>
                     <input
+                        id="email"
                         type="email"
                         className="form-control"
                         value={email}
@@ -53,9 +55,10 @@ export const Login = () => {
                         required
                     />
                 </div>
-                <div className="mb-3">
+                <div className="mb-4">
                     <label htmlFor="password" className="form-label">Password</label>
                     <input
+                        id="password"
                         type="password"
                         className="form-control"
                         value={password}

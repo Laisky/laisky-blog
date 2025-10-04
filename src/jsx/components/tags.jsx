@@ -34,7 +34,7 @@ export const Tags = () => {
             <h2>Tags</h2>
             <div className="tag-labels">
                 {Array.isArray(tags) && tags.map(tag => (
-                    <span key={tag} onClick={getTagClickHandler(tag)} className="badge text-bg-info">
+                    <span key={tag} onClick={getTagClickHandler(tag)} className="tag-chip">
                         {tag}
                     </span>
                 ))}
