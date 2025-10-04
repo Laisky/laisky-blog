@@ -1,4 +1,4 @@
-@use '../variables' as *;
+@use '../variables'as *;
 
 #pages {
     align-self: stretch;
@@ -138,6 +138,7 @@
             }
         }
     }
+
     .sidebar {
         position: sticky;
         top: calc(var(--navbar-height) + 1.5rem);

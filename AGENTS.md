@@ -6,6 +6,8 @@ You can start the test server with `make run`; any code changes will be automati
 
 After the test server starts, you can access http://100.75.198.70:11300/ via Chrome DevTools MCP.
 
+Prefer to work with tabs that are already open and try not to open new ones. My network can be unstable, and loading a fresh page often takes excessive time.
+
 If you come across a page that requires logging in or any other manual steps before you can proceed, please notify me. I’ll perform the necessary actions and then let you continue.
 
 ## General
@@ -25,6 +27,11 @@ For any date‑range query, the handling of the ending date must encompass the e
 ### Testing
 
 Please create suitable unit tests based on the current project circumstances. Whenever a new issue arises, update the unit tests during the fix to ensure thorough coverage of the problem by the test cases. Avoid creating temporary, one-off test scripts, and focus on continuously enhancing the unit test cases.
+
+### Comments
+
+Every function/interface must have a comment explaining its purpose, parameters, and return values. This is crucial for maintaining code clarity and facilitating future maintenance.
+The comment should start with the function/interface name and be in complete sentences.
 
 ## CSS Style
 
