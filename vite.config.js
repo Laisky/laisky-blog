@@ -22,6 +22,7 @@ export default defineConfig({
         preprocessorOptions: {
             scss: {
                 // additionalData: `@import "src/scss/variables.scss";`
+                silenceDeprecations: ['import', 'global-builtin', 'color-functions', 'mixed-decls'],
             },
         },
     },

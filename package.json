@@ -16,6 +16,7 @@
     "@popperjs/core": "^2.11.8",
     "@testing-library/dom": "^10.4.0",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.13.1",
     "disqus-react": "^1.1.6",
     "events": "^3.3.0",
     "graphql": "^16.10.0",
