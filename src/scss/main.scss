@@ -1,5 +1,5 @@
 @use "bootstrap/scss/bootstrap";
-@use "bootstrap-icons/font/bootstrap-icons.scss";
+// @use "bootstrap-icons/font/bootstrap-icons.scss";
 @use "./variables";
 @use "./components/comments";
 @use "./pages/pages";
@@ -287,6 +287,10 @@ img,
 video {
     max-width: 100%;
     border-radius: var(--radius-sm);
+}
+
+.lucide {
+    vertical-align: text-bottom;
 }
 
 table {

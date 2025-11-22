@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Languages, Terminal, FileText, User, MessageSquare, Activity, Rss } from 'lucide-react';
 import jsutils from '@laisky/js-utils';
 
 import { getUserLanguage, setUserLanguage } from "../library/base";
@@ -91,7 +92,7 @@ export const App = () => {
     const dropdownBtn = (
         <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i className="bi bi-translate"></i>
+                <Languages size={16} className="me-1" />
                 <span className="caret"></span>
                 {userLang}
             </a>
@@ -124,28 +125,28 @@ export const App = () => {
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
                         <Link to="/pages/0/" className="navbar-brand d-flex align-items-center">
                             <span className="d-flex align-items-center">
-                                <i className="bi bi-terminal me-2"></i> Laisky
+                                <Terminal size={20} className="me-2" /> Laisky
                             </span>
                         </Link>
                         <ul className="navbar-nav me-auto mb-lg-0">
                             <li className="nav-item">
                                 <Link to="/pages/0/" className={`nav-link ${isActiveRoute('posts', getCurrentRouteName())}`} aria-current="page">
-                                    <i className="bi bi-file-text me-1"></i> Posts
+                                    <FileText size={16} className="me-1" /> Posts
                                 </Link>
                             </li>
                             <li className="nav-item">
                                 <Link to="/about/" className={`nav-link ${isActiveRoute('aboutme', getCurrentRouteName())}`}>
-                                    <i className="bi bi-person me-1"></i> About
+                                    <User size={16} className="me-1" /> About
                                 </Link>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="https://chat.laisky.com" target="_blank" rel="noopener noreferrer">
-                                    <i className="bi bi-chat-dots me-1"></i> AIChat
+                                    <MessageSquare size={16} className="me-1" /> AIChat
                                 </a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="https://status.laisky.com" target="_blank" rel="noopener noreferrer">
-                                    <i className="bi bi-heart-pulse me-1"></i> Status
+                                    <Activity size={16} className="me-1" /> Status
                                 </a>
                             </li>
                         </ul>
@@ -154,7 +155,7 @@ export const App = () => {
                             </form>
                             {dropdownBtn}
                             <Link to="https://s3.laisky.com/public/rss.xml" target="_blank" className="nav-link" rel="noopener noreferrer">
-                                <i className="bi bi-rss"></i>
+                                <Rss size={16} />
                             </Link>
                         </ul>
                     </div>

@@ -4,7 +4,9 @@ import * as bootstrap from 'bootstrap';
 import { gql } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.30.0/prism.js';
 import React, { useEffect, useState } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { Link, useParams } from 'react-router-dom';
+import { AlignLeft } from 'lucide-react';
 import { Comments } from '../components/comments.jsx';
 import jsutils, { RandomString } from '@laisky/js-utils';
 
@@ -995,10 +997,12 @@ async function parseSeriesChildren(seriesKey) {
         }
     }
 
+    const iconHtml = renderToStaticMarkup(<AlignLeft size={16} />);
+
     html = `
             <li class="post-series-entry post-series-entry--nested">
                 <a class="series-toggle" data-bs-toggle="collapse" href="#${sid}" role="button" aria-expanded="false" aria-controls="${sid}">
-                    <i class="bi bi-filter-left"></i>
+                    ${iconHtml}
                     <span>${se.remark} Serials：</span>
                 </a>
                 <div id="${sid}" class="collapse series-collapse">

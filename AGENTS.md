@@ -1,5 +1,9 @@
 # Repository Guidelines
 
+## Package Management
+
+Use `yarn` for managing packages. Avoid using `npm` to prevent potential conflicts in the `yarn.lock` file.
+
 ## Dev
 
 You can start the test server with `make run`; any code changes will be automatically refreshed.
