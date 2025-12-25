@@ -5,6 +5,55 @@
     margin-left: 0;
     margin-right: 0;
 
+    // Subtle paper-ribbon ambient background for the scrolling area
+    background:
+        // Soft diagonal lines suggesting ribbon weave
+        repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 80px,
+            rgba(200, 180, 160, 0.015) 80px,
+            rgba(200, 180, 160, 0.015) 81px
+        ),
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 80px,
+            rgba(200, 180, 160, 0.015) 80px,
+            rgba(200, 180, 160, 0.015) 81px
+        ),
+        // Very subtle radial vignette
+        radial-gradient(
+            ellipse at 50% 0%,
+            rgba(255, 252, 248, 0.3) 0%,
+            transparent 70%
+        );
+    background-attachment: fixed;
+
+    [data-bs-theme=dark] & {
+        background:
+            repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 80px,
+                rgba(100, 90, 80, 0.03) 80px,
+                rgba(100, 90, 80, 0.03) 81px
+            ),
+            repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 80px,
+                rgba(100, 90, 80, 0.03) 80px,
+                rgba(100, 90, 80, 0.03) 81px
+            ),
+            radial-gradient(
+                ellipse at 50% 0%,
+                rgba(60, 55, 50, 0.2) 0%,
+                transparent 70%
+            );
+        background-attachment: fixed;
+    }
+
     .posts-container {
         padding: 0; // Remove extra padding
         margin-bottom: 1rem;
@@ -55,40 +104,114 @@
         .tape {
             display: flex;
             flex-direction: column;
-            background: #fefdfb;
-            background-image:
-                linear-gradient(rgba(0,0,0,0.01) 0.5px, transparent 0.5px),
-                linear-gradient(90deg, rgba(0,0,0,0.01) 0.5px, transparent 0.5px);
-            background-size: 20px 20px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
-            border-left: 1px solid rgba(0,0,0,0.03);
-            border-right: 1px solid rgba(0,0,0,0.03);
             position: relative;
             margin: 0 auto;
             max-width: 850px;
 
+            // Refined paper ribbon background with subtle texture
+            background:
+                // Fine horizontal lines (like ruled paper)
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 23px,
+                    rgba(180, 160, 140, 0.06) 23px,
+                    rgba(180, 160, 140, 0.06) 24px
+                ),
+                // Subtle vertical fibers
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(200, 180, 160, 0.015) 2px,
+                    rgba(200, 180, 160, 0.015) 4px
+                ),
+                // Paper grain texture
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"),
+                // Warm paper base gradient
+                linear-gradient(
+                    180deg,
+                    #fefcf9 0%,
+                    #fffdf8 25%,
+                    #fefbf6 50%,
+                    #fdf9f4 75%,
+                    #fcf8f3 100%
+                );
+            background-size: auto, auto, 150px 150px, 100% 100%;
+            background-blend-mode: normal, normal, soft-light, normal;
+
+            // Elegant paper edges with subtle shadow
+            box-shadow:
+                // Inner glow
+                inset 0 0 60px rgba(255, 252, 248, 0.8),
+                // Left edge shadow
+                -3px 0 8px rgba(0, 0, 0, 0.02),
+                // Right edge shadow
+                3px 0 8px rgba(0, 0, 0, 0.02),
+                // Bottom shadow for depth
+                0 20px 50px rgba(0, 0, 0, 0.04);
+
+            // Refined border with paper-like edges
+            border-left: 1px solid rgba(200, 180, 160, 0.15);
+            border-right: 1px solid rgba(200, 180, 160, 0.15);
+
             [data-bs-theme=dark] & {
-                background: #fefdfb;
+                background:
+                    repeating-linear-gradient(
+                        0deg,
+                        transparent,
+                        transparent 23px,
+                        rgba(180, 160, 140, 0.06) 23px,
+                        rgba(180, 160, 140, 0.06) 24px
+                    ),
+                    repeating-linear-gradient(
+                        90deg,
+                        transparent,
+                        transparent 2px,
+                        rgba(200, 180, 160, 0.015) 2px,
+                        rgba(200, 180, 160, 0.015) 4px
+                    ),
+                    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"),
+                    linear-gradient(180deg, #fefcf9, #fdf9f4);
+                background-size: auto, auto, 150px 150px, 100% 100%;
+                background-blend-mode: normal, normal, soft-light, normal;
                 color: #444;
             }
 
-            // Punched holes along the edges
+            // Decorative ribbon perforations along edges
             &::before, &::after {
                 content: '';
                 position: absolute;
                 top: 0;
                 bottom: 0;
-                width: 40px;
-                background-image: radial-gradient(circle, rgba(0,0,0,0.1) 2px, transparent 2.5px);
-                background-size: 40px 40px;
-                background-position: center;
-                opacity: 0.5;
+                width: 32px;
+                // Refined sprocket holes pattern
+                background-image:
+                    // Main holes
+                    radial-gradient(
+                        circle at center,
+                        rgba(200, 180, 160, 0.12) 0%,
+                        rgba(200, 180, 160, 0.08) 3px,
+                        transparent 4px
+                    );
+                background-size: 32px 32px;
+                background-position: center 8px;
+                opacity: 0.7;
                 z-index: 10;
                 pointer-events: none;
             }
 
-            &::before { left: 0; }
-            &::after { right: 0; }
+            &::before {
+                left: 0;
+                // Left edge fold shadow
+                box-shadow: inset -8px 0 12px -8px rgba(0, 0, 0, 0.04);
+            }
+
+            &::after {
+                right: 0;
+                // Right edge fold shadow
+                box-shadow: inset 8px 0 12px -8px rgba(0, 0, 0, 0.04);
+            }
         }
 
         .post {
