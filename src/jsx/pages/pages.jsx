@@ -86,13 +86,13 @@ export const Page = () => {
             const navbarHeight = 52;
 
             // Define the "sweet spot" zone where articles are fully expanded
-            // This is narrower than the full viewport to make folding more visible
-            const sweetSpotTop = navbarHeight + 150; // Start folding 150px below navbar
-            const sweetSpotBottom = viewportHeight - 200; // Start folding 200px above bottom
+            // Limit the scroll-effect trigger to narrow bands at the top and bottom
+            const sweetSpotTop = navbarHeight + 50; // Start folding 50px below navbar
+            const sweetSpotBottom = viewportHeight - 100; // Start folding 100px above bottom
 
             // Fold animation range (how many pixels the full fold transition takes)
-            const topFoldRange = 250; // Distance from sweetSpotTop to fully folded
-            const bottomFoldRange = 350; // Distance from sweetSpotBottom to fully folded
+            const topFoldRange = 150; // Distance from sweetSpotTop to fully folded
+            const bottomFoldRange = 200; // Distance from sweetSpotBottom to fully folded
 
             posts.forEach((post, index) => {
                 const rect = post.getBoundingClientRect();
@@ -117,11 +117,11 @@ export const Page = () => {
                 }
                 // Articles between sweetSpotTop and sweetSpotBottom are fully expanded (foldProgress = 0)
 
-                // Calculate visual properties with MORE PRONOUNCED effects
+                // Calculate visual properties with uniform folding
                 const scaleY = 1 - (foldProgress * 0.4); // Compress to 60% when fully folded
                 const opacity = 1 - (foldProgress * 0.7); // Fade to 30% when fully folded
-                const translateY = foldProgress * 30 * foldDirection; // More movement
-                const rotateX = foldProgress * 20 * (index % 2 === 0 ? 1 : -1) * foldDirection; // More rotation
+                const translateY = foldProgress * 30 * foldDirection; // Movement
+                const rotateX = foldProgress * 20 * foldDirection; // Uniform rotation
 
                 post.style.setProperty('--fold-scale', scaleY);
                 post.style.setProperty('--fold-opacity', opacity);
