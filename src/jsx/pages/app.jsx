@@ -145,6 +145,11 @@ export const App = () => {
                                 </a>
                             </li>
                             <li className="nav-item">
+                                <a className="nav-link" href="https://mcp.laisky.com" target="_blank" rel="noopener noreferrer">
+                                    <MessageSquare size={16} className="me-1" /> MCP
+                                </a>
+                            </li>
+                            <li className="nav-item">
                                 <a className="nav-link" href="https://status.laisky.com" target="_blank" rel="noopener noreferrer">
                                     <Activity size={16} className="me-1" /> Status
                                 </a>
