@@ -3,25 +3,22 @@
 import * as bootstrap from 'bootstrap';
 import { gql } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate, useLoaderData } from 'react-router-dom';
 import jsutils from '@laisky/js-utils';
 
 import {
     KvKeyLanguage,
     KvKeyPrefixCache,
     formatTs,
-    getCurrentUsername, getUserLanguage,
+    getCurrentUsername,
+    getUserLanguage,
     graphqlQuery,
-    isForce
+    isForce,
 } from '../library/base.jsx';
 import { loader as postLoader } from './post.jsx';
 
-
 export const loader = async ({ params }) => {
-    const [postsData, nPosts] = await Promise.all([
-        loadPage(params.nPage),
-        loadPostInfo(),
-    ]);
+    const [postsData, nPosts] = await Promise.all([loadPage(params.nPage), loadPostInfo()]);
 
     // preload surrounding pages
     const nPage = parseInt(params.nPage, 10);
@@ -32,11 +29,11 @@ export const loader = async ({ params }) => {
     }
 
     return { postsData, nPosts };
-}
+};
 
 export const Page = () => {
     const [content, setContent] = useState(
-        <div className='col-12 col-xl-8 posts placeholder-glow'>
+        <div className="col-12 col-xl-8 posts placeholder-glow">
             <div className="page-heading">
                 <span className="placeholder col-6"></span>
                 <span className="placeholder col-4"></span>
@@ -48,6 +45,58 @@ export const Page = () => {
         </div>
     );
     const params = useParams();
+    const navigate = useNavigate();
+    const { nPosts } = useLoaderData();
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+
+            const currentPage = parseInt(params.nPage, 10);
+            const totalPage = Math.max(1, Math.ceil(nPosts / 10));
+
+            if (e.key === 'ArrowLeft') {
+                if (currentPage > 0) {
+                    navigate(`/pages/${currentPage - 1}/`);
+                }
+            } else if (e.key === 'ArrowRight') {
+                if (currentPage < totalPage - 1) {
+                    navigate(`/pages/${currentPage + 1}/`);
+                }
+            } else if (e.key === 'ArrowDown') {
+                const posts = document.querySelectorAll('.tape .post');
+                for (const post of posts) {
+                    const rect = post.getBoundingClientRect();
+                    if (rect.top > 100) {
+                        post.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start',
+                        });
+                        e.preventDefault();
+                        break;
+                    }
+                }
+            } else if (e.key === 'ArrowUp') {
+                const posts = Array.from(document.querySelectorAll('.tape .post')).reverse();
+                for (const post of posts) {
+                    const rect = post.getBoundingClientRect();
+                    if (rect.top < -100) {
+                        post.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start',
+                        });
+                        e.preventDefault();
+                        break;
+                    }
+                }
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [params.nPage, nPosts, navigate]);
 
     useEffect(() => {
         (async () => {
@@ -59,8 +108,10 @@ export const Page = () => {
             document.title = `Page ${currentPage}`;
 
             // enable tooltips
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(
+                (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+            );
         })();
     }, [params.nPage]);
 
@@ -118,8 +169,8 @@ export const Page = () => {
                 // Articles between sweetSpotTop and sweetSpotBottom are fully expanded (foldProgress = 0)
 
                 // Calculate visual properties with uniform folding
-                const scaleY = 1 - (foldProgress * 0.4); // Compress to 60% when fully folded
-                const opacity = 1 - (foldProgress * 0.7); // Fade to 30% when fully folded
+                const scaleY = 1 - foldProgress * 0.4; // Compress to 60% when fully folded
+                const opacity = 1 - foldProgress * 0.7; // Fade to 30% when fully folded
                 const translateY = foldProgress * 30 * foldDirection; // Movement
                 const rotateX = foldProgress * 20 * foldDirection; // Uniform rotation
 
@@ -197,82 +248,103 @@ export const Page = () => {
                         <Link to={`/p/${post.name}/`}>{post.title}</Link>
                     </h2>
                     <div className="post-meta">
-                        <span >published: </span>
-                        <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title={`"${post.created_at}"`}>{formatTs(post.created_at)}
+                        <span>published: </span>
+                        <span
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            data-bs-title={`"${post.created_at}"`}
+                        >
+                            {formatTs(post.created_at)}
                         </span>
                     </div>
-                    <div className="post-content">
-                        {post.markdown}
-                    </div>
-                    <div className="post-tail">
-                        {postTail}
-                    </div>
+                    <div className="post-content">{post.markdown}</div>
+                    <div className="post-tail">{postTail}</div>
                 </div>
             );
 
             postsContent.push(postElement);
         }
 
-        const cnt = <>
-            {/* blog posts */}
-            <div className='col-12 col-xl-10 offset-xl-1 posts-container'>
-                <header className="page-heading">
-                    <h1>Articles</h1>
-                    <p>{`Page ${humanPage} of ${totalPage}`}</p>
-                </header>
-                <div className="tape">
-                    {postsContent}
-                    {/* pagination as part of the tape */}
-                    <div className="post pagination-segment">
-                        <nav className="footer">
-                            <ul className="pagination justify-content-center">
-                                <li className={`page-item ${isFirstPage ? 'disabled' : ''}`}>
-                                    <Link className="page-link" to={`/pages/${isFirstPage ? currentPage : currentPage - 1}/`} aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </Link>
-                                </li>
+        const cnt = (
+            <>
+                {/* blog posts */}
+                <div className="col-12 col-xl-10 offset-xl-1 posts-container">
+                    <header className="page-heading">
+                        <h1>Articles</h1>
+                        <p>{`Page ${humanPage} of ${totalPage}`}</p>
+                    </header>
+                    <div className="tape">
+                        {postsContent}
+                        {/* pagination as part of the tape */}
+                        <div className="post pagination-segment">
+                            <nav className="footer">
+                                <ul className="pagination justify-content-center">
+                                    <li className={`page-item ${isFirstPage ? 'disabled' : ''}`}>
+                                        <Link
+                                            className="page-link"
+                                            to={`/pages/${isFirstPage ? currentPage : currentPage - 1}/`}
+                                            aria-label="Previous"
+                                        >
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </Link>
+                                    </li>
 
-                                {Array.from({ length: totalPage }, (_, i) => {
-                                    const page = i;
-                                    const startPage = Math.max(0, currentPage - 3);
-                                    const endPage = Math.min(totalPage - 1, currentPage + 3);
+                                    {Array.from({ length: totalPage }, (_, i) => {
+                                        const page = i;
+                                        const startPage = Math.max(0, currentPage - 3);
+                                        const endPage = Math.min(totalPage - 1, currentPage + 3);
 
-                                    if (page >= startPage && page <= endPage) {
-                                        return (
-                                            <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
-                                                <Link className="page-link" to={`/pages/${page}/`}>
-                                                    {page + 1}
-                                                </Link>
-                                            </li>
-                                        );
-                                    }
+                                        if (page >= startPage && page <= endPage) {
+                                            return (
+                                                <li
+                                                    key={page}
+                                                    className={`page-item ${currentPage === page ? 'active' : ''}`}
+                                                >
+                                                    <Link
+                                                        className="page-link"
+                                                        to={`/pages/${page}/`}
+                                                    >
+                                                        {page + 1}
+                                                    </Link>
+                                                </li>
+                                            );
+                                        }
 
-                                    return null;
-                                })}
+                                        return null;
+                                    })}
 
-                                <li className={`page-item ${isLastPage ? 'disabled' : ''}`}>
-                                    <Link className="page-link" to={`/pages/${isLastPage ? currentPage : currentPage + 1}/`} aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </Link>
-                                </li>
-                            </ul>
-                        </nav>
+                                    <li className={`page-item ${isLastPage ? 'disabled' : ''}`}>
+                                        <Link
+                                            className="page-link"
+                                            to={`/pages/${isLastPage ? currentPage : currentPage + 1}/`}
+                                            aria-label="Next"
+                                        >
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </>;
+            </>
+        );
 
         setContent(cnt);
     };
 
     const watchLanguageChange = async () => {
-        await jsutils.KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
-            if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
-                return;
-            }
+        await jsutils.KvAddListener(
+            KvKeyLanguage,
+            async (key, op, oldVal, newVal) => {
+                if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+                    return;
+                }
 
-            await generatePostsContent();
-        }, "page_pages")
+                await generatePostsContent();
+            },
+            'page_pages'
+        );
     };
 
     const getPostTails = async (post) => {
@@ -281,22 +353,23 @@ export const Page = () => {
             articleEditable = <Link to={`/edit/${post.name}/`}>Edit</Link>;
         }
 
-        return articleEditable
+        return articleEditable;
     };
 
     return (
         <div className="container-xl px-3 px-xl-0 scrollable-content">
-            <div id="pages" className='row align-items-start'>
+            <div id="pages" className="row align-items-start">
                 {content}
             </div>
         </div>
-    )
-}
+    );
+};
 
 const loadPage = async (nPage) => {
     console.debug(`loadPage: ${nPage}`);
 
-    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`loadPage:${await getUserLanguage()}:${nPage}`);
+    const cacheKey =
+        KvKeyPrefixCache + (await jsutils.SHA256(`loadPage:${await getUserLanguage()}:${nPage}`));
     if (!isForce()) {
         const cacheData = await jsutils.GetCache(cacheKey);
         if (cacheData) {
@@ -344,7 +417,7 @@ const loadPage = async (nPage) => {
 };
 
 const loadPostInfo = async () => {
-    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`loadPostInfo`);
+    const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`loadPostInfo`));
     if (!isForce()) {
         const cacheData = await jsutils.GetCache(cacheKey);
         if (cacheData) {
@@ -367,4 +440,4 @@ const loadPostInfo = async () => {
     await jsutils.SetCache(cacheKey, result);
 
     return result;
-}
+};

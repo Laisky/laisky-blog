@@ -5,24 +5,25 @@ import { gql } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.30.0/prism.js';
 import React, { useEffect, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { AlignLeft } from 'lucide-react';
 import { Comments } from '../components/comments.jsx';
 import jsutils, { RandomString } from '@laisky/js-utils';
 
 import {
     formatTs,
-    getCurrentUsername, getUserLanguage,
+    getCurrentUsername,
+    getUserLanguage,
     graphqlQuery,
     isForce,
     KvKeyLanguage,
-    KvKeyPrefixCache
+    KvKeyPrefixCache,
 } from '../library/base.jsx';
 import mermaid from 'mermaid';
 
-
 export const loader = async ({ params }) => {
-    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`post:${await getUserLanguage()}:${params.name}`);
+    const cacheKey =
+        KvKeyPrefixCache + (await jsutils.SHA256(`post:${await getUserLanguage()}:${params.name}`));
     if (!isForce()) {
         const cacheData = await jsutils.GetCache(cacheKey);
         if (cacheData) {
@@ -63,10 +64,12 @@ export const loader = async ({ params }) => {
     await jsutils.SetCache(cacheKey, result);
 
     return result;
-}
+};
 
 export const historyLoader = async ({ params }) => {
-    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`postHistory:${await getUserLanguage()}:${params.name}`);
+    const cacheKey =
+        KvKeyPrefixCache +
+        (await jsutils.SHA256(`postHistory:${await getUserLanguage()}:${params.name}`));
     if (!isForce()) {
         const cacheData = await jsutils.GetCache(cacheKey);
         if (cacheData) {
@@ -108,13 +111,59 @@ export const historyLoader = async ({ params }) => {
     return result;
 };
 
-
 export const Post = ({ isHistory }) => {
     isHistory = isHistory === 'true';
     const params = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+
+            if (e.key === 'ArrowDown') {
+                const headingSelector =
+                    '#post .post-content h1[id],#post .post-content h2[id],#post .post-content h3[id],#post .post-content h4[id],#post .post-content h5[id],#post .post-content h6[id]';
+                const headings = document.querySelectorAll(headingSelector);
+                for (const heading of headings) {
+                    const rect = heading.getBoundingClientRect();
+                    if (rect.top > 100) {
+                        heading.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start',
+                        });
+                        e.preventDefault();
+                        break;
+                    }
+                }
+            } else if (e.key === 'ArrowUp') {
+                const headingSelector =
+                    '#post .post-content h1[id],#post .post-content h2[id],#post .post-content h3[id],#post .post-content h4[id],#post .post-content h5[id],#post .post-content h6[id]';
+                const headings = Array.from(document.querySelectorAll(headingSelector)).reverse();
+                for (const heading of headings) {
+                    const rect = heading.getBoundingClientRect();
+                    if (rect.top < -10) {
+                        heading.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start',
+                        });
+                        e.preventDefault();
+                        break;
+                    }
+                }
+            } else if (e.key === 'ArrowLeft') {
+                navigate(-1);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [navigate]);
+
     const [content, setContent] = useState(
-        <div className='col-12 col-xl-9'>
-            <div className='posts placeholder-glow'>
+        <div className="col-12 col-xl-9">
+            <div className="posts placeholder-glow">
                 <span className="placeholder col-7"></span>
                 <span className="placeholder col-4"></span>
                 <span className="placeholder col-4"></span>
@@ -151,19 +200,30 @@ export const Post = ({ isHistory }) => {
 
             const content = (
                 <>
-                    <div className='col-12 col-xl-9'>
-                        <div className='posts'>
+                    <div className="col-12 col-xl-9">
+                        <div className="posts">
                             <div className="container-fluid post" id={post.name} key={post.name}>
                                 <h2 className="post-title">
-                                    <Link to={`/p/${post.name}/`}>{isHistory ? `[History] ${post.title}` : post.title}</Link>
+                                    <Link to={`/p/${post.name}/`}>
+                                        {isHistory ? `[History] ${post.title}` : post.title}
+                                    </Link>
                                 </h2>
                                 <div className="post-meta">
-                                    <span >published: </span>
-                                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title={`"${post.created_at}"`}>{formatTs(post.created_at)}
+                                    <span>published: </span>
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-title={`"${post.created_at}"`}
+                                    >
+                                        {formatTs(post.created_at)}
                                     </span>
                                 </div>
-                                <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }}>
-                                </div>
+                                <div
+                                    className="post-content"
+                                    dangerouslySetInnerHTML={{
+                                        __html: post.content,
+                                    }}
+                                ></div>
                                 {postTail}
                                 <Comments postName={params.name} />
                                 {/* <DiscussionEmbed
@@ -201,11 +261,13 @@ export const Post = ({ isHistory }) => {
             bindPostImageModal();
             renderCode();
             await renderMathjax();
-            watchLanguageChange()
+            watchLanguageChange();
 
             // enable tooltips
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-            Array.from(tooltipTriggerList).forEach(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            Array.from(tooltipTriggerList).forEach(
+                (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+            );
 
             // configure post menu behavior
             enhancePostMenu();
@@ -252,30 +314,36 @@ export const Post = ({ isHistory }) => {
     }, []);
 
     const watchLanguageChange = async () => {
-        await jsutils.KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
-            if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
-                return;
-            }
+        await jsutils.KvAddListener(
+            KvKeyLanguage,
+            async (key, op, oldVal, newVal) => {
+                if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+                    return;
+                }
 
-            setLanguage(newVal);
-        }, "page_post")
+                setLanguage(newVal);
+            },
+            'page_post'
+        );
     };
 
     return (
         <>
             <div className="container-xl px-3 px-xl-0 scrollable-content">
-                <div id="post" className='row g-3 g-xl-4 align-items-start'>
+                <div id="post" className="row g-3 g-xl-4 align-items-start">
                     {content}
                 </div>
             </div>
             {menuHtml && (
-                <aside id="post-menu" className="post-menu d-none d-xl-block" dangerouslySetInnerHTML={{ __html: menuHtml }} />
+                <aside
+                    id="post-menu"
+                    className="post-menu d-none d-xl-block"
+                    dangerouslySetInnerHTML={{ __html: menuHtml }}
+                />
             )}
         </>
-    )
-}
-
-
+    );
+};
 
 /**
  * Enhance post menu with tooltip to display full text
@@ -298,14 +366,14 @@ const enhancePostMenu = () => {
             }
 
             // First dispose all existing tooltips to prevent duplicate instances
-            menuLinks.forEach(link => {
+            menuLinks.forEach((link) => {
                 const tooltip = bootstrap.Tooltip.getInstance(link);
                 if (tooltip) {
                     tooltip.dispose();
                 }
             });
 
-            menuLinks.forEach(link => {
+            menuLinks.forEach((link) => {
                 // Get dimensions
                 const linkText = link.textContent.trim();
 
@@ -335,7 +403,7 @@ const enhancePostMenu = () => {
                     new bootstrap.Tooltip(link, {
                         trigger: 'hover focus',
                         boundary: 'window',
-                        offset: [0, 10]
+                        offset: [0, 10],
                     });
 
                     // Ensure tooltip hides on mouseleave
@@ -377,7 +445,7 @@ const improveMenuInteraction = () => {
 
         // Add mouseenter event to parent items
         const parentItems = postMenu.querySelectorAll('.nav-link');
-        parentItems.forEach(item => {
+        parentItems.forEach((item) => {
             // Check if this item has children
             const subMenu = item.nextElementSibling;
             if (!subMenu || !subMenu.classList.contains('nav-pills')) return;
@@ -385,7 +453,7 @@ const improveMenuInteraction = () => {
             // Add hover behavior that persists
             item.addEventListener('mouseenter', () => {
                 // First remove expanded class from all submenus
-                postMenu.querySelectorAll('.nav-pills .nav-pills').forEach(menu => {
+                postMenu.querySelectorAll('.nav-pills .nav-pills').forEach((menu) => {
                     if (!menu.querySelector('.nav-link.active')) {
                         menu.classList.remove('expanded');
                     }
@@ -398,7 +466,7 @@ const improveMenuInteraction = () => {
 
         // Add event to the menu container to handle mouse leaving the entire menu
         postMenu.addEventListener('mouseleave', () => {
-            postMenu.querySelectorAll('.nav-pills .nav-pills').forEach(menu => {
+            postMenu.querySelectorAll('.nav-pills .nav-pills').forEach((menu) => {
                 if (!menu.querySelector('.nav-link.active')) {
                     menu.classList.remove('expanded');
                 }
@@ -407,12 +475,11 @@ const improveMenuInteraction = () => {
 
         // Add mouseenter event to submenu to keep it expanded
         const subMenus = postMenu.querySelectorAll('.nav-pills .nav-pills');
-        subMenus.forEach(menu => {
+        subMenus.forEach((menu) => {
             menu.addEventListener('mouseenter', () => {
                 menu.classList.add('expanded');
             });
         });
-
     } catch (e) {
         console.error('Failed to improve menu interaction:', e);
     }
@@ -510,7 +577,9 @@ const setupPostMenuScrollSpy = () => {
             postMenu.removeEventListener('activate.bs.scrollspy', handleActivate);
             postMenu.removeEventListener('clear.bs.scrollspy', handleClear);
             window.removeEventListener('resize', handleResize);
-            postMenu.querySelectorAll('.is-current').forEach(link => link.classList.remove('is-current'));
+            postMenu
+                .querySelectorAll('.is-current')
+                .forEach((link) => link.classList.remove('is-current'));
             if (typeof scrollSpy.dispose === 'function') {
                 scrollSpy.dispose();
             }
@@ -576,14 +645,19 @@ const setupPostMenuLinkScrolling = () => {
             if (type === 'element' && element) {
                 const containerRect = element.getBoundingClientRect();
                 const currentScrollTop = element.scrollTop;
-                const desiredScrollTop = currentScrollTop + (targetRect.top - containerRect.top) - offset;
+                const desiredScrollTop =
+                    currentScrollTop + (targetRect.top - containerRect.top) - offset;
 
                 element.scrollTo({
                     top: Math.max(desiredScrollTop, 0),
                     behavior: 'smooth',
                 });
             } else {
-                const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                const scrollTop =
+                    window.scrollY ||
+                    document.documentElement.scrollTop ||
+                    document.body.scrollTop ||
+                    0;
                 const desiredScrollTop = scrollTop + targetRect.top - offset;
 
                 window.scrollTo({
@@ -614,7 +688,8 @@ const setupPostMenuActiveState = () => {
             return;
         }
 
-        const headingSelector = '#post .post-content h1[id],#post .post-content h2[id],#post .post-content h3[id],#post .post-content h4[id],#post .post-content h5[id],#post .post-content h6[id]';
+        const headingSelector =
+            '#post .post-content h1[id],#post .post-content h2[id],#post .post-content h3[id],#post .post-content h4[id],#post .post-content h5[id],#post .post-content h6[id]';
         const headings = Array.from(document.querySelectorAll(headingSelector));
         if (!headings.length) {
             return;
@@ -665,7 +740,8 @@ const setupPostMenuActiveState = () => {
                 return;
             }
 
-            const rootRect = type === 'element' && element ? element.getBoundingClientRect() : { top: 0 };
+            const rootRect =
+                type === 'element' && element ? element.getBoundingClientRect() : { top: 0 };
             const targetLine = rootRect.top + POST_MENU_SCROLL_OFFSET + 1;
 
             let activeHeading = headings[0];
@@ -682,7 +758,9 @@ const setupPostMenuActiveState = () => {
                 activeHeading = headings[headings.length - 1];
             }
 
-            const link = activeHeading ? postMenu.querySelector(`.nav-link[href="#${escapeSelector(activeHeading.id)}"]`) : null;
+            const link = activeHeading
+                ? postMenu.querySelector(`.nav-link[href="#${escapeSelector(activeHeading.id)}"]`)
+                : null;
             if (link) {
                 if (manualActiveLink && manualActiveLink !== link) {
                     manualActiveLink.classList.remove('active');
@@ -706,7 +784,9 @@ const setupPostMenuActiveState = () => {
         scheduleUpdate();
 
         const scrollTarget = type === 'element' && element ? element : window;
-        scrollTarget.addEventListener('scroll', scheduleUpdate, { passive: true });
+        scrollTarget.addEventListener('scroll', scheduleUpdate, {
+            passive: true,
+        });
         window.addEventListener('resize', scheduleUpdate);
 
         return () => {
@@ -737,7 +817,7 @@ const renderCode = () => {
     } catch (e) {
         console.error(`failed to render code: ${e}`);
     }
-}
+};
 
 /**
  * Render MathJax for mathematical expressions
@@ -746,7 +826,8 @@ const renderMathjax = () => {
     try {
         if (!window.MathJax) {
             const script = document.createElement('script');
-            script.src = "https://s3.laisky.com/static/mathjax/2.7.3/MathJax-2.7.3/MathJax.js?config=TeX-MML-AM_CHTML";
+            script.src =
+                'https://s3.laisky.com/static/mathjax/2.7.3/MathJax-2.7.3/MathJax.js?config=TeX-MML-AM_CHTML';
             script.async = true;
             script.onload = () => {
                 window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
@@ -770,9 +851,11 @@ const renderMathjax = () => {
 const optimizeMathDisplay = () => {
     try {
         // Find all inline math elements
-        const inlineMathElements = document.querySelectorAll('.math.inline, .math-inline, span.mjx-chtml');
+        const inlineMathElements = document.querySelectorAll(
+            '.math.inline, .math-inline, span.mjx-chtml'
+        );
 
-        inlineMathElements.forEach(element => {
+        inlineMathElements.forEach((element) => {
             // Ensure proper display property
             if (element.style.display !== 'inline-block') {
                 element.style.display = 'inline-block';
@@ -802,11 +885,10 @@ const optimizeMathDisplay = () => {
 
         // Also handle display math blocks
         const displayMathElements = document.querySelectorAll('.MJXc-display');
-        displayMathElements.forEach(element => {
+        displayMathElements.forEach((element) => {
             element.style.overflowX = 'auto';
             element.style.overflowY = 'hidden';
         });
-
     } catch (e) {
         console.error(`Failed to optimize math display: ${e}`);
     }
@@ -817,7 +899,6 @@ const loadPostTails = async (post) => {
     if (await getCurrentUsername()) {
         articleEditable = <Link to={`/edit/${post.name}/`}>Edit</Link>;
     }
-
 
     // dropdown options for history
     let articleHistory = [];
@@ -830,19 +911,25 @@ const loadPostTails = async (post) => {
 
             let history = post['arweave_id'][i];
             articleHistory.push(
-                <li key={history.id}><Link to={`/p/history/${history.id}/`}>{history.time}</Link></li>
+                <li key={history.id}>
+                    <Link to={`/p/history/${history.id}/`}>{history.time}</Link>
+                </li>
             );
         }
 
         articleHistory = (
             <div className="dropdown post-history">
-                <button className="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <button
+                    className="btn btn-default dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="true"
+                >
                     History
                     <span className="caret"></span>
                 </button>
-                <ul className="dropdown-menu">
-                    {articleHistory}
-                </ul>
+                <ul className="dropdown-menu">{articleHistory}</ul>
             </div>
         );
     }
@@ -854,7 +941,6 @@ const loadPostTails = async (post) => {
         </div>
     );
 };
-
 
 let imgModal;
 
@@ -873,7 +959,7 @@ const bindPostImageModal = () => {
 
     // bind click event to post images
     const postImgs = document.querySelectorAll('.post-content p img');
-    postImgs.forEach(img => {
+    postImgs.forEach((img) => {
         if (img.dataset.bindmodal) {
             return;
         }
@@ -889,7 +975,9 @@ const bindPostImageModal = () => {
             newImg.classList.add('img-fluid'); // Add any necessary classes
 
             // Clear the existing content in the modal body and append the new img element
-            const modalBody = document.getElementById('showImageModal').querySelector('.modal-body');
+            const modalBody = document
+                .getElementById('showImageModal')
+                .querySelector('.modal-body');
             modalBody.innerHTML = ''; // Clear existing content
             modalBody.appendChild(newImg);
 
@@ -898,7 +986,6 @@ const bindPostImageModal = () => {
         });
     });
 };
-
 
 /**
  * Parse and replace post series in the post content
@@ -932,11 +1019,10 @@ const parseAndReplacePostSeries = async () => {
     });
 
     await Promise.all(tasks);
-}
-
+};
 
 async function loadSeries(postkey) {
-    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`postSeries:${postkey}`);
+    const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`postSeries:${postkey}`));
     if (!isForce()) {
         const cacheData = await jsutils.GetCache(cacheKey);
         if (cacheData) {
@@ -1015,7 +1101,7 @@ async function parseSeriesChildren(seriesKey) {
                     </div>
                 </div>
             </li>
-        `
+        `;
 
     return html;
 }
