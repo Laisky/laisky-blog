@@ -31,7 +31,7 @@
     margin-bottom: 50px;
 
     .post {
-        padding: 2.5rem;
+        padding: 1.25rem 2rem 2rem;
         margin-bottom: 0rem;
         background: var(--surface-primary);
         border-radius: var(--radius-lg);
@@ -78,7 +78,7 @@
         }
 
         .post-content {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             font-size: 1.05rem;
             line-height: 1.7;
 
@@ -354,8 +354,8 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            margin-top: 3rem;
-            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            padding-top: 0.75rem;
             border-top: 1px solid var(--border-subtle);
 
             a {
@@ -649,7 +649,7 @@
             max-width: 100% !important;
 
             .post {
-                padding: 0.75rem !important;
+                padding: 0.75rem 1rem !important;
                 margin: 0 !important;
                 border-radius: 0;
                 box-shadow: none;

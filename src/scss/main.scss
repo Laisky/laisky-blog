@@ -13,7 +13,6 @@
 html {
     min-height: 100%;
     overflow-x: hidden;
-    text-autospace: normal;
 }
 
 body {
@@ -320,7 +319,7 @@ table {
     width: 100%;
     max-width: min(var(--container-xl-max), calc(100% - 2rem));
     margin: 0 auto;
-    padding: 2rem 1rem 4rem;
+    padding: 1rem 1rem 4rem;
 
     @media (max-width: 767px) {
         max-width: 100%;
@@ -355,16 +354,14 @@ table {
 }
 
 nav#headerbar {
-    padding: 0 1.5rem;
+    padding: 0;
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-subtle);
-    position: sticky;
-    top: 0;
     z-index: 1000;
 
     .container-fluid {
-        padding: 0;
+        padding: 0 1rem;
     }
 
     .navbar-brand {
@@ -781,7 +778,7 @@ form[role="search"] {
 
     .scrollable-content {
         max-width: 100%;
-        padding: 1.5rem 1rem 3rem;
+        padding: 0.75rem 1rem 3rem;
     }
 
     .auth-page {
@@ -811,12 +808,12 @@ form[role="search"] {
     .scrollable-content {
         width: 100%;
         max-width: 100%;
-        padding: 0.5rem 0.5rem 3rem !important;
+        padding: 0.5rem 0 3rem !important;
         margin: 0 !important;
     }
 
     nav#headerbar {
-        padding-inline: 1rem;
+        padding-inline: 0;
     }
 }
 

@@ -17,24 +17,24 @@ const CACHE_KEY_LIKED_COMMENTS = 'comment_liked_comments';
  * @returns {Array} - Updated comments array
  */
 const updateCommentLikes = (comments, commentId, delta) => {
-    return comments.map(comment => {
+    return comments.map((comment) => {
         if (comment.id === commentId) {
             return {
                 ...comment,
-                likes: comment.likes + delta
+                likes: comment.likes + delta,
             };
         } else if (comment.replies && comment.replies.length > 0) {
             return {
                 ...comment,
-                replies: comment.replies.map(reply => {
+                replies: comment.replies.map((reply) => {
                     if (reply.id === commentId) {
                         return {
                             ...reply,
-                            likes: reply.likes + delta
+                            likes: reply.likes + delta,
                         };
                     }
                     return reply;
-                })
+                }),
             };
         }
         return comment;
@@ -49,24 +49,24 @@ const updateCommentLikes = (comments, commentId, delta) => {
  * @returns {Array} - Updated comments array
  */
 const updateCommentWithActualLikes = (comments, commentId, likesCount) => {
-    return comments.map(comment => {
+    return comments.map((comment) => {
         if (comment.id === commentId) {
             return {
                 ...comment,
-                likes: likesCount
+                likes: likesCount,
             };
         } else if (comment.replies && comment.replies.length > 0) {
             return {
                 ...comment,
-                replies: comment.replies.map(reply => {
+                replies: comment.replies.map((reply) => {
                     if (reply.id === commentId) {
                         return {
                             ...reply,
-                            likes: likesCount
+                            likes: likesCount,
                         };
                     }
                     return reply;
-                })
+                }),
             };
         }
         return comment;
@@ -98,10 +98,11 @@ export const Comments = ({ postName }) => {
     useEffect(() => {
         const loadLikedComments = async () => {
             try {
-                const cachedLikedComments = await jsutils.GetCache(CACHE_KEY_LIKED_COMMENTS) || {};
+                const cachedLikedComments =
+                    (await jsutils.GetCache(CACHE_KEY_LIKED_COMMENTS)) || {};
                 setLikedComments(cachedLikedComments);
             } catch (error) {
-                console.error("Failed to load liked comments data:", error);
+                console.error('Failed to load liked comments data:', error);
             }
         };
 
@@ -122,7 +123,7 @@ export const Comments = ({ postName }) => {
 
                 setFormDataLoaded(true);
             } catch (error) {
-                console.error("Failed to load cached user data:", error);
+                console.error('Failed to load cached user data:', error);
             }
         };
 
@@ -137,9 +138,9 @@ export const Comments = ({ postName }) => {
             if (authorWebsite) {
                 await jsutils.SetCache(CACHE_KEY_AUTHOR_WEBSITE, authorWebsite);
             }
-            console.debug("User comment data saved to cache");
+            console.debug('User comment data saved to cache');
         } catch (error) {
-            console.error("Failed to cache user data:", error);
+            console.error('Failed to cache user data:', error);
         }
     };
 
@@ -182,21 +183,21 @@ export const Comments = ({ postName }) => {
 
                 // Validate response
                 if (!resp || !resp.BlogComments) {
-                    throw new Error("Invalid response from server");
+                    throw new Error('Invalid response from server');
                 }
 
                 // Update state with fetched comments
                 if (page === 0) {
                     setComments(resp.BlogComments || []);
                 } else {
-                    setComments(prevComments => [...prevComments, ...(resp.BlogComments || [])]);
+                    setComments((prevComments) => [...prevComments, ...(resp.BlogComments || [])]);
                 }
 
                 setCommentCount(resp.BlogCommentCount || 0);
                 setHasMore((resp.BlogComments || []).length === 10);
             } catch (err) {
-                console.error("Error fetching comments:", err);
-                setError("Failed to load comments. Please try again later.");
+                console.error('Error fetching comments:', err);
+                setError('Failed to load comments. Please try again later.');
             } finally {
                 setIsLoading(false);
             }
@@ -245,19 +246,19 @@ export const Comments = ({ postName }) => {
             // Update comments state with the new comment
             if (replyTo) {
                 // Add the reply to the appropriate parent comment
-                setComments(prevComments =>
-                    prevComments.map(comment =>
+                setComments((prevComments) =>
+                    prevComments.map((comment) =>
                         comment.id === replyTo
                             ? {
-                                ...comment,
-                                replies: [...(comment.replies || []), newComment]
-                            }
+                                  ...comment,
+                                  replies: [...(comment.replies || []), newComment],
+                              }
                             : comment
                     )
                 );
             } else {
                 // Add new top-level comment
-                setComments(prevComments => [newComment, ...prevComments]);
+                setComments((prevComments) => [newComment, ...prevComments]);
             }
 
             // Reset form (but keep user info)
@@ -265,10 +266,10 @@ export const Comments = ({ postName }) => {
             setReplyTo(null);
 
             // Update comment count
-            setCommentCount(prevCount => prevCount + 1);
+            setCommentCount((prevCount) => prevCount + 1);
         } catch (err) {
-            console.error("Error submitting comment:", err);
-            setError("Failed to post comment. Please try again later.");
+            console.error('Error submitting comment:', err);
+            setError('Failed to post comment. Please try again later.');
         }
     };
 
@@ -281,7 +282,7 @@ export const Comments = ({ postName }) => {
 
         try {
             // Show temporary optimistic UI update
-            setComments(prevComments => updateCommentLikes(prevComments, commentId, 1));
+            setComments((prevComments) => updateCommentLikes(prevComments, commentId, 1));
 
             const likeCommentMutation = gql`
                 mutation {
@@ -297,7 +298,7 @@ export const Comments = ({ postName }) => {
             const resp = await graphqlQuery(likeCommentMutation);
 
             if (!resp || !resp.BlogToggleCommentLike) {
-                throw new Error("Invalid response from server");
+                throw new Error('Invalid response from server');
             }
 
             const updatedComment = resp.BlogToggleCommentLike;
@@ -308,14 +309,14 @@ export const Comments = ({ postName }) => {
             await jsutils.SetCache(CACHE_KEY_LIKED_COMMENTS, newLikedComments);
 
             // Update with actual server value
-            setComments(prevComments =>
+            setComments((prevComments) =>
                 updateCommentWithActualLikes(prevComments, commentId, updatedComment.likes)
             );
         } catch (err) {
-            console.error("Error liking comment:", err);
+            console.error('Error liking comment:', err);
             // Revert optimistic update
-            setComments(prevComments => updateCommentLikes(prevComments, commentId, -1));
-            setError("Failed to like comment. Please try again later.");
+            setComments((prevComments) => updateCommentLikes(prevComments, commentId, -1));
+            setError('Failed to like comment. Please try again later.');
         }
     };
 
@@ -335,7 +336,7 @@ export const Comments = ({ postName }) => {
 
     // Load more comments
     const handleLoadMore = () => {
-        setPage(prevPage => prevPage + 1);
+        setPage((prevPage) => prevPage + 1);
     };
 
     return (
@@ -347,47 +348,57 @@ export const Comments = ({ postName }) => {
                 <h4>{replyTo ? 'Reply to comment' : 'Leave a comment'}</h4>
                 {replyTo && (
                     <div className="replying-to">
-                        Replying to comment. <button onClick={handleCancelReply} className="btn btn-sm btn-outline-secondary">Cancel</button>
+                        Replying to comment.{' '}
+                        <button
+                            onClick={handleCancelReply}
+                            className="btn btn-sm btn-link p-0 ms-1"
+                            style={{ fontSize: 'inherit', verticalAlign: 'baseline' }}
+                        >
+                            Cancel
+                        </button>
                     </div>
                 )}
                 <form onSubmit={handleSubmitComment} className="comment-form">
-                    <div className="row g-3">
-                        <div className="col-md-6">
+                    <div className="row g-2 mb-2">
+                        <div className="col-sm-6 col-md-4">
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Name (required)"
+                                placeholder="Name"
+                                title="Name (required)"
                                 value={authorName}
                                 onChange={(e) => setAuthorName(e.target.value)}
                                 required
                             />
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-sm-6 col-md-4">
                             <input
                                 type="email"
                                 className="form-control"
-                                placeholder="Email (required, not published)"
+                                placeholder="Email"
+                                title="Email (required, not published)"
                                 value={authorEmail}
                                 onChange={(e) => setAuthorEmail(e.target.value)}
                                 required
                             />
                         </div>
+                        <div className="col-sm-12 col-md-4">
+                            <input
+                                type="url"
+                                className="form-control"
+                                placeholder="Website"
+                                title="Website (optional)"
+                                value={authorWebsite}
+                                onChange={(e) => setAuthorWebsite(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div className="mb-3 mt-2">
-                        <input
-                            type="url"
-                            className="form-control"
-                            placeholder="Website (optional)"
-                            value={authorWebsite}
-                            onChange={(e) => setAuthorWebsite(e.target.value)}
-                        />
-                    </div>
-                    <div className="mb-3">
+                    <div className="mb-2">
                         <textarea
                             ref={commentInputRef}
                             className="form-control"
-                            rows="4"
-                            placeholder="Your comment"
+                            rows="3"
+                            placeholder="Your comment..."
                             value={commentContent}
                             onChange={(e) => setCommentContent(e.target.value)}
                             required
@@ -398,8 +409,8 @@ export const Comments = ({ postName }) => {
                             Post Comment
                         </button>
                         {formDataLoaded && (authorName || authorEmail || authorWebsite) && (
-                            <small className="text-muted">
-                                Your information is saved for next time
+                            <small className="text-muted" style={{ fontSize: '0.75rem' }}>
+                                Info saved for next time
                             </small>
                         )}
                     </div>
@@ -414,7 +425,7 @@ export const Comments = ({ postName }) => {
                     <div className="no-comments">No comments yet. Be the first to comment!</div>
                 ) : (
                     <div>
-                        {comments.map(comment => (
+                        {comments.map((comment) => (
                             <CommentItem
                                 key={comment.id}
                                 comment={comment}
@@ -452,20 +463,35 @@ const CommentItem = ({ comment, onReply, onLike, isLiked, likedComments }) => {
     return (
         <div className="comment-item" id={`comment-${comment.id}`}>
             <div className="comment-header">
-                <div className="comment-author">
-                    {comment.authorWebsite ? (
-                        <a href={comment.authorWebsite} target="_blank" rel="noopener noreferrer">
-                            {comment.authorName}
-                        </a>
-                    ) : (
-                        <span>{comment.authorName}</span>
-                    )}
+                <div className="comment-avatar">
+                    {comment.authorName ? comment.authorName.charAt(0).toUpperCase() : '?'}
                 </div>
-                <div className="comment-date" title={new Date(comment.createdAt).toLocaleString()}>
-                    {jsutils.formatRelativeTime(comment.createdAt)}
+                <div className="comment-meta">
+                    <div className="comment-author">
+                        {comment.authorWebsite ? (
+                            <a
+                                href={comment.authorWebsite}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {comment.authorName}
+                            </a>
+                        ) : (
+                            <span>{comment.authorName}</span>
+                        )}
+                    </div>
+                    <div
+                        className="comment-date"
+                        title={new Date(comment.createdAt).toLocaleString()}
+                    >
+                        {jsutils.formatRelativeTime(comment.createdAt)}
+                    </div>
                 </div>
             </div>
-            <div className="comment-content" dangerouslySetInnerHTML={{ __html: comment.content }}></div>
+            <div
+                className="comment-content"
+                dangerouslySetInnerHTML={{ __html: comment.content }}
+            ></div>
             <div className="comment-actions">
                 <button className="btn btn-sm btn-link" onClick={() => onReply(comment.id)}>
                     Reply
@@ -491,7 +517,7 @@ const CommentItem = ({ comment, onReply, onLike, isLiked, likedComments }) => {
 
                     {showReplies && (
                         <div className="comment-replies">
-                            {comment.replies.map(reply => (
+                            {comment.replies.map((reply) => (
                                 <CommentItem
                                     key={reply.id}
                                     comment={reply}

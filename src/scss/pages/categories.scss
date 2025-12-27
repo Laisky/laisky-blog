@@ -48,3 +48,12 @@
         }
     }
 }
+
+@media (max-width: 767px) {
+    #categories {
+        .posts {
+            padding: 1rem;
+            background: transparent;
+        }
+    }
+}

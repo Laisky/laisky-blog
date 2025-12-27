@@ -101,6 +101,15 @@
     }
 }
 
+@media (max-width: 767px) {
+    #about {
+        .tab-content {
+            padding: 1rem;
+            background: transparent;
+        }
+    }
+}
+
 @media (max-width: 575px) {
     #about {
         .nav-tabs {
