@@ -249,7 +249,7 @@ export const Page = () => {
 
             const postTail = await getPostTails(post);
             const postElement = (
-                <div className="container-fluid post" id={post.name} key={post.name}>
+                <div className="post" id={post.name} key={post.name}>
                     <h2 className="post-title">
                         <Link to={`/p/${post.name}/`}>{post.title}</Link>
                     </h2>
@@ -363,7 +363,7 @@ export const Page = () => {
     };
 
     return (
-        <div className="container-xl px-3 px-xl-0 scrollable-content">
+        <div className="scrollable-content">
             <div id="pages" className="row align-items-start">
                 {content}
             </div>

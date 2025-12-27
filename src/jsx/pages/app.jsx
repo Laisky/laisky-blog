@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { Languages, Terminal, FileText, User, Activity, Rss, BotMessageSquare, Factory } from 'lucide-react';
+import {
+    Languages,
+    Terminal,
+    FileText,
+    User,
+    Activity,
+    Rss,
+    BotMessageSquare,
+    Factory,
+} from 'lucide-react';
 import jsutils from '@laisky/js-utils';
 
 import { getUserLanguage, setUserLanguage } from '../library/base';
@@ -262,7 +271,7 @@ export const App = () => {
             </div>
 
             {/* page content */}
-            <div className="container-fluid" id="container">
+            <div id="container">
                 <Outlet />
             </div>
         </>

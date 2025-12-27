@@ -455,149 +455,6 @@
     }
 }
 
-.post-menu {
-    position: sticky;
-    top: calc(var(--navbar-height) + 1.25rem);
-    padding: 1rem;
-    font-size: 0.9rem;
-    background-color: transparent;
-    border-radius: 0;
-    max-height: calc(100vh - var(--navbar-height) - 40px);
-    overflow-y: auto;
-    border: none;
-    border-left: 1px solid var(--border-subtle);
-    z-index: 1010;
-
-    /* Custom scrollbar styling */
-    &::-webkit-scrollbar {
-        width: 4px;
-    }
-
-    &::-webkit-scrollbar-track {
-        background-color: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: var(--border-strong);
-        border-radius: 2px;
-    }
-
-    &::before {
-        content: 'On this page';
-        display: block;
-        font-weight: 600;
-        font-size: 0.8rem;
-        margin-bottom: 1rem;
-        padding-bottom: 0;
-        border-bottom: none;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--text-tertiary);
-    }
-
-    .nav {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .nav-pills .nav-pills {
-        display: none;
-        padding-left: 1rem;
-        margin-top: 0.25rem;
-        position: relative;
-    }
-
-    .nav-pills .nav-pills.expanded,
-    .nav-pills .nav-pills:has(.nav-link.active) {
-        display: block;
-    }
-
-    .nav-link.active+.nav-pills {
-        display: block;
-    }
-
-    li {
-        margin: 0.1rem 0;
-        width: 100%;
-    }
-
-    a {
-        display: block;
-        width: 100%;
-        color: var(--text-secondary);
-        text-decoration: none;
-        padding: 0.3rem 0.5rem !important;
-        border-radius: 4px;
-        margin: 0;
-        margin-left: 0 !important;
-        line-height: 1.4;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        position: relative;
-        font-size: 0.9rem;
-
-        &:hover {
-            color: var(--text-primary);
-            background-color: var(--surface-secondary);
-        }
-
-        &.active,
-        &.is-current {
-            background-color: transparent !important;
-            color: var(--accent-color) !important;
-            font-weight: 500;
-            border-left: 2px solid var(--accent-color);
-            border-radius: 0;
-            padding-left: 0.4rem !important;
-
-            &::before {
-                content: "";
-                margin-right: 0;
-            }
-        }
-
-        &.is-current:not(.active) {
-            background-color: transparent !important;
-            opacity: 1;
-        }
-    }
-
-    // Improve tooltip appearance
-    .tooltip {
-        z-index: 1080 !important;
-
-        .tooltip-inner {
-            background-color: var(--surface-elevated);
-            color: var(--text-primary);
-            border-radius: var(--radius-sm);
-            font-size: 0.85rem;
-            max-width: 250px;
-            padding: 0.5rem 0.75rem;
-            text-align: left;
-            word-break: normal;
-            white-space: normal;
-            line-height: 1.4;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border-subtle);
-        }
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-
-        to {
-            opacity: 1;
-        }
-    }
-
-    &.is-hidden {
-        display: none;
-    }
-}
 
 @media (min-width: 1200px) {
     #post {
@@ -644,13 +501,13 @@
         padding: 0;
 
         .posts {
-            padding: 0 !important;
-            margin: 0 !important;
-            max-width: 100% !important;
+            padding: 0;
+            margin: 0;
+            max-width: 100%;
 
             .post {
-                padding: 0.75rem 1rem !important;
-                margin: 0 !important;
+                padding: 0.5rem 0.25rem;
+                margin: 0;
                 border-radius: 0;
                 box-shadow: none;
                 border: none;
@@ -761,7 +618,7 @@
                         }
 
                         .post-series-card-body {
-                            padding: 1rem !important;
+                            padding: 1rem;
                         }
 
                         .post-series-title {

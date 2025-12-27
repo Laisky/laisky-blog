@@ -202,7 +202,7 @@ export const Post = ({ isHistory }) => {
                 <>
                     <div className="col-12 col-xl-9">
                         <div className="posts">
-                            <div className="container-fluid post" id={post.name} key={post.name}>
+                            <div className="post" id={post.name} key={post.name}>
                                 <h2 className="post-title">
                                     <Link to={`/p/${post.name}/`}>
                                         {isHistory ? `[History] ${post.title}` : post.title}
@@ -329,7 +329,7 @@ export const Post = ({ isHistory }) => {
 
     return (
         <>
-            <div className="container-xl px-3 px-xl-0 scrollable-content">
+            <div className="scrollable-content">
                 <div id="post" className="row g-3 g-xl-4 align-items-start">
                     {content}
                 </div>

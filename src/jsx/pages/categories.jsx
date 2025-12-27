@@ -8,16 +8,18 @@ import jsutils from '@laisky/js-utils';
 import { Sidebar } from '../components/sidebar.jsx';
 import {
     DurationDay,
-    formatTs, getUserLanguage,
+    formatTs,
+    getUserLanguage,
     graphqlQuery,
     isForce,
     KvKeyLanguage,
-    KvKeyPrefixCache
+    KvKeyPrefixCache,
 } from '../library/base.jsx';
 
-
 export const loader = async ({ params }) => {
-    const cacheKey = KvKeyPrefixCache + await jsutils.SHA256(`categories:${await getUserLanguage()}:${params.category}`);
+    const cacheKey =
+        KvKeyPrefixCache +
+        (await jsutils.SHA256(`categories:${await getUserLanguage()}:${params.category}`));
     if (!isForce()) {
         const cacheData = await jsutils.GetCache(cacheKey);
         if (cacheData) {
@@ -70,7 +72,7 @@ export const loader = async ({ params }) => {
     jsutils.SetCache(cacheKey, result, DurationDay);
 
     return result;
-}
+};
 
 export const Categories = () => {
     const [posts, setPosts] = useState([]);
@@ -90,28 +92,37 @@ export const Categories = () => {
     };
 
     const watchLanguageChange = async () => {
-        await jsutils.KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
-            if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
-                return;
-            }
+        await jsutils.KvAddListener(
+            KvKeyLanguage,
+            async (key, op, oldVal, newVal) => {
+                if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+                    return;
+                }
 
-            updateContent();
-        }, "page_categories")
+                updateContent();
+            },
+            'page_categories'
+        );
     };
 
     const categorySlug = params.category || 'all';
-    const categoryName = categorySlug === 'all'
-        ? 'All Posts'
-        : categorySlug.replace(/[-_]/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+    const categoryName =
+        categorySlug === 'all'
+            ? 'All Posts'
+            : categorySlug.replace(/[-_]/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 
     return (
-        <div className="container-xl px-3 px-xl-0 scrollable-content">
-            <div id="categories" className='row g-3 g-xl-4 align-items-start'>
+        <div className="scrollable-content">
+            <div id="categories" className="row g-3 g-xl-4 align-items-start">
                 {/* category posts */}
-                <div className='col-12 col-xl-8 posts'>
+                <div className="col-12 col-xl-8 posts">
                     <header className="page-heading">
                         <h1>{categoryName}</h1>
-                        <p>{isLoading ? 'Loading posts…' : `${posts.length} post${posts.length === 1 ? '' : 's'}`}</p>
+                        <p>
+                            {isLoading
+                                ? 'Loading posts…'
+                                : `${posts.length} post${posts.length === 1 ? '' : 's'}`}
+                        </p>
                     </header>
 
                     {isLoading && (
@@ -122,19 +133,20 @@ export const Categories = () => {
                         </div>
                     )}
 
-                    {!isLoading && posts.map((post) => (
-                        <div className="post" id={post.name} key={post.name}>
-                            <span>{formatTs(post.created_at)}</span>
-                            <Link to={`/p/${post.name}/`}>{post.title}</Link>
-                        </div>
-                    ))}
+                    {!isLoading &&
+                        posts.map((post) => (
+                            <div className="post" id={post.name} key={post.name}>
+                                <span>{formatTs(post.created_at)}</span>
+                                <Link to={`/p/${post.name}/`}>{post.title}</Link>
+                            </div>
+                        ))}
                 </div>
 
                 {/* posts sidebar */}
-                <div className='col-12 col-xl-3 sidebar'>
+                <div className="col-12 col-xl-3 sidebar">
                     <Sidebar />
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

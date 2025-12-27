@@ -10,10 +10,9 @@ import {
     graphqlMutation,
     graphqlQuery,
     KvKeyLanguage,
-    KvKeyUserToken
+    KvKeyUserToken,
 } from '../library/base.jsx';
 import jsutils from '@laisky/js-utils';
-
 
 export const postEditLoader = async ({ params }) => {
     const gqBody = gql`
@@ -44,7 +43,7 @@ export const postEditLoader = async ({ params }) => {
 
     const resp = await graphqlQuery(gqBody);
     return resp.BlogPosts[0];
-}
+};
 
 export const postPublishLoader = async ({ params }) => {
     return {
@@ -53,8 +52,8 @@ export const postPublishLoader = async ({ params }) => {
         title: '',
         language: 'zh_CN',
         markdown: '',
-    }
-}
+    };
+};
 
 export const PostEdit = ({ isPublish }) => {
     isPublish = isPublish === 'true';
@@ -73,7 +72,7 @@ export const PostEdit = ({ isPublish }) => {
         evt.preventDefault();
         evt.stopPropagation();
 
-        const postEle = document.getElementById("postEdit");
+        const postEle = document.getElementById('postEdit');
         const language = postEle.querySelector('.input.postLanguage').value;
 
         const variables = {
@@ -119,20 +118,24 @@ export const PostEdit = ({ isPublish }) => {
         }
 
         await graphqlMutation(gqBody, variables, {
-            Authorization: `Bearer ${await jsutils.KvGet(KvKeyUserToken)}`
+            Authorization: `Bearer ${await jsutils.KvGet(KvKeyUserToken)}`,
         });
 
         navigate(`/p/${variables.post.name}/?force=1`);
     };
 
     const watchLanguageChange = async () => {
-        await jsutils.KvAddListener(KvKeyLanguage, async (key, op, oldVal, newVal) => {
-            if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
-                return;
-            }
+        await jsutils.KvAddListener(
+            KvKeyLanguage,
+            async (key, op, oldVal, newVal) => {
+                if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+                    return;
+                }
 
-            navigate(0);
-        }, "page_post")
+                navigate(0);
+            },
+            'page_post'
+        );
     };
     watchLanguageChange();
 
@@ -145,10 +148,12 @@ export const PostEdit = ({ isPublish }) => {
         }
 
         return (
-            <div className='col-md-9 posts'>
-                <div className="container-fluid post" id={post.name} key={post.name}>
+            <div className="col-md-9 posts">
+                <div className="post" id={post.name} key={post.name}>
                     <div className="mb-3">
-                        <label htmlFor="postTitle" className="form-label">Title</label>
+                        <label htmlFor="postTitle" className="form-label">
+                            Title
+                        </label>
                         <input
                             type="text"
                             className="form-control input postTitle"
@@ -156,16 +161,20 @@ export const PostEdit = ({ isPublish }) => {
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="postName" className="form-label">Name</label>
+                        <label htmlFor="postName" className="form-label">
+                            Name
+                        </label>
                         <input
                             type="text"
                             className="form-control input postName"
-                            {...isPublish ? {} : { readOnly: true }}
+                            {...(isPublish ? {} : { readOnly: true })}
                             defaultValue={post.name}
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="postMarkdown" className="form-label">Markdown</label>
+                        <label htmlFor="postMarkdown" className="form-label">
+                            Markdown
+                        </label>
                         <textarea
                             className="form-control input postMarkdown"
                             defaultValue={post.markdown}
@@ -173,7 +182,9 @@ export const PostEdit = ({ isPublish }) => {
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="postLanguage" className="form-label">Language</label>
+                        <label htmlFor="postLanguage" className="form-label">
+                            Language
+                        </label>
                         <select
                             className="form-select input postLanguage"
                             defaultValue={post.language}
@@ -183,25 +194,26 @@ export const PostEdit = ({ isPublish }) => {
                         </select>
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="postType" className="form-label">Type</label>
-                        <select
-                            className="form-select input postType"
-                            defaultValue={post.type}
-                        >
+                        <label htmlFor="postType" className="form-label">
+                            Type
+                        </label>
+                        <select className="form-select input postType" defaultValue={post.type}>
                             <option value="markdown">Markdown</option>
                             <option value="slide">Slide</option>
                         </select>
                     </div>
-                    <button type="submit" className="btn btn-primary" onClick={submitHandler}>Submit</button>
+                    <button type="submit" className="btn btn-primary" onClick={submitHandler}>
+                        Submit
+                    </button>
                 </div>
             </div>
         );
     };
 
     return (
-        <div id="postEdit" className='row align-items-start scrollable-content'>
+        <div id="postEdit" className="row align-items-start scrollable-content">
             {/* blog posts */}
             {content}
         </div>
-    )
-}
+    );
+};

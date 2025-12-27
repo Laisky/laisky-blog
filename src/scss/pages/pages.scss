@@ -191,6 +191,10 @@
             }
         }
 
+        // Post items on the paper tape
+        // NOTE: Hardcoded light colors are used here intentionally because
+        // the paper tape design maintains a light background regardless of theme.
+        // These colors must override theme colors to remain readable on light paper.
         .post {
             background: transparent;
             border: none;
