@@ -10,11 +10,15 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600&display=swap');
 
-html,
-body {
-    height: 100%;
-    overflow: hidden;
+html {
+    min-height: 100%;
+    overflow-x: hidden;
     text-autospace: normal;
+}
+
+body {
+    min-height: 100%;
+    overflow-x: hidden;
 }
 
 // Google Custom Search overrides
@@ -161,12 +165,11 @@ body {
 }
 
 #root {
-    height: 100%;
+    min-height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
-    overflow: hidden;
 }
 
 #container {
@@ -174,8 +177,7 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
-    // padding-top: var(--navbar-height);
-    overflow: hidden;
+    padding-top: var(--navbar-height);
 }
 
 a {
@@ -315,35 +317,15 @@ table {
 
 .scrollable-content {
     display: block;
-    flex: 1 1 auto;
-    min-height: 0;
-    height: calc(100vh - var(--navbar-height));
-    overflow-y: auto;
-    overflow-x: hidden;
     width: 100%;
     max-width: min(var(--container-xl-max), calc(100% - 2rem));
     margin: 0 auto;
     padding: 2rem 1rem 4rem;
 
-    &::-webkit-scrollbar {
-        width: 8px;
+    @media (max-width: 767px) {
+        max-width: 100%;
+        padding: 0.5rem 0.5rem 2rem;
     }
-
-    &::-webkit-scrollbar-thumb {
-        background: var(--border-strong);
-        border-radius: 4px;
-    }
-
-    &::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    -ms-overflow-style: none;
-    scrollbar-width: thin;
-}
-
-.scrollable-content::-webkit-scrollbar {
-    display: none;
 }
 
 .section-card {

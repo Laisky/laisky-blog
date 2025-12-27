@@ -119,8 +119,9 @@ export const Page = () => {
         /**
          * handleScroll implements a smooth paper-ribbon effect for articles.
          *
-         * Design philosophy for mobile:
-         * - No gaps: use clip-path and opacity, not scaleY
+         * Design philosophy:
+         * - Uses native window scrolling for full browser compatibility
+         * - First article always starts fully visible (no blur on page load)
          * - Gentle transitions: articles smoothly fade/reveal at edges
          * - Reading-friendly: large central zone stays fully visible
          */
@@ -132,62 +133,60 @@ export const Page = () => {
             const navbarHeight = 52;
 
             // Define zones: a generous central area for reading
-            // Top zone: from navbar to 120px below it
-            // Bottom zone: from 150px above bottom to bottom
-            // Everything else is the "safe" reading zone
-            const topZoneEnd = navbarHeight + 120;
-            const bottomZoneStart = viewportHeight - 150;
+            // Top zone: only apply fade when article is scrolling OUT of view (above navbar)
+            // Bottom zone: from 100px above bottom to bottom
+            const topZoneEnd = navbarHeight + 60; // Reduced from 120 to minimize fade zone
+            const bottomZoneStart = viewportHeight - 100; // Reduced from 150
 
             // Transition distances for smooth gradual effect
-            const topTransitionRange = 100;
-            const bottomTransitionRange = 120;
+            const topTransitionRange = 60; // Reduced for tighter transition
+            const bottomTransitionRange = 80; // Reduced for tighter transition
 
-            posts.forEach((post) => {
+            posts.forEach((post, index) => {
                 const rect = post.getBoundingClientRect();
-                const postCenter = rect.top + rect.height / 2;
+                const postTop = rect.top;
 
                 // Calculate how much of the post is visible/faded
                 let fadeProgress = 0; // 0 = fully visible, 1 = fully faded
                 let isTop = false;
 
+                // Only apply top fade when article is actually scrolling past the navbar
                 if (rect.bottom <= navbarHeight) {
                     // Completely scrolled past - fully hidden
                     fadeProgress = 1;
                     isTop = true;
-                } else if (postCenter < topZoneEnd) {
-                    // Article center is in the top zone - gradual fade
-                    const distanceFromSafeZone = topZoneEnd - postCenter;
-                    fadeProgress = Math.min(
-                        1,
-                        Math.max(0, distanceFromSafeZone / topTransitionRange)
-                    );
+                } else if (postTop < navbarHeight && rect.bottom > navbarHeight) {
+                    // Article is partially behind navbar - gradual fade based on how much is hidden
+                    const visibleHeight = rect.bottom - navbarHeight;
+                    const hiddenRatio = 1 - visibleHeight / rect.height;
+                    fadeProgress = Math.min(1, Math.max(0, hiddenRatio * 1.5));
                     isTop = true;
-                } else if (postCenter > bottomZoneStart) {
-                    // Article center is in the bottom zone - gradual fade
-                    const distanceFromSafeZone = postCenter - bottomZoneStart;
+                } else if (postTop > bottomZoneStart) {
+                    // Article is entering from bottom - gradual fade
+                    const distanceFromSafeZone = postTop - bottomZoneStart;
                     fadeProgress = Math.min(
                         1,
                         Math.max(0, distanceFromSafeZone / bottomTransitionRange)
                     );
                     isTop = false;
                 }
-                // Articles in the central zone: fadeProgress = 0
+                // Articles fully visible in the central zone: fadeProgress = 0
 
                 // Smooth visual effects that don't create gaps
                 // Use easeOutCubic for smoother transition
                 const easedProgress = 1 - Math.pow(1 - fadeProgress, 3);
 
-                // Opacity: gentle fade (never below 0.15 for continuity)
-                const opacity = 1 - easedProgress * 0.85;
+                // Opacity: gentle fade (never below 0.2 for continuity)
+                const opacity = 1 - easedProgress * 0.8;
 
                 // Subtle vertical movement (no scaling to avoid gaps)
-                const translateY = easedProgress * 20 * (isTop ? -1 : 1);
+                const translateY = easedProgress * 15 * (isTop ? -1 : 1);
 
                 // Gentle rotation for paper-fold feel
-                const rotateX = easedProgress * 15 * (isTop ? 1 : -1);
+                const rotateX = easedProgress * 10 * (isTop ? 1 : -1);
 
-                // Blur for depth effect (optional, subtle)
-                const blur = easedProgress * 2;
+                // Blur for depth effect - reduced and only for scrolled-out content
+                const blur = easedProgress * 1.5;
 
                 post.style.setProperty('--fold-opacity', opacity);
                 post.style.setProperty('--fold-translate', `${translateY}px`);
@@ -208,15 +207,9 @@ export const Page = () => {
             }
         };
 
-        // Listen to both window scroll and the scrollable container
-        window.addEventListener('scroll', onScroll, true); // Use capture to catch all scroll events
+        // Listen to native window scroll events
+        window.addEventListener('scroll', onScroll);
         window.addEventListener('resize', onScroll);
-
-        // Also listen to the scrollable-content container specifically
-        const scrollableContainer = document.querySelector('.scrollable-content');
-        if (scrollableContainer) {
-            scrollableContainer.addEventListener('scroll', onScroll);
-        }
 
         // Use MutationObserver to detect when posts are actually added to the DOM
         const observer = new MutationObserver(() => {
@@ -228,15 +221,12 @@ export const Page = () => {
             observer.observe(tapeElement, { childList: true, subtree: true });
         }
 
-        // Initial call
+        // Initial call - ensure first article is clear
         handleScroll();
 
         return () => {
-            window.removeEventListener('scroll', onScroll, true);
+            window.removeEventListener('scroll', onScroll);
             window.removeEventListener('resize', onScroll);
-            if (scrollableContainer) {
-                scrollableContainer.removeEventListener('scroll', onScroll);
-            }
             observer.disconnect();
         };
     }, [content]);

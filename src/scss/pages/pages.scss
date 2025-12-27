@@ -480,21 +480,84 @@
 }
 
 @media (max-width: 767px) {
-    #pages .posts .post {
-        border: none !important;
-        padding: 0.5rem;
+    #pages {
+        // Remove decorative background on mobile for cleaner look
+        background: none;
+
+        .posts-container {
+
+            // Remove fixed gradient overlays on mobile
+            &::before,
+            &::after {
+                display: none;
+            }
+
+            .page-heading {
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+
+                h1 {
+                    font-size: 1.2rem;
+                    margin-bottom: 0.25rem;
+                }
+
+                p {
+                    font-size: 0.85rem;
+                }
+            }
+
+            .tape {
+                // Remove decorative borders and sprocket holes on mobile
+                border-left: none;
+                border-right: none;
+                box-shadow: none;
+                background: transparent;
+                max-width: 100%;
+
+                &::before,
+                &::after {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    #pages .posts-container .post {
+        padding: 1rem 0.5rem;
+        margin: 0;
+        border-bottom: 1px solid var(--border-subtle);
         background: transparent;
         border-radius: 0;
-        border-bottom: 1px solid var(--border-subtle) !important;
-        padding-bottom: 2rem;
-        margin-bottom: 1rem;
 
         &:last-child {
-            border-bottom: none !important;
+            border-bottom: none;
+        }
+
+        &.pagination-segment {
+            padding: 1.5rem 0.5rem;
+        }
+
+        .post-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-meta {
+            font-size: 0.75rem;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .post-content {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
         }
     }
 
     .footer .pagination {
-        border: none !important;
+        width: 100%;
+        justify-content: center;
+        border: none;
     }
 }

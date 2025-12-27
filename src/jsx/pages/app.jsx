@@ -1,28 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Languages, Terminal, FileText, User, MessageSquare, Activity, Rss } from 'lucide-react';
 import jsutils from '@laisky/js-utils';
 
-import { getUserLanguage, setUserLanguage } from "../library/base";
+import { getUserLanguage, setUserLanguage } from '../library/base';
 
 const isActiveRoute = (routeName, currentRoute) => {
     return routeName === currentRoute ? 'active' : '';
 };
 
-
 export const App = () => {
     const [userLang, setUserLang] = useState(null);
-    const [theme, setTheme] = useState('light');0
+    const [theme, setTheme] = useState('light');
+    0;
     const location = useLocation();
     // const navigate = useNavigate();
 
     const scrollToTop = (evt) => {
-        if (evt.target.tagName.toUpperCase() != 'DIV' || evt.target.className.startsWith('gsc-')) return;
+        if (evt.target.tagName.toUpperCase() != 'DIV' || evt.target.className.startsWith('gsc-'))
+            return;
 
         evt.preventDefault();
         evt.stopPropagation();
 
-        document.querySelector('.scrollable-content').scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     useEffect(() => {
@@ -34,18 +35,26 @@ export const App = () => {
             let fs = [];
 
             // add google analytics
-            fs.push((async () => {
-                await jsutils.LoadJsModules(["https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS"]);
-                window.dataLayer = window.dataLayer || [];
-                function gtag() { dataLayer.push(arguments); }
-                gtag('js', new Date());
-                gtag('config', 'G-BVS991NWWS');
-            })());
+            fs.push(
+                (async () => {
+                    await jsutils.LoadJsModules([
+                        'https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS',
+                    ]);
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag() {
+                        dataLayer.push(arguments);
+                    }
+                    gtag('js', new Date());
+                    gtag('config', 'G-BVS991NWWS');
+                })()
+            );
 
             // load google search
-            fs.push(jsutils.LoadJsModules([
-                "https://cse.google.com/cse.js?cx=004733495569415005684:-c6y46kjqva"
-            ]));
+            fs.push(
+                jsutils.LoadJsModules([
+                    'https://cse.google.com/cse.js?cx=004733495569415005684:-c6y46kjqva',
+                ])
+            );
 
             await Promise.all(fs);
         })();
@@ -55,7 +64,10 @@ export const App = () => {
 
     // watch theme change
     useEffect(() => {
-        document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+        document.documentElement.setAttribute(
+            'data-bs-theme',
+            window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        );
     }, [theme]);
 
     const getCurrentRouteName = () => {
@@ -91,17 +103,35 @@ export const App = () => {
 
     const dropdownBtn = (
         <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+            >
                 <Languages size={16} className="me-1" />
                 <span className="caret"></span>
                 {userLang}
             </a>
             <ul className="dropdown-menu">
-                <li className={getCurrentRouteName() === 'zh_CN' ? 'active' : ''} data-lang="zh_CN" onClick={handleLanguageChange}>
-                    <a className="dropdown-item" href="#">zh_CN</a>
+                <li
+                    className={getCurrentRouteName() === 'zh_CN' ? 'active' : ''}
+                    data-lang="zh_CN"
+                    onClick={handleLanguageChange}
+                >
+                    <a className="dropdown-item" href="#">
+                        zh_CN
+                    </a>
                 </li>
-                <li className={getCurrentRouteName() === 'en_US' ? 'active' : ''} data-lang="en_US" onClick={handleLanguageChange}>
-                    <a className="dropdown-item" href="#">en_US</a>
+                <li
+                    className={getCurrentRouteName() === 'en_US' ? 'active' : ''}
+                    data-lang="en_US"
+                    onClick={handleLanguageChange}
+                >
+                    <a className="dropdown-item" href="#">
+                        en_US
+                    </a>
                 </li>
             </ul>
         </li>
@@ -117,9 +147,21 @@ export const App = () => {
 
     return (
         <>
-            <nav className="navbar navbar-expand-sm bg-body-tertiary fixed-top" id="headerbar" onClick={scrollToTop}>
+            <nav
+                className="navbar navbar-expand-sm bg-body-tertiary fixed-top"
+                id="headerbar"
+                onClick={scrollToTop}
+            >
                 <div className="container-fluid">
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                    <button
+                        className="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarTogglerDemo01"
+                        aria-controls="navbarTogglerDemo01"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
@@ -130,36 +172,66 @@ export const App = () => {
                         </Link>
                         <ul className="navbar-nav me-auto mb-lg-0">
                             <li className="nav-item">
-                                <Link to="/pages/0/" className={`nav-link ${isActiveRoute('posts', getCurrentRouteName())}`} aria-current="page">
+                                <Link
+                                    to="/pages/0/"
+                                    className={`nav-link ${isActiveRoute('posts', getCurrentRouteName())}`}
+                                    aria-current="page"
+                                >
                                     <FileText size={16} className="me-1" /> Posts
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/about/" className={`nav-link ${isActiveRoute('aboutme', getCurrentRouteName())}`}>
+                                <Link
+                                    to="/about/"
+                                    className={`nav-link ${isActiveRoute('aboutme', getCurrentRouteName())}`}
+                                >
                                     <User size={16} className="me-1" /> About
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="https://chat.laisky.com" target="_blank" rel="noopener noreferrer">
+                                <a
+                                    className="nav-link"
+                                    href="https://chat.laisky.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
                                     <MessageSquare size={16} className="me-1" /> AIChat
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="https://mcp.laisky.com" target="_blank" rel="noopener noreferrer">
+                                <a
+                                    className="nav-link"
+                                    href="https://mcp.laisky.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
                                     <MessageSquare size={16} className="me-1" /> MCP
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="https://status.laisky.com" target="_blank" rel="noopener noreferrer">
+                                <a
+                                    className="nav-link"
+                                    href="https://status.laisky.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
                                     <Activity size={16} className="me-1" /> Status
                                 </a>
                             </li>
                         </ul>
                         <ul className="navbar-nav">
-                            <form className="d-flex me-2" role="search" dangerouslySetInnerHTML={{ __html: googleSearch }}>
-                            </form>
+                            <form
+                                className="d-flex me-2"
+                                role="search"
+                                dangerouslySetInnerHTML={{ __html: googleSearch }}
+                            ></form>
                             {dropdownBtn}
-                            <Link to="https://s3.laisky.com/public/rss.xml" target="_blank" className="nav-link" rel="noopener noreferrer">
+                            <Link
+                                to="https://s3.laisky.com/public/rss.xml"
+                                target="_blank"
+                                className="nav-link"
+                                rel="noopener noreferrer"
+                            >
                                 <Rss size={16} />
                             </Link>
                         </ul>
@@ -167,13 +239,21 @@ export const App = () => {
                 </div>
             </nav>
 
-
             {/* page modal */}
             <div className="modal" id="img-modal" role="dialog" tabIndex="-1">
-                <div className="modal-dialog" role="document" style={{ zIndex: 1050, width: '800px' }}>
+                <div
+                    className="modal-dialog"
+                    role="document"
+                    style={{ zIndex: 1050, width: '800px' }}
+                >
                     <div className="modal-content">
                         <div className="modal-body" style={{ padding: '0px' }}>
-                            <img src="" alt="image" className="img-rounded" style={{ maxHeight: '800px', maxWidth: '800px' }} />
+                            <img
+                                src=""
+                                alt="image"
+                                className="img-rounded"
+                                style={{ maxHeight: '800px', maxWidth: '800px' }}
+                            />
                         </div>
                     </div>
                 </div>
@@ -186,7 +266,6 @@ export const App = () => {
         </>
     );
 };
-
 
 let _watchThemeChanged = false;
 
