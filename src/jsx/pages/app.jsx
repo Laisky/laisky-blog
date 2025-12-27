@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { Languages, Terminal, FileText, User, MessageSquare, Activity, Rss } from 'lucide-react';
+import { Languages, Terminal, FileText, User, Activity, Rss, BotMessageSquare, Factory } from 'lucide-react';
 import jsutils from '@laisky/js-utils';
 
 import { getUserLanguage, setUserLanguage } from '../library/base';
@@ -82,10 +82,10 @@ export const App = () => {
         }
     };
 
-    const handleLanguageChange = async (evt) => {
-        let target = evt.target;
-        if (target.tagName !== 'LI') {
-            target = target.parentElement;
+    const handleLanguageChange = async (evt, newLang) => {
+        if (evt) {
+            evt.preventDefault();
+            evt.stopPropagation();
         }
 
         // remove query parameter `lang=`
@@ -93,48 +93,44 @@ export const App = () => {
         url.searchParams.delete('lang');
         window.history.replaceState({}, document.title, url);
 
-        const newLang = target.dataset.lang;
         if (userLang === newLang) return;
 
         await setUserLanguage(newLang);
         setUserLang(newLang); // Update the state immediately
-        // navigate(0); // Refresh the page to apply the new language
     };
 
     const dropdownBtn = (
-        <li className="nav-item dropdown">
+        <div className="dropdown">
             <a
-                className="nav-link dropdown-toggle"
+                className="nav-link p-2"
                 href="#"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
             >
-                <Languages size={16} className="me-1" />
-                <span className="caret"></span>
-                {userLang}
+                <Languages size={16} />
             </a>
-            <ul className="dropdown-menu">
-                <li
-                    className={getCurrentRouteName() === 'zh_CN' ? 'active' : ''}
-                    data-lang="zh_CN"
-                    onClick={handleLanguageChange}
-                >
-                    <a className="dropdown-item" href="#">
+            <ul className="dropdown-menu dropdown-menu-end" style={{ minWidth: 'auto' }}>
+                <li>
+                    <a
+                        className={`dropdown-item ${userLang === 'zh_CN' ? 'active' : ''}`}
+                        href="#"
+                        onClick={(e) => handleLanguageChange(e, 'zh_CN')}
+                    >
                         zh_CN
                     </a>
                 </li>
-                <li
-                    className={getCurrentRouteName() === 'en_US' ? 'active' : ''}
-                    data-lang="en_US"
-                    onClick={handleLanguageChange}
-                >
-                    <a className="dropdown-item" href="#">
+                <li>
+                    <a
+                        className={`dropdown-item ${userLang === 'en_US' ? 'active' : ''}`}
+                        href="#"
+                        onClick={(e) => handleLanguageChange(e, 'en_US')}
+                    >
                         en_US
                     </a>
                 </li>
             </ul>
-        </li>
+        </div>
     );
 
     // enableAutoComplete is a non-standard tag;
@@ -153,23 +149,28 @@ export const App = () => {
                 onClick={scrollToTop}
             >
                 <div className="container-fluid">
-                    <button
-                        className="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarTogglerDemo01"
-                        aria-controls="navbarTogglerDemo01"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                    >
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
+                    <Link to="/pages/0/" className="navbar-brand d-flex align-items-center">
+                        <span className="d-flex align-items-center">
+                            <Terminal size={20} className="me-2" /> Laisky
+                        </span>
+                    </Link>
+
+                    <div className="d-flex align-items-center ms-auto">
+                        {dropdownBtn}
+                        <button
+                            className="navbar-toggler ms-2"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#navbarTogglerDemo01"
+                            aria-controls="navbarTogglerDemo01"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation"
+                        >
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+
                     <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                        <Link to="/pages/0/" className="navbar-brand d-flex align-items-center">
-                            <span className="d-flex align-items-center">
-                                <Terminal size={20} className="me-2" /> Laisky
-                            </span>
-                        </Link>
                         <ul className="navbar-nav me-auto mb-lg-0">
                             <li className="nav-item">
                                 <Link
@@ -195,7 +196,7 @@ export const App = () => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    <MessageSquare size={16} className="me-1" /> AIChat
+                                    <BotMessageSquare size={16} className="me-1" /> AIChat
                                 </a>
                             </li>
                             <li className="nav-item">
@@ -205,7 +206,7 @@ export const App = () => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    <MessageSquare size={16} className="me-1" /> MCP
+                                    <Factory size={16} className="me-1" /> MCP
                                 </a>
                             </li>
                             <li className="nav-item">
@@ -218,6 +219,16 @@ export const App = () => {
                                     <Activity size={16} className="me-1" /> Status
                                 </a>
                             </li>
+                            <li className="nav-item">
+                                <Link
+                                    to="https://s3.laisky.com/public/rss.xml"
+                                    target="_blank"
+                                    className="nav-link"
+                                    rel="noopener noreferrer"
+                                >
+                                    <Rss size={16} className="me-1" /> RSS
+                                </Link>
+                            </li>
                         </ul>
                         <ul className="navbar-nav">
                             <form
@@ -225,15 +236,6 @@ export const App = () => {
                                 role="search"
                                 dangerouslySetInnerHTML={{ __html: googleSearch }}
                             ></form>
-                            {dropdownBtn}
-                            <Link
-                                to="https://s3.laisky.com/public/rss.xml"
-                                target="_blank"
-                                className="nav-link"
-                                rel="noopener noreferrer"
-                            >
-                                <Rss size={16} />
-                            </Link>
                         </ul>
                     </div>
                 </div>
