@@ -117,17 +117,12 @@ export const Page = () => {
 
     useEffect(() => {
         /**
-         * handleScroll implements a paper-fold effect for articles.
+         * handleScroll implements a smooth paper-ribbon effect for articles.
          *
-         * Behavior:
-         * - Articles in the CENTER of viewport = fully expanded
-         * - Articles ABOVE the viewport (scrolled past) = collapsed/folded UP
-         * - Articles BELOW the viewport (not yet scrolled to) = collapsed/folded DOWN
-         *
-         * Scrolling DOWN: Lower articles unfold as they enter the viewport from below
-         *                 Upper articles fold as they exit through the top
-         * Scrolling UP:   Upper articles unfold as they re-enter from the top
-         *                 Lower articles fold as they exit through the bottom
+         * Design philosophy for mobile:
+         * - No gaps: use clip-path and opacity, not scaleY
+         * - Gentle transitions: articles smoothly fade/reveal at edges
+         * - Reading-friendly: large central zone stays fully visible
          */
         const handleScroll = () => {
             const posts = document.querySelectorAll('.tape .post');
@@ -136,48 +131,69 @@ export const Page = () => {
             const viewportHeight = window.innerHeight;
             const navbarHeight = 52;
 
-            // Define the "sweet spot" zone where articles are fully expanded
-            // Limit the scroll-effect trigger to narrow bands at the top and bottom
-            const sweetSpotTop = navbarHeight + 50; // Start folding 50px below navbar
-            const sweetSpotBottom = viewportHeight - 100; // Start folding 100px above bottom
+            // Define zones: a generous central area for reading
+            // Top zone: from navbar to 120px below it
+            // Bottom zone: from 150px above bottom to bottom
+            // Everything else is the "safe" reading zone
+            const topZoneEnd = navbarHeight + 120;
+            const bottomZoneStart = viewportHeight - 150;
 
-            // Fold animation range (how many pixels the full fold transition takes)
-            const topFoldRange = 150; // Distance from sweetSpotTop to fully folded
-            const bottomFoldRange = 200; // Distance from sweetSpotBottom to fully folded
+            // Transition distances for smooth gradual effect
+            const topTransitionRange = 100;
+            const bottomTransitionRange = 120;
 
-            posts.forEach((post, index) => {
+            posts.forEach((post) => {
                 const rect = post.getBoundingClientRect();
+                const postCenter = rect.top + rect.height / 2;
 
-                let foldProgress = 0; // 0 = fully expanded, 1 = fully folded
-                let foldDirection = 1; // 1 = fold up, -1 = fold down
+                // Calculate how much of the post is visible/faded
+                let fadeProgress = 0; // 0 = fully visible, 1 = fully faded
+                let isTop = false;
 
-                if (rect.bottom < navbarHeight) {
-                    // Article is completely above the navbar - fully folded UP
-                    foldProgress = 1;
-                    foldDirection = 1;
-                } else if (rect.top < sweetSpotTop) {
-                    // Article is in the upper fold zone - transitioning fold UP
-                    const distanceIntoFold = sweetSpotTop - rect.top;
-                    foldProgress = Math.min(1, Math.max(0, distanceIntoFold / topFoldRange));
-                    foldDirection = 1;
-                } else if (rect.top > sweetSpotBottom) {
-                    // Article is in the lower fold zone - transitioning fold DOWN
-                    const distanceIntoFold = rect.top - sweetSpotBottom;
-                    foldProgress = Math.min(1, Math.max(0, distanceIntoFold / bottomFoldRange));
-                    foldDirection = -1;
+                if (rect.bottom <= navbarHeight) {
+                    // Completely scrolled past - fully hidden
+                    fadeProgress = 1;
+                    isTop = true;
+                } else if (postCenter < topZoneEnd) {
+                    // Article center is in the top zone - gradual fade
+                    const distanceFromSafeZone = topZoneEnd - postCenter;
+                    fadeProgress = Math.min(
+                        1,
+                        Math.max(0, distanceFromSafeZone / topTransitionRange)
+                    );
+                    isTop = true;
+                } else if (postCenter > bottomZoneStart) {
+                    // Article center is in the bottom zone - gradual fade
+                    const distanceFromSafeZone = postCenter - bottomZoneStart;
+                    fadeProgress = Math.min(
+                        1,
+                        Math.max(0, distanceFromSafeZone / bottomTransitionRange)
+                    );
+                    isTop = false;
                 }
-                // Articles between sweetSpotTop and sweetSpotBottom are fully expanded (foldProgress = 0)
+                // Articles in the central zone: fadeProgress = 0
 
-                // Calculate visual properties with uniform folding
-                const scaleY = 1 - foldProgress * 0.4; // Compress to 60% when fully folded
-                const opacity = 1 - foldProgress * 0.7; // Fade to 30% when fully folded
-                const translateY = foldProgress * 30 * foldDirection; // Movement
-                const rotateX = foldProgress * 20 * foldDirection; // Uniform rotation
+                // Smooth visual effects that don't create gaps
+                // Use easeOutCubic for smoother transition
+                const easedProgress = 1 - Math.pow(1 - fadeProgress, 3);
 
-                post.style.setProperty('--fold-scale', scaleY);
+                // Opacity: gentle fade (never below 0.15 for continuity)
+                const opacity = 1 - easedProgress * 0.85;
+
+                // Subtle vertical movement (no scaling to avoid gaps)
+                const translateY = easedProgress * 20 * (isTop ? -1 : 1);
+
+                // Gentle rotation for paper-fold feel
+                const rotateX = easedProgress * 15 * (isTop ? 1 : -1);
+
+                // Blur for depth effect (optional, subtle)
+                const blur = easedProgress * 2;
+
                 post.style.setProperty('--fold-opacity', opacity);
                 post.style.setProperty('--fold-translate', `${translateY}px`);
                 post.style.setProperty('--fold-rotate', `${rotateX}deg`);
+                post.style.setProperty('--fold-blur', `${blur}px`);
+                post.style.setProperty('--fold-scale', 1); // No scaling to prevent gaps
             });
         };
 

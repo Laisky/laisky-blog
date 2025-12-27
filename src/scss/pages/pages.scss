@@ -8,49 +8,37 @@
     // Subtle paper-ribbon ambient background for the scrolling area
     background:
         // Soft diagonal lines suggesting ribbon weave
-        repeating-linear-gradient(
-            -45deg,
+        repeating-linear-gradient(-45deg,
             transparent,
             transparent 80px,
             rgba(200, 180, 160, 0.015) 80px,
-            rgba(200, 180, 160, 0.015) 81px
-        ),
-        repeating-linear-gradient(
-            45deg,
+            rgba(200, 180, 160, 0.015) 81px),
+        repeating-linear-gradient(45deg,
             transparent,
             transparent 80px,
             rgba(200, 180, 160, 0.015) 80px,
-            rgba(200, 180, 160, 0.015) 81px
-        ),
+            rgba(200, 180, 160, 0.015) 81px),
         // Very subtle radial vignette
-        radial-gradient(
-            ellipse at 50% 0%,
+        radial-gradient(ellipse at 50% 0%,
             rgba(255, 252, 248, 0.3) 0%,
-            transparent 70%
-        );
+            transparent 70%);
     background-attachment: fixed;
 
     [data-bs-theme=dark] & {
         background:
-            repeating-linear-gradient(
-                -45deg,
+            repeating-linear-gradient(-45deg,
                 transparent,
                 transparent 80px,
                 rgba(100, 90, 80, 0.03) 80px,
-                rgba(100, 90, 80, 0.03) 81px
-            ),
-            repeating-linear-gradient(
-                45deg,
+                rgba(100, 90, 80, 0.03) 81px),
+            repeating-linear-gradient(45deg,
                 transparent,
                 transparent 80px,
                 rgba(100, 90, 80, 0.03) 80px,
-                rgba(100, 90, 80, 0.03) 81px
-            ),
-            radial-gradient(
-                ellipse at 50% 0%,
+                rgba(100, 90, 80, 0.03) 81px),
+            radial-gradient(ellipse at 50% 0%,
                 rgba(60, 55, 50, 0.2) 0%,
-                transparent 70%
-            );
+                transparent 70%);
         background-attachment: fixed;
     }
 
@@ -111,32 +99,26 @@
             // Refined paper ribbon background with subtle texture
             background:
                 // Fine horizontal lines (like ruled paper)
-                repeating-linear-gradient(
-                    0deg,
+                repeating-linear-gradient(0deg,
                     transparent,
                     transparent 23px,
                     rgba(180, 160, 140, 0.06) 23px,
-                    rgba(180, 160, 140, 0.06) 24px
-                ),
+                    rgba(180, 160, 140, 0.06) 24px),
                 // Subtle vertical fibers
-                repeating-linear-gradient(
-                    90deg,
+                repeating-linear-gradient(90deg,
                     transparent,
                     transparent 2px,
                     rgba(200, 180, 160, 0.015) 2px,
-                    rgba(200, 180, 160, 0.015) 4px
-                ),
+                    rgba(200, 180, 160, 0.015) 4px),
                 // Paper grain texture
                 url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"),
                 // Warm paper base gradient
-                linear-gradient(
-                    180deg,
+                linear-gradient(180deg,
                     #fefcf9 0%,
                     #fffdf8 25%,
                     #fefbf6 50%,
                     #fdf9f4 75%,
-                    #fcf8f3 100%
-                );
+                    #fcf8f3 100%);
             background-size: auto, auto, 150px 150px, 100% 100%;
             background-blend-mode: normal, normal, soft-light, normal;
 
@@ -157,20 +139,16 @@
 
             [data-bs-theme=dark] & {
                 background:
-                    repeating-linear-gradient(
-                        0deg,
+                    repeating-linear-gradient(0deg,
                         transparent,
                         transparent 23px,
                         rgba(180, 160, 140, 0.06) 23px,
-                        rgba(180, 160, 140, 0.06) 24px
-                    ),
-                    repeating-linear-gradient(
-                        90deg,
+                        rgba(180, 160, 140, 0.06) 24px),
+                    repeating-linear-gradient(90deg,
                         transparent,
                         transparent 2px,
                         rgba(200, 180, 160, 0.015) 2px,
-                        rgba(200, 180, 160, 0.015) 4px
-                    ),
+                        rgba(200, 180, 160, 0.015) 4px),
                     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"),
                     linear-gradient(180deg, #fefcf9, #fdf9f4);
                 background-size: auto, auto, 150px 150px, 100% 100%;
@@ -179,7 +157,8 @@
             }
 
             // Decorative ribbon perforations along edges
-            &::before, &::after {
+            &::before,
+            &::after {
                 content: '';
                 position: absolute;
                 top: 0;
@@ -188,12 +167,10 @@
                 // Refined sprocket holes pattern
                 background-image:
                     // Main holes
-                    radial-gradient(
-                        circle at center,
+                    radial-gradient(circle at center,
                         rgba(200, 180, 160, 0.12) 0%,
                         rgba(200, 180, 160, 0.08) 3px,
-                        transparent 4px
-                    );
+                        transparent 4px);
                 background-size: 32px 32px;
                 background-position: center 8px;
                 opacity: 0.7;
@@ -217,23 +194,21 @@
         .post {
             background: transparent;
             border: none;
-            border-bottom: 1px dashed rgba(0,0,0,0.08);
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
             border-radius: 0;
             padding: 2.5rem 4rem;
             margin: 0;
-            transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+            transition: transform 0.2s ease-out, opacity 0.2s ease-out, filter 0.2s ease-out;
             position: relative;
             z-index: 2;
             color: #444;
             font-weight: 500;
 
-            // Folding effect properties
+            // Smooth folding effect properties (no scaleY to avoid gaps)
             opacity: var(--fold-opacity, 1);
+            filter: blur(var(--fold-blur, 0px));
             transform:
-                translateY(var(--fold-translate, 0px))
-                scaleY(var(--fold-scale, 1))
-                perspective(1000px)
-                rotateX(var(--fold-rotate, 0deg));
+                translateY(var(--fold-translate, 0px)) perspective(800px) rotateX(var(--fold-rotate, 0deg));
             transform-origin: center center;
 
             &:last-child {
@@ -243,7 +218,7 @@
             &.pagination-segment {
                 padding: 3rem;
                 border-bottom: none;
-                background: rgba(0,0,0,0.02);
+                background: rgba(0, 0, 0, 0.02);
             }
 
             .post-title {
@@ -275,7 +250,7 @@
                 color: #555 !important;
                 margin-bottom: 1.25rem;
                 padding-bottom: 1.25rem;
-                border-bottom: 1px solid rgba(0,0,0,0.05);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
                 flex-wrap: wrap;
                 font-family: var(--code-font);
                 text-transform: uppercase;
@@ -286,11 +261,11 @@
                 span[data-bs-toggle="tooltip"] {
                     padding: 0.2rem 0.6rem;
                     border-radius: 999px;
-                    background: rgba(0,0,0,0.05);
+                    background: rgba(0, 0, 0, 0.05);
                     color: #444;
                     font-weight: 500;
                     font-size: 0.75rem;
-                    border: 1px solid rgba(0,0,0,0.1);
+                    border: 1px solid rgba(0, 0, 0, 0.1);
                 }
             }
 
