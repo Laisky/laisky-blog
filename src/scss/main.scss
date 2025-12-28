@@ -345,17 +345,19 @@ form[role='search'] {
     padding: 0.5rem 1.2rem;
     font-weight: 500;
     font-size: 0.9rem;
-    color: #ffffff;
-    transition: background-color 0.2s ease;
+    color: var(--text-inverse);
+    transition: background-color 0.2s ease, filter 0.2s ease;
 
     &:hover {
-        background: #0077ed; // Slightly lighter blue
+        background: var(--accent-color);
+        filter: brightness(1.15);
         transform: none;
         box-shadow: none;
     }
 
     &:active {
-        background: #006edb;
+        background: var(--accent-color);
+        filter: brightness(0.9);
     }
 }
 
@@ -438,6 +440,7 @@ form[role='search'] {
 }
 
 @media (max-width: 767px) {
+
     // Remove borders on mobile - using element-specific selectors for higher specificity
     .section-card,
     .console,

@@ -164,7 +164,8 @@ export const App = () => {
                         </span>
                     </Link>
 
-                    <div className="d-flex align-items-center ms-auto">
+                    {/* Mobile: language dropdown before toggler */}
+                    <div className="d-flex align-items-center ms-auto d-sm-none">
                         {dropdownBtn}
                         <button
                             className="navbar-toggler ms-2"
@@ -246,6 +247,8 @@ export const App = () => {
                                 dangerouslySetInnerHTML={{ __html: googleSearch }}
                             ></form>
                         </ul>
+                        {/* Desktop: language dropdown at far right */}
+                        <div className="d-none d-sm-flex align-items-center">{dropdownBtn}</div>
                     </div>
                 </div>
             </nav>

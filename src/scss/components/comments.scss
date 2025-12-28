@@ -71,7 +71,8 @@
             box-shadow: none;
 
             &:hover {
-                background: #0077ed;
+                background: var(--accent-color);
+                filter: brightness(1.1);
                 transform: none;
                 box-shadow: none;
             }
@@ -204,7 +205,7 @@
                 }
 
                 &:hover .like-icon {
-                    color: #ef4444;
+                    color: var(--danger-color, #ef4444);
                 }
             }
         }
