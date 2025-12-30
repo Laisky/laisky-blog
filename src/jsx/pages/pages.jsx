@@ -1,11 +1,12 @@
 'use strict';
 
+import jsutils from '@laisky/js-utils';
 import * as bootstrap from 'bootstrap';
 import { gql } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, useNavigate, useLoaderData } from 'react-router-dom';
-import jsutils from '@laisky/js-utils';
+import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 
+import { Sidebar } from '../components/sidebar.jsx';
 import {
     KvKeyLanguage,
     KvKeyPrefixCache,
@@ -33,16 +34,23 @@ export const loader = async ({ params }) => {
 
 export const Page = () => {
     const [content, setContent] = useState(
-        <div className="col-12 col-xl-8 posts placeholder-glow">
-            <div className="page-heading">
-                <span className="placeholder col-6"></span>
-                <span className="placeholder col-4"></span>
+        <>
+            <div className="col-12 col-xl-8 posts posts-container placeholder-glow">
+                <div className="page-heading">
+                    <span className="placeholder col-6"></span>
+                    <span className="placeholder col-4"></span>
+                </div>
+                <span className="placeholder col-10"></span>
+                <span className="placeholder col-8"></span>
+                <span className="placeholder col-7"></span>
+                <span className="placeholder col-9"></span>
             </div>
-            <span className="placeholder col-10"></span>
-            <span className="placeholder col-8"></span>
-            <span className="placeholder col-7"></span>
-            <span className="placeholder col-9"></span>
-        </div>
+            <div className="col-12 col-xl-3 d-none d-xl-block">
+                <div className="sidebar">
+                    <Sidebar />
+                </div>
+            </div>
+        </>
     );
     const params = useParams();
     const navigate = useNavigate();
@@ -274,7 +282,7 @@ export const Page = () => {
         const cnt = (
             <>
                 {/* blog posts */}
-                <div className="col-12 col-xl-10 offset-xl-1 posts-container">
+                <div className="col-12 col-xl-8 posts posts-container">
                     <header className="page-heading">
                         <h1>Articles</h1>
                         <p>{`Page ${humanPage} of ${totalPage}`}</p>
@@ -331,6 +339,13 @@ export const Page = () => {
                                 </ul>
                             </nav>
                         </div>
+                    </div>
+                </div>
+
+                {/* posts sidebar */}
+                <div className="col-12 col-xl-3 d-none d-xl-block">
+                    <div className="sidebar">
+                        <Sidebar />
                     </div>
                 </div>
             </>

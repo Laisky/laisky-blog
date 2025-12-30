@@ -1,9 +1,9 @@
 'use strict';
 
+import jsutils from '@laisky/js-utils';
 import { gql } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import jsutils from '@laisky/js-utils';
 
 import { Sidebar } from '../components/sidebar.jsx';
 import {
@@ -143,8 +143,10 @@ export const Categories = () => {
                 </div>
 
                 {/* posts sidebar */}
-                <div className="col-12 col-xl-3 sidebar">
-                    <Sidebar />
+                <div className="col-12 col-xl-3 d-none d-xl-block">
+                    <div className="sidebar">
+                        <Sidebar />
+                    </div>
                 </div>
             </div>
         </div>

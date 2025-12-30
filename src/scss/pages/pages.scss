@@ -329,20 +329,29 @@
 }
 
 .sidebar {
-    position: sticky;
-    top: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    max-width: var(--sidebar-width);
-    margin-left: auto;
-    margin-bottom: 2rem;
+    // font-size: smaller;
+    gap: 1rem;
+    margin-bottom: 0rem;
+
+    @media (min-width: 1200px) {
+        position: fixed;
+        top: calc(var(--navbar-height) + 2rem);
+        width: var(--sidebar-width);
+        right: max(2rem, calc((100vw - var(--container-xl-max)) / 2 + 1rem));
+        z-index: 100;
+    }
+
+    @media (max-width: 1199px) {
+        display: none;
+    }
 
     .console {
         background: var(--surface-secondary);
         border-radius: var(--radius-md);
         border: 1px solid var(--border-subtle);
-        padding: 1.5rem;
+        padding: 0.5rem;
 
         h2 {
             font-size: 0.85rem;
@@ -361,16 +370,16 @@
             margin: 0;
 
             li {
-                margin-bottom: 0.5rem;
+                margin-bottom: 0rem;
 
                 a {
                     color: var(--text-secondary);
                     font-weight: 500;
                     display: inline-flex;
                     align-items: center;
-                    gap: 0.5rem;
+                    gap: 0.2rem;
                     padding: 0.2rem 0;
-                    font-size: 0.9rem;
+                    font-size: 0.8rem;
 
                     &::before {
                         content: '\f285';
@@ -411,13 +420,13 @@
         .tag-labels {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.1rem;
 
             .tag-chip {
                 cursor: pointer;
                 background: var(--surface-primary);
                 color: var(--text-secondary);
-                padding: 0.3rem 0.7rem;
+                padding: 0.3rem;
                 border-radius: 6px;
                 border: 1px solid var(--border-subtle);
                 font-size: 0.8rem;
@@ -481,10 +490,6 @@
 }
 
 @media (max-width: 1199px) {
-    #pages .sidebar {
-        display: none;
-    }
-
     #pages .posts {
         max-width: 100%;
     }
