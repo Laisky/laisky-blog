@@ -3,7 +3,7 @@
 import jsutils, { RandomString } from '@laisky/js-utils';
 import { gql } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.30.0/prism.js';
-import { BookOpen, ChevronRight, FileText } from 'lucide-react';
+import { Archive, BookOpen, ChevronRight, FileText, Info } from 'lucide-react';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -229,6 +229,16 @@ export const Post = ({ isHistory }) => {
                     <div className="col-12 col-xl-9">
                         <div className="posts">
                             <div className="post" id={post.name} key={post.name}>
+                                {isHistory && (
+                                    <div className="history-banner">
+                                        <Archive size={20} className="history-banner-icon" />
+                                        <div>
+                                            This is a historical version of the article. The latest
+                                            version can be found at{' '}
+                                            <Link to={`/p/${post.name}/`}>{post.title}</Link>.
+                                        </div>
+                                    </div>
+                                )}
                                 <h2 className="post-title">
                                     <Link to={`/p/${post.name}/`}>
                                         {isHistory ? `[History] ${post.title}` : post.title}
@@ -249,7 +259,19 @@ export const Post = ({ isHistory }) => {
                                     }}
                                 ></div>
                                 {postTail}
-                                <Comments postName={params.name} />
+                                {isHistory ? (
+                                    <div className="history-comment-prompt">
+                                        <Info size={24} className="history-comment-icon" />
+                                        <p>Comments are disabled for historical versions.</p>
+                                        <p>
+                                            Please visit the{' '}
+                                            <Link to={`/p/${post.name}/`}>latest version</Link> to
+                                            join the discussion.
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <Comments postName={params.name} />
+                                )}
                             </div>
                         </div>
                     </div>
