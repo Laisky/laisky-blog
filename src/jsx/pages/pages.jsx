@@ -7,6 +7,7 @@ import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 
 import { Sidebar } from '../components/sidebar.jsx';
 import { Tooltip } from '../components/Tooltip.jsx';
+import { calculateRibbonFold } from './pagesFold.js';
 import {
     KvKeyLanguage,
     KvKeyPrefixCache,
@@ -138,50 +139,49 @@ export const Page = () => {
          * - Gentle transitions: articles smoothly fade/reveal at edges
          * - Reading-friendly: large central zone stays fully visible
          */
-        const handleScroll = () => {
+        let lastScrollY = window.scrollY;
+        let scrollDirection = 'down';
+
+        /**
+         * updateScrollDirection updates the current scroll direction.
+         *
+         * @returns {void} No return value.
+         */
+        const updateScrollDirection = () => {
+            const currentY = window.scrollY;
+            if (currentY > lastScrollY + 1) {
+                scrollDirection = 'down';
+            } else if (currentY < lastScrollY - 1) {
+                scrollDirection = 'up';
+            }
+
+            lastScrollY = currentY;
+        };
+
+        /**
+         * handleScroll applies fold/blur CSS variables to all posts.
+         *
+         * @param {'up'|'down'} direction - Current scroll direction.
+         * @returns {void} No return value.
+         */
+        const handleScroll = (direction) => {
             const posts = document.querySelectorAll('.tape .post');
             if (posts.length === 0) return;
 
             const viewportHeight = window.innerHeight;
             const navbarHeight = 52;
-
-            // Define zones: a generous central area for reading
-            // Top zone: only apply fade when article is scrolling OUT of view (above navbar)
-            // Bottom zone: from 100px above bottom to bottom
-            const bottomZoneStart = viewportHeight - 100; // Reduced from 150
-
-            // Transition distances for smooth gradual effect
-            const bottomTransitionRange = 80; // Reduced for tighter transition
+            const isMobile = window.matchMedia('(max-width: 991.98px)').matches;
 
             posts.forEach((post) => {
                 const rect = post.getBoundingClientRect();
-                const postTop = rect.top;
 
-                // Calculate how much of the post is visible/faded
-                let fadeProgress = 0; // 0 = fully visible, 1 = fully faded
-                let isTop = false;
-
-                // Only apply top fade when article is actually scrolling past the navbar
-                if (rect.bottom <= navbarHeight) {
-                    // Completely scrolled past - fully hidden
-                    fadeProgress = 1;
-                    isTop = true;
-                } else if (postTop < navbarHeight && rect.bottom > navbarHeight) {
-                    // Article is partially behind navbar - gradual fade based on how much is hidden
-                    const visibleHeight = rect.bottom - navbarHeight;
-                    const hiddenRatio = 1 - visibleHeight / rect.height;
-                    fadeProgress = Math.min(1, Math.max(0, hiddenRatio * 1.5));
-                    isTop = true;
-                } else if (postTop > bottomZoneStart) {
-                    // Article is entering from bottom - gradual fade
-                    const distanceFromSafeZone = postTop - bottomZoneStart;
-                    fadeProgress = Math.min(
-                        1,
-                        Math.max(0, distanceFromSafeZone / bottomTransitionRange)
-                    );
-                    isTop = false;
-                }
-                // Articles fully visible in the central zone: fadeProgress = 0
+                const { fadeProgress, isTop } = calculateRibbonFold({
+                    rect,
+                    viewportHeight,
+                    navbarHeight,
+                    isMobile,
+                    scrollDirection: direction,
+                });
 
                 // Smooth visual effects that don't create gaps
                 // Use easeOutCubic for smoother transition
@@ -209,9 +209,10 @@ export const Page = () => {
 
         let ticking = false;
         const onScroll = () => {
+            updateScrollDirection();
             if (!ticking) {
                 window.requestAnimationFrame(() => {
-                    handleScroll();
+                    handleScroll(scrollDirection);
                     ticking = false;
                 });
                 ticking = true;
@@ -224,7 +225,7 @@ export const Page = () => {
 
         // Use MutationObserver to detect when posts are actually added to the DOM
         const observer = new MutationObserver(() => {
-            handleScroll();
+            handleScroll(scrollDirection);
         });
 
         const tapeElement = document.querySelector('.tape');
@@ -233,7 +234,7 @@ export const Page = () => {
         }
 
         // Initial call - ensure first article is clear
-        handleScroll();
+        handleScroll(scrollDirection);
 
         return () => {
             window.removeEventListener('scroll', onScroll);
