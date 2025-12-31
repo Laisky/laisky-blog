@@ -3,15 +3,15 @@
 // injects inline styles that must be overridden for proper theming.
 
 // Overlay positioning
-nav#headerbar .gsc-results-wrapper-overlay {
-    position: fixed;
-    top: calc(var(--navbar-height) + 12px);
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(960px, calc(100vw - 2.5rem));
-    min-height: min(420px, calc(100vh - var(--navbar-height) - 72px));
-    max-height: calc(100vh - var(--navbar-height) - 32px);
-    z-index: 1400;
+.gsc-results-wrapper-overlay {
+    position: fixed !important;
+    top: calc(var(--navbar-height) + 12px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: min(960px, calc(100vw - 2.5rem)) !important;
+    min-height: min(420px, calc(100vh - var(--navbar-height) - 72px)) !important;
+    max-height: calc(100vh - var(--navbar-height) - 32px) !important;
+    z-index: 2000 !important !important !important;
 }
 
 .gsc-modal-background-image {
@@ -166,11 +166,13 @@ nav#headerbar {
     }
 
     [id^='___gcse_'] {
+        width: 100%;
 
         .gsc-control-cse,
         .gsc-control-wrapper-cse {
-            display: inline-flex;
+            display: flex;
             align-items: center;
+            width: 100%;
             height: 100%;
             padding: 0;
             margin: 0;
@@ -181,7 +183,7 @@ nav#headerbar {
         }
 
         form.gsc-search-box {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             margin: 0;
             padding: 0;
@@ -265,11 +267,20 @@ nav#headerbar {
             td.gsib_a {
                 display: flex;
                 align-items: center;
-                width: 100%;
+                flex: 1 1 auto;
+                min-width: 0;
+            }
+
+            td.gsib_b {
+                display: flex;
+                align-items: center;
+                flex: 0 0 auto;
+                width: auto;
             }
 
             input.gsc-input {
                 background: transparent !important;
+                width: 100% !important;
             }
         }
 
@@ -282,7 +293,7 @@ nav#headerbar {
             background: transparent !important;
             color: var(--text-primary);
             font-size: 0.9rem;
-            width: 100%;
+            width: 100% !important;
             min-width: 180px;
             max-width: none;
             display: block;

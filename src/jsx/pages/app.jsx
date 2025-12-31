@@ -108,6 +108,15 @@ export const App = () => {
         setMobileMenuOpen(false);
     }, [location.pathname]);
 
+    // Handle body scroll lock
+    useEffect(() => {
+        if (mobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    }, [mobileMenuOpen]);
+
     /**
      * getCurrentRouteName extracts the route name based on the current location.
      */
@@ -249,17 +258,14 @@ export const App = () => {
                                 </Link>
                             </li>
                         </ul>
-                        <form
-                            className="navbar-search d-flex align-items-center me-2"
-                            role="search"
-                        >
+                        <div className="navbar-search d-flex align-items-center me-2">
                             <div
                                 className="gcse-search"
                                 data-gname="post_search"
                                 data-enablehistory="true"
                                 data-enableautocomplete="true"
                             ></div>
-                        </form>
+                        </div>
                     </div>
 
                     <div className="navbar-actions d-flex align-items-center ms-auto">
