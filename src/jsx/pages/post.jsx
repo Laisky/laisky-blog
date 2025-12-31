@@ -4,6 +4,7 @@ import jsutils, { RandomString } from '@laisky/js-utils';
 import { gql } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.30.0/prism.js';
 import { BookOpen, ChevronRight, FileText } from 'lucide-react';
+import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -768,14 +769,13 @@ const loadPostTails = async (post) => {
     if (post['arweave_id'] && post['arweave_id'].length > 0) {
         const historyItems = post['arweave_id'].slice(0, maxHistory).map((history) => (
             <DropdownItem key={history.id} href={`/p/history/${history.id}/`}>
-                {history.time}
+                {moment(history.time).format('YYYY-MM-DD HH:mm')}
             </DropdownItem>
         ));
 
         const historyTrigger = (
             <button className="btn btn-default dropdown-toggle" type="button">
                 History
-                <span className="caret"></span>
             </button>
         );
 

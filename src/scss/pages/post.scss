@@ -399,34 +399,27 @@
 
                 .dropdown-menu {
                     padding: 0.5rem;
-                    width: max-content;
+                    width: auto;
+                    min-width: 180px;
                     border: 1px solid var(--border-subtle);
                     border-radius: var(--radius-md);
                     background-color: var(--surface-primary);
                     box-shadow: var(--shadow-md);
 
-                    li {
-                        margin-bottom: 0.25rem;
+                    .dropdown-item {
+                        padding: 0.4rem 0.8rem;
+                        border-radius: 4px;
+                        color: var(--text-secondary);
 
-                        &:last-child {
-                            margin-bottom: 0;
+                        &:hover {
+                            background: var(--surface-secondary);
+                            color: var(--text-primary);
+                            text-decoration: none;
                         }
 
-                        a {
-                            padding: 0.4rem 0.8rem;
-                            border-radius: 4px;
-                            color: var(--text-secondary);
-
-                            &:hover {
-                                background: var(--surface-secondary);
-                                color: var(--text-primary);
-                                text-decoration: none;
-                            }
-
-                            &::before {
-                                content: '';
-                                margin: 0;
-                            }
+                        &::before {
+                            content: '';
+                            margin: 0;
                         }
                     }
                 }
