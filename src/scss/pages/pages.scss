@@ -19,12 +19,10 @@
             rgba(200, 180, 160, 0.015) 80px,
             rgba(200, 180, 160, 0.015) 81px),
         // Very subtle radial vignette
-        radial-gradient(ellipse at 50% 0%,
-            rgba(255, 252, 248, 0.3) 0%,
-            transparent 70%);
+        radial-gradient(ellipse at 50% 0%, rgba(255, 252, 248, 0.3) 0%, transparent 70%);
     background-attachment: fixed;
 
-    [data-bs-theme=dark] & {
+    [data-theme='dark'] & {
         background:
             repeating-linear-gradient(-45deg,
                 transparent,
@@ -36,9 +34,7 @@
                 transparent 80px,
                 rgba(100, 90, 80, 0.03) 80px,
                 rgba(100, 90, 80, 0.03) 81px),
-            radial-gradient(ellipse at 50% 0%,
-                rgba(60, 55, 50, 0.2) 0%,
-                transparent 70%);
+            radial-gradient(ellipse at 50% 0%, rgba(60, 55, 50, 0.2) 0%, transparent 70%);
         background-attachment: fixed;
     }
 
@@ -119,7 +115,11 @@
                     #fefbf6 50%,
                     #fdf9f4 75%,
                     #fcf8f3 100%);
-            background-size: auto, auto, 150px 150px, 100% 100%;
+            background-size:
+                auto,
+                auto,
+                150px 150px,
+                100% 100%;
             background-blend-mode: normal, normal, soft-light, normal;
 
             // Elegant paper edges with subtle shadow
@@ -137,7 +137,7 @@
             border-left: 1px solid rgba(200, 180, 160, 0.15);
             border-right: 1px solid rgba(200, 180, 160, 0.15);
 
-            [data-bs-theme=dark] & {
+            [data-theme='dark'] & {
                 // Dark aged paper aesthetic
                 background:
                     repeating-linear-gradient(0deg,
@@ -155,7 +155,11 @@
                         var(--surface-secondary) 0%,
                         var(--surface-primary) 50%,
                         var(--surface-secondary) 100%);
-                background-size: auto, auto, 150px 150px, 100% 100%;
+                background-size:
+                    auto,
+                    auto,
+                    150px 150px,
+                    100% 100%;
                 background-blend-mode: normal, normal, overlay, normal;
                 color: var(--text-secondary);
 
@@ -214,7 +218,10 @@
             border-radius: 0;
             padding: 2.5rem 4rem;
             margin: 0;
-            transition: transform 0.2s ease-out, opacity 0.2s ease-out, filter 0.2s ease-out;
+            transition:
+                transform 0.2s ease-out,
+                opacity 0.2s ease-out,
+                filter 0.2s ease-out;
             position: relative;
             z-index: 2;
             color: var(--text-secondary);
@@ -223,8 +230,7 @@
             // Smooth folding effect properties (no scaleY to avoid gaps)
             opacity: var(--fold-opacity, 1);
             filter: blur(var(--fold-blur, 0px));
-            transform:
-                translateY(var(--fold-translate, 0px)) perspective(800px) rotateX(var(--fold-rotate, 0deg));
+            transform: translateY(var(--fold-translate, 0px)) perspective(800px) rotateX(var(--fold-rotate, 0deg));
             transform-origin: center center;
 
             &:last-child {
@@ -274,7 +280,7 @@
                 position: relative;
                 z-index: 3;
 
-                span[data-bs-toggle="tooltip"] {
+                .tooltip-trigger {
                     padding: 0.2rem 0.6rem;
                     border-radius: 999px;
                     background: var(--surface-muted);
@@ -314,8 +320,7 @@
                     border: none;
 
                     &::before {
-                        content: '\ea61';
-                        font-family: 'bootstrap-icons';
+                        content: '\23f2';
                         font-size: 0.9rem;
                     }
 
@@ -334,6 +339,18 @@
     // font-size: smaller;
     gap: 1rem;
     margin-bottom: 0rem;
+
+    // Sidebar cards should stack vertically instead of inheriting row flex layout
+    .row {
+        flex-direction: column;
+        margin-left: 0;
+        margin-right: 0;
+
+        >* {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
 
     @media (min-width: 1200px) {
         position: fixed;

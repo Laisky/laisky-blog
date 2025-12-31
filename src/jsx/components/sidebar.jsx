@@ -1,4 +1,3 @@
-
 'use strict';
 
 import React from 'react';
@@ -14,5 +13,5 @@ export const Sidebar = () => {
             <Admin />
             <Tags />
         </>
-    )
-}
+    );
+};

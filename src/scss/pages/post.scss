@@ -24,7 +24,6 @@
     overflow-x: hidden;
 }
 
-
 .posts {
     letter-spacing: normal;
     height: max-content;
@@ -66,7 +65,7 @@
                 align-items: center;
                 gap: 0.35rem;
 
-                &[data-bs-toggle="tooltip"] {
+                &.tooltip-trigger {
                     background: transparent;
                     border-radius: 999px;
                     padding: 0.2rem 0.6rem;
@@ -455,7 +454,6 @@
     }
 }
 
-
 @media (min-width: 1200px) {
     #post {
         gap: 0;
@@ -533,7 +531,7 @@
                     span {
                         margin-right: 0.5rem;
 
-                        &[data-bs-toggle="tooltip"] {
+                        &.tooltip-trigger {
                             padding: 0.15rem 0.5rem;
                         }
                     }
@@ -712,7 +710,6 @@
         }
     }
 }
-
 
 // Comments section styling
 

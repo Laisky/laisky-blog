@@ -1,2 +1,5 @@
 run:
-	npm run dev
+	yarn dev
+
+format:
+	yarn prettier . --write

@@ -247,7 +247,7 @@
     }
 }
 
-[data-bs-theme="dark"] .blog-comments {
+[data-theme='dark'] .blog-comments {
     .comment-form-container {
         background: var(--surface-secondary);
         border-color: var(--border-subtle);

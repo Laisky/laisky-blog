@@ -1,10 +1,10 @@
 'use strict';
 
-import { jwtDecode } from "jwt-decode";
-import moment from 'moment';
 import jsutils from '@laisky/js-utils';
-import request, { GraphQLClient } from "graphql-request";
-import { isJsxFragment } from "typescript";
+import request, { GraphQLClient } from 'graphql-request';
+import { jwtDecode } from 'jwt-decode';
+import moment from 'moment';
+import { isJsxFragment } from 'typescript';
 
 export const GraphqlAPI = 'https://gq_v2.laisky.com/query/';
 // export const GraphqlAPI = 'http://100.75.198.70:18080/query/';
@@ -48,7 +48,7 @@ export const graphqlQuery = async (body, vars, headers) => {
     }
 
     return await client.request(body, vars, headers);
-}
+};
 
 /**
  * Get the current user token.
@@ -59,7 +59,7 @@ export const graphqlQuery = async (body, vars, headers) => {
  */
 export const graphqlMutation = async (body, vars, headers) => {
     return await request(getGraphqlAPI(), body, vars, headers);
-}
+};
 
 /**
  * Check is bypass all cache
@@ -71,7 +71,7 @@ export const isForce = () => {
     }
 
     return false;
-}
+};
 
 export const getGraphqlAPI = () => {
     if (isForce()) {
@@ -80,7 +80,6 @@ export const getGraphqlAPI = () => {
 
     return GraphqlAPI;
 };
-
 
 export const getCurrentPathName = () => {
     return location.pathname;
@@ -120,7 +119,9 @@ export const getCurrentUsername = async () => {
         try {
             await jsutils.KvDel(KvKeyAuthUser);
             await jsutils.KvDel(KvKeyUserToken);
-        } catch (_) { /* ignore */ }
+        } catch (_) {
+            /* ignore */
+        }
         return;
     }
 
@@ -140,7 +141,6 @@ export const getCurrentUsername = async () => {
     // Prefer display_name; fall back to common fields
     return userinfo['display_name'] || userinfo['username'] || userinfo['name'] || userinfo['sub'];
 };
-
 
 /**
  * Set the user language.
@@ -165,9 +165,11 @@ export const setUserLanguage = async (lang) => {
 export const getUserLanguage = async () => {
     // Get language from the URL parameter, kv storage, or browser settings in that order
     const url = new URL(window.location.href);
-    let lang = url.searchParams.get('lang')
-        || await jsutils.KvGet(KvKeyLanguage)
-        || (navigator.language || navigator.userLanguage);
+    let lang =
+        url.searchParams.get('lang') ||
+        (await jsutils.KvGet(KvKeyLanguage)) ||
+        navigator.language ||
+        navigator.userLanguage;
 
     // Convert to lowercase for consistent comparison
     const langLower = lang ? lang.toLowerCase() : '';
@@ -191,8 +193,8 @@ export const getUserLanguage = async () => {
 
 export const formatTs = (ts) => {
     return moment(ts).format('YYYY-MM-DD');
-}
+};
 
 export const ts2UTC = (ts) => {
     return moment(ts).utc().format('YYYY-MM-DDTHH:mm[Z]');
-}
+};

@@ -1,0 +1,64 @@
+// Collapse component styles
+
+.collapse-container {
+    width: 100%;
+}
+
+.collapse__trigger {
+    cursor: pointer;
+    user-select: none;
+
+    &:focus-visible {
+        outline: 2px solid var(--accent-color, #0071e3);
+        outline-offset: 2px;
+        border-radius: 4px;
+    }
+}
+
+.collapse {
+    transition: height 0.3s ease;
+
+    &:not(.show):not(.collapsing) {
+        display: none;
+    }
+
+    &.collapsing {
+        display: block;
+    }
+
+    &.show {
+        display: block;
+    }
+}
+
+// Keep navbar menus visible on desktop even when they carry the collapse class
+@media (min-width: 576px) {
+    .navbar-expand-sm .navbar-collapse {
+        display: flex !important;
+        flex-basis: auto;
+        align-items: center;
+    }
+
+    .navbar-expand-sm .navbar-collapse.collapse:not(.show) {
+        display: flex !important;
+    }
+}
+
+.collapse__content {
+    // Content wrapper for proper padding handling during animation
+    width: 100%;
+}
+
+// Animation variant with fade
+.collapse--fade {
+    &.collapsing {
+        opacity: 0;
+        transition:
+            height 0.3s ease,
+            opacity 0.3s ease;
+    }
+
+    &.show {
+        opacity: 1;
+    }
+}

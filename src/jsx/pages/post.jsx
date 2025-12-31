@@ -1,15 +1,18 @@
 'use strict';
 
-import * as bootstrap from 'bootstrap';
+import jsutils, { RandomString } from '@laisky/js-utils';
 import { gql } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.30.0/prism.js';
-import React, { useEffect, useState } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
-import { Link, useParams, useNavigate } from 'react-router-dom';
 import { AlignLeft } from 'lucide-react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Comments } from '../components/comments.jsx';
-import jsutils, { RandomString } from '@laisky/js-utils';
 
+import mermaid from 'mermaid';
+import { Dropdown, DropdownItem } from '../components/Dropdown.jsx';
+import { Modal } from '../components/Modal.jsx';
+import { Tooltip } from '../components/Tooltip.jsx';
 import {
     formatTs,
     getCurrentUsername,
@@ -19,8 +22,13 @@ import {
     KvKeyLanguage,
     KvKeyPrefixCache,
 } from '../library/base.jsx';
-import mermaid from 'mermaid';
 
+/**
+ * loader loads post data by post name.
+ *
+ * @param {Object} params - Route params containing name
+ * @returns {Promise<Object>} Post object
+ */
 export const loader = async ({ params }) => {
     const cacheKey =
         KvKeyPrefixCache + (await jsutils.SHA256(`post:${await getUserLanguage()}:${params.name}`));
@@ -66,6 +74,12 @@ export const loader = async ({ params }) => {
     return result;
 };
 
+/**
+ * historyLoader loads historical post data by ID.
+ *
+ * @param {Object} params - Route params containing name (arweave ID)
+ * @returns {Promise<Object>} Historical post object
+ */
 export const historyLoader = async ({ params }) => {
     const cacheKey =
         KvKeyPrefixCache +
@@ -111,11 +125,35 @@ export const historyLoader = async ({ params }) => {
     return result;
 };
 
+/**
+ * Post component displays a single blog post with comments.
+ *
+ * @param {Object} props - Component props
+ * @param {string} props.isHistory - Whether this is a historical version
+ * @returns {React.ReactElement} The post component
+ */
 export const Post = ({ isHistory }) => {
     isHistory = isHistory === 'true';
     const params = useParams();
     const navigate = useNavigate();
 
+    const [content, setContent] = useState(
+        <div className="col-12 col-xl-9">
+            <div className="posts placeholder-glow">
+                <span className="placeholder col-7"></span>
+                <span className="placeholder col-4"></span>
+                <span className="placeholder col-4"></span>
+                <span className="placeholder col-6"></span>
+                <span className="placeholder col-8"></span>
+            </div>
+        </div>
+    );
+    const [language, setLanguage] = useState(null);
+    const [menuHtml, setMenuHtml] = useState(null);
+    const [imageModalOpen, setImageModalOpen] = useState(false);
+    const [imageModalSrc, setImageModalSrc] = useState('');
+
+    // Keyboard navigation
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
@@ -161,20 +199,7 @@ export const Post = ({ isHistory }) => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [navigate]);
 
-    const [content, setContent] = useState(
-        <div className="col-12 col-xl-9">
-            <div className="posts placeholder-glow">
-                <span className="placeholder col-7"></span>
-                <span className="placeholder col-4"></span>
-                <span className="placeholder col-4"></span>
-                <span className="placeholder col-6"></span>
-                <span className="placeholder col-8"></span>
-            </div>
-        </div>
-    );
-    const [language, setLanguage] = useState(null);
-    const [menuHtml, setMenuHtml] = useState(null);
-
+    // Load post content
     useEffect(() => {
         (async () => {
             let post;
@@ -210,13 +235,11 @@ export const Post = ({ isHistory }) => {
                                 </h2>
                                 <div className="post-meta">
                                     <span>published: </span>
-                                    <span
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        data-bs-title={`"${post.created_at}"`}
-                                    >
-                                        {formatTs(post.created_at)}
-                                    </span>
+                                    <Tooltip content={post.created_at} placement="top">
+                                        <span className="tooltip-trigger">
+                                            {formatTs(post.created_at)}
+                                        </span>
+                                    </Tooltip>
                                 </div>
                                 <div
                                     className="post-content"
@@ -226,17 +249,6 @@ export const Post = ({ isHistory }) => {
                                 ></div>
                                 {postTail}
                                 <Comments postName={params.name} />
-                                {/* <DiscussionEmbed
-                                shortname='laisky'
-                                config={
-                                    {
-                                        url: `https://laisky.com/p/${params.name}/`,
-                                        identifier: params.name,
-                                        title: params.name,
-                                        language: 'en_US' //e.g. for Traditional Chinese (Taiwan)
-                                    }
-                                }
-                            /> */}
                             </div>
                         </div>
                     </div>
@@ -245,9 +257,9 @@ export const Post = ({ isHistory }) => {
 
             setContent(content);
         })();
-    }, [params.name, language]);
+    }, [params.name, language, isHistory]);
 
-    // after render
+    // After render effects
     useEffect(() => {
         if (!content) {
             return;
@@ -258,16 +270,10 @@ export const Post = ({ isHistory }) => {
         let cleanupActiveState;
 
         (async () => {
-            bindPostImageModal();
+            bindPostImageModal(setImageModalOpen, setImageModalSrc);
             renderCode();
             await renderMathjax();
-            watchLanguageChange();
-
-            // enable tooltips
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-            Array.from(tooltipTriggerList).forEach(
-                (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
-            );
+            watchLanguageChange(setLanguage);
 
             // configure post menu behavior
             enhancePostMenu();
@@ -298,34 +304,18 @@ export const Post = ({ isHistory }) => {
         };
     }, [content]);
 
-    // Also add a window resize listener to the component
+    // Window resize listener
     useEffect(() => {
-        // Re-check for overflowing text when window resizes
         const handleResize = () => {
             enhancePostMenu();
         };
 
         window.addEventListener('resize', handleResize);
 
-        // Clean up the event listener
         return () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-
-    const watchLanguageChange = async () => {
-        await jsutils.KvAddListener(
-            KvKeyLanguage,
-            async (key, op, oldVal, newVal) => {
-                if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
-                    return;
-                }
-
-                setLanguage(newVal);
-            },
-            'page_post'
-        );
-    };
 
     return (
         <>
@@ -341,16 +331,22 @@ export const Post = ({ isHistory }) => {
                     dangerouslySetInnerHTML={{ __html: menuHtml }}
                 />
             )}
+            <Modal
+                isOpen={imageModalOpen}
+                onClose={() => setImageModalOpen(false)}
+                className="modal--image"
+            >
+                <img src={imageModalSrc} alt="" />
+            </Modal>
         </>
     );
 };
 
 /**
- * Enhance post menu with tooltip to display full text
+ * enhancePostMenu enhances menu links with tooltips for truncated text.
  */
 const enhancePostMenu = () => {
     try {
-        // Delay the execution to ensure DOM is fully rendered
         setTimeout(() => {
             const postMenu = document.querySelector('.post-menu');
             if (!postMenu) {
@@ -365,16 +361,13 @@ const enhancePostMenu = () => {
                 postMenu.classList.remove('is-hidden');
             }
 
-            // First dispose all existing tooltips to prevent duplicate instances
+            // Clean up existing tooltip wrappers
             menuLinks.forEach((link) => {
-                const tooltip = bootstrap.Tooltip.getInstance(link);
-                if (tooltip) {
-                    tooltip.dispose();
-                }
+                link.removeAttribute('data-tooltip');
+                link.removeAttribute('title');
             });
 
             menuLinks.forEach((link) => {
-                // Get dimensions
                 const linkText = link.textContent.trim();
 
                 // Create temp element to measure text width accurately
@@ -386,47 +379,13 @@ const enhancePostMenu = () => {
                 tempSpan.textContent = linkText;
                 document.body.appendChild(tempSpan);
 
-                // Compare text width with available width
                 const textWidth = tempSpan.offsetWidth;
-                const availableWidth = link.offsetWidth - 20; // Account for padding
+                const availableWidth = link.offsetWidth - 20;
                 document.body.removeChild(tempSpan);
 
-                // Only set up tooltip if text is actually truncated
+                // Use native title for simple tooltip
                 if (textWidth > availableWidth) {
-                    // Use a data attribute to mark this as having a tooltip
-                    link.setAttribute('data-bs-toggle', 'tooltip');
-                    link.setAttribute('data-bs-placement', 'right');
-                    link.setAttribute('data-bs-title', linkText);
-                    link.setAttribute('data-bs-container', 'body');
-
-                    // Initialize the tooltip with simpler options
-                    new bootstrap.Tooltip(link, {
-                        trigger: 'hover focus',
-                        boundary: 'window',
-                        offset: [0, 10],
-                    });
-
-                    // Ensure tooltip hides on mouseleave
-                    link.addEventListener('mouseleave', () => {
-                        const tooltip = bootstrap.Tooltip.getInstance(link);
-                        if (tooltip) {
-                            tooltip.hide();
-                        }
-                    });
-
-                    // Hide tooltip on click
-                    link.addEventListener('click', () => {
-                        const tooltip = bootstrap.Tooltip.getInstance(link);
-                        if (tooltip) {
-                            tooltip.hide();
-                        }
-                    });
-                } else {
-                    // Remove tooltip attributes if not needed
-                    link.removeAttribute('data-bs-toggle');
-                    link.removeAttribute('data-bs-placement');
-                    link.removeAttribute('data-bs-title');
-                    link.removeAttribute('data-bs-container');
+                    link.setAttribute('title', linkText);
                 }
             });
         }, 500);
@@ -436,35 +395,29 @@ const enhancePostMenu = () => {
 };
 
 /**
- * Improve menu interaction by adding persistent expansion
+ * improveMenuInteraction adds persistent expansion behavior to menus.
  */
 const improveMenuInteraction = () => {
     try {
         const postMenu = document.querySelector('.post-menu');
         if (!postMenu) return;
 
-        // Add mouseenter event to parent items
         const parentItems = postMenu.querySelectorAll('.nav-link');
         parentItems.forEach((item) => {
-            // Check if this item has children
             const subMenu = item.nextElementSibling;
             if (!subMenu || !subMenu.classList.contains('nav-pills')) return;
 
-            // Add hover behavior that persists
             item.addEventListener('mouseenter', () => {
-                // First remove expanded class from all submenus
                 postMenu.querySelectorAll('.nav-pills .nav-pills').forEach((menu) => {
                     if (!menu.querySelector('.nav-link.active')) {
                         menu.classList.remove('expanded');
                     }
                 });
 
-                // Expand this submenu
                 subMenu.classList.add('expanded');
             });
         });
 
-        // Add event to the menu container to handle mouse leaving the entire menu
         postMenu.addEventListener('mouseleave', () => {
             postMenu.querySelectorAll('.nav-pills .nav-pills').forEach((menu) => {
                 if (!menu.querySelector('.nav-link.active')) {
@@ -473,7 +426,6 @@ const improveMenuInteraction = () => {
             });
         });
 
-        // Add mouseenter event to submenu to keep it expanded
         const subMenus = postMenu.querySelectorAll('.nav-pills .nav-pills');
         subMenus.forEach((menu) => {
             menu.addEventListener('mouseenter', () => {
@@ -487,6 +439,9 @@ const improveMenuInteraction = () => {
 
 const POST_MENU_SCROLL_OFFSET = 120;
 
+/**
+ * getScrollContext determines the scroll context (element or document).
+ */
 const getScrollContext = () => {
     const explicitContainer = document.querySelector('.scrollable-content');
     if (explicitContainer) {
@@ -506,6 +461,9 @@ const getScrollContext = () => {
     };
 };
 
+/**
+ * setupPostMenuScrollSpy sets up scroll spy for the post menu using IntersectionObserver.
+ */
 const setupPostMenuScrollSpy = () => {
     try {
         const postMenu = document.querySelector('#post-menu');
@@ -513,75 +471,93 @@ const setupPostMenuScrollSpy = () => {
             return;
         }
 
-        const { element } = getScrollContext();
-        const scrollElement = element;
-
-        if (!scrollElement) {
+        const headingSelector =
+            '#post .post-content h1[id],#post .post-content h2[id],#post .post-content h3[id],#post .post-content h4[id],#post .post-content h5[id],#post .post-content h6[id]';
+        const headings = Array.from(document.querySelectorAll(headingSelector));
+        if (!headings.length) {
             return;
         }
 
-        const existingInstance = bootstrap.ScrollSpy.getInstance(scrollElement);
-        if (existingInstance) {
-            existingInstance.dispose();
-        }
+        let lastActiveLink = null;
 
-        const scrollSpy = new bootstrap.ScrollSpy(scrollElement, {
-            target: '#post-menu',
-            smoothScroll: false,
-            offset: POST_MENU_SCROLL_OFFSET,
-        });
-
-        let lastActiveLink = postMenu.querySelector('.nav-link.active');
-        if (lastActiveLink) {
-            lastActiveLink.classList.add('is-current');
-        }
-
-        const handleActivate = () => {
-            const current = postMenu.querySelector('.nav-link.active');
-            if (!current) {
-                return;
-            }
-
-            if (lastActiveLink && lastActiveLink !== current) {
+        const highlightLink = (link) => {
+            if (lastActiveLink && lastActiveLink !== link) {
+                lastActiveLink.classList.remove('active');
                 lastActiveLink.classList.remove('is-current');
             }
-
-            current.classList.add('is-current');
-            lastActiveLink = current;
+            if (link) {
+                link.classList.add('active');
+                link.classList.add('is-current');
+            }
+            lastActiveLink = link || null;
         };
 
-        const handleClear = () => {
-            if (lastActiveLink && !lastActiveLink.classList.contains('is-current')) {
-                lastActiveLink.classList.add('is-current');
+        const { type, element } = getScrollContext();
+        const scrollElement = type === 'element' ? element : window;
+
+        const updateActiveLink = () => {
+            const rootRect =
+                type === 'element' && element ? element.getBoundingClientRect() : { top: 0 };
+            const targetLine = rootRect.top + POST_MENU_SCROLL_OFFSET + 1;
+
+            let activeHeading = headings[0];
+            for (const heading of headings) {
+                const headingTop = heading.getBoundingClientRect().top;
+                if (headingTop <= targetLine) {
+                    activeHeading = heading;
+                } else {
+                    break;
+                }
             }
+
+            // Check if near bottom
+            const isNearBottom = (() => {
+                if (type === 'element' && element) {
+                    return element.scrollTop + element.clientHeight >= element.scrollHeight - 2;
+                }
+                const doc = document.documentElement;
+                const body = document.body;
+                const scrollTop = window.scrollY || doc.scrollTop || 0;
+                const viewportHeight = window.innerHeight || doc.clientHeight;
+                const scrollHeight = Math.max(doc.scrollHeight, body.scrollHeight);
+                return scrollTop + viewportHeight >= scrollHeight - 2;
+            })();
+
+            if (isNearBottom) {
+                activeHeading = headings[headings.length - 1];
+            }
+
+            const link = activeHeading
+                ? postMenu.querySelector(`.nav-link[href="#${escapeSelector(activeHeading.id)}"]`)
+                : null;
+            highlightLink(link);
         };
 
-        const handleResize = () => {
-            if (typeof scrollSpy.refresh === 'function') {
-                scrollSpy.refresh();
+        let rafId = null;
+        const scheduleUpdate = () => {
+            if (rafId !== null) {
+                return;
             }
+            rafId = window.requestAnimationFrame(() => {
+                rafId = null;
+                updateActiveLink();
+            });
         };
 
-        postMenu.addEventListener('activate.bs.scrollspy', handleActivate);
-        postMenu.addEventListener('clear.bs.scrollspy', handleClear);
-        window.addEventListener('resize', handleResize);
+        scheduleUpdate();
 
-        // Allow dynamic content to settle before refreshing scrollspy
-        setTimeout(() => {
-            if (typeof scrollSpy.refresh === 'function') {
-                scrollSpy.refresh();
-            }
-        }, 400);
+        scrollElement.addEventListener('scroll', scheduleUpdate, { passive: true });
+        window.addEventListener('resize', scheduleUpdate);
 
         return () => {
-            postMenu.removeEventListener('activate.bs.scrollspy', handleActivate);
-            postMenu.removeEventListener('clear.bs.scrollspy', handleClear);
-            window.removeEventListener('resize', handleResize);
-            postMenu
-                .querySelectorAll('.is-current')
-                .forEach((link) => link.classList.remove('is-current'));
-            if (typeof scrollSpy.dispose === 'function') {
-                scrollSpy.dispose();
+            scrollElement.removeEventListener('scroll', scheduleUpdate);
+            window.removeEventListener('resize', scheduleUpdate);
+            if (rafId !== null) {
+                window.cancelAnimationFrame(rafId);
+            }
+            if (lastActiveLink) {
+                lastActiveLink.classList.remove('active');
+                lastActiveLink.classList.remove('is-current');
             }
         };
     } catch (e) {
@@ -589,6 +565,9 @@ const setupPostMenuScrollSpy = () => {
     }
 };
 
+/**
+ * escapeSelector escapes special characters in CSS selectors.
+ */
 const escapeSelector = (value = '') => {
     try {
         if (window.CSS && typeof window.CSS.escape === 'function') {
@@ -601,6 +580,9 @@ const escapeSelector = (value = '') => {
     return value.replace(/[\0-\x1F\x7F-\x9F!"#$%&'()*+,./:;<=>?@[\\\]^`{|}~]/g, '\\$&');
 };
 
+/**
+ * setupPostMenuLinkScrolling sets up smooth scrolling for menu links.
+ */
 const setupPostMenuLinkScrolling = () => {
     try {
         const postMenu = document.querySelector('#post-menu');
@@ -681,134 +663,17 @@ const setupPostMenuLinkScrolling = () => {
     }
 };
 
+/**
+ * setupPostMenuActiveState maintains active state for post menu links.
+ */
 const setupPostMenuActiveState = () => {
-    try {
-        const postMenu = document.querySelector('#post-menu');
-        if (!postMenu || postMenu.classList.contains('is-hidden')) {
-            return;
-        }
-
-        const headingSelector =
-            '#post .post-content h1[id],#post .post-content h2[id],#post .post-content h3[id],#post .post-content h4[id],#post .post-content h5[id],#post .post-content h6[id]';
-        const headings = Array.from(document.querySelectorAll(headingSelector));
-        if (!headings.length) {
-            return;
-        }
-
-        const { type, element } = getScrollContext();
-        const scrollElement = type === 'element' ? element : window;
-        if (!scrollElement) {
-            return;
-        }
-
-        let lastHighlightedLink = null;
-        let manualActiveLink = null;
-        let rafId = null;
-
-        const highlightLink = (link) => {
-            if (lastHighlightedLink && lastHighlightedLink !== link) {
-                lastHighlightedLink.classList.remove('is-current');
-            }
-            if (link) {
-                link.classList.add('is-current');
-            }
-            lastHighlightedLink = link || null;
-        };
-
-        const isNearBottom = () => {
-            if (type === 'element' && element) {
-                return element.scrollTop + element.clientHeight >= element.scrollHeight - 2;
-            }
-
-            const doc = document.documentElement;
-            const body = document.body;
-            const scrollTop = window.scrollY || doc.scrollTop || 0;
-            const viewportHeight = window.innerHeight || doc.clientHeight;
-            const scrollHeight = Math.max(doc.scrollHeight, body.scrollHeight);
-            return scrollTop + viewportHeight >= scrollHeight - 2;
-        };
-
-        const updateCurrentLink = () => {
-            const activeFromSpy = postMenu.querySelector('.nav-link.active');
-            if (activeFromSpy && activeFromSpy !== manualActiveLink) {
-                if (manualActiveLink && manualActiveLink !== activeFromSpy) {
-                    manualActiveLink.classList.remove('active');
-                    manualActiveLink = null;
-                }
-                highlightLink(activeFromSpy);
-                manualActiveLink = null;
-                return;
-            }
-
-            const rootRect =
-                type === 'element' && element ? element.getBoundingClientRect() : { top: 0 };
-            const targetLine = rootRect.top + POST_MENU_SCROLL_OFFSET + 1;
-
-            let activeHeading = headings[0];
-            for (const heading of headings) {
-                const headingTop = heading.getBoundingClientRect().top;
-                if (headingTop <= targetLine) {
-                    activeHeading = heading;
-                } else {
-                    break;
-                }
-            }
-
-            if (isNearBottom()) {
-                activeHeading = headings[headings.length - 1];
-            }
-
-            const link = activeHeading
-                ? postMenu.querySelector(`.nav-link[href="#${escapeSelector(activeHeading.id)}"]`)
-                : null;
-            if (link) {
-                if (manualActiveLink && manualActiveLink !== link) {
-                    manualActiveLink.classList.remove('active');
-                }
-                link.classList.add('active');
-                manualActiveLink = link;
-            }
-            highlightLink(link);
-        };
-
-        const scheduleUpdate = () => {
-            if (rafId !== null) {
-                return;
-            }
-            rafId = window.requestAnimationFrame(() => {
-                rafId = null;
-                updateCurrentLink();
-            });
-        };
-
-        scheduleUpdate();
-
-        const scrollTarget = type === 'element' && element ? element : window;
-        scrollTarget.addEventListener('scroll', scheduleUpdate, {
-            passive: true,
-        });
-        window.addEventListener('resize', scheduleUpdate);
-
-        return () => {
-            if (scrollTarget) {
-                scrollTarget.removeEventListener('scroll', scheduleUpdate);
-            }
-            window.removeEventListener('resize', scheduleUpdate);
-            if (rafId !== null) {
-                window.cancelAnimationFrame(rafId);
-            }
-            if (lastHighlightedLink) {
-                lastHighlightedLink.classList.remove('is-current');
-            }
-            if (manualActiveLink) {
-                manualActiveLink.classList.remove('active');
-            }
-        };
-    } catch (e) {
-        console.error('failed to maintain post menu active state:', e);
-    }
+    // This is now handled by setupPostMenuScrollSpy
+    return () => {};
 };
 
+/**
+ * renderCode highlights code blocks using Prism.
+ */
 const renderCode = () => {
     try {
         document.querySelectorAll('pre > code').forEach((ele) => {
@@ -820,7 +685,7 @@ const renderCode = () => {
 };
 
 /**
- * Render MathJax for mathematical expressions
+ * renderMathjax renders mathematical expressions using MathJax.
  */
 const renderMathjax = () => {
     try {
@@ -831,7 +696,6 @@ const renderMathjax = () => {
             script.async = true;
             script.onload = () => {
                 window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
-                // Add callback to handle math elements after rendering
                 window.MathJax.Hub.Queue(optimizeMathDisplay);
             };
             script.onerror = (e) => {
@@ -840,7 +704,6 @@ const renderMathjax = () => {
             document.head.appendChild(script);
         } else {
             window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
-            // Add callback to handle math elements after rendering
             window.MathJax.Hub.Queue(optimizeMathDisplay);
         }
     } catch (e) {
@@ -848,34 +711,31 @@ const renderMathjax = () => {
     }
 };
 
+/**
+ * optimizeMathDisplay optimizes the display of math elements.
+ */
 const optimizeMathDisplay = () => {
     try {
-        // Find all inline math elements
         const inlineMathElements = document.querySelectorAll(
             '.math.inline, .math-inline, span.mjx-chtml'
         );
 
         inlineMathElements.forEach((element) => {
-            // Ensure proper display property
             if (element.style.display !== 'inline-block') {
                 element.style.display = 'inline-block';
             }
 
-            // Check if the element needs horizontal scrolling
             const parentWidth = element.parentElement.offsetWidth;
             const contentWidth = element.scrollWidth;
 
             if (contentWidth > parentWidth) {
-                // If content is wider than container, ensure it's set for scrolling
                 element.style.maxWidth = '100%';
                 element.style.overflowX = 'auto';
                 element.style.overflowY = 'hidden';
 
-                // Add a hint to users that this is scrollable (subtle visual cue)
                 if (!element.classList.contains('scrollable-math')) {
                     element.classList.add('scrollable-math');
 
-                    // For math in list items, ensure the li can handle it
                     if (element.closest('li')) {
                         element.closest('li').style.overflow = 'visible';
                     }
@@ -883,7 +743,6 @@ const optimizeMathDisplay = () => {
             }
         });
 
-        // Also handle display math blocks
         const displayMathElements = document.querySelectorAll('.MJXc-display');
         displayMathElements.forEach((element) => {
             element.style.overflowX = 'auto';
@@ -894,42 +753,35 @@ const optimizeMathDisplay = () => {
     }
 };
 
+/**
+ * loadPostTails loads the post tail section with edit link and history dropdown.
+ */
 const loadPostTails = async (post) => {
     let articleEditable;
     if (await getCurrentUsername()) {
         articleEditable = <Link to={`/edit/${post.name}/`}>Edit</Link>;
     }
 
-    // dropdown options for history
-    let articleHistory = [];
-    let maxHistory = 10;
-    if (post['arweave_id']) {
-        for (let i = 0; i < post['arweave_id'].length; i++) {
-            if (i >= maxHistory) {
-                break;
-            }
+    // History dropdown
+    let articleHistory = null;
+    const maxHistory = 10;
+    if (post['arweave_id'] && post['arweave_id'].length > 0) {
+        const historyItems = post['arweave_id'].slice(0, maxHistory).map((history) => (
+            <DropdownItem key={history.id} href={`/p/history/${history.id}/`}>
+                {history.time}
+            </DropdownItem>
+        ));
 
-            let history = post['arweave_id'][i];
-            articleHistory.push(
-                <li key={history.id}>
-                    <Link to={`/p/history/${history.id}/`}>{history.time}</Link>
-                </li>
-            );
-        }
+        const historyTrigger = (
+            <button className="btn btn-default dropdown-toggle" type="button">
+                History
+                <span className="caret"></span>
+            </button>
+        );
 
         articleHistory = (
-            <div className="dropdown post-history">
-                <button
-                    className="btn btn-default dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="true"
-                >
-                    History
-                    <span className="caret"></span>
-                </button>
-                <ul className="dropdown-menu">{articleHistory}</ul>
+            <div className="post-history">
+                <Dropdown trigger={historyTrigger}>{historyItems}</Dropdown>
             </div>
         );
     }
@@ -942,22 +794,10 @@ const loadPostTails = async (post) => {
     );
 };
 
-let imgModal;
-
-const bindPostImageModal = () => {
-    if (!imgModal) {
-        const modalEle = document.getElementById('showImageModal');
-        imgModal = new bootstrap.Modal(modalEle);
-
-        modalEle.addEventListener('click', (evt) => {
-            evt.preventDefault();
-            evt.stopPropagation();
-
-            imgModal.hide();
-        });
-    }
-
-    // bind click event to post images
+/**
+ * bindPostImageModal binds click events to post images to open modal.
+ */
+const bindPostImageModal = (setImageModalOpen, setImageModalSrc) => {
     const postImgs = document.querySelectorAll('.post-content p img');
     postImgs.forEach((img) => {
         if (img.dataset.bindmodal) {
@@ -969,26 +809,31 @@ const bindPostImageModal = () => {
             evt.preventDefault();
             evt.stopPropagation();
 
-            // Create a new img element
-            const newImg = document.createElement('img');
-            newImg.src = img.src;
-            newImg.classList.add('img-fluid'); // Add any necessary classes
-
-            // Clear the existing content in the modal body and append the new img element
-            const modalBody = document
-                .getElementById('showImageModal')
-                .querySelector('.modal-body');
-            modalBody.innerHTML = ''; // Clear existing content
-            modalBody.appendChild(newImg);
-
-            // Show the modal
-            imgModal.show();
+            setImageModalSrc(img.src);
+            setImageModalOpen(true);
         });
     });
 };
 
 /**
- * Parse and replace post series in the post content
+ * watchLanguageChange watches for language changes and updates state.
+ */
+const watchLanguageChange = async (setLanguage) => {
+    await jsutils.KvAddListener(
+        KvKeyLanguage,
+        async (key, op, oldVal, newVal) => {
+            if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+                return;
+            }
+
+            setLanguage(newVal);
+        },
+        'page_post'
+    );
+};
+
+/**
+ * parseAndReplacePostSeries parses and replaces post series placeholders.
  */
 const parseAndReplacePostSeries = async () => {
     const seriesElements = document.querySelectorAll('.post .post-content div.post_series');
@@ -1021,6 +866,9 @@ const parseAndReplacePostSeries = async () => {
     await Promise.all(tasks);
 };
 
+/**
+ * loadSeries loads series data by key.
+ */
 async function loadSeries(postkey) {
     const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`postSeries:${postkey}`));
     if (!isForce()) {
@@ -1061,6 +909,9 @@ async function loadSeries(postkey) {
     return result;
 }
 
+/**
+ * parseSeriesHTML generates HTML for series posts.
+ */
 function parseSeriesHTML(se) {
     let html = '';
     if (se.posts && se.posts.length > 0) {
@@ -1073,6 +924,9 @@ function parseSeriesHTML(se) {
     return html;
 }
 
+/**
+ * parseSeriesChildren generates HTML for nested series.
+ */
 async function parseSeriesChildren(seriesKey) {
     let se = await loadSeries(seriesKey);
     let sid = `series-${RandomString(16)}`;
@@ -1085,21 +939,24 @@ async function parseSeriesChildren(seriesKey) {
 
     const iconHtml = renderToStaticMarkup(<AlignLeft size={16} />);
 
+    // Use details/summary for native collapse without Bootstrap
     html = `
             <li class="post-series-entry post-series-entry--nested">
-                <a class="series-toggle" data-bs-toggle="collapse" href="#${sid}" role="button" aria-expanded="false" aria-controls="${sid}">
-                    ${iconHtml}
-                    <span>${se.remark} Serials：</span>
-                </a>
-                <div id="${sid}" class="collapse series-collapse">
-                    <div class="card post-series-card post-series-card--nested">
-                        <div class="card-body post-series-card-body">
-                            <ul class="post-series-list">
-                                ${html}
-                            </ul>
+                <details class="series-details">
+                    <summary class="series-toggle">
+                        ${iconHtml}
+                        <span>${se.remark} Serials：</span>
+                    </summary>
+                    <div class="series-collapse">
+                        <div class="card post-series-card post-series-card--nested">
+                            <div class="card-body post-series-card-body">
+                                <ul class="post-series-list">
+                                    ${html}
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </details>
             </li>
         `;
 

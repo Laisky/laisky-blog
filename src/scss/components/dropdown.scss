@@ -1,0 +1,124 @@
+// Dropdown component styles
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+
+    &__trigger {
+        cursor: pointer;
+        user-select: none;
+
+        &:focus-visible {
+            outline: 2px solid var(--accent-color, #0071e3);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+    }
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+    min-width: 160px;
+    padding: 0.5rem;
+    margin-top: 4px;
+    background: var(--surface-elevated, #fff);
+    border: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.1));
+    border-radius: var(--radius-md, 8px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+    animation: dropdown-fade-in 0.15s ease-out;
+
+    [data-theme='dark'] & {
+        background: var(--surface-primary, #2c2c2e);
+        border-color: var(--border-subtle, rgba(255, 255, 255, 0.1));
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    &--start {
+        left: 0;
+    }
+
+    &--end {
+        right: 0;
+    }
+
+    &.show {
+        display: block;
+    }
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    background: transparent;
+    text-align: left;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary, #1d1d1f);
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+
+    [data-theme='dark'] & {
+        color: var(--text-secondary, #e5e5e5);
+    }
+
+    &:hover,
+    &:focus {
+        background: var(--surface-secondary, rgba(0, 0, 0, 0.05));
+        color: var(--text-primary, #1d1d1f);
+        text-decoration: none;
+        outline: none;
+
+        [data-theme='dark'] & {
+            background: var(--surface-secondary, rgba(255, 255, 255, 0.1));
+            color: var(--text-primary, #f5f5f7);
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--accent-color, #0071e3);
+        outline-offset: -2px;
+    }
+
+    &.active {
+        background: var(--accent-color, #0071e3);
+        color: #fff;
+
+        &:hover,
+        &:focus {
+            background: var(--accent-color, #0071e3);
+            filter: brightness(1.1);
+            color: #fff;
+        }
+    }
+}
+
+.dropdown-divider {
+    height: 0;
+    margin: 0.5rem 0;
+    border: 0;
+    border-top: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.1));
+
+    [data-theme='dark'] & {
+        border-top-color: var(--border-subtle, rgba(255, 255, 255, 0.1));
+    }
+}
+
+@keyframes dropdown-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,12 +1,12 @@
 'use strict';
 
 import jsutils from '@laisky/js-utils';
-import * as bootstrap from 'bootstrap';
 import { gql } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
 import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 
 import { Sidebar } from '../components/sidebar.jsx';
+import { Tooltip } from '../components/Tooltip.jsx';
 import {
     KvKeyLanguage,
     KvKeyPrefixCache,
@@ -18,6 +18,12 @@ import {
 } from '../library/base.jsx';
 import { loader as postLoader } from './post.jsx';
 
+/**
+ * loader loads page data including posts and total post count.
+ *
+ * @param {Object} params - Route params containing nPage
+ * @returns {Promise<Object>} Object containing postsData and nPosts
+ */
 export const loader = async ({ params }) => {
     const [postsData, nPosts] = await Promise.all([loadPage(params.nPage), loadPostInfo()]);
 
@@ -32,6 +38,11 @@ export const loader = async ({ params }) => {
     return { postsData, nPosts };
 };
 
+/**
+ * Page component displays a paginated list of blog posts.
+ *
+ * @returns {React.ReactElement} The page component
+ */
 export const Page = () => {
     const [content, setContent] = useState(
         <>
@@ -114,12 +125,6 @@ export const Page = () => {
             // update page title
             const currentPage = parseInt(params.nPage, 10) + 1;
             document.title = `Page ${currentPage}`;
-
-            // enable tooltips
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-            const tooltipList = [...tooltipTriggerList].map(
-                (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
-            );
         })();
     }, [params.nPage]);
 
@@ -143,14 +148,12 @@ export const Page = () => {
             // Define zones: a generous central area for reading
             // Top zone: only apply fade when article is scrolling OUT of view (above navbar)
             // Bottom zone: from 100px above bottom to bottom
-            const topZoneEnd = navbarHeight + 60; // Reduced from 120 to minimize fade zone
             const bottomZoneStart = viewportHeight - 100; // Reduced from 150
 
             // Transition distances for smooth gradual effect
-            const topTransitionRange = 60; // Reduced for tighter transition
             const bottomTransitionRange = 80; // Reduced for tighter transition
 
-            posts.forEach((post, index) => {
+            posts.forEach((post) => {
                 const rect = post.getBoundingClientRect();
                 const postTop = rect.top;
 
@@ -263,13 +266,9 @@ export const Page = () => {
                     </h2>
                     <div className="post-meta">
                         <span>published: </span>
-                        <span
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            data-bs-title={`"${post.created_at}"`}
-                        >
-                            {formatTs(post.created_at)}
-                        </span>
+                        <Tooltip content={post.created_at} placement="top">
+                            <span className="tooltip-trigger">{formatTs(post.created_at)}</span>
+                        </Tooltip>
                     </div>
                     <div className="post-content">{post.markdown}</div>
                     <div className="post-tail">{postTail}</div>
@@ -354,6 +353,9 @@ export const Page = () => {
         setContent(cnt);
     };
 
+    /**
+     * watchLanguageChange watches for language changes and regenerates content.
+     */
     const watchLanguageChange = async () => {
         await jsutils.KvAddListener(
             KvKeyLanguage,
@@ -368,6 +370,9 @@ export const Page = () => {
         );
     };
 
+    /**
+     * getPostTails gets the edit link for posts if user is logged in.
+     */
     const getPostTails = async (post) => {
         let articleEditable;
         if (await getCurrentUsername()) {
@@ -386,6 +391,12 @@ export const Page = () => {
     );
 };
 
+/**
+ * loadPage loads posts for a specific page number.
+ *
+ * @param {number} nPage - The page number to load
+ * @returns {Promise<Array>} Array of post objects
+ */
 const loadPage = async (nPage) => {
     console.debug(`loadPage: ${nPage}`);
 
@@ -437,6 +448,11 @@ const loadPage = async (nPage) => {
     return result;
 };
 
+/**
+ * loadPostInfo loads the total post count.
+ *
+ * @returns {Promise<number>} Total number of posts
+ */
 const loadPostInfo = async () => {
     const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`loadPostInfo`));
     if (!isForce()) {

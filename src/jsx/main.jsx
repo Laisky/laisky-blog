@@ -1,26 +1,21 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom/client";
-import {
-    createBrowserRouter,
-    Navigate,
-    RouterProvider,
-} from "react-router-dom";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom/client';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 
-import "../scss/main.scss";
+import '../scss/main.scss';
 
-import { About } from "./pages/about";
-import { App } from "./pages/app";
-import { PostEdit, postEditLoader, postPublishLoader } from "./pages/edit";
-import { Login } from "./pages/login";
-import { Page, loader as pageLoader } from "./pages/pages";
-import { Post, loader as postLoader, historyLoader as postHistoryLoader } from "./pages/post";
-import { Categories, loader as categoriesLoader } from "./pages/categories";
-import NotFound from "./pages/notfound";
-
+import { About } from './pages/about';
+import { App } from './pages/app';
+import { Categories, loader as categoriesLoader } from './pages/categories';
+import { PostEdit, postEditLoader, postPublishLoader } from './pages/edit';
+import { Login } from './pages/login';
+import NotFound from './pages/notfound';
+import { Page, loader as pageLoader } from './pages/pages';
+import { Post, historyLoader as postHistoryLoader, loader as postLoader } from './pages/post';
 
 const router = createBrowserRouter([
     {
-        path: "/",
+        path: '/',
         element: <App />,
         children: [
             {
@@ -28,52 +23,51 @@ const router = createBrowserRouter([
                 element: <Navigate to="/pages/0/" />,
             },
             {
-                path: "pages/:nPage/",
+                path: 'pages/:nPage/',
                 element: <Page />,
                 loader: pageLoader,
             },
             {
-                path: "p/:name/",
+                path: 'p/:name/',
                 element: <Post isHistory="false" />,
                 // loader: postLoader,
             },
             {
-                path: "p/history/:name/",
+                path: 'p/history/:name/',
                 element: <Post isHistory="true" />,
                 // loader: postHistoryLoader,
             },
             {
-                path: "edit/:name/",
+                path: 'edit/:name/',
                 element: <PostEdit isPublish="false" />,
                 // loader: postEditLoader,
             },
             {
-                path: "publish/",
+                path: 'publish/',
                 element: <PostEdit isPublish="true" />,
             },
             {
-                path: "about/",
+                path: 'about/',
                 element: <About />,
             },
             {
-                path: "login/",
+                path: 'login/',
                 element: <Login />,
             },
             {
-                path: "categories/:category",
+                path: 'categories/:category',
                 element: <Categories />,
                 loader: categoriesLoader,
             },
             {
-                path: "*",
+                path: '*',
                 element: <NotFound />,
-            }
+            },
         ],
     },
 ]);
 
-
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <RouterProvider router={router} />
     </React.StrictMode>

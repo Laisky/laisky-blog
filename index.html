@@ -1,51 +1,47 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <title>Laisky's Blog</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Blog by Laisky - Exploring code, technology, and life" />
+        <link rel="shortcut icon" href="https://s3.laisky.com/static/favicon.ico" />
+        <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="Articles"
+            href="https://s3.laisky.com/public/rss.xml"
+        />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://s3.laisky.com/static/prism/1.30.0/prism.css"
+        />
+    </head>
 
-<head>
-    <title>Laisky's Blog</title>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Blog by Laisky - Exploring code, technology, and life">
-    <link rel="shortcut icon" href="https://s3.laisky.com/static/favicon.ico" />
-    <link rel="alternate" type="application/rss+xml" title="Articles" href="https://s3.laisky.com/public/rss.xml" />
-    <link rel="stylesheet" type="text/css" href="https://s3.laisky.com/static/prism/1.30.0/prism.css"/>
-</head>
-
-<body>
-    <div id="root">
-        <div id="pages" class="row align-items-start scrollable-content">
-            <div class="row">
-                <p>Please wait to load...</p>
-            </div>
-            <div class='posts placeholder-glow'>
-                <span class="placeholder col-7"></span>
-                <span class="placeholder col-4"></span>
-                <span class="placeholder col-4"></span>
-                <span class="placeholder col-6"></span>
-                <span class="placeholder col-8"></span>
-            </div>
-        </div>
-    </div>
-
-    <script async src="https://js.sentry-cdn.com/0a5aa56db9cb55dc305a90b5ec8a5c51.min.js" crossorigin="anonymous"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS"></script>
-    <script type="module" src="/src/jsx/main.jsx"></script>
-
-    <!-- Modal -->
-    <div class="modal fade" id="showImageModal" tabindex="-1" aria-labelledby="showImageModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5"></h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <body>
+        <div id="root">
+            <div id="pages" class="row align-items-start scrollable-content">
+                <div class="row">
+                    <p>Please wait to load...</p>
                 </div>
-                <div class="modal-body">
-                    <img src="" alt="">
+                <div class="posts placeholder-glow">
+                    <span class="placeholder col-7"></span>
+                    <span class="placeholder col-4"></span>
+                    <span class="placeholder col-4"></span>
+                    <span class="placeholder col-6"></span>
+                    <span class="placeholder col-8"></span>
                 </div>
             </div>
         </div>
-    </div>
-</body>
 
+        <script
+            async
+            src="https://js.sentry-cdn.com/0a5aa56db9cb55dc305a90b5ec8a5c51.min.js"
+            crossorigin="anonymous"
+        ></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS"></script>
+        <script type="module" src="/src/jsx/main.jsx"></script>
+    </body>
 </html>

@@ -57,9 +57,7 @@ export default [
     },
     {
         files: ['**/*.{ts,tsx}'],
-        extends: [
-            'plugin:@typescript-eslint/recommended',
-        ],
+        extends: ['plugin:@typescript-eslint/recommended'],
         languageOptions: {
             parser: tsParser,
         },

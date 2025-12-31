@@ -5,6 +5,7 @@ import 'https://s3.laisky.com/static/prism/1.30.0/prism.js';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import jsutils from '@laisky/js-utils';
 import {
     getUserLanguage,
     graphqlMutation,
@@ -12,7 +13,6 @@ import {
     KvKeyLanguage,
     KvKeyUserToken,
 } from '../library/base.jsx';
-import jsutils from '@laisky/js-utils';
 
 export const postEditLoader = async ({ params }) => {
     const gqBody = gql`
@@ -148,7 +148,7 @@ export const PostEdit = ({ isPublish }) => {
         }
 
         return (
-            <div className="col-md-9 posts">
+            <div className="posts">
                 <div className="post" id={post.name} key={post.name}>
                     <div className="mb-3">
                         <label htmlFor="postTitle" className="form-label">
@@ -211,9 +211,9 @@ export const PostEdit = ({ isPublish }) => {
     };
 
     return (
-        <div id="postEdit" className="row align-items-start scrollable-content">
+        <div id="postEdit" className="row g-3 g-xl-4 align-items-start scrollable-content">
             {/* blog posts */}
-            {content}
+            <div className="col-12 col-xl-9">{content}</div>
         </div>
     );
 };

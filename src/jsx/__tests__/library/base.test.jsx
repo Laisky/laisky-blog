@@ -1,24 +1,22 @@
+import jsutils from '@laisky/js-utils';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import {
     formatTs,
     getCurrentPathName,
+    getCurrentUsername,
     isForce,
     isJwtExpired,
-    getCurrentUsername,
-    ts2UTC
+    ts2UTC,
 } from '../../library/base';
-import jsutils from '@laisky/js-utils';
-
 
 // Mock dependencies
 vi.mock('@laisky/js-utils', () => ({
     default: {
         KvGet: vi.fn(),
         KvSet: vi.fn(),
-        KvDel: vi.fn()
-    }
+        KvDel: vi.fn(),
+    },
 }));
-
 
 describe('base.jsx', () => {
     // Store original window properties
@@ -33,7 +31,7 @@ describe('base.jsx', () => {
         window.location = {
             pathname: '/test-path',
             search: '',
-            href: 'https://laisky.com/test-path'
+            href: 'https://laisky.com/test-path',
         };
 
         // Mock document.documentElement
@@ -42,14 +40,14 @@ describe('base.jsx', () => {
             value: {
                 lang: '',
                 getAttribute: vi.fn(),
-                setAttribute: vi.fn()
-            }
+                setAttribute: vi.fn(),
+            },
         });
 
         // Mock navigator
         Object.defineProperty(navigator, 'language', {
             writable: true,
-            value: 'en-US'
+            value: 'en-US',
         });
 
         // Reset mocks
@@ -104,8 +102,7 @@ describe('base.jsx', () => {
         test('returns undefined and clears storage when token expired', async () => {
             const past = Math.floor(Date.now() / 1000) - 10;
             const token = makeToken({ exp: past, display_name: 'User' });
-            jsutils.KvGet
-                .mockResolvedValueOnce(token); // token
+            jsutils.KvGet.mockResolvedValueOnce(token); // token
 
             const name = await getCurrentUsername();
             expect(name).toBeUndefined();
@@ -115,9 +112,8 @@ describe('base.jsx', () => {
         test('decodes token to get username when cache missing and token valid', async () => {
             const future = Math.floor(Date.now() / 1000) + 300;
             const token = makeToken({ exp: future, display_name: 'Alice' });
-            jsutils.KvGet
-                .mockResolvedValueOnce(token) // token
-                .mockResolvedValueOnce(null);  // auth_user missing
+            jsutils.KvGet.mockResolvedValueOnce(token) // token
+                .mockResolvedValueOnce(null); // auth_user missing
 
             const name = await getCurrentUsername();
             expect(name).toBe('Alice');

@@ -1,33 +1,57 @@
-import { useState, useEffect } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import jsutils from '@laisky/js-utils';
 import {
-    Languages,
-    Terminal,
-    FileText,
-    User,
     Activity,
-    Rss,
     BotMessageSquare,
     Factory,
+    FileText,
+    Languages,
+    Menu,
+    Rss,
+    Terminal,
+    User,
+    X,
 } from 'lucide-react';
-import jsutils from '@laisky/js-utils';
+import { useCallback, useEffect, useState } from 'react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
+import { Dropdown, DropdownItem } from '../components/Dropdown';
 import { getUserLanguage, setUserLanguage } from '../library/base';
 
+/**
+ * isActiveRoute checks if the given route name matches the current route.
+ *
+ * @param {string} routeName - The route name to check
+ * @param {string} currentRoute - The current route name
+ * @returns {string} 'active' if match, empty string otherwise
+ */
 const isActiveRoute = (routeName, currentRoute) => {
     return routeName === currentRoute ? 'active' : '';
 };
 
+/**
+ * App is the main application component containing the navbar and routing outlet.
+ *
+ * @returns {React.ReactElement} The main app layout
+ */
 export const App = () => {
     const [userLang, setUserLang] = useState(null);
     const [theme, setTheme] = useState('light');
-    0;
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const location = useLocation();
-    // const navigate = useNavigate();
 
+    /**
+     * scrollToTop scrolls the page to the top when clicking on container areas.
+     */
     const scrollToTop = (evt) => {
-        if (evt.target.tagName.toUpperCase() != 'DIV' || evt.target.className.startsWith('gsc-'))
+        // Only scroll to top if clicking on the navbar background itself
+        // and not on any interactive elements.
+        if (
+            evt.target !== evt.currentTarget &&
+            !evt.target.classList.contains('container-fluid') &&
+            !evt.target.classList.contains('navbar-collapse')
+        ) {
             return;
+        }
 
         evt.preventDefault();
         evt.stopPropagation();
@@ -74,81 +98,79 @@ export const App = () => {
     // watch theme change
     useEffect(() => {
         document.documentElement.setAttribute(
-            'data-bs-theme',
+            'data-theme',
             window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
         );
     }, [theme]);
 
+    // Close mobile menu on route change
+    useEffect(() => {
+        setMobileMenuOpen(false);
+    }, [location.pathname]);
+
+    /**
+     * getCurrentRouteName extracts the route name based on the current location.
+     */
     const getCurrentRouteName = () => {
-        // Extract the route name based on the current location
         const pathname = location.pathname;
         if (pathname.startsWith('/pages/')) {
             return 'posts';
         } else if (pathname.startsWith('/about/')) {
             return 'aboutme';
         } else {
-            return ''; // Default or fallback route name
+            return '';
         }
     };
 
-    const handleLanguageChange = async (evt, newLang) => {
-        if (evt) {
-            evt.preventDefault();
-            evt.stopPropagation();
-        }
+    /**
+     * handleLanguageChange handles language selection changes.
+     */
+    const handleLanguageChange = useCallback(
+        async (evt, newLang) => {
+            if (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+            }
 
-        // remove query parameter `lang=`
-        const url = new URL(window.location.href);
-        url.searchParams.delete('lang');
-        window.history.replaceState({}, document.title, url);
+            // remove query parameter `lang=`
+            const url = new URL(window.location.href);
+            url.searchParams.delete('lang');
+            window.history.replaceState({}, document.title, url);
 
-        if (userLang === newLang) return;
+            if (userLang === newLang) return;
 
-        await setUserLanguage(newLang);
-        setUserLang(newLang); // Update the state immediately
-    };
-
-    const dropdownBtn = (
-        <div className="dropdown">
-            <a
-                className="nav-link p-2"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-            >
-                <Languages size={16} />
-            </a>
-            <ul className="dropdown-menu dropdown-menu-end" style={{ minWidth: 'auto' }}>
-                <li>
-                    <a
-                        className={`dropdown-item ${userLang === 'zh_CN' ? 'active' : ''}`}
-                        href="#"
-                        onClick={(e) => handleLanguageChange(e, 'zh_CN')}
-                    >
-                        zh_CN
-                    </a>
-                </li>
-                <li>
-                    <a
-                        className={`dropdown-item ${userLang === 'en_US' ? 'active' : ''}`}
-                        href="#"
-                        onClick={(e) => handleLanguageChange(e, 'en_US')}
-                    >
-                        en_US
-                    </a>
-                </li>
-            </ul>
-        </div>
+            await setUserLanguage(newLang);
+            setUserLang(newLang);
+        },
+        [userLang]
     );
 
-    // enableAutoComplete is a non-standard tag;
-    // avoid placing it directly in JSX to prevent browser errors.
-    const googleSearch = `<div class="gcse-search"
-            data-gname="post_search"
-            data-enableHistory="true"
-            data-enableAutoComplete="true"
-        ></div>`;
+    const languageDropdownTrigger = (
+        <span className="nav-link p-2">
+            <Languages size={16} />
+        </span>
+    );
+
+    const languageDropdown = (
+        <Dropdown trigger={languageDropdownTrigger} align="end">
+            <DropdownItem
+                active={userLang === 'zh_CN'}
+                onClick={(e) => handleLanguageChange(e, 'zh_CN')}
+            >
+                zh_CN
+            </DropdownItem>
+            <DropdownItem
+                active={userLang === 'en_US'}
+                onClick={(e) => handleLanguageChange(e, 'en_US')}
+            >
+                en_US
+            </DropdownItem>
+        </Dropdown>
+    );
+
+    const toggleMobileMenu = () => {
+        setMobileMenuOpen(!mobileMenuOpen);
+    };
 
     return (
         <>
@@ -164,23 +186,10 @@ export const App = () => {
                         </span>
                     </Link>
 
-                    {/* Mobile: language dropdown before toggler */}
-                    <div className="d-flex align-items-center ms-auto d-sm-none">
-                        {dropdownBtn}
-                        <button
-                            className="navbar-toggler ms-2"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#navbarTogglerDemo01"
-                            aria-controls="navbarTogglerDemo01"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation"
-                        >
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
-                    </div>
-
-                    <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+                    <div
+                        className={`navbar-collapse ${mobileMenuOpen ? 'show' : 'collapse'}`}
+                        id="navbarTogglerDemo01"
+                    >
                         <ul className="navbar-nav me-auto mb-lg-0">
                             <li className="nav-item">
                                 <Link
@@ -240,38 +249,34 @@ export const App = () => {
                                 </Link>
                             </li>
                         </ul>
-                        <ul className="navbar-nav">
-                            <form
-                                className="d-flex me-2"
-                                role="search"
-                                dangerouslySetInnerHTML={{ __html: googleSearch }}
-                            ></form>
-                        </ul>
-                        {/* Desktop: language dropdown at far right */}
-                        <div className="d-none d-sm-flex align-items-center">{dropdownBtn}</div>
+                        <form
+                            className="navbar-search d-flex align-items-center me-2"
+                            role="search"
+                        >
+                            <div
+                                className="gcse-search"
+                                data-gname="post_search"
+                                data-enablehistory="true"
+                                data-enableautocomplete="true"
+                            ></div>
+                        </form>
+                    </div>
+
+                    <div className="navbar-actions d-flex align-items-center ms-auto">
+                        <button
+                            className="navbar-toggler"
+                            type="button"
+                            onClick={toggleMobileMenu}
+                            aria-controls="navbarTogglerDemo01"
+                            aria-expanded={mobileMenuOpen}
+                            aria-label="Toggle navigation"
+                        >
+                            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
+                        <div className="ms-2">{languageDropdown}</div>
                     </div>
                 </div>
             </nav>
-
-            {/* page modal */}
-            <div className="modal" id="img-modal" role="dialog" tabIndex="-1">
-                <div
-                    className="modal-dialog"
-                    role="document"
-                    style={{ zIndex: 1050, width: '800px' }}
-                >
-                    <div className="modal-content">
-                        <div className="modal-body" style={{ padding: '0px' }}>
-                            <img
-                                src=""
-                                alt="image"
-                                className="img-rounded"
-                                style={{ maxHeight: '800px', maxWidth: '800px' }}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             {/* page content */}
             <div id="container">
@@ -283,6 +288,11 @@ export const App = () => {
 
 let _watchThemeChanged = false;
 
+/**
+ * watchThemeChange watches for system theme changes and updates the state.
+ *
+ * @param {Function} setTheme - React state setter for theme
+ */
 const watchThemeChange = (setTheme) => {
     if (_watchThemeChanged) {
         return;

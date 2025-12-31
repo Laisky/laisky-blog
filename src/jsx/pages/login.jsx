@@ -4,9 +4,9 @@ import { gql, request } from 'graphql-request';
 import { jwtDecode } from 'jwt-decode';
 import React, { useState } from 'react';
 
-import { GraphqlAPI, KvKeyAuthUser, KvKeyUserToken } from '../library/base.jsx';
 import jsUtils from '@laisky/js-utils';
 import { useNavigate } from 'react-router-dom';
+import { GraphqlAPI, KvKeyAuthUser, KvKeyUserToken } from '../library/base.jsx';
 
 export const Login = () => {
     const [email, setEmail] = useState('');
@@ -45,7 +45,9 @@ export const Login = () => {
                 <h2>Welcome back</h2>
                 <p className="text-muted mb-4">Sign in with your author credentials to continue.</p>
                 <div className="mb-3">
-                    <label htmlFor="email" className="form-label">Email address</label>
+                    <label htmlFor="email" className="form-label">
+                        Email address
+                    </label>
                     <input
                         id="email"
                         type="email"
@@ -56,7 +58,9 @@ export const Login = () => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="password" className="form-label">Password</label>
+                    <label htmlFor="password" className="form-label">
+                        Password
+                    </label>
                     <input
                         id="password"
                         type="password"
@@ -66,7 +70,9 @@ export const Login = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="btn btn-primary w-100">Login</button>
+                <button type="submit" className="btn btn-primary w-100">
+                    Login
+                </button>
             </form>
         </div>
     );

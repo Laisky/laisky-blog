@@ -135,7 +135,7 @@ nav#headerbar .gsc-results-wrapper-overlay {
 
 // Search box styles in navbar
 nav#headerbar {
-    form[role="search"] {
+    form[role='search'] {
         position: relative;
         display: inline-flex;
         align-items: center;
@@ -157,7 +157,7 @@ nav#headerbar {
         }
     }
 
-    form[role="search"]>[id^="___gcse_"] {
+    form[role='search']>[id^='___gcse_'] {
         display: inline-flex;
         align-items: center;
         width: 100%;
@@ -165,7 +165,7 @@ nav#headerbar {
         overflow: hidden;
     }
 
-    [id^="___gcse_"] {
+    [id^='___gcse_'] {
 
         .gsc-control-cse,
         .gsc-control-wrapper-cse {
@@ -257,7 +257,7 @@ nav#headerbar {
             }
 
             table.gsc-input,
-            table[class*="gstl_"] {
+            table[class*='gstl_'] {
                 display: flex;
                 width: 100%;
             }
@@ -333,12 +333,12 @@ nav#headerbar {
     }
 
     @media (max-width: 640px) {
-        form[role="search"] {
+        form[role='search'] {
             min-width: 100%;
             padding: 0 0.75rem;
         }
 
-        [id^="___gcse_"] input.gsc-input {
+        [id^='___gcse_'] input.gsc-input {
             min-width: 0 !important;
         }
     }
