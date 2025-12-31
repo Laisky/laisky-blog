@@ -39,7 +39,7 @@ export const calculateRibbonFold = ({
     const bottomTransitionRange = 80;
 
     // Top fold (mobile) uses a bottom-edge trigger when scrolling down.
-    const topTriggerLine = viewportHeight * 0.4;
+    const topTriggerLine = viewportHeight / 3;
     const topTransitionRange = Math.min(140, Math.max(90, Math.round(viewportHeight * 0.18)));
 
     // Calculate how much of the post is visible/faded

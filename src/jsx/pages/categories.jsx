@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { Sidebar } from '../components/sidebar.jsx';
+import { Tooltip } from '../components/Tooltip.jsx';
 import {
     DurationDay,
     formatTs,
@@ -14,6 +15,7 @@ import {
     isForce,
     KvKeyLanguage,
     KvKeyPrefixCache,
+    ts2UTC,
 } from '../library/base.jsx';
 
 export const loader = async ({ params }) => {
@@ -136,7 +138,11 @@ export const Categories = () => {
                     {!isLoading &&
                         posts.map((post) => (
                             <div className="post" id={post.name} key={post.name}>
-                                <span>{formatTs(post.created_at)}</span>
+                                <Tooltip content={ts2UTC(post.created_at)} placement="top">
+                                    <span className="tooltip-trigger">
+                                        {formatTs(post.created_at)}
+                                    </span>
+                                </Tooltip>
                                 <Link to={`/p/${post.name}/`}>{post.title}</Link>
                             </div>
                         ))}

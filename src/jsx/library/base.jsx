@@ -196,5 +196,5 @@ export const formatTs = (ts) => {
 };
 
 export const ts2UTC = (ts) => {
-    return moment(ts).utc().format('YYYY-MM-DDTHH:mm[Z]');
+    return moment(ts).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
 };

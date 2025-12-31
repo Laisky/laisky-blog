@@ -12,6 +12,7 @@ import {
     KvKeyLanguage,
     KvKeyPrefixCache,
     formatTs,
+    ts2UTC,
     getCurrentUsername,
     getUserLanguage,
     graphqlQuery,
@@ -267,7 +268,7 @@ export const Page = () => {
                     </h2>
                     <div className="post-meta">
                         <span>published: </span>
-                        <Tooltip content={post.created_at} placement="top">
+                        <Tooltip content={ts2UTC(post.created_at)} placement="top">
                             <span className="tooltip-trigger">{formatTs(post.created_at)}</span>
                         </Tooltip>
                     </div>

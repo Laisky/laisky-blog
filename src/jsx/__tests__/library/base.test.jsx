@@ -153,7 +153,7 @@ describe('base.jsx', () => {
     describe('ts2UTC', () => {
         test('should format timestamp as UTC string', () => {
             const date = new Date('2023-05-15T12:34:56Z');
-            expect(ts2UTC(date)).toBe('2023-05-15T12:34Z');
+            expect(ts2UTC(date)).toBe('2023-05-15T12:34:56Z');
         });
     });
 });

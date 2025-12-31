@@ -6,8 +6,8 @@
     animation: tooltip-fade-in 0.15s ease-out;
 
     &__content {
-        background: var(--surface-elevated, #1c1c1e);
-        color: var(--text-inverse, #fff);
+        background: #1c1c1e;
+        color: #ffffff;
         padding: 0.4rem 0.75rem;
         border-radius: 6px;
         font-size: 0.8rem;
@@ -35,7 +35,7 @@
             position: absolute;
             width: 8px;
             height: 8px;
-            background: var(--surface-elevated, #1c1c1e);
+            background: #1c1c1e;
             transform: rotate(45deg);
 
             [data-theme='dark'] & {

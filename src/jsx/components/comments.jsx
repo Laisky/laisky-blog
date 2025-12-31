@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { gql } from 'graphql-request';
-import { graphqlQuery } from '../library/base.jsx';
 import jsutils from '@laisky/js-utils';
+import { gql } from 'graphql-request';
+import React, { useEffect, useRef, useState } from 'react';
+import { graphqlQuery, ts2UTC } from '../library/base.jsx';
+import { Tooltip } from './Tooltip.jsx';
 
 // Cache keys for user data
 const CACHE_KEY_AUTHOR_NAME = 'comment_author_name';
@@ -480,12 +481,11 @@ const CommentItem = ({ comment, onReply, onLike, isLiked, likedComments }) => {
                             <span>{comment.authorName}</span>
                         )}
                     </div>
-                    <div
-                        className="comment-date"
-                        title={new Date(comment.createdAt).toLocaleString()}
-                    >
-                        {jsutils.formatRelativeTime(comment.createdAt)}
-                    </div>
+                    <Tooltip content={ts2UTC(comment.createdAt)} placement="top">
+                        <div className="comment-date tooltip-trigger">
+                            {jsutils.formatRelativeTime(comment.createdAt)}
+                        </div>
+                    </Tooltip>
                 </div>
             </div>
             <div

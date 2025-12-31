@@ -1,8 +1,8 @@
-import { describe, expect, test, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { App } from '../../pages/app';
 import jsutils from '@laisky/js-utils';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { App } from '../../pages/app';
 
 // Mock dependencies
 vi.mock('@laisky/js-utils', () => ({
@@ -16,7 +16,7 @@ vi.mock('@laisky/js-utils', () => ({
 // Mock matchMedia
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: vi.fn().mockImplementation(query => ({
+    value: vi.fn().mockImplementation((query) => ({
         matches: false,
         media: query,
         onchange: null,

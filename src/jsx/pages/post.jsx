@@ -22,6 +22,7 @@ import {
     isForce,
     KvKeyLanguage,
     KvKeyPrefixCache,
+    ts2UTC,
 } from '../library/base.jsx';
 
 /**
@@ -246,7 +247,7 @@ export const Post = ({ isHistory }) => {
                                 </h2>
                                 <div className="post-meta">
                                     <span>published: </span>
-                                    <Tooltip content={post.created_at} placement="top">
+                                    <Tooltip content={ts2UTC(post.created_at)} placement="top">
                                         <span className="tooltip-trigger">
                                             {formatTs(post.created_at)}
                                         </span>
@@ -791,7 +792,11 @@ const loadPostTails = async (post) => {
     if (post['arweave_id'] && post['arweave_id'].length > 0) {
         const historyItems = post['arweave_id'].slice(0, maxHistory).map((history) => (
             <DropdownItem key={history.id} href={`/p/history/${history.id}/`}>
-                {moment(history.time).format('YYYY-MM-DD HH:mm')}
+                <Tooltip content={ts2UTC(history.time)} placement="right">
+                    <span className="tooltip-trigger">
+                        {moment(history.time).format('YYYY-MM-DD HH:mm')}
+                    </span>
+                </Tooltip>
             </DropdownItem>
         ));
 
