@@ -2,6 +2,7 @@
 
 import { gql } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
+import { Tag } from 'lucide-react';
 import { graphqlQuery } from '../library/base';
 
 export const Tags = () => {
@@ -10,10 +11,10 @@ export const Tags = () => {
     useEffect(() => {
         (async () => {
             const gqBody = gql`
-            query {
-                BlogTags
-            }
-        `;
+                query {
+                    BlogTags
+                }
+            `;
 
             const resp = await graphqlQuery(gqBody);
             setTags(resp.BlogTags);
@@ -31,14 +32,18 @@ export const Tags = () => {
 
     return (
         <section className="row console tags">
-            <h2>Tags</h2>
+            <h2 className="d-flex align-items-center">
+                <Tag size={14} className="me-2" />
+                Tags
+            </h2>
             <div className="tag-labels">
-                {Array.isArray(tags) && tags.map(tag => (
-                    <span key={tag} onClick={getTagClickHandler(tag)} className="tag-chip">
-                        {tag}
-                    </span>
-                ))}
+                {Array.isArray(tags) &&
+                    tags.map((tag) => (
+                        <span key={tag} onClick={getTagClickHandler(tag)} className="tag-chip">
+                            {tag}
+                        </span>
+                    ))}
             </div>
         </section>
     );
-}
+};

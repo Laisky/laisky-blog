@@ -381,19 +381,8 @@
                     padding: 0.2rem 0;
                     font-size: 0.8rem;
 
-                    &::before {
-                        content: '\f285';
-                        font-family: 'bootstrap-icons';
-                        font-size: 0.75rem;
-                        color: var(--text-tertiary);
-                    }
-
                     &:hover {
                         color: var(--accent-color);
-
-                        &::before {
-                            color: var(--accent-color);
-                        }
                     }
                 }
             }
