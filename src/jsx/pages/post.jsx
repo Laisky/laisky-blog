@@ -3,7 +3,7 @@
 import jsutils, { RandomString } from '@laisky/js-utils';
 import { gql } from 'graphql-request';
 import 'https://s3.laisky.com/static/prism/1.30.0/prism.js';
-import { AlignLeft } from 'lucide-react';
+import { BookOpen, ChevronRight, FileText } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -851,14 +851,16 @@ const parseAndReplacePostSeries = async () => {
             }
         }
 
+        const iconHtml = renderToStaticMarkup(<BookOpen size={18} />);
         html = `
-            <div class="card post-series-card">
-                <div class="card-body post-series-card-body">
-                    <h5 class="card-title post-series-title">${se.remark} Serials</h5>
-                    <ul class="card-text post-series-list">
-                        ${html}
-                    </ul>
+            <div class="post-series">
+                <div class="post-series-header">
+                    ${iconHtml}
+                    <span class="post-series-title">${se.remark} Serials</span>
                 </div>
+                <ul class="post-series-list">
+                    ${html}
+                </ul>
             </div>`;
         seEle.innerHTML = html;
     });
@@ -914,10 +916,17 @@ async function loadSeries(postkey) {
  */
 function parseSeriesHTML(se) {
     let html = '';
+    const iconHtml = renderToStaticMarkup(<FileText size={14} />);
     if (se.posts && se.posts.length > 0) {
         for (let i = 0; i < se.posts.length; i++) {
             let p = se.posts[i];
-            html += `<li class="post-series-entry"><a class="post-series-link" href="https://blog.laisky.com/p/${p.name}/">${p.title}</a></li>`;
+            html += `
+                <li class="post-series-entry">
+                    <a class="post-series-link" href="https://blog.laisky.com/p/${p.name}/">
+                        ${iconHtml}
+                        <span>${p.title}</span>
+                    </a>
+                </li>`;
         }
     }
 
@@ -929,7 +938,6 @@ function parseSeriesHTML(se) {
  */
 async function parseSeriesChildren(seriesKey) {
     let se = await loadSeries(seriesKey);
-    let sid = `series-${RandomString(16)}`;
     let html = parseSeriesHTML(se);
     if (se.children && se.children.length != 0) {
         for (let i = 0; i < se.children.length; i++) {
@@ -937,7 +945,7 @@ async function parseSeriesChildren(seriesKey) {
         }
     }
 
-    const iconHtml = renderToStaticMarkup(<AlignLeft size={16} />);
+    const iconHtml = renderToStaticMarkup(<ChevronRight size={16} className="chevron" />);
 
     // Use details/summary for native collapse without Bootstrap
     html = `
@@ -945,16 +953,12 @@ async function parseSeriesChildren(seriesKey) {
                 <details class="series-details">
                     <summary class="series-toggle">
                         ${iconHtml}
-                        <span>${se.remark} Serials：</span>
+                        <span>${se.remark} Serials</span>
                     </summary>
-                    <div class="series-collapse">
-                        <div class="card post-series-card post-series-card--nested">
-                            <div class="card-body post-series-card-body">
-                                <ul class="post-series-list">
-                                    ${html}
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="series-content">
+                        <ul class="post-series-list">
+                            ${html}
+                        </ul>
                     </div>
                 </details>
             </li>

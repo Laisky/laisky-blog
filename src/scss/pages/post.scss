@@ -237,39 +237,31 @@
                 margin: 2.5rem auto;
                 display: block;
 
-                .post-series-card {
+                .post-series {
                     width: min(100%, 720px);
                     margin: 0 auto;
+                    padding: 1.25rem;
                     border: 1px solid var(--border-subtle);
                     background-color: var(--surface-secondary);
                     border-radius: var(--radius-lg);
                 }
 
-                .post-series-card--nested {
-                    width: 100%;
-                    box-shadow: none;
-                    background-color: var(--surface-primary);
-                    border-radius: var(--radius-md);
-                    border: 1px solid var(--border-subtle);
-                }
+                .post-series-header {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    margin-bottom: 1rem;
+                    color: var(--text-primary);
 
-                .post-series-card-body {
-                    padding: 1.5rem;
+                    svg {
+                        color: var(--accent-color);
+                        opacity: 0.8;
+                    }
                 }
 
                 .post-series-title {
-                    margin: 0 0 1rem 0;
                     font-size: 1.1rem;
                     font-weight: 600;
-                    color: var(--text-primary);
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.5rem;
-
-                    &::before {
-                        content: '\1F4D6';
-                        font-size: 1.1em;
-                    }
                 }
 
                 .post-series-list {
@@ -278,40 +270,50 @@
                     margin: 0;
                     display: flex;
                     flex-direction: column;
-                    gap: 0.25rem;
+                    gap: 0.15rem;
                 }
 
                 .post-series-entry {
                     list-style: none;
 
-                    &:last-child {
-                        margin-bottom: 0;
+                    &--nested {
+                        margin-top: 0.25rem;
                     }
                 }
 
                 .post-series-link {
                     display: inline-flex;
                     align-items: center;
-                    gap: 0.5rem;
-                    padding: 0.4rem 0.75rem;
-                    border-radius: 6px;
-                    color: var(--text-primary);
-                    background: transparent;
-                    font-size: 0.95rem;
+                    gap: 0.6rem;
+                    padding: 0.35rem 0.6rem;
+                    border-radius: var(--radius-sm);
+                    color: var(--text-secondary);
+                    text-decoration: none;
+                    font-size: 0.925rem;
+                    transition: all 0.2s ease;
+                    width: 100%;
 
-                    &::before {
-                        content: '•';
+                    svg {
                         color: var(--text-tertiary);
-                        font-size: 1.1em;
-                        line-height: 1;
+                        flex-shrink: 0;
                     }
 
                     &:hover {
                         background: var(--surface-primary);
                         color: var(--accent-color);
 
-                        &::before {
+                        svg {
                             color: var(--accent-color);
+                        }
+                    }
+                }
+
+                .series-details {
+                    width: 100%;
+
+                    &[open] {
+                        .chevron {
+                            transform: rotate(90deg);
                         }
                     }
                 }
@@ -320,27 +322,35 @@
                     display: flex;
                     align-items: center;
                     gap: 0.5rem;
-                    width: 100%;
-                    margin-top: 0.75rem;
-                    padding: 0.5rem 1rem;
-                    border-radius: var(--radius-md);
-                    border: 1px solid var(--border-subtle);
-                    background: var(--surface-primary);
-                    color: var(--text-primary);
+                    padding: 0.35rem 0.6rem;
+                    cursor: pointer;
+                    list-style: none;
+                    color: var(--text-secondary);
+                    font-size: 0.925rem;
                     font-weight: 500;
-                    font-size: 0.9rem;
+                    border-radius: var(--radius-sm);
+                    transition: background 0.2s;
 
-                    i {
+                    &::-webkit-details-marker {
+                        display: none;
+                    }
+
+                    .chevron {
+                        transition: transform 0.2s;
                         color: var(--text-tertiary);
                     }
 
                     &:hover {
-                        border-color: var(--border-strong);
+                        background: var(--surface-primary);
+                        color: var(--text-primary);
                     }
                 }
 
-                .series-collapse {
-                    margin-top: 0.5rem;
+                .series-content {
+                    padding-left: 1.25rem;
+                    margin-top: 0.15rem;
+                    border-left: 1px solid var(--border-subtle);
+                    margin-left: 1.1rem;
                 }
             }
         }
@@ -611,12 +621,9 @@
                     .post_series {
                         margin: 1rem 0;
 
-                        .post-series-card {
-                            border-radius: 8px;
-                        }
-
-                        .post-series-card-body {
+                        .post-series {
                             padding: 1rem;
+                            border-radius: var(--radius-md);
                         }
 
                         .post-series-title {
