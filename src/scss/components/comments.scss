@@ -35,6 +35,33 @@
             border: 1px solid var(--border-subtle);
         }
 
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .required-mark {
+            color: var(--danger-color);
+            margin-left: 0.1rem;
+        }
+
+        .optional-mark {
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 0.75rem;
+            margin-left: 0.25rem;
+            text-transform: none;
+        }
+
         .form-control {
             background: var(--surface-primary);
             border: 1px solid var(--border-subtle);
@@ -55,7 +82,7 @@
         }
 
         textarea.form-control {
-            min-height: 80px;
+            min-height: 120px;
             resize: vertical;
         }
 
@@ -70,12 +97,22 @@
             transition: background-color 0.2s ease;
             box-shadow: none;
 
+            @media (max-width: 575.98px) {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
             &:hover {
                 background: var(--accent-color);
                 filter: brightness(1.1);
                 transform: none;
                 box-shadow: none;
             }
+        }
+
+        .text-muted {
+            font-size: 0.75rem;
+            color: var(--text-muted);
         }
     }
 

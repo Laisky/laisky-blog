@@ -360,59 +360,78 @@ export const Comments = ({ postName }) => {
                     </div>
                 )}
                 <form onSubmit={handleSubmitComment} className="comment-form">
-                    <div className="row g-2 mb-2">
-                        <div className="col-sm-6 col-md-4">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Name"
-                                title="Name (required)"
-                                value={authorName}
-                                onChange={(e) => setAuthorName(e.target.value)}
-                                required
-                            />
+                    <div className="row g-3 mb-3">
+                        <div className="col-12 col-sm-6">
+                            <div className="form-group">
+                                <label htmlFor="authorName" className="form-label">
+                                    Name <span className="required-mark">*</span>
+                                </label>
+                                <input
+                                    id="authorName"
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Your name"
+                                    value={authorName}
+                                    onChange={(e) => setAuthorName(e.target.value)}
+                                    required
+                                />
+                            </div>
                         </div>
-                        <div className="col-sm-6 col-md-4">
-                            <input
-                                type="email"
-                                className="form-control"
-                                placeholder="Email"
-                                title="Email (required, not published)"
-                                value={authorEmail}
-                                onChange={(e) => setAuthorEmail(e.target.value)}
-                                required
-                            />
+                        <div className="col-12 col-sm-6">
+                            <div className="form-group">
+                                <label htmlFor="authorEmail" className="form-label">
+                                    Email <span className="required-mark">*</span>
+                                </label>
+                                <input
+                                    id="authorEmail"
+                                    type="email"
+                                    className="form-control"
+                                    placeholder="Your email"
+                                    value={authorEmail}
+                                    onChange={(e) => setAuthorEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
                         </div>
-                        <div className="col-sm-12 col-md-4">
-                            <input
-                                type="url"
-                                className="form-control"
-                                placeholder="Website"
-                                title="Website (optional)"
-                                value={authorWebsite}
-                                onChange={(e) => setAuthorWebsite(e.target.value)}
-                            />
+                        <div className="col-12">
+                            <div className="form-group">
+                                <label htmlFor="authorWebsite" className="form-label">
+                                    Website <span className="optional-mark">(Optional)</span>
+                                </label>
+                                <input
+                                    id="authorWebsite"
+                                    type="url"
+                                    className="form-control"
+                                    placeholder="https://example.com"
+                                    value={authorWebsite}
+                                    onChange={(e) => setAuthorWebsite(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="col-12">
+                            <div className="form-group">
+                                <label htmlFor="commentContent" className="form-label">
+                                    Comment <span className="required-mark">*</span>
+                                </label>
+                                <textarea
+                                    id="commentContent"
+                                    ref={commentInputRef}
+                                    className="form-control"
+                                    rows="4"
+                                    placeholder="Write your comment here..."
+                                    value={commentContent}
+                                    onChange={(e) => setCommentContent(e.target.value)}
+                                    required
+                                ></textarea>
+                            </div>
                         </div>
                     </div>
-                    <div className="mb-2">
-                        <textarea
-                            ref={commentInputRef}
-                            className="form-control"
-                            rows="3"
-                            placeholder="Your comment..."
-                            value={commentContent}
-                            onChange={(e) => setCommentContent(e.target.value)}
-                            required
-                        ></textarea>
-                    </div>
-                    <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <button type="submit" className="btn btn-primary">
                             Post Comment
                         </button>
                         {formDataLoaded && (authorName || authorEmail || authorWebsite) && (
-                            <small className="text-muted" style={{ fontSize: '0.75rem' }}>
-                                Info saved for next time
-                            </small>
+                            <small className="text-muted">Info saved for next time</small>
                         )}
                     </div>
                 </form>
