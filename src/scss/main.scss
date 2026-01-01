@@ -7,6 +7,7 @@
 @use './components/comments';
 @use './components/post-menu';
 @use './components/google-cse';
+@use './components/code-block';
 @use './pages/pages';
 @use './pages/post';
 @use './pages/about';
@@ -178,19 +179,19 @@
 }
 
 .w-100 {
-    width: 100% !important;
+    width: 100%;
 }
 
 .w-50 {
-    width: 50% !important;
+    width: 50%;
 }
 
 .h-100 {
-    height: 100% !important;
+    height: 100%;
 }
 
 .flex-fill {
-    flex: 1 1 auto !important;
+    flex: 1 1 auto;
 }
 
 // ============================================
@@ -332,23 +333,23 @@
 }
 
 .text-muted {
-    color: var(--text-tertiary) !important;
+    color: var(--text-tertiary);
 }
 
 .text-center {
-    text-align: center !important;
+    text-align: center;
 }
 
 .text-end {
-    text-align: right !important;
+    text-align: right;
 }
 
 .text-primary {
-    color: var(--text-primary) !important;
+    color: var(--text-primary);
 }
 
 .text-secondary {
-    color: var(--text-secondary) !important;
+    color: var(--text-secondary);
 }
 
 .p-0 {
@@ -979,28 +980,40 @@ pre {
     font-family: var(--code-font);
 }
 
-code:not(pre code) {
-    background: var(--surface-secondary);
-    color: var(--text-primary);
-    padding: 0.2em 0.4em;
+code:not(pre code),
+code[class*="language-"]:not(pre code) {
+    background: var(--accent-muted);
+    color: var(--accent-color);
+    padding: 0.15em 0.4em;
     border-radius: 4px;
-    border: 1px solid var(--border-subtle);
-    font-size: 0.9em;
+    font-size: 0.85em;
+    font-weight: 500;
 }
 
-pre {
+pre,
+pre[class*="language-"] {
     margin: 2rem 0;
-    padding: 1.5rem;
+    padding: 1.25rem;
     background: var(--surface-secondary);
     border-radius: var(--radius-md);
     border: 1px solid var(--border-subtle);
     overflow: auto;
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     line-height: 1.6;
+    position: relative;
+
+    code {
+        font-size: inherit;
+    }
 }
 
 pre::-webkit-scrollbar {
-    height: 8px;
+    height: 6px;
+}
+
+pre::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 10px;
 }
 
 blockquote {

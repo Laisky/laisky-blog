@@ -34,13 +34,13 @@
 // Keep navbar menus visible on desktop even when they carry the collapse class
 @media (min-width: 576px) {
     .navbar-expand-sm .navbar-collapse {
-        display: flex !important;
+        display: flex;
         flex-basis: auto;
         align-items: center;
     }
 
     .navbar-expand-sm .navbar-collapse.collapse:not(.show) {
-        display: flex !important;
+        display: flex;
     }
 }
 

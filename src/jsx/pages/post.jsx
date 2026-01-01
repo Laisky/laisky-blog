@@ -2,7 +2,7 @@
 
 import jsutils, { RandomString } from '@laisky/js-utils';
 import { gql } from 'graphql-request';
-import 'https://s3.laisky.com/static/prism/1.30.0/prism.js';
+import parse, { domToReact } from 'html-react-parser';
 import { Archive, BookOpen, ChevronRight, FileText, Info } from 'lucide-react';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Comments } from '../components/comments.jsx';
 
 import mermaid from 'mermaid';
+import { CodeBlock } from '../components/CodeBlock.jsx';
 import { Dropdown, DropdownItem } from '../components/Dropdown.jsx';
 import { Modal } from '../components/Modal.jsx';
 import { Tooltip } from '../components/Tooltip.jsx';
@@ -225,6 +226,30 @@ export const Post = ({ isHistory }) => {
                 setMenuHtml(null);
             }
 
+            const parseOptions = {
+                replace: (domNode) => {
+                    if (domNode.name === 'pre') {
+                        // Skip mermaid blocks
+                        if (domNode.attribs.class?.includes('mermaid')) {
+                            return;
+                        }
+
+                        const codeElement = domNode.children.find((child) => child.name === 'code');
+                        if (codeElement) {
+                            // Skip mermaid blocks inside code
+                            if (codeElement.attribs.class?.includes('mermaid')) {
+                                return;
+                            }
+
+                            const language =
+                                codeElement.attribs.class?.replace('language-', '') || 'text';
+                            const code = codeElement.children[0]?.data || '';
+                            return <CodeBlock language={language} value={code} />;
+                        }
+                    }
+                },
+            };
+
             const content = (
                 <>
                     <div className="col-12 col-xl-9">
@@ -253,12 +278,9 @@ export const Post = ({ isHistory }) => {
                                         </span>
                                     </Tooltip>
                                 </div>
-                                <div
-                                    className="post-content"
-                                    dangerouslySetInnerHTML={{
-                                        __html: post.content,
-                                    }}
-                                ></div>
+                                <div className="post-content">
+                                    {parse(post.content, parseOptions)}
+                                </div>
                                 {postTail}
                                 {isHistory ? (
                                     <div className="history-comment-prompt">
@@ -295,7 +317,6 @@ export const Post = ({ isHistory }) => {
 
         (async () => {
             bindPostImageModal(setImageModalOpen, setImageModalSrc);
-            renderCode();
             await renderMathjax();
             watchLanguageChange(setLanguage);
 
@@ -693,19 +714,6 @@ const setupPostMenuLinkScrolling = () => {
 const setupPostMenuActiveState = () => {
     // This is now handled by setupPostMenuScrollSpy
     return () => {};
-};
-
-/**
- * renderCode highlights code blocks using Prism.
- */
-const renderCode = () => {
-    try {
-        document.querySelectorAll('pre > code').forEach((ele) => {
-            window.Prism && window.Prism.highlightAllUnder(ele.closest('pre'));
-        });
-    } catch (e) {
-        console.error(`failed to render code: ${e}`);
-    }
 };
 
 /**

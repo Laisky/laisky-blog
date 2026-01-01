@@ -11,7 +11,7 @@
     width: min(960px, calc(100vw - 2.5rem)) !important;
     min-height: min(420px, calc(100vh - var(--navbar-height) - 72px)) !important;
     max-height: calc(100vh - var(--navbar-height) - 32px) !important;
-    z-index: 2000 !important !important !important;
+    z-index: 2000 !important;
 }
 
 .gsc-modal-background-image {

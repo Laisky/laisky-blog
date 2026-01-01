@@ -1,0 +1,82 @@
+.code-block-container {
+    position: relative;
+    margin: 2rem 0;
+    background: #1e1e1e; // VS Code Dark background
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .code-block-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-family: var(--code-font);
+        font-size: 0.7rem;
+        color: #858585;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .code-block-copy {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: transparent;
+        border: 1px solid transparent;
+        color: #858585;
+        cursor: pointer;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #cccccc;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        svg {
+            opacity: 0.8;
+        }
+    }
+
+    // Override SyntaxHighlighter default styles
+    pre {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+
+        code {
+            display: block;
+            white-space: pre;
+            word-spacing: normal;
+            word-break: normal;
+            word-wrap: normal;
+            color: #d4d4d4; // Default VS Code text color
+        }
+    }
+
+    .react-syntax-highlighter-line-number {
+        font-style: normal !important;
+        color: #858585 !important;
+        opacity: 0.5;
+    }
+}
+
+[data-theme='dark'] .code-block-container {
+    border-color: var(--border-subtle);
+
+    .code-block-header {
+        background: rgba(255, 255, 255, 0.02);
+    }
+}

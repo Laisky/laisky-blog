@@ -1,7 +1,6 @@
 'use strict';
 
 import { gql } from 'graphql-request';
-import 'https://s3.laisky.com/static/prism/1.30.0/prism.js';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 

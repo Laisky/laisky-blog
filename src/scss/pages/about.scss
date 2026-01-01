@@ -80,11 +80,33 @@
                     font-size: 1rem;
                 }
 
+                pre,
+                pre[class*="language-"] {
+                    font-size: 0.75rem;
+                    background: var(--surface-secondary);
+                    border: 1px solid var(--border-subtle);
+                    border-radius: var(--radius-md);
+                    padding: 1.25rem;
+                    margin: 2rem 0;
+
+                    code {
+                        font-size: inherit;
+                        background: transparent;
+                        padding: 0;
+                    }
+                }
+
+                code:not(pre code),
+                code[class*="language-"]:not(pre code) {
+                    font-size: 0.85em;
+                }
+
                 img {
                     align-self: center;
                     max-width: 200px;
                     border-radius: var(--radius-md);
-                    box-shadow: var(--shadow-sm);
+                    box-shadow: var(--shadow-md);
+                    border: 1px solid var(--border-subtle);
                 }
 
                 a {
