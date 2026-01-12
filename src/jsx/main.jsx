@@ -47,8 +47,12 @@ const router = createBrowserRouter([
                 element: <PostEdit isPublish="true" />,
             },
             {
-                path: 'about/',
+                path: 'about/:tab/',
                 element: <About />,
+            },
+            {
+                path: 'about/',
+                element: <Navigate to="/about/site/" replace />,
             },
             {
                 path: 'login/',

@@ -1,55 +1,48 @@
 'use strict';
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Mail, Send, UserCircle } from 'lucide-react';
+import React from 'react';
+import { Link, useParams } from 'react-router-dom';
 
 export const About = () => {
-    const [activeTab, setActiveTab] = useState('site');
-
-    const handleTabClick = (tab) => {
-        setActiveTab(tab);
-    };
+    const { tab: activeTab = 'site' } = useParams();
 
     return (
         <div className="scrollable-content">
             <section id="about">
                 <ul className="nav nav-tabs" role="tablist" id="myTab">
                     <li role="presentation" className="nav-item">
-                        <button
-                            type="button"
+                        <Link
                             className={`nav-link ${activeTab === 'site' ? 'active' : ''}`}
+                            to="/about/site/"
                             role="tab"
                             aria-controls="site"
                             aria-selected={activeTab === 'site'}
-                            onClick={() => handleTabClick('site')}
                         >
                             This Site
-                        </button>
+                        </Link>
                     </li>
                     <li className="nav-item" role="presentation">
-                        <button
-                            type="button"
+                        <Link
                             className={`nav-link ${activeTab === 'me' ? 'active' : ''}`}
+                            to="/about/me/"
                             role="tab"
                             aria-controls="me"
                             aria-selected={activeTab === 'me'}
-                            onClick={() => handleTabClick('me')}
                         >
                             Me
-                        </button>
+                        </Link>
                     </li>
                     <li className="nav-item" role="presentation">
-                        <button
-                            type="button"
-                            className={`nav-link ${activeTab === 'right' ? 'active' : ''}`}
+                        <Link
+                            className={`nav-link ${activeTab === 'copyright' ? 'active' : ''}`}
+                            to="/about/copyright/"
                             role="tab"
-                            aria-controls="right"
-                            aria-selected={activeTab === 'right'}
-                            onClick={() => handleTabClick('right')}
+                            aria-controls="copyright"
+                            aria-selected={activeTab === 'copyright'}
                         >
                             Copyright
-                        </button>
+                        </Link>
                     </li>
                 </ul>
 
@@ -128,9 +121,9 @@ export const About = () => {
                     </div>
                     <div
                         role="tabpanel"
-                        aria-labelledby="right-tab"
-                        className={`tab-pane ${activeTab === 'right' ? 'active' : ''}`}
-                        id="right"
+                        aria-labelledby="copyright-tab"
+                        className={`tab-pane ${activeTab === 'copyright' ? 'active' : ''}`}
+                        id="copyright"
                     >
                         <article>
                             <h2>Copyright</h2>
