@@ -1,6 +1,6 @@
 'use strict';
 
-import { Mail, Send, UserCircle } from 'lucide-react';
+import { Github, Mail, Send, Twitter, BookOpen, ExternalLink, Globe } from 'lucide-react';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 
@@ -55,37 +55,50 @@ export const About = () => {
                     >
                         <article>
                             <h2>About this site</h2>
-                            <p>Built with React, GraphQL, and MongoDB.</p>
-                            <p>
-                                Backend:{' '}
+                            <div className="bio-section">
+                                <p className="bio-text">
+                                    Minimalist, lightning-fast Single Page Application (SPA) built
+                                    with 2025 modern web standards.
+                                </p>
+                                <div className="focus-areas">
+                                    <span className="focus-tag">React 19</span>
+                                    <span className="focus-tag">Vite</span>
+                                    <span className="focus-tag">GraphQL</span>
+                                    <span className="focus-tag">SCSS</span>
+                                    <span className="focus-tag">Bootstrap 5</span>
+                                    <span className="focus-tag">MongoDB</span>
+                                </div>
+                            </div>
+
+                            <div className="social-links">
                                 <Link
                                     target="_blank"
                                     to="https://github.com/Laisky/laisky-blog/tree/v2"
                                     rel="noreferrer"
+                                    className="social-item"
                                 >
-                                    https://github.com/Laisky/laisky-blog
+                                    <Github size={18} />
+                                    <span>Backend Repo</span>
                                 </Link>
-                            </p>
-                            <p>
-                                GraphQL UI:{' '}
-                                <Link
-                                    target="_blank"
-                                    to="https://gq_v2.laisky.com/ui/"
-                                    rel="noreferrer"
-                                >
-                                    https://gq_v2.laisky.com/ui/
-                                </Link>
-                            </p>
-                            <p>
-                                GraphQL Repo:{' '}
                                 <Link
                                     target="_blank"
                                     to="https://github.com/Laisky/laisky-blog-graphql"
                                     rel="noreferrer"
+                                    className="social-item"
                                 >
-                                    https://github.com/Laisky/laisky-blog-graphql
+                                    <Github size={18} />
+                                    <span>GraphQL Repo</span>
                                 </Link>
-                            </p>
+                                <Link
+                                    target="_blank"
+                                    to="https://gq_v2.laisky.com/ui/"
+                                    rel="noreferrer"
+                                    className="social-item"
+                                >
+                                    <ExternalLink size={18} />
+                                    <span>GraphQL UI</span>
+                                </Link>
+                            </div>
                         </article>
                     </div>
                     <div
@@ -95,66 +108,102 @@ export const About = () => {
                         id="me"
                     >
                         <article>
-                            <h2>About Me</h2>
-                            <div style={{ marginBottom: '1rem' }}>
-                                <span style={{ fontSize: '1.2rem', fontWeight: 600 }}>
-                                    Hi there{' '}
-                                    <span role="img" aria-label="wave">
-                                        👋
-                                    </span>
-                                    , I'm Laisky Cai
+                            <div className="intro-header">
+                                <span className="greeting">Hi there, I'm Laisky Cai</span>
+                                <span className="wave" role="img" aria-label="wave">
+                                    👋
                                 </span>
                             </div>
-                            <div style={{ marginBottom: '0.1rem' }}>
-                                <span>
-                                    Software Engineer since 2014, familiar with Golang, Python, and
-                                    ECMAScript, focus on Platform/Backend Development.
+
+                            <div className="bio-section">
+                                <div className="bio-text">
+                                    <span className="highlight">Software Engineer since 2014</span>,
+                                    expert in <span className="highlight">Golang</span>,{' '}
+                                    <span className="highlight">Python</span>, and{' '}
+                                    <span className="highlight">ECMAScript</span>, with a deep focus
+                                    on Platform and Backend architecture.
                                     <br />
                                     <br />
-                                    Recently working on LLM Agent, Trusted Execution Environment
-                                    (TEE), Confidential Computing, Blockchain Protocol, Zero-Trust
-                                    Infrastructure.
+                                    Currently pioneering in{' '}
+                                    <span className="highlight">LLM Agents</span>,{' '}
+                                    <span className="highlight">
+                                        Trusted Execution Environments
+                                    </span>{' '}
+                                    (TEE), and{' '}
+                                    <span className="highlight">Confidential Computing</span>.
+                                    Building the next generation of{' '}
+                                    <span className="highlight">Zero-Trust Infrastructure</span> and{' '}
+                                    <span className="highlight">Blockchain Protocols</span>.
                                     <br />
                                     <br />
-                                    Passionate about reading, drawing lessons from history.
-                                    Programming is my language of creation, and I'm obsessed with
-                                    building tools that make life easier for people.
-                                    <br />
-                                </span>
+                                    Passionate about reading and drawing profound lessons from
+                                    history. Programming is my chosen language of creation, and I'm
+                                    obsessed with engineering tools that deliver elegance and
+                                    utility to users worldwide.
+                                </div>
+
+                                <div className="focus-areas">
+                                    <span className="focus-tag">Golang</span>
+                                    <span className="focus-tag">Python</span>
+                                    <span className="focus-tag">LLM</span>
+                                    <span className="focus-tag">Backend</span>
+                                    <span className="focus-tag">K8s</span>
+                                    <span className="focus-tag">TEE</span>
+                                    <span className="focus-tag">PaaS</span>
+                                    <span className="focus-tag">SaaS</span>
+                                </div>
                             </div>
-                            <div>
+
+                            <div className="social-links">
                                 <Link
                                     target="_blank"
                                     to="https://blog.laisky.com/archives/1/"
                                     rel="noreferrer"
-                                    style={{ marginRight: '1.5rem' }}
+                                    className="social-item"
                                 >
-                                    Blog
+                                    <BookOpen size={18} />
+                                    <span>Blog</span>
                                 </Link>
                                 <Link
                                     target="_blank"
                                     to="https://github.com/Laisky"
                                     rel="noreferrer"
-                                    style={{ marginRight: '1.5rem' }}
+                                    className="social-item"
                                 >
-                                    GitHub
+                                    <Github size={18} />
+                                    <span>GitHub</span>
                                 </Link>
                                 <Link
                                     target="_blank"
                                     to="https://t.me/laiskynotes"
                                     rel="noreferrer"
-                                    style={{ marginRight: '1.5rem' }}
+                                    className="social-item"
                                 >
-                                    Channel
+                                    <Send size={18} />
+                                    <span>Channel</span>
                                 </Link>
                                 <Link
                                     target="_blank"
                                     to="https://x.com/LaiskyCai"
                                     rel="noreferrer"
-                                    style={{ marginRight: '1.5rem' }}
+                                    className="social-item"
                                 >
-                                    Twitter/X
+                                    <Twitter size={18} />
+                                    <span>Twitter/X</span>
                                 </Link>
+                                <Link
+                                    target="_blank"
+                                    to="https://about.me/laisky"
+                                    rel="noreferrer"
+                                    className="social-item"
+                                >
+                                    <Globe size={18} />
+                                    <span>AboutMe</span>
+                                </Link>
+                                <a href="mailto:public@laisky.com" className="social-item">
+                                    <Mail size={18} />
+                                    <span>Email</span>
+                                </a>
                             </div>
                         </article>
                     </div>

@@ -118,8 +118,140 @@
                         text-decoration: underline;
                     }
                 }
+
+                .intro-header {
+                    margin-bottom: 0.5rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+
+                    .greeting {
+                        font-size: 1.25rem;
+                        font-weight: 700;
+                        color: var(--text-primary);
+                    }
+
+                    .wave {
+                        font-size: 1.5rem;
+                        animation: wave-animation 2.5s infinite;
+                        transform-origin: 70% 70%;
+                        display: inline-block;
+                    }
+                }
+
+                .bio-section {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1.25rem;
+
+                    .bio-text {
+                        color: var(--text-secondary);
+                        line-height: 1.8;
+                        font-size: 1.05rem;
+
+                        .highlight {
+                            color: var(--text-primary);
+                            font-weight: 500;
+                        }
+                    }
+
+                    .focus-areas {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 0.5rem;
+                        margin-top: 0.5rem;
+
+                        .focus-tag {
+                            padding: 0.25rem 0.75rem;
+                            background: var(--surface-secondary);
+                            border: 1px solid var(--border-subtle);
+                            border-radius: var(--radius-full);
+                            font-size: 0.85rem;
+                            color: var(--text-secondary);
+                            transition: all 0.2s ease;
+
+                            &:hover {
+                                border-color: var(--accent-color);
+                                color: var(--accent-color);
+                            }
+                        }
+                    }
+                }
+
+                .social-links {
+                    margin-top: 1rem;
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                    gap: 1rem;
+
+                    .social-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                        padding: 0.75rem 1rem;
+                        background: var(--surface-secondary);
+                        border: 1px solid var(--border-subtle);
+                        border-radius: var(--radius-md);
+                        color: var(--text-secondary);
+                        font-weight: 500;
+                        font-size: 0.95rem;
+                        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                        text-decoration: none;
+
+                        svg {
+                            transition: transform 0.2s ease;
+                        }
+
+                        &:hover {
+                            background: var(--surface-primary);
+                            border-color: var(--accent-color);
+                            color: var(--accent-color);
+                            box-shadow: var(--shadow-sm);
+                            text-decoration: none;
+                            transform: translateY(-2px);
+
+                            svg {
+                                transform: scale(1.1);
+                            }
+                        }
+                    }
+                }
             }
         }
+    }
+}
+
+@keyframes wave-animation {
+    0% {
+        transform: rotate(0.0deg)
+    }
+
+    10% {
+        transform: rotate(14.0deg)
+    }
+
+    20% {
+        transform: rotate(-8.0deg)
+    }
+
+    30% {
+        transform: rotate(14.0deg)
+    }
+
+    40% {
+        transform: rotate(-4.0deg)
+    }
+
+    50% {
+        transform: rotate(10.0deg)
+    }
+
+    60% {
+        transform: rotate(0.0deg)
+    }
+
+    100% {
+        transform: rotate(0.0deg)
     }
 }
 
