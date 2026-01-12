@@ -96,27 +96,66 @@ export const About = () => {
                     >
                         <article>
                             <h2>About Me</h2>
-                            <p>
-                                <Mail size={18} className="me-2 align-text-bottom" /> Email:
-                                public@laisky.com
-                            </p>
-                            <p>
-                                <Send size={18} className="me-2 align-text-bottom" /> Channel:{' '}
+                            <div style={{ marginBottom: '1rem' }}>
+                                <span style={{ fontSize: '1.2rem', fontWeight: 600 }}>
+                                    Hi there{' '}
+                                    <span role="img" aria-label="wave">
+                                        👋
+                                    </span>
+                                    , I'm Laisky Cai
+                                </span>
+                            </div>
+                            <div style={{ marginBottom: '0.1rem' }}>
+                                <span>
+                                    Software Engineer since 2014, familiar with Golang, Python, and
+                                    ECMAScript, focus on Platform/Backend Development.
+                                    <br />
+                                    <br />
+                                    Recently working on LLM Agent, Trusted Execution Environment
+                                    (TEE), Confidential Computing, Blockchain Protocol, Zero-Trust
+                                    Infrastructure.
+                                    <br />
+                                    <br />
+                                    Passionate about reading, drawing lessons from history.
+                                    Programming is my language of creation, and I'm obsessed with
+                                    building tools that make life easier for people.
+                                    <br />
+                                </span>
+                            </div>
+                            <div>
+                                <Link
+                                    target="_blank"
+                                    to="https://blog.laisky.com/archives/1/"
+                                    rel="noreferrer"
+                                    style={{ marginRight: '1.5rem' }}
+                                >
+                                    Blog
+                                </Link>
+                                <Link
+                                    target="_blank"
+                                    to="https://github.com/Laisky"
+                                    rel="noreferrer"
+                                    style={{ marginRight: '1.5rem' }}
+                                >
+                                    GitHub
+                                </Link>
                                 <Link
                                     target="_blank"
                                     to="https://t.me/laiskynotes"
                                     rel="noreferrer"
+                                    style={{ marginRight: '1.5rem' }}
                                 >
-                                    https://t.me/laiskynotes
+                                    Channel
                                 </Link>
-                            </p>
-                            <p>
-                                <UserCircle size={18} className="me-2 align-text-bottom" /> About
-                                Me:{' '}
-                                <Link target="_blank" to="https://about.me/laisky" rel="noreferrer">
-                                    https://about.me/laisky
+                                <Link
+                                    target="_blank"
+                                    to="https://x.com/LaiskyCai"
+                                    rel="noreferrer"
+                                    style={{ marginRight: '1.5rem' }}
+                                >
+                                    Twitter/X
                                 </Link>
-                            </p>
+                            </div>
                         </article>
                     </div>
                     <div
