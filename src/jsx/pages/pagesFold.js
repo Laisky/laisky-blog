@@ -27,54 +27,48 @@ export const clamp01 = (value) => Math.min(1, Math.max(0, value));
  * @param {'up'|'down'} input.scrollDirection - Current scroll direction.
  * @returns {{fadeProgress:number,isTop:boolean}} Fold progress and whether it folds toward the top.
  */
-export const calculateRibbonFold = ({
-    rect,
-    viewportHeight,
-    navbarHeight,
-    isMobile,
-    scrollDirection,
-}) => {
-    // Bottom-entry fold: keep existing reel feel (applies on all viewports).
-    const bottomZoneStart = viewportHeight - 100;
-    const bottomTransitionRange = 80;
+export const calculateRibbonFold = ({ rect, viewportHeight, navbarHeight, isMobile, scrollDirection }) => {
+  // Bottom-entry fold: keep existing reel feel (applies on all viewports).
+  const bottomZoneStart = viewportHeight - 100;
+  const bottomTransitionRange = 80;
 
-    // Top fold (mobile) uses a bottom-edge trigger when scrolling down.
-    const topTriggerLine = viewportHeight / 3;
-    const topTransitionRange = Math.min(140, Math.max(90, Math.round(viewportHeight * 0.18)));
+  // Top fold (mobile) uses a bottom-edge trigger when scrolling down.
+  const topTriggerLine = viewportHeight / 3;
+  const topTransitionRange = Math.min(140, Math.max(90, Math.round(viewportHeight * 0.18)));
 
-    // Calculate how much of the post is visible/faded
-    let fadeProgress = 0; // 0 = fully visible, 1 = fully folded
-    let isTop = false;
+  // Calculate how much of the post is visible/faded
+  let fadeProgress = 0; // 0 = fully visible, 1 = fully folded
+  let isTop = false;
 
-    // Hard-stop: completely above the navbar.
-    if (rect.bottom <= navbarHeight) {
-        return { fadeProgress: 1, isTop: true };
+  // Hard-stop: completely above the navbar.
+  if (rect.bottom <= navbarHeight) {
+    return { fadeProgress: 1, isTop: true };
+  }
+
+  // Top fold behavior
+  if (isMobile && scrollDirection === 'down') {
+    // Delay the top fold for long articles: start only after the bottom rises above 1/3 viewport.
+    if (rect.bottom < topTriggerLine) {
+      const progress = (topTriggerLine - rect.bottom) / topTransitionRange;
+      fadeProgress = clamp01(progress);
+      isTop = true;
     }
-
-    // Top fold behavior
-    if (isMobile && scrollDirection === 'down') {
-        // Delay the top fold for long articles: start only after the bottom rises above 1/3 viewport.
-        if (rect.bottom < topTriggerLine) {
-            const progress = (topTriggerLine - rect.bottom) / topTransitionRange;
-            fadeProgress = clamp01(progress);
-            isTop = true;
-        }
-    } else {
-        // Original behavior: fold when the top slides under the navbar.
-        if (rect.top < navbarHeight && rect.bottom > navbarHeight && rect.height > 0) {
-            const visibleHeight = rect.bottom - navbarHeight;
-            const hiddenRatio = 1 - visibleHeight / rect.height;
-            fadeProgress = clamp01(hiddenRatio * 1.5);
-            isTop = true;
-        }
+  } else {
+    // Original behavior: fold when the top slides under the navbar.
+    if (rect.top < navbarHeight && rect.bottom > navbarHeight && rect.height > 0) {
+      const visibleHeight = rect.bottom - navbarHeight;
+      const hiddenRatio = 1 - visibleHeight / rect.height;
+      fadeProgress = clamp01(hiddenRatio * 1.5);
+      isTop = true;
     }
+  }
 
-    // Bottom fold behavior (entering/leaving at bottom edge of the viewport).
-    if (fadeProgress <= 0 && rect.top > bottomZoneStart) {
-        const distanceFromSafeZone = rect.top - bottomZoneStart;
-        fadeProgress = clamp01(distanceFromSafeZone / bottomTransitionRange);
-        isTop = false;
-    }
+  // Bottom fold behavior (entering/leaving at bottom edge of the viewport).
+  if (fadeProgress <= 0 && rect.top > bottomZoneStart) {
+    const distanceFromSafeZone = rect.top - bottomZoneStart;
+    fadeProgress = clamp01(distanceFromSafeZone / bottomTransitionRange);
+    isTop = false;
+  }
 
-    return { fadeProgress, isTop };
+  return { fadeProgress, isTop };
 };

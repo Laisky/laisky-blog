@@ -7,11 +7,11 @@ import { Categories } from './categories.jsx';
 import { Tags } from './tags.jsx';
 
 export const Sidebar = () => {
-    return (
-        <>
-            <Categories />
-            <Admin />
-            <Tags />
-        </>
-    );
+  return (
+    <>
+      <Categories />
+      <Admin />
+      <Tags />
+    </>
+  );
 };

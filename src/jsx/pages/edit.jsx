@@ -5,16 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import jsutils from '@laisky/js-utils';
-import {
-    getUserLanguage,
-    graphqlMutation,
-    graphqlQuery,
-    KvKeyLanguage,
-    KvKeyUserToken,
-} from '../library/base.jsx';
+import { getUserLanguage, graphqlMutation, graphqlQuery, KvKeyLanguage, KvKeyUserToken } from '../library/base.jsx';
 
 export const postEditLoader = async ({ params }) => {
-    const gqBody = gql`
+  const gqBody = gql`
         query {
             BlogPosts(
                 name: "${params.name}"
@@ -40,60 +34,60 @@ export const postEditLoader = async ({ params }) => {
         }
     `;
 
-    const resp = await graphqlQuery(gqBody);
-    return resp.BlogPosts[0];
+  const resp = await graphqlQuery(gqBody);
+  return resp.BlogPosts[0];
 };
 
 export const postPublishLoader = async ({ params }) => {
-    return {
-        name: '',
-        type: 'markdown',
-        title: '',
-        language: 'zh_CN',
-        markdown: '',
-    };
+  return {
+    name: '',
+    type: 'markdown',
+    title: '',
+    language: 'zh_CN',
+    markdown: '',
+  };
 };
 
 export const PostEdit = ({ isPublish }) => {
-    isPublish = isPublish === 'true';
-    const [language, setLanguage] = useState(null);
-    const [content, setContent] = useState(null);
-    const navigate = useNavigate();
-    const params = useParams();
+  isPublish = isPublish === 'true';
+  const [language, setLanguage] = useState(null);
+  const [content, setContent] = useState(null);
+  const navigate = useNavigate();
+  const params = useParams();
 
-    useEffect(() => {
-        (async () => {
-            setContent(await renderContent());
-        })();
-    }, [params.name, language]);
+  useEffect(() => {
+    (async () => {
+      setContent(await renderContent());
+    })();
+  }, [params.name, language]);
 
-    const submitHandler = async (evt) => {
-        evt.preventDefault();
-        evt.stopPropagation();
+  const submitHandler = async (evt) => {
+    evt.preventDefault();
+    evt.stopPropagation();
 
-        const postEle = document.getElementById('postEdit');
-        const language = postEle.querySelector('.input.postLanguage').value;
+    const postEle = document.getElementById('postEdit');
+    const language = postEle.querySelector('.input.postLanguage').value;
 
-        const variables = {
-            post: {
-                title: postEle.querySelector('.input.postTitle').value,
-                name: postEle.querySelector('.input.postName').value,
-                markdown: postEle.querySelector('.input.postMarkdown').value,
-                type: postEle.querySelector('.input.postType').value,
-            },
-        };
+    const variables = {
+      post: {
+        title: postEle.querySelector('.input.postTitle').value,
+        name: postEle.querySelector('.input.postName').value,
+        markdown: postEle.querySelector('.input.postMarkdown').value,
+        type: postEle.querySelector('.input.postType').value,
+      },
+    };
 
-        // check empty
-        for (const k in variables.post) {
-            if (!variables.post[k]) {
-                alert(`Empty field: ${k}`);
-                return;
-            }
-        }
+    // check empty
+    for (const k in variables.post) {
+      if (!variables.post[k]) {
+        alert(`Empty field: ${k}`);
+        return;
+      }
+    }
 
-        let gqBody;
-        if (isPublish) {
-            gqBody = gql`
+    let gqBody;
+    if (isPublish) {
+      gqBody = gql`
                 mutation($post: NewBlogPost!) {
                     BlogCreatePost(
                         post: $post,
@@ -103,8 +97,8 @@ export const PostEdit = ({ isPublish }) => {
                     }
                 }
             `;
-        } else {
-            gqBody = gql`
+    } else {
+      gqBody = gql`
                 mutation($post: NewBlogPost!) {
                     BlogAmendPost(
                         post: $post,
@@ -114,105 +108,94 @@ export const PostEdit = ({ isPublish }) => {
                     }
                 }
             `;
+    }
+
+    await graphqlMutation(gqBody, variables, {
+      Authorization: `Bearer ${await jsutils.KvGet(KvKeyUserToken)}`,
+    });
+
+    navigate(`/p/${variables.post.name}/?force=1`);
+  };
+
+  const watchLanguageChange = async () => {
+    await jsutils.KvAddListener(
+      KvKeyLanguage,
+      async (key, op, oldVal, newVal) => {
+        if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
+          return;
         }
 
-        await graphqlMutation(gqBody, variables, {
-            Authorization: `Bearer ${await jsutils.KvGet(KvKeyUserToken)}`,
-        });
+        navigate(0);
+      },
+      'page_post'
+    );
+  };
+  watchLanguageChange();
 
-        navigate(`/p/${variables.post.name}/?force=1`);
-    };
-
-    const watchLanguageChange = async () => {
-        await jsutils.KvAddListener(
-            KvKeyLanguage,
-            async (key, op, oldVal, newVal) => {
-                if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
-                    return;
-                }
-
-                navigate(0);
-            },
-            'page_post'
-        );
-    };
-    watchLanguageChange();
-
-    const renderContent = async () => {
-        let post;
-        if (isPublish) {
-            post = await postPublishLoader({ params });
-        } else {
-            post = await postEditLoader({ params });
-        }
-
-        return (
-            <div className="posts">
-                <div className="post" id={post.name} key={post.name}>
-                    <div className="mb-3">
-                        <label htmlFor="postTitle" className="form-label">
-                            Title
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control input postTitle"
-                            defaultValue={post.title}
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="postName" className="form-label">
-                            Name
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control input postName"
-                            {...(isPublish ? {} : { readOnly: true })}
-                            defaultValue={post.name}
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="postMarkdown" className="form-label">
-                            Markdown
-                        </label>
-                        <textarea
-                            className="form-control input postMarkdown"
-                            defaultValue={post.markdown}
-                            rows="50"
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="postLanguage" className="form-label">
-                            Language
-                        </label>
-                        <select
-                            className="form-select input postLanguage"
-                            defaultValue={post.language}
-                        >
-                            <option value="en_US">en_US</option>
-                            <option value="zh_CN">zh_CN</option>
-                        </select>
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="postType" className="form-label">
-                            Type
-                        </label>
-                        <select className="form-select input postType" defaultValue={post.type}>
-                            <option value="markdown">Markdown</option>
-                            <option value="slide">Slide</option>
-                        </select>
-                    </div>
-                    <button type="submit" className="btn btn-primary" onClick={submitHandler}>
-                        Submit
-                    </button>
-                </div>
-            </div>
-        );
-    };
+  const renderContent = async () => {
+    let post;
+    if (isPublish) {
+      post = await postPublishLoader({ params });
+    } else {
+      post = await postEditLoader({ params });
+    }
 
     return (
-        <div id="postEdit" className="row g-3 g-xl-4 align-items-start scrollable-content">
-            {/* blog posts */}
-            <div className="col-12 col-xl-9">{content}</div>
+      <div className="posts">
+        <div className="post" id={post.name} key={post.name}>
+          <div className="mb-3">
+            <label htmlFor="postTitle" className="form-label">
+              Title
+            </label>
+            <input type="text" className="form-control input postTitle" defaultValue={post.title} />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="postName" className="form-label">
+              Name
+            </label>
+            <input
+              type="text"
+              className="form-control input postName"
+              {...(isPublish ? {} : { readOnly: true })}
+              defaultValue={post.name}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="postMarkdown" className="form-label">
+              Markdown
+            </label>
+            <textarea className="form-control input postMarkdown" defaultValue={post.markdown} rows="50" />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="postLanguage" className="form-label">
+              Language
+            </label>
+            <select className="form-select input postLanguage" defaultValue={post.language}>
+              <option value="en_US">en_US</option>
+              <option value="zh_CN">zh_CN</option>
+            </select>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="postType" className="form-label">
+              Type
+            </label>
+            <select className="form-select input postType" defaultValue={post.type}>
+              <option value="markdown">Markdown</option>
+              <option value="slide">Slide</option>
+            </select>
+          </div>
+          <button type="submit" className="btn btn-primary" onClick={submitHandler}>
+            Submit
+          </button>
         </div>
+      </div>
     );
+  };
+
+  return (
+    <div id="postEdit" className="row g-3 g-xl-4 align-items-start scrollable-content">
+      {/* blog posts */}
+      <div className="col-12 col-xl-9">{content}</div>
+    </div>
+  );
 };
