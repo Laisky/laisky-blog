@@ -97,6 +97,72 @@ export const App = () => {
     }
   }, [mobileMenuOpen]);
 
+  // Close mobile menu when Google CSE search overlay opens
+  // Also add click handler to close search when clicking on backdrop
+  useEffect(() => {
+    /**
+     * closeSearchOverlay closes the Google CSE search overlay by clicking
+     * the close button or removing the overlay elements.
+     */
+    const closeSearchOverlay = () => {
+      // Try clicking the native close button first
+      const closeBtn = document.querySelector('.gsc-results-close-btn');
+      if (closeBtn) {
+        closeBtn.click();
+        return;
+      }
+
+      // Fallback: remove the overlay elements manually
+      const overlay = document.querySelector('.gsc-results-wrapper-overlay');
+      const backdrop = document.querySelector('.gsc-modal-background-image');
+      if (overlay) overlay.style.display = 'none';
+      if (backdrop) backdrop.style.display = 'none';
+    };
+
+    /**
+     * handleBackdropClick handles clicks on the modal backdrop to close the search overlay.
+     *
+     * @param {Event} evt - The click event
+     */
+    const handleBackdropClick = (evt) => {
+      if (evt.target.classList?.contains('gsc-modal-background-image')) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        closeSearchOverlay();
+      }
+    };
+
+    // Add click handler for backdrop
+    document.addEventListener('click', handleBackdropClick, true);
+
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            // Check if the added node is the Google CSE overlay or contains it
+            if (
+              node.classList?.contains('gsc-results-wrapper-overlay') ||
+              node.querySelector?.('.gsc-results-wrapper-overlay')
+            ) {
+              console.debug('[App] Google CSE overlay detected, closing mobile menu');
+              setMobileMenuOpen(false);
+            }
+          }
+        }
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('click', handleBackdropClick, true);
+    };
+  }, []);
+
   /**
    * getCurrentRouteName extracts the route name based on the current location.
    */

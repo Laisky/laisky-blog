@@ -508,7 +508,7 @@
     top: 0;
     right: 0;
     left: 0;
-    z-index: 1030;
+    z-index: var(--z-navbar);
 }
 
 .container-fluid {
@@ -1106,7 +1106,7 @@ nav#headerbar {
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-subtle);
-    z-index: 1000;
+    z-index: var(--z-navbar);
 
     .container-fluid {
         padding: 0 1rem;
@@ -1197,7 +1197,8 @@ nav#headerbar {
     border: 1px solid transparent;
     transition: all 0.2s ease;
     position: relative;
-    z-index: 10;
+    // Local stacking context within navbar
+    z-index: 1;
 
     &:focus-within {
         background: var(--surface-primary);
@@ -1338,7 +1339,7 @@ nav#headerbar {
                 align-items: center;
                 justify-content: center;
                 padding: 2rem;
-                z-index: 1040;
+                z-index: var(--z-mobile-menu);
                 animation: mobileMenuFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
                 .navbar-nav {
@@ -1402,7 +1403,7 @@ nav#headerbar {
         .navbar-brand,
         .navbar-actions {
             position: relative;
-            z-index: 1050;
+            z-index: var(--z-navbar-actions);
         }
     }
 

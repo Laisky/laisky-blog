@@ -1,8 +1,37 @@
-// Google Custom Search Engine (CSE) style overrides
-// NOTE: !important is required throughout this file because Google CSE
-// injects inline styles that must be overridden for proper theming.
+// ============================================
+// Google Custom Search Engine (CSE) Style Overrides
+// ============================================
+//
+// IMPORTANT: The use of !important throughout this file is intentional and
+// necessary. Google CSE injects inline styles that have the highest
+// specificity. This is a documented limitation when styling third-party
+// embeddable widgets. Using !important is the industry-accepted approach
+// for overriding third-party inline styles.
+//
+// We use CSS custom properties (--z-*) from variables.scss for z-index
+// values to maintain a centralized stacking context system.
+//
+// Stacking order (lowest to highest):
+// 1. Navbar (--z-navbar: 1000)
+// 2. Mobile menu (--z-mobile-menu: 1040)
+// 3. GSC modal backdrop (--z-external-backdrop: 1999)
+// 4. GSC results overlay (--z-external-overlay: 2000)
+// ============================================
 
-// Overlay positioning
+// Modal background overlay (dark backdrop behind search results)
+// Google CSE injects this with inline z-index: 100001, we override it
+// to ensure proper stacking with our mobile menu.
+.gsc-modal-background-image {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(15, 23, 42, 0.75) !important;
+    backdrop-filter: blur(4px) !important;
+    z-index: var(--z-external-backdrop) !important;
+}
+
+// Search results overlay positioning
 .gsc-results-wrapper-overlay {
     position: fixed !important;
     top: calc(var(--navbar-height) + 12px) !important;
@@ -11,12 +40,7 @@
     width: min(960px, calc(100vw - 2.5rem)) !important;
     min-height: min(420px, calc(100vh - var(--navbar-height) - 72px)) !important;
     max-height: calc(100vh - var(--navbar-height) - 32px) !important;
-    z-index: 2000 !important;
-}
-
-.gsc-modal-background-image {
-    background: rgba(15, 23, 42, 0.75);
-    backdrop-filter: blur(4px);
+    z-index: var(--z-external-overlay) !important;
 }
 
 .gsc-results-wrapper-overlay {
@@ -364,4 +388,92 @@ nav#headerbar {
 
 .gsc-result {
     border-radius: var(--radius-md);
+}
+
+// ============================================
+// Mobile-specific styles for search overlay
+// Ensures proper display on small screens without
+// interference from mobile menu
+// ============================================
+@media (max-width: 575px) {
+    .gsc-modal-background-image {
+        inset: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: var(--z-external-backdrop) !important;
+        // Allow clicking backdrop to close (handled by Google CSE)
+        cursor: pointer !important;
+    }
+
+    .gsc-results-wrapper-overlay {
+        // Full-width mobile layout
+        top: var(--navbar-height) !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: calc(100vh - var(--navbar-height)) !important;
+        max-height: calc(100vh - var(--navbar-height)) !important;
+        border-radius: 0 !important;
+        border: none !important;
+        border-top: 1px solid var(--border-subtle) !important;
+        z-index: var(--z-external-overlay) !important;
+        // Add padding at top for close button
+        padding-top: 3rem !important;
+        position: relative !important;
+
+        // Prominent close button for mobile
+        .gsc-results-close-btn {
+            position: absolute !important;
+            top: 0.5rem !important;
+            right: 0.5rem !important;
+            width: 40px !important;
+            height: 40px !important;
+            padding: 0 !important;
+            background: var(--surface-secondary) !important;
+            border: 1px solid var(--border-subtle) !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            z-index: 10 !important;
+            opacity: 1 !important;
+            color: var(--text-primary) !important;
+            font-size: 1.25rem !important;
+            font-weight: bold !important;
+            transition: background 0.2s ease !important;
+
+            &:hover,
+            &:active {
+                background: var(--surface-strong) !important;
+            }
+
+            // Ensure X icon is visible
+            &::before {
+                content: '×' !important;
+                font-size: 1.5rem !important;
+                line-height: 1 !important;
+            }
+        }
+
+        // Also add a header bar with close button text
+        &::before {
+            content: 'Search Results';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            background: var(--surface-secondary);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+    }
 }

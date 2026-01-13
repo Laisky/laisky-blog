@@ -41,6 +41,29 @@
     --sidebar-width: 300px;
     --navbar-height: 52px;
     --container-xl-max: 1100px;
+
+    // ============================================
+    // Z-Index System (2025/2026 Best Practice)
+    // Centralized stacking context management
+    // ============================================
+    // Base layers (content level)
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-tooltip: 300;
+
+    // Fixed elements (navigation level)
+    --z-navbar: 1000;
+    --z-mobile-menu: 1040;
+    --z-navbar-actions: 1050;
+
+    // Overlay elements (modal level)
+    --z-modal-backdrop: 1900;
+    --z-modal: 2000;
+
+    // External components (Google CSE, etc.)
+    // These need higher values to override third-party inline styles
+    --z-external-backdrop: 1999;
+    --z-external-overlay: 2000;
 }
 
 [data-theme='dark'] {

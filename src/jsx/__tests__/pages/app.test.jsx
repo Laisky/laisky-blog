@@ -1,7 +1,7 @@
 import jsutils from '@laisky/js-utils';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { App } from '../../pages/app';
 
 // Mock dependencies
@@ -32,6 +32,14 @@ describe('App Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     jsutils.KvGet.mockResolvedValue('en_US');
+  });
+
+  afterEach(() => {
+    // Clean up any added DOM elements
+    const overlay = document.querySelector('.gsc-results-wrapper-overlay');
+    if (overlay) {
+      overlay.remove();
+    }
   });
 
   test('renders search container with correct classes and attributes', async () => {
@@ -75,5 +83,94 @@ describe('App Component', () => {
     fireEvent.click(toggler);
     expect(collapse).not.toHaveClass('show');
     expect(toggler).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test('closes mobile menu when Google CSE overlay is added to DOM', async () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+
+    const toggler = screen.getByLabelText(/toggle navigation/i);
+    const collapse = document.querySelector('.navbar-collapse');
+
+    // Open mobile menu
+    fireEvent.click(toggler);
+    expect(collapse).toHaveClass('show');
+
+    // Simulate Google CSE adding the overlay to the DOM
+    await act(async () => {
+      const overlay = document.createElement('div');
+      overlay.className = 'gsc-results-wrapper-overlay';
+      document.body.appendChild(overlay);
+      // Wait for MutationObserver to process
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    });
+
+    // Mobile menu should be closed after overlay appears
+    await waitFor(() => {
+      expect(collapse).not.toHaveClass('show');
+    });
+  });
+
+  test('closes mobile menu when element containing GSC overlay is added', async () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+
+    const toggler = screen.getByLabelText(/toggle navigation/i);
+    const collapse = document.querySelector('.navbar-collapse');
+
+    // Open mobile menu
+    fireEvent.click(toggler);
+    expect(collapse).toHaveClass('show');
+
+    // Simulate a parent element containing the overlay being added
+    await act(async () => {
+      const parent = document.createElement('div');
+      const overlay = document.createElement('div');
+      overlay.className = 'gsc-results-wrapper-overlay';
+      parent.appendChild(overlay);
+      document.body.appendChild(parent);
+      // Wait for MutationObserver to process
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    });
+
+    // Mobile menu should be closed
+    await waitFor(() => {
+      expect(collapse).not.toHaveClass('show');
+    });
+  });
+
+  test('mobile menu stays open if unrelated element is added to DOM', async () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+
+    const toggler = screen.getByLabelText(/toggle navigation/i);
+    const collapse = document.querySelector('.navbar-collapse');
+
+    // Open mobile menu
+    fireEvent.click(toggler);
+    expect(collapse).toHaveClass('show');
+
+    // Add an unrelated element
+    await act(async () => {
+      const unrelatedDiv = document.createElement('div');
+      unrelatedDiv.className = 'some-other-class';
+      document.body.appendChild(unrelatedDiv);
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    });
+
+    // Mobile menu should still be open
+    expect(collapse).toHaveClass('show');
+
+    // Clean up
+    document.querySelector('.some-other-class')?.remove();
   });
 });
