@@ -1,6 +1,6 @@
 import jsutils from '@laisky/js-utils';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { App } from '../../pages/app';
 
@@ -28,6 +28,37 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
+/**
+ * createTestRouter creates a memory router for testing the App component.
+ * Uses createMemoryRouter to support ScrollRestoration component.
+ *
+ * @param {string} initialPath - The initial path for the router
+ * @returns {Object} Router instance
+ */
+const createTestRouter = (initialPath = '/') => {
+  return createMemoryRouter(
+    [
+      {
+        path: '/',
+        element: <App />,
+        children: [
+          {
+            index: true,
+            element: <div>Home</div>,
+          },
+        ],
+      },
+      {
+        path: '*',
+        element: <App />,
+      },
+    ],
+    {
+      initialEntries: [initialPath],
+    }
+  );
+};
+
 describe('App Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -43,11 +74,8 @@ describe('App Component', () => {
   });
 
   test('renders search container with correct classes and attributes', async () => {
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    const router = createTestRouter();
+    render(<RouterProvider router={router} />);
 
     const searchContainer = document.querySelector('.navbar-search');
     expect(searchContainer).toBeInTheDocument();
@@ -61,11 +89,8 @@ describe('App Component', () => {
   });
 
   test('toggles mobile menu when button is clicked', async () => {
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    const router = createTestRouter();
+    render(<RouterProvider router={router} />);
 
     const toggler = screen.getByLabelText(/toggle navigation/i);
     const collapse = document.querySelector('.navbar-collapse');
@@ -86,11 +111,8 @@ describe('App Component', () => {
   });
 
   test('closes mobile menu when Google CSE overlay is added to DOM', async () => {
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    const router = createTestRouter();
+    render(<RouterProvider router={router} />);
 
     const toggler = screen.getByLabelText(/toggle navigation/i);
     const collapse = document.querySelector('.navbar-collapse');
@@ -115,11 +137,8 @@ describe('App Component', () => {
   });
 
   test('closes mobile menu when element containing GSC overlay is added', async () => {
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    const router = createTestRouter();
+    render(<RouterProvider router={router} />);
 
     const toggler = screen.getByLabelText(/toggle navigation/i);
     const collapse = document.querySelector('.navbar-collapse');
@@ -146,11 +165,8 @@ describe('App Component', () => {
   });
 
   test('mobile menu stays open if unrelated element is added to DOM', async () => {
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    const router = createTestRouter();
+    render(<RouterProvider router={router} />);
 
     const toggler = screen.getByLabelText(/toggle navigation/i);
     const collapse = document.querySelector('.navbar-collapse');

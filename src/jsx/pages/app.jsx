@@ -1,7 +1,7 @@
 import jsutils from '@laisky/js-utils';
 import { Activity, BotMessageSquare, Factory, FileText, Languages, Menu, Rss, Terminal, User, X } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 
 import { Dropdown, DropdownItem } from '../components/Dropdown';
 import { getUserLanguage, setUserLanguage } from '../library/base';
@@ -289,6 +289,9 @@ export const App = () => {
       <div id="container">
         <Outlet />
       </div>
+
+      {/* Scroll restoration for browser back/forward navigation */}
+      <ScrollRestoration />
     </>
   );
 };

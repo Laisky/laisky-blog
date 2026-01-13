@@ -2,8 +2,8 @@
 
 import jsutils from '@laisky/js-utils';
 import { gql } from 'graphql-request';
-import React, { useEffect, useState } from 'react';
-import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { Link, useLoaderData, useNavigate, useParams, useLocation } from 'react-router-dom';
 
 import { Sidebar } from '../components/sidebar.jsx';
 import { Tooltip } from '../components/Tooltip.jsx';
@@ -40,6 +40,55 @@ export const loader = async ({ params }) => {
   return { postsData, nPosts };
 };
 
+// Session storage key for scroll positions
+const SCROLL_POSITIONS_KEY = 'blog_scroll_positions';
+
+/**
+ * getScrollPositions retrieves saved scroll positions from session storage.
+ *
+ * @returns {Object} Object mapping URLs to scroll positions
+ */
+const getScrollPositions = () => {
+  try {
+    const stored = sessionStorage.getItem(SCROLL_POSITIONS_KEY);
+    return stored ? JSON.parse(stored) : {};
+  } catch {
+    return {};
+  }
+};
+
+/**
+ * saveScrollPosition saves the current scroll position for a given URL.
+ *
+ * @param {string} url - The URL to save the position for
+ * @param {number} scrollY - The scroll position to save
+ */
+const saveScrollPosition = (url, scrollY) => {
+  try {
+    const positions = getScrollPositions();
+    positions[url] = scrollY;
+    // Keep only the last 50 entries to avoid storage bloat
+    const keys = Object.keys(positions);
+    if (keys.length > 50) {
+      delete positions[keys[0]];
+    }
+    sessionStorage.setItem(SCROLL_POSITIONS_KEY, JSON.stringify(positions));
+  } catch {
+    // Ignore storage errors
+  }
+};
+
+/**
+ * getSavedScrollPosition retrieves the saved scroll position for a URL.
+ *
+ * @param {string} url - The URL to get the position for
+ * @returns {number|null} The saved scroll position or null
+ */
+const getSavedScrollPosition = (url) => {
+  const positions = getScrollPositions();
+  return positions[url] ?? null;
+};
+
 /**
  * Page component displays a paginated list of blog posts.
  *
@@ -65,9 +114,69 @@ export const Page = () => {
       </div>
     </>
   );
+  const [contentLoaded, setContentLoaded] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { nPosts } = useLoaderData();
+  const scrollRestoredRef = useRef(false);
+  const lastScrollYRef = useRef(0);
+
+  // Continuously save scroll position on scroll (debounced)
+  useEffect(() => {
+    const currentPath = location.pathname;
+    let saveTimeout = null;
+
+    /**
+     * handleScroll saves the current scroll position with debouncing.
+     */
+    const handleScroll = () => {
+      lastScrollYRef.current = window.scrollY;
+      // Clear any pending save
+      if (saveTimeout) {
+        clearTimeout(saveTimeout);
+      }
+      // Debounce: save after 100ms of no scrolling
+      saveTimeout = setTimeout(() => {
+        saveScrollPosition(currentPath, window.scrollY);
+      }, 100);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (saveTimeout) {
+        clearTimeout(saveTimeout);
+      }
+      // Save the last known scroll position when unmounting
+      if (lastScrollYRef.current > 0) {
+        saveScrollPosition(currentPath, lastScrollYRef.current);
+      }
+    };
+  }, [location.pathname]);
+
+  // Restore scroll position after content is loaded
+  useEffect(() => {
+    if (!contentLoaded || scrollRestoredRef.current) return;
+
+    const savedPosition = getSavedScrollPosition(location.pathname);
+    if (savedPosition !== null && savedPosition > 0) {
+      // Use requestAnimationFrame to ensure DOM is fully rendered
+      requestAnimationFrame(() => {
+        window.scrollTo(0, savedPosition);
+        scrollRestoredRef.current = true;
+      });
+    } else {
+      scrollRestoredRef.current = true;
+    }
+  }, [contentLoaded, location.pathname]);
+
+  // Reset scroll restored flag when page changes
+  useEffect(() => {
+    scrollRestoredRef.current = false;
+    setContentLoaded(false);
+  }, [params.nPage]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -339,6 +448,7 @@ export const Page = () => {
     );
 
     setContent(cnt);
+    setContentLoaded(true);
   };
 
   /**

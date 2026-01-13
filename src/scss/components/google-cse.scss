@@ -32,13 +32,14 @@
 }
 
 // Search results overlay positioning
+// Width scales with viewport: 960px on medium screens, up to 1200px on large screens
 .gsc-results-wrapper-overlay {
     position: fixed !important;
     top: calc(var(--navbar-height) + 12px) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: min(960px, calc(100vw - 2.5rem)) !important;
-    min-height: min(420px, calc(100vh - var(--navbar-height) - 72px)) !important;
+    width: min(1200px, calc(100vw - 4rem)) !important;
+    min-height: min(500px, calc(100vh - var(--navbar-height) - 72px)) !important;
     max-height: calc(100vh - var(--navbar-height) - 32px) !important;
     z-index: var(--z-external-overlay) !important;
 }
