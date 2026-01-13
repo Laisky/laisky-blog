@@ -1190,24 +1190,46 @@ nav#headerbar {
     background: var(--surface-secondary);
     border-radius: 8px;
     padding: 0 0.75rem;
-    min-width: 240px;
+    min-width: 200px;
     height: 36px;
     display: flex;
     align-items: center;
-    border: 1px solid transparent;
+    border: 1px solid var(--border-subtle);
     transition: all 0.2s ease;
+    cursor: text;
     position: relative;
     // Local stacking context within navbar
     z-index: 1;
 
+    @media (max-width: 575px) {
+        min-width: 140px;
+        padding: 0 0.5rem;
+    }
+
+    &:hover {
+        border-color: var(--accent-color);
+        background: var(--surface-primary);
+    }
+
     &:focus-within {
         background: var(--surface-primary);
         border-color: var(--accent-color);
-        box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+        box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.15);
+    }
+
+    .search-icon {
+        color: var(--text-secondary);
+        flex-shrink: 0;
+        opacity: 0.7;
+    }
+
+    &:focus-within .search-icon {
+        color: var(--accent-color);
+        opacity: 1;
     }
 
     .gcse-search {
-        width: 100%;
+        flex: 1;
     }
 }
 
@@ -1333,8 +1355,7 @@ nav#headerbar {
                 left: 0;
                 width: 100%;
                 height: 100vh;
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(20px);
+                background: var(--surface-primary);
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
@@ -1387,16 +1408,6 @@ nav#headerbar {
                         }
                     }
                 }
-
-                .navbar-search {
-                    width: 100%;
-                    max-width: 320px;
-                    margin: 0 auto;
-                    background: var(--surface-secondary);
-                    border: 1px solid var(--border-subtle);
-                    min-height: 44px;
-                    border-radius: 8px;
-                }
             }
         }
 
@@ -1408,7 +1419,7 @@ nav#headerbar {
     }
 
     [data-theme='dark'] nav#headerbar .navbar-collapse.show {
-        background: rgba(28, 28, 30, 0.98);
+        background: var(--surface-primary);
     }
 }
 

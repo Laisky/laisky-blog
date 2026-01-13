@@ -1,26 +1,7 @@
 // ============================================
 // Google Custom Search Engine (CSE) Style Overrides
 // ============================================
-//
-// IMPORTANT: The use of !important throughout this file is intentional and
-// necessary. Google CSE injects inline styles that have the highest
-// specificity. This is a documented limitation when styling third-party
-// embeddable widgets. Using !important is the industry-accepted approach
-// for overriding third-party inline styles.
-//
-// We use CSS custom properties (--z-*) from variables.scss for z-index
-// values to maintain a centralized stacking context system.
-//
-// Stacking order (lowest to highest):
-// 1. Navbar (--z-navbar: 1000)
-// 2. Mobile menu (--z-mobile-menu: 1040)
-// 3. GSC modal backdrop (--z-external-backdrop: 1999)
-// 4. GSC results overlay (--z-external-overlay: 2000)
-// ============================================
 
-// Modal background overlay (dark backdrop behind search results)
-// Google CSE injects this with inline z-index: 100001, we override it
-// to ensure proper stacking with our mobile menu.
 .gsc-modal-background-image {
     position: fixed !important;
     inset: 0 !important;
@@ -31,8 +12,6 @@
     z-index: var(--z-external-backdrop) !important;
 }
 
-// Search results overlay positioning
-// Width scales with viewport: 960px on medium screens, up to 1200px on large screens
 .gsc-results-wrapper-overlay {
     position: fixed !important;
     top: calc(var(--navbar-height) + 12px) !important;
@@ -42,9 +21,6 @@
     min-height: min(500px, calc(100vh - var(--navbar-height) - 72px)) !important;
     max-height: calc(100vh - var(--navbar-height) - 32px) !important;
     z-index: var(--z-external-overlay) !important;
-}
-
-.gsc-results-wrapper-overlay {
     background: var(--surface-primary);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-subtle);
@@ -60,7 +36,6 @@
         text-decoration: none !important;
 
         &:hover {
-            color: rgba(var(--accent-color-rgb), 0.8) !important;
             text-decoration: underline !important;
         }
     }
@@ -69,412 +44,64 @@
     .gs-snippet * {
         color: var(--text-secondary) !important;
     }
+}
 
-    .gs-visibleUrl,
-    .gs-visibleUrl *,
-    .gs-richsnippet-showurl,
-    .gs-richsnippet-showurl * {
-        color: var(--text-tertiary) !important;
+// ============================================
+// Navbar Search Specific Styling
+// ============================================
+
+.navbar-search {
+    @media (min-width: 576px) {
+        height: 36px !important;
     }
 
-    .gsc-input-box {
-        background: var(--surface-secondary) !important;
-
-        input.gsc-input {
-            color: var(--text-primary) !important;
-        }
-    }
-
-    b,
-    strong {
-        color: var(--accent-color) !important;
-        font-weight: 600 !important;
-    }
-
-    .gsc-cursor-page {
-        color: var(--text-secondary) !important;
-        background: var(--surface-secondary) !important;
-
-        &:hover {
-            background: rgba(var(--accent-color-rgb), 0.12) !important;
-            color: var(--text-primary) !important;
-        }
-    }
-
-    .gsc-cursor-current-page {
-        color: var(--text-inverse) !important;
-        background: var(--accent-color) !important;
-    }
-
-    .gs-image,
-    .gs-image-box {
-        background: var(--surface-secondary) !important;
-    }
-
-    .gsc-refinementHeader,
-    .gsc-refinementHeader * {
-        color: var(--text-primary) !important;
-    }
-
-    .gsc-tabHeader {
-        background: var(--surface-secondary) !important;
-
-        &.gsc-tabhActive {
-            background: rgba(var(--accent-color-rgb), 0.15) !important;
-            border-bottom-color: var(--accent-color) !important;
-        }
-    }
-
-    .gsc-tabsArea {
-        border-bottom: 1px solid var(--border-subtle) !important;
-    }
-
-    .gsc-results-close-btn {
-        color: var(--text-primary) !important;
-        opacity: 0.7;
-
-        &:hover {
-            opacity: 1;
-        }
-    }
-
-    .gsc-above-wrapper-area {
-        border-bottom: 1px solid var(--border-subtle) !important;
-    }
-
-    .gsc-webResult {
-        background: transparent !important;
+    // Intensive reset for Google's internal layout to prevent character overflow
+    .gsc-control-cse,
+    .gsc-control-wrapper-cse,
+    form.gsc-search-box,
+    .gsc-search-box,
+    .gsc-input-box,
+    table,
+    tbody,
+    tr,
+    td,
+    .gsib_a,
+    .gsib_b,
+    .gstl_50,
+    .gstl_51 {
+        padding: 0 !important;
+        margin: 0 !important;
         border: none !important;
-        padding: 1rem 0 !important;
-        border-bottom: 1px solid var(--border-subtle) !important;
-
-        &:hover {
-            background: rgba(var(--accent-color-rgb), 0.05) !important;
-        }
-    }
-
-    .gsc-table-result {
         background: transparent !important;
-    }
-}
-
-// Search box styles in navbar
-nav#headerbar {
-    form[role='search'] {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        height: 36px;
-        min-width: 240px;
-        padding: 0 0.75rem;
-        background: var(--surface-secondary);
-        border-radius: 8px;
-        border: 1px solid transparent;
-        transition: all 0.2s ease;
-        overflow: hidden;
-        z-index: 10;
-
-        &:focus-within {
-            background: var(--surface-primary);
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
-        }
-    }
-
-    form[role='search']>[id^='___gcse_'] {
-        display: inline-flex;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
-    [id^='___gcse_'] {
-        width: 100%;
-
-        .gsc-control-cse,
-        .gsc-control-wrapper-cse {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            padding: 0;
-            margin: 0;
-            background: transparent;
-            border: none;
-            box-shadow: none;
-            overflow: hidden;
-        }
-
-        form.gsc-search-box {
-            display: flex;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        table.gsc-search-box {
-            margin: 0;
-            height: auto;
-            border: none;
-            background: transparent;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            flex: 1 1 auto;
-
-            tbody,
-            tr {
-                margin: 0;
-                height: auto;
-                border: none;
-                background: transparent;
-                display: flex;
-                align-items: center;
-                width: 100%;
-                flex: 1 1 auto;
-            }
-
-            td {
-                display: flex;
-                align-items: center;
-                padding: 0;
-                border: none;
-                background: transparent;
-                min-width: 0;
-
-                &.gsc-input {
-                    flex: 1 1 auto;
-                    width: auto;
-                    min-width: 0;
-                }
-
-                &.gsc-search-button,
-                &.gsc-clear-button {
-                    flex: 0 0 auto;
-                    width: auto;
-                }
-
-                &.gsc-clear-button {
-                    display: none;
-                    width: 0;
-                    padding: 0;
-                }
-            }
-        }
-
-        .gsc-input-box {
-            display: flex;
-            align-items: center;
-            padding: 0;
-            border: none;
-            border-radius: 0;
-            background: transparent;
-            box-shadow: none;
-            flex: 1 1 100%;
-            width: 100%;
-
-            table,
-            tr,
-            td {
-                width: 100%;
-            }
-
-            table.gsc-input,
-            table[class*='gstl_'] {
-                display: flex;
-                width: 100%;
-            }
-
-            td.gsib_a {
-                display: flex;
-                align-items: center;
-                flex: 1 1 auto;
-                min-width: 0;
-            }
-
-            td.gsib_b {
-                display: flex;
-                align-items: center;
-                flex: 0 0 auto;
-                width: auto;
-            }
-
-            input.gsc-input {
-                background: transparent !important;
-                width: 100% !important;
-            }
-        }
-
-        input.gsc-input {
-            padding: 0;
-            margin: 0;
-            height: auto;
-            line-height: 1.4;
-            border: none;
-            background: transparent !important;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            width: 100% !important;
-            min-width: 180px;
-            max-width: none;
-            display: block;
-            flex: 1 1 auto;
-
-            &::placeholder {
-                color: var(--text-muted);
-            }
-        }
-
-        .gsc-search-button {
-            padding-left: 0;
-            margin-left: auto;
-        }
-
-        .gsc-search-button-v2 {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 24px;
-            height: 24px;
-            margin: 0;
-            margin-left: 0.5rem;
-            border-radius: 50%;
-            background: transparent;
-            border: none;
-            color: var(--text-tertiary);
-            box-shadow: none;
-            transition: color 0.2s ease;
-
-            &:hover,
-            &:focus-visible {
-                color: var(--text-primary);
-            }
-
-            svg path {
-                fill: currentColor;
-            }
-        }
-
-        .gsc-clear-button {
-            display: none;
-
-            &:hover {
-                display: none;
-            }
-        }
-    }
-
-    @media (max-width: 640px) {
-        form[role='search'] {
-            min-width: 100%;
-            padding: 0 0.75rem;
-        }
-
-        [id^='___gcse_'] input.gsc-input {
-            min-width: 0 !important;
-        }
-    }
-}
-
-// Global CSE control styles
-.gsc-control-cse {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-}
-
-.gsc-result {
-    border-radius: var(--radius-md);
-}
-
-// ============================================
-// Mobile-specific styles for search overlay
-// Ensures proper display on small screens without
-// interference from mobile menu
-// ============================================
-@media (max-width: 575px) {
-    .gsc-modal-background-image {
-        inset: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        z-index: var(--z-external-backdrop) !important;
-        // Allow clicking backdrop to close (handled by Google CSE)
-        cursor: pointer !important;
-    }
-
-    .gsc-results-wrapper-overlay {
-        // Full-width mobile layout
-        top: var(--navbar-height) !important;
-        left: 0 !important;
-        right: 0 !important;
-        transform: none !important;
+        box-shadow: none !important;
         width: 100% !important;
-        max-width: 100% !important;
-        min-height: calc(100vh - var(--navbar-height)) !important;
-        max-height: calc(100vh - var(--navbar-height)) !important;
-        border-radius: 0 !important;
-        border: none !important;
-        border-top: 1px solid var(--border-subtle) !important;
-        z-index: var(--z-external-overlay) !important;
-        // Add padding at top for close button
-        padding-top: 3rem !important;
-        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        height: 100% !important;
+    }
 
-        // Prominent close button for mobile
-        .gsc-results-close-btn {
-            position: absolute !important;
-            top: 0.5rem !important;
-            right: 0.5rem !important;
-            width: 40px !important;
-            height: 40px !important;
-            padding: 0 !important;
-            background: var(--surface-secondary) !important;
-            border: 1px solid var(--border-subtle) !important;
-            border-radius: 50% !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            cursor: pointer !important;
-            z-index: 10 !important;
-            opacity: 1 !important;
-            color: var(--text-primary) !important;
-            font-size: 1.25rem !important;
-            font-weight: bold !important;
-            transition: background 0.2s ease !important;
+    input.gsc-input {
+        background: transparent !important;
+        padding: 0 4px !important;
+        margin: 0 !important;
+        height: 36px !important;
+        line-height: 36px !important;
+        width: 100% !important;
+        font-size: 0.875rem !important;
+        color: var(--text-primary) !important;
+        box-sizing: border-box !important;
+        outline: none !important;
+        flex: 1 !important;
 
-            &:hover,
-            &:active {
-                background: var(--surface-strong) !important;
-            }
-
-            // Ensure X icon is visible
-            &::before {
-                content: '×' !important;
-                font-size: 1.5rem !important;
-                line-height: 1 !important;
-            }
+        &::placeholder {
+            color: var(--text-tertiary) !important;
         }
+    }
 
-        // Also add a header bar with close button text
-        &::before {
-            content: 'Search Results';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2.5rem;
-            display: flex;
-            align-items: center;
-            padding: 0 1rem;
-            font-weight: 600;
-            font-size: 0.875rem;
-            color: var(--text-primary);
-            background: var(--surface-secondary);
-            border-bottom: 1px solid var(--border-subtle);
-        }
+    .gsc-search-button,
+    .gsc-clear-button,
+    .gsst_b,
+    .gsst_a {
+        display: none !important;
     }
 }

@@ -1,5 +1,5 @@
 import jsutils from '@laisky/js-utils';
-import { Activity, BotMessageSquare, Factory, FileText, Languages, Menu, Rss, Terminal, User, X } from 'lucide-react';
+import { Activity, BotMessageSquare, Factory, FileText, Languages, Menu, Rss, Search, Terminal, User, X } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 
@@ -140,10 +140,7 @@ export const App = () => {
         for (const node of mutation.addedNodes) {
           if (node.nodeType === Node.ELEMENT_NODE) {
             // Check if the added node is the Google CSE overlay or contains it
-            if (
-              node.classList?.contains('gsc-results-wrapper-overlay') ||
-              node.querySelector?.('.gsc-results-wrapper-overlay')
-            ) {
+            if (node.classList?.contains('gsc-results-wrapper-overlay') || node.querySelector?.('.gsc-results-wrapper-overlay')) {
               console.debug('[App] Google CSE overlay detected, closing mobile menu');
               setMobileMenuOpen(false);
             }
@@ -264,9 +261,6 @@ export const App = () => {
                 </Link>
               </li>
             </ul>
-            <div className="navbar-search d-flex align-items-center me-2">
-              <div className="gcse-search" data-gname="post_search" data-enablehistory="true" data-enableautocomplete="true"></div>
-            </div>
           </div>
 
           <div className="navbar-actions d-flex align-items-center ms-auto">
@@ -280,7 +274,11 @@ export const App = () => {
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-            <div className="ms-2">{languageDropdown}</div>
+            <div className="navbar-search d-flex mx-2" onClick={() => document.querySelector('.navbar-search input.gsc-input')?.focus()}>
+              <Search size={16} className="search-icon me-1" />
+              <div className="gcse-search" data-gname="post_search" data-enablehistory="true" data-enableautocomplete="true"></div>
+            </div>
+            <div className="">{languageDropdown}</div>
           </div>
         </div>
       </nav>
