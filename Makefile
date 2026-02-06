@@ -1,4 +1,4 @@
-run:
+dev:
 	yarn dev
 
 format:

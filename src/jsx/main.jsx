@@ -4,14 +4,16 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import '../scss/main.scss';
 
+import { consumeSSOCallbackToken } from './library/sso';
 import { About } from './pages/about';
 import { App } from './pages/app';
 import { Categories, loader as categoriesLoader } from './pages/categories';
-import { PostEdit, postEditLoader, postPublishLoader } from './pages/edit';
-import { Login } from './pages/login';
+import { PostEdit } from './pages/edit';
 import NotFound from './pages/notfound';
 import { Page, loader as pageLoader } from './pages/pages';
-import { Post, historyLoader as postHistoryLoader, loader as postLoader } from './pages/post';
+import { Post } from './pages/post';
+
+await consumeSSOCallbackToken();
 
 const router = createBrowserRouter([
   {
@@ -53,10 +55,6 @@ const router = createBrowserRouter([
       {
         path: 'about/',
         element: <Navigate to="/about/site/" replace />,
-      },
-      {
-        path: 'login/',
-        element: <Login />,
       },
       {
         path: 'categories/:category',

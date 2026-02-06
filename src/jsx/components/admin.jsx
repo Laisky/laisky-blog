@@ -1,12 +1,18 @@
 'use strict';
 
-import React, { useEffect, useState } from 'react';
-import { Link, useParams, useLoaderData, useNavigate } from 'react-router-dom';
-import { FilePlus, Settings, LogOut, LogIn, Shield, User } from 'lucide-react';
 import jsutils from '@laisky/js-utils';
+import { FilePlus, LogIn, LogOut, Settings, Shield, User } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { getCurrentUsername, KvKeyAuthUser, KvKeyUserToken } from '../library/base';
+import { buildSSOLoginURL, startSSOLogin } from '../library/sso';
 
+/**
+ * Admin renders login status and admin actions.
+ *
+ * @returns {React.ReactElement} The admin panel component.
+ */
 export const Admin = () => {
   const [loginBtn, setLoginBtn] = useState('');
   const [username, setUsername] = useState(null);
@@ -50,10 +56,10 @@ export const Admin = () => {
         element = (
           <ul>
             <li>
-              <Link to="/login/" className="d-inline-flex align-items-center">
+              <a href={buildSSOLoginURL()} onClick={loginHandler} className="d-inline-flex align-items-center">
                 <LogIn size={14} className="me-2" />
                 Login
-              </Link>
+              </a>
             </li>
           </ul>
         );
@@ -64,6 +70,23 @@ export const Admin = () => {
     })();
   }, [username]);
 
+  /**
+   * loginHandler redirects user to SSO login page directly.
+   *
+   * @param {React.MouseEvent<HTMLAnchorElement>} evt - The login link click event.
+   * @returns {void} No return value.
+   */
+  const loginHandler = (evt) => {
+    evt.preventDefault();
+    startSSOLogin();
+  };
+
+  /**
+   * logoutHandler clears local auth cache and reloads the current route.
+   *
+   * @param {React.MouseEvent<HTMLAnchorElement>} evt - The logout click event.
+   * @returns {Promise<void>} Resolves after logout completion.
+   */
   const logoutHandler = async (evt) => {
     evt.preventDefault();
     await jsutils.KvDel(KvKeyAuthUser);
