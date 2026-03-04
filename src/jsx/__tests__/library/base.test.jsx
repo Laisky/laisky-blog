@@ -1,6 +1,6 @@
 import jsutils from '@laisky/js-utils';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { formatTs, getCurrentPathName, getCurrentUsername, isForce, isJwtExpired, ts2UTC } from '../../library/base';
+import { formatTs, getCurrentPathName, getCurrentUsername, getUserLanguage, isForce, isJwtExpired, ts2UTC } from '../../library/base';
 
 // Mock dependencies
 vi.mock('@laisky/js-utils', () => ({
@@ -111,6 +111,35 @@ describe('base.jsx', () => {
       const name = await getCurrentUsername();
       expect(name).toBe('Alice');
       expect(jsutils.KvSet).toHaveBeenCalled();
+    });
+
+    test('returns undefined when KvGet throws InvalidStateError', async () => {
+      const err = new Error('The transaction is finished.');
+      err.name = 'InvalidStateError';
+      jsutils.KvGet.mockRejectedValueOnce(err);
+
+      await expect(getCurrentUsername()).resolves.toBeUndefined();
+    });
+  });
+
+  describe('getUserLanguage', () => {
+    test('falls back to navigator language when KvGet throws InvalidStateError', async () => {
+      const err = new Error('The transaction is finished.');
+      err.name = 'InvalidStateError';
+      jsutils.KvGet.mockRejectedValueOnce(err);
+
+      const lang = await getUserLanguage();
+      expect(lang).toBe('en_US');
+      expect(document.documentElement.lang).toBe('en_US');
+    });
+
+    test('uses url lang query before storage access', async () => {
+      window.location.href = 'https://laisky.com/test-path?lang=zh-Hans-CN';
+
+      const lang = await getUserLanguage();
+      expect(lang).toBe('zh_CN');
+      expect(document.documentElement.lang).toBe('zh_CN');
+      expect(jsutils.KvGet).not.toHaveBeenCalled();
     });
   });
 

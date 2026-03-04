@@ -17,6 +17,23 @@ export const KvKeyPrefixCache = '@cache_';
 export const DurationDay = 24 * 60 * 60 * 1000;
 export const DurationWeek = 7 * DurationDay;
 
+/**
+ * safeKvGet loads a value from KV storage and returns a fallback value on storage errors.
+ *
+ * @param {string} key - The KV key to read.
+ * @param {*} fallbackValue - The value returned when KV read fails.
+ * @returns {Promise<*>} The stored value or fallback value.
+ */
+const safeKvGet = async (key, fallbackValue = null) => {
+  try {
+    return await jsutils.KvGet(key);
+  } catch (error) {
+    const errorName = error?.name || 'UnknownError';
+    console.debug(`[storage] KvGet failed for key=${key}, error=${errorName}`);
+    return fallbackValue;
+  }
+};
+
 // /**
 //  * Get the cookie value by name.
 //  *
@@ -114,26 +131,29 @@ export const isJwtExpired = (token) => {
  */
 export const getCurrentUsername = async () => {
   // Ensure we have a valid, non-expired token before trusting cached user info
-  const token = await jsutils.KvGet(KvKeyUserToken);
+  const token = await safeKvGet(KvKeyUserToken);
   if (!token || isJwtExpired(token)) {
     try {
       await jsutils.KvDel(KvKeyAuthUser);
       await jsutils.KvDel(KvKeyUserToken);
-    } catch (_) {
-      /* ignore */
+    } catch (error) {
+      const errorName = error?.name || 'UnknownError';
+      console.debug(`[storage] KvDel failed when clearing auth cache, error=${errorName}`);
     }
     return;
   }
 
   // Try to read cached auth user; if missing, decode from token and cache it
-  let userinfo = await jsutils.KvGet(KvKeyAuthUser);
+  let userinfo = await safeKvGet(KvKeyAuthUser);
   if (!userinfo) {
     try {
       userinfo = jwtDecode(token);
       if (userinfo) {
         await jsutils.KvSet(KvKeyAuthUser, userinfo);
       }
-    } catch (_) {
+    } catch (error) {
+      const errorName = error?.name || 'UnknownError';
+      console.debug(`[auth] failed to decode/cache userinfo, error=${errorName}`);
       return;
     }
   }
@@ -165,7 +185,7 @@ export const setUserLanguage = async (lang) => {
 export const getUserLanguage = async () => {
   // Get language from the URL parameter, kv storage, or browser settings in that order
   const url = new URL(window.location.href);
-  let lang = url.searchParams.get('lang') || (await jsutils.KvGet(KvKeyLanguage)) || navigator.language || navigator.userLanguage;
+  let lang = url.searchParams.get('lang') || (await safeKvGet(KvKeyLanguage)) || navigator.language || navigator.userLanguage;
 
   // Convert to lowercase for consistent comparison
   const langLower = lang ? lang.toLowerCase() : '';
