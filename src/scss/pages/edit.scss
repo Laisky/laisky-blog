@@ -2,4 +2,120 @@
     .postMarkdown {
         height: 600px;
     }
+
+    .post-editor {
+        border: 1px solid var(--bs-border-color);
+        border-radius: 1rem;
+        padding: 1.25rem;
+        background:
+            radial-gradient(circle at top right, rgba(9, 132, 227, 0.08), transparent 45%),
+            radial-gradient(circle at bottom left, rgba(38, 222, 129, 0.08), transparent 50%),
+            var(--bs-body-bg);
+        animation: editor-fade-in 240ms ease-out;
+    }
+
+    .post-editor-header {
+        margin-bottom: 1.25rem;
+
+        h2 {
+            margin-bottom: 0.35rem;
+            letter-spacing: 0.01em;
+        }
+
+        p {
+            margin: 0;
+            color: var(--bs-secondary-color);
+        }
+    }
+
+    .editor-section {
+        border-top: 1px dashed var(--bs-border-color);
+        padding-top: 1rem;
+        margin-top: 1rem;
+
+        h3 {
+            margin-bottom: 0.85rem;
+            font-size: 1.05rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--bs-secondary-color);
+        }
+    }
+
+    .editor-grid-2 {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .location-panel {
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.85rem;
+        padding: 0.85rem;
+        background: rgba(15, 23, 42, 0.02);
+    }
+
+    .location-panel-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .location-hint {
+        margin: 0.5rem 0 0;
+        color: var(--bs-secondary-color);
+        font-size: 0.92rem;
+    }
+
+    .location-facts {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.3rem 0.85rem;
+        margin-top: 0.75rem;
+        font-size: 0.86rem;
+    }
+
+    .location-panel--error {
+        border-color: rgba(220, 53, 69, 0.38);
+        background: rgba(220, 53, 69, 0.07);
+    }
+
+    .location-panel--ready {
+        border-color: rgba(25, 135, 84, 0.42);
+        background: rgba(25, 135, 84, 0.07);
+    }
+
+    .editor-actions {
+        position: sticky;
+        bottom: 0;
+        margin-top: 1.25rem;
+        padding-top: 0.8rem;
+        border-top: 1px solid var(--bs-border-color);
+        background: linear-gradient(to top, var(--bs-body-bg), transparent 85%);
+    }
+
+    @media (max-width: 992px) {
+        .editor-grid-2,
+        .location-facts {
+            grid-template-columns: 1fr;
+        }
+
+        .post-editor {
+            border-radius: 0.8rem;
+            padding: 1rem;
+        }
+    }
+}
+
+@keyframes editor-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
