@@ -313,101 +313,89 @@ export const PostEdit = ({ isPublish }) => {
 
     return (
       <div className="posts">
-        <div className="post post-editor" id={post.name} key={post.name}>
-          <div className="post-editor-header">
-            <h2>{isPublish ? 'Publish New Article' : 'Edit Article'}</h2>
-            <p>Publish time is editable, and location capture (city + coordinates) is available for analytics on new publications.</p>
+        <div className="post" id={post.name} key={post.name}>
+          <h2 className="post-title" style={{ marginBottom: '1.5rem' }}>
+            {isPublish ? 'Publish New Article' : 'Edit Article'}
+          </h2>
+
+          <div className="mb-3">
+            <label htmlFor="postTitle" className="form-label">
+              Title
+            </label>
+            <input type="text" className="form-control input postTitle" defaultValue={post.title} />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="postName" className="form-label">
+              Name
+            </label>
+            <input
+              type="text"
+              className="form-control input postName"
+              {...(isPublish ? {} : { readOnly: true })}
+              defaultValue={post.name}
+            />
+          </div>
+          <div className="mb-3 d-flex gap-3 flex-wrap">
+            <div className="flex-grow-1">
+              <label htmlFor="postLanguage" className="form-label">
+                Language
+              </label>
+              <select className="form-select input postLanguage" defaultValue={post.language || 'zh_CN'}>
+                <option value="en_US">en_US</option>
+                <option value="zh_CN">zh_CN</option>
+              </select>
+            </div>
+            <div className="flex-grow-1">
+              <label htmlFor="postType" className="form-label">
+                Type
+              </label>
+              <select className="form-select input postType" defaultValue={post.type || 'markdown'}>
+                <option value="markdown">Markdown</option>
+                <option value="slide">Slide</option>
+              </select>
+            </div>
           </div>
 
-          <section className="editor-section">
-            <h3>Core Metadata</h3>
-            <div className="mb-3">
-              <label htmlFor="postTitle" className="form-label">
-                Title
-              </label>
-              <input type="text" className="form-control input postTitle" defaultValue={post.title} />
+          <div className="mb-3">
+            <label htmlFor="postPublishAt" className="form-label">
+              Publish Time
+            </label>
+            <input type="datetime-local" className="form-control input postPublishAt" defaultValue={initialPublishAt} />
+            <div className="form-text mt-1" style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+              Timezone: {timezoneLabel}. Value is converted and stored as UTC on submit.
             </div>
-            <div className="mb-3">
-              <label htmlFor="postName" className="form-label">
-                Name
-              </label>
-              <input
-                type="text"
-                className="form-control input postName"
-                {...(isPublish ? {} : { readOnly: true })}
-                defaultValue={post.name}
-              />
-            </div>
-            <div className="mb-3 editor-grid-2">
-              <div>
-                <label htmlFor="postLanguage" className="form-label">
-                  Language
-                </label>
-                <select className="form-select input postLanguage" defaultValue={post.language}>
-                  <option value="en_US">en_US</option>
-                  <option value="zh_CN">zh_CN</option>
-                </select>
-              </div>
-              <div>
-                <label htmlFor="postType" className="form-label">
-                  Type
-                </label>
-                <select className="form-select input postType" defaultValue={post.type}>
-                  <option value="markdown">Markdown</option>
-                  <option value="slide">Slide</option>
-                </select>
-              </div>
-            </div>
-          </section>
+          </div>
 
-          <section className="editor-section">
-            <h3>Publishing Controls</h3>
-            <div className="mb-2">
-              <label htmlFor="postPublishAt" className="form-label">
-                Publish Time
-              </label>
-              <input type="datetime-local" className="form-control input postPublishAt" defaultValue={initialPublishAt} />
-              <div className="form-text">Timezone: {timezoneLabel}. Value is converted and stored as UTC on submit.</div>
-            </div>
-
-            {isPublish && (
-              <div className={`location-panel location-panel--${locationState.status}`} role="status" aria-live="polite">
-                <div className="location-panel-row">
-                  <strong>Capture browser location for analytics</strong>
-                  <button type="button" className="btn btn-outline-secondary btn-sm" onClick={captureLocation}>
-                    Refresh Location
-                  </button>
+          {isPublish && (
+            <div className="mb-4 p-3 rounded location-panel">
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>Location Analytics</span>
+                <button type="button" className="btn btn-sm btn-outline-primary" onClick={captureLocation}>
+                  Refresh Location
+                </button>
+              </div>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: '0 0 0.5rem 0' }}>{locationState.message}</p>
+              {locationState.data && (
+                <div className="d-flex gap-3 mt-2" style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>
+                  <span>City: {locationState.data.city || 'Unknown'}</span>
+                  <span>
+                    Coordinates: {locationState.data.latitude}, {locationState.data.longitude}
+                  </span>
                 </div>
-                <p className="location-hint">{locationState.message}</p>
-                {locationState.data && (
-                  <div className="location-facts">
-                    <span>City: {locationState.data.city || 'Unknown'}</span>
-                    <span>Country: {locationState.data.country || 'Unknown'}</span>
-                    <span>
-                      Coordinates: {locationState.data.latitude}, {locationState.data.longitude}
-                    </span>
-                    <span>Accuracy: {locationState.data.accuracy_m ? `${locationState.data.accuracy_m}m` : 'Unknown'}</span>
-                  </div>
-                )}
-              </div>
-            )}
-          </section>
-
-          <section className="editor-section">
-            <h3>Content</h3>
-            <div className="mb-3">
-              <label htmlFor="postMarkdown" className="form-label">
-                Markdown
-              </label>
-              <textarea className="form-control input postMarkdown" defaultValue={post.markdown} rows="50" />
+              )}
             </div>
-          </section>
+          )}
 
-          <div className="editor-actions">
-            <button type="submit" className="btn btn-primary" onClick={submitHandler}>
-              {isPublish ? 'Publish' : 'Save'}
-            </button>
+          <div className="mb-4">
+            <label htmlFor="postMarkdown" className="form-label">
+              Markdown
+            </label>
+            <textarea className="form-control input postMarkdown" defaultValue={post.markdown} rows="40" />
           </div>
+
+          <button type="submit" className="btn btn-primary" onClick={submitHandler}>
+            {isPublish ? 'Publish' : 'Save'}
+          </button>
         </div>
       </div>
     );
