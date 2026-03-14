@@ -79,7 +79,7 @@ describe('App Component', () => {
 
     const searchContainer = document.querySelector('.navbar-search');
     expect(searchContainer).toBeInTheDocument();
-    expect(searchContainer).toHaveClass('d-flex', 'align-items-center');
+    expect(searchContainer).toHaveClass('navbar-search', 'd-flex');
 
     const gcseDiv = document.querySelector('.gcse-search');
     expect(gcseDiv).toBeInTheDocument();

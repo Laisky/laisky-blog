@@ -4,10 +4,8 @@ import jsutils from '@laisky/js-utils';
 import request, { GraphQLClient } from 'graphql-request';
 import { jwtDecode } from 'jwt-decode';
 import moment from 'moment';
-import { isJsxFragment } from 'typescript';
 
 export const GraphqlAPI = 'https://gq_v2.laisky.com/query/';
-// export const GraphqlAPI = 'http://100.75.198.70:18080/query/';
 
 export const KvKeyLanguage = 'language';
 export const KvKeyUserToken = 'user_token';
@@ -27,23 +25,10 @@ export const DurationWeek = 7 * DurationDay;
 const safeKvGet = async (key, fallbackValue = null) => {
   try {
     return await jsutils.KvGet(key);
-  } catch (error) {
-    const errorName = error?.name || 'UnknownError';
-    console.debug(`[storage] KvGet failed for key=${key}, error=${errorName}`);
+  } catch {
     return fallbackValue;
   }
 };
-
-// /**
-//  * Get the cookie value by name.
-//  *
-//  * @returns {string} The cookie value.
-//  */
-// export const getCookie = (name) => {
-//     const value = `; ${document.cookie}`;
-//     const parts = value.split(`; ${name}=`);
-//     if (parts.length === 2) return parts.pop().split(';').shift();
-// }
 
 /**
  * Get the current user token.
@@ -118,7 +103,7 @@ export const isJwtExpired = (token) => {
     const now = Date.now(); // ms
     const expMs = payload.exp * 1000; // exp is in seconds
     return now >= expMs;
-  } catch (e) {
+  } catch {
     // Bad token format
     return true;
   }
@@ -136,9 +121,8 @@ export const getCurrentUsername = async () => {
     try {
       await jsutils.KvDel(KvKeyAuthUser);
       await jsutils.KvDel(KvKeyUserToken);
-    } catch (error) {
-      const errorName = error?.name || 'UnknownError';
-      console.debug(`[storage] KvDel failed when clearing auth cache, error=${errorName}`);
+    } catch {
+      // Storage cleanup failed — not critical
     }
     return;
   }
@@ -151,9 +135,7 @@ export const getCurrentUsername = async () => {
       if (userinfo) {
         await jsutils.KvSet(KvKeyAuthUser, userinfo);
       }
-    } catch (error) {
-      const errorName = error?.name || 'UnknownError';
-      console.debug(`[auth] failed to decode/cache userinfo, error=${errorName}`);
+    } catch {
       return;
     }
   }
@@ -168,11 +150,10 @@ export const getCurrentUsername = async () => {
  * @param {string} lang - The user language.
  */
 export const setUserLanguage = async (lang) => {
-  console.debug(`setUserLanguage: ${lang}`);
   try {
     await jsutils.KvSet(KvKeyLanguage, lang);
-  } catch (e) {
-    console.warn(`setUserLanguage: ${e}`);
+  } catch {
+    // Storage write failed — language will fall back to browser default next load
   }
 };
 
@@ -196,13 +177,6 @@ export const getUserLanguage = async () => {
 
   // Update the html document language attribute with the normalized code
   document.documentElement.lang = normalizedLang;
-
-  // Persist the language setting, and warn if it fails
-  // try {
-  //     await setUserLanguage(normalizedLang);
-  // } catch (error) {
-  //     console.warn(`setUserLanguage failed: ${error}`);
-  // }
 
   return normalizedLang;
 };

@@ -94,22 +94,10 @@
     max-width: 33.333333%;
 }
 
-.col-3 {
-    flex: 0 0 25%;
-    max-width: 25%;
-}
-
 @media (min-width: 576px) {
     .col-sm-6 {
         flex: 0 0 50%;
         max-width: 50%;
-    }
-}
-
-@media (min-width: 768px) {
-    .col-md-4 {
-        flex: 0 0 33.333333%;
-        max-width: 33.333333%;
     }
 }
 
@@ -150,20 +138,6 @@
     display: inline-flex;
 }
 
-@media (min-width: 576px) {
-    .d-sm-none {
-        display: none;
-    }
-
-    .d-sm-block {
-        display: block;
-    }
-
-    .d-sm-flex {
-        display: flex;
-    }
-}
-
 @media (min-width: 1200px) {
     .d-xl-none {
         display: none;
@@ -180,14 +154,6 @@
 
 .w-100 {
     width: 100%;
-}
-
-.w-50 {
-    width: 50%;
-}
-
-.h-100 {
-    height: 100%;
 }
 
 .flex-fill {
@@ -591,13 +557,17 @@
     line-height: 1.5;
     color: var(--text-primary);
     background-color: var(--surface-primary);
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23424245' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 0.75rem center;
     background-size: 16px 12px;
     border: 1px solid var(--border-subtle);
     border-radius: 6px;
     appearance: none;
+
+    [data-theme='dark'] & {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a1a1a6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    }
 
     &:focus {
         border-color: var(--accent-color);
@@ -759,15 +729,15 @@
     font-size: 0.95rem;
 
     &-danger {
-        color: #842029;
-        background-color: #f8d7da;
-        border-color: #f5c2c7;
+        color: var(--alert-danger-text);
+        background-color: var(--alert-danger-bg);
+        border-color: var(--alert-danger-border);
     }
 
     &-success {
-        color: #0f5132;
-        background-color: #d1e7dd;
-        border-color: #badbcc;
+        color: var(--alert-success-text);
+        background-color: var(--alert-success-bg);
+        border-color: var(--alert-success-border);
     }
 }
 
@@ -777,7 +747,7 @@
     border-color: var(--accent-color);
 
     &:hover {
-        color: #fff;
+        color: var(--text-inverse);
         background-color: var(--accent-color);
         border-color: var(--accent-color);
     }
@@ -839,26 +809,6 @@
 // Miscellaneous
 // ============================================
 
-.img-fluid {
-    max-width: 100%;
-    height: auto;
-}
-
-.img-rounded {
-    border-radius: var(--radius-md);
-}
-
-.caret {
-    display: inline-block;
-    width: 0;
-    height: 0;
-    margin-left: 4px;
-    vertical-align: middle;
-    border-top: 4px solid;
-    border-right: 4px solid transparent;
-    border-left: 4px solid transparent;
-}
-
 .dropdown-toggle::after {
     display: inline-block;
     margin-left: 0.255em;
@@ -868,10 +818,6 @@
     border-right: 0.3em solid transparent;
     border-bottom: 0;
     border-left: 0.3em solid transparent;
-}
-
-.fs-5 {
-    font-size: 1.25rem;
 }
 
 // ============================================
@@ -1184,6 +1130,12 @@ nav#headerbar {
         box-shadow: none;
         outline: none;
     }
+
+    &:focus-visible {
+        outline: 2px solid var(--accent-color);
+        outline-offset: 2px;
+        box-shadow: none;
+    }
 }
 
 .navbar-search {
@@ -1442,5 +1394,21 @@ nav#headerbar {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+// ============================================
+// Reduced Motion
+// ============================================
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }

@@ -496,8 +496,6 @@ export const Page = () => {
  * @returns {Promise<Array>} Array of post objects
  */
 const loadPage = async (nPage) => {
-  console.debug(`loadPage: ${nPage}`);
-
   const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`loadPage:${await getUserLanguage()}:${nPage}`));
   if (!isForce()) {
     const cacheData = await jsutils.GetCache(cacheKey);

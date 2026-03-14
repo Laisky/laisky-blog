@@ -94,6 +94,7 @@ export const Comments = ({ postName }) => {
   const [authorWebsite, setAuthorWebsite] = useState('');
   const [commentContent, setCommentContent] = useState('');
   const [formDataLoaded, setFormDataLoaded] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Add this useEffect to load liked comments
   useEffect(() => {
@@ -138,9 +139,8 @@ export const Comments = ({ postName }) => {
       if (authorWebsite) {
         await jsutils.SetCache(CACHE_KEY_AUTHOR_WEBSITE, authorWebsite);
       }
-      console.debug('User comment data saved to cache');
-    } catch (error) {
-      console.error('Failed to cache user data:', error);
+    } catch {
+      // Cache write failed — user data will need to be re-entered next time
     }
   };
 
@@ -210,10 +210,11 @@ export const Comments = ({ postName }) => {
   const handleSubmitComment = async (e) => {
     e.preventDefault();
 
-    if (!commentContent.trim()) {
+    if (!commentContent.trim() || isSubmitting) {
       return;
     }
 
+    setIsSubmitting(true);
     try {
       const createCommentMutation = gql`
                 mutation {
@@ -270,6 +271,8 @@ export const Comments = ({ postName }) => {
     } catch (err) {
       console.error('Error submitting comment:', err);
       setError('Failed to post comment. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -347,11 +350,7 @@ export const Comments = ({ postName }) => {
         {replyTo && (
           <div className="replying-to">
             Replying to comment.{' '}
-            <button
-              onClick={handleCancelReply}
-              className="btn btn-sm btn-link p-0 ms-1"
-              style={{ fontSize: 'inherit', verticalAlign: 'baseline' }}
-            >
+            <button onClick={handleCancelReply} className="btn btn-sm btn-link p-0 ms-1 cancel-reply-btn">
               Cancel
             </button>
           </div>
@@ -371,6 +370,7 @@ export const Comments = ({ postName }) => {
                   value={authorName}
                   onChange={(e) => setAuthorName(e.target.value)}
                   required
+                  maxLength={100}
                 />
               </div>
             </div>
@@ -387,6 +387,7 @@ export const Comments = ({ postName }) => {
                   value={authorEmail}
                   onChange={(e) => setAuthorEmail(e.target.value)}
                   required
+                  maxLength={254}
                 />
               </div>
             </div>
@@ -402,6 +403,7 @@ export const Comments = ({ postName }) => {
                   placeholder="https://example.com"
                   value={authorWebsite}
                   onChange={(e) => setAuthorWebsite(e.target.value)}
+                  maxLength={500}
                 />
               </div>
             </div>
@@ -419,13 +421,14 @@ export const Comments = ({ postName }) => {
                   value={commentContent}
                   onChange={(e) => setCommentContent(e.target.value)}
                   required
+                  maxLength={5000}
                 ></textarea>
               </div>
             </div>
           </div>
           <div className="d-flex justify-content-between align-items-center flex-wrap">
-            <button type="submit" className="btn btn-primary">
-              Post Comment
+            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+              {isSubmitting ? 'Posting...' : 'Post Comment'}
             </button>
             {formDataLoaded && (authorName || authorEmail || authorWebsite) && (
               <small className="text-muted">Info saved for next time</small>
@@ -434,7 +437,11 @@ export const Comments = ({ postName }) => {
         </form>
       </div>
 
-      {error && <div className="alert alert-danger">{error}</div>}
+      {error && (
+        <div className="alert alert-danger" role="alert" aria-live="assertive">
+          {error}
+        </div>
+      )}
 
       {/* Comments list */}
       <div className="comments-list">

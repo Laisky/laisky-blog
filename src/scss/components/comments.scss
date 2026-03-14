@@ -33,6 +33,11 @@
             font-size: 0.85rem;
             color: var(--text-secondary);
             border: 1px solid var(--border-subtle);
+
+            .cancel-reply-btn {
+                font-size: inherit;
+                vertical-align: baseline;
+            }
         }
 
         .form-group {
@@ -72,7 +77,7 @@
 
             &:focus {
                 border-color: var(--accent-color);
-                box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+                box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.1);
                 outline: none;
             }
 

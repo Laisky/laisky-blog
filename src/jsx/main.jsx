@@ -32,17 +32,14 @@ const router = createBrowserRouter([
       {
         path: 'p/:name/',
         element: <Post isHistory="false" />,
-        // loader: postLoader,
       },
       {
         path: 'p/history/:name/',
         element: <Post isHistory="true" />,
-        // loader: postHistoryLoader,
       },
       {
         path: 'edit/:name/',
         element: <PostEdit isPublish="false" />,
-        // loader: postEditLoader,
       },
       {
         path: 'publish/',

@@ -1,11 +1,11 @@
 'use strict';
 
-import jsutils, { RandomString } from '@laisky/js-utils';
+import jsutils from '@laisky/js-utils';
 import { gql } from 'graphql-request';
-import parse, { domToReact } from 'html-react-parser';
+import parse from 'html-react-parser';
 import { Archive, BookOpen, ChevronRight, FileText, Info } from 'lucide-react';
 import moment from 'moment';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Comments } from '../components/comments.jsx';
@@ -592,10 +592,11 @@ const escapeSelector = (value = '') => {
     if (window.CSS && typeof window.CSS.escape === 'function') {
       return window.CSS.escape(value);
     }
-  } catch (err) {
+  } catch {
     // ignore and fallback
   }
 
+  // eslint-disable-next-line no-control-regex
   return value.replace(/[\0-\x1F\x7F-\x9F!"#$%&'()*+,./:;<=>?@[\\\]^`{|}~]/g, '\\$&');
 };
 
@@ -620,7 +621,7 @@ const setupPostMenuLinkScrolling = () => {
       let url;
       try {
         url = new URL(link.href, window.location.href);
-      } catch (err) {
+      } catch {
         return;
       }
 

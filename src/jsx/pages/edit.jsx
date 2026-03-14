@@ -54,6 +54,8 @@ export const PostEdit = ({ isPublish }) => {
   isPublish = isPublish === 'true';
   const [language, setLanguage] = useState(null);
   const [content, setContent] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
   const [locationState, setLocationState] = useState({
     status: isPublish ? 'idle' : 'disabled',
     data: null,
@@ -220,6 +222,10 @@ export const PostEdit = ({ isPublish }) => {
     evt.preventDefault();
     evt.stopPropagation();
 
+    if (submitting) return;
+
+    setSubmitError(null);
+
     const postEle = document.getElementById('postEdit');
     const selectedLanguage = postEle.querySelector('.input.postLanguage').value;
     const publishAtValue = postEle.querySelector('.input.postPublishAt').value;
@@ -234,7 +240,7 @@ export const PostEdit = ({ isPublish }) => {
     // check empty
     for (const k in basePost) {
       if (!basePost[k]) {
-        window.alert(`Empty field: ${k}`);
+        setSubmitError(`Required field is empty: ${k}`);
         return;
       }
     }
@@ -266,7 +272,7 @@ export const PostEdit = ({ isPublish }) => {
 
     const publishAtISO = datetimeLocalValueToISO(publishAtValue);
     if (publishAtValue && !publishAtISO) {
-      window.alert('Invalid publish datetime');
+      setSubmitError('Invalid publish datetime format.');
       return;
     }
 
@@ -276,9 +282,15 @@ export const PostEdit = ({ isPublish }) => {
       locationPayload: isPublish ? locationState.data : null,
     });
 
-    await submitWithFallback(gqBody, postCandidates, await jsutils.KvGet(KvKeyUserToken));
-
-    navigate(`/p/${basePost.name}/?force=1`);
+    setSubmitting(true);
+    try {
+      await submitWithFallback(gqBody, postCandidates, await jsutils.KvGet(KvKeyUserToken));
+      navigate(`/p/${basePost.name}/?force=1`);
+    } catch (err) {
+      setSubmitError(`Failed to ${isPublish ? 'publish' : 'save'}: ${err?.message || 'Unknown error'}`);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   useEffect(() => {
@@ -314,21 +326,20 @@ export const PostEdit = ({ isPublish }) => {
     return (
       <div className="posts">
         <div className="post" id={post.name} key={post.name}>
-          <h2 className="post-title" style={{ marginBottom: '1.5rem' }}>
-            {isPublish ? 'Publish New Article' : 'Edit Article'}
-          </h2>
+          <h2 className="post-title">{isPublish ? 'Publish New Article' : 'Edit Article'}</h2>
 
           <div className="mb-3">
             <label htmlFor="postTitle" className="form-label">
               Title
             </label>
-            <input type="text" className="form-control input postTitle" defaultValue={post.title} />
+            <input id="postTitle" type="text" className="form-control input postTitle" defaultValue={post.title} />
           </div>
           <div className="mb-3">
             <label htmlFor="postName" className="form-label">
               Name
             </label>
             <input
+              id="postName"
               type="text"
               className="form-control input postName"
               {...(isPublish ? {} : { readOnly: true })}
@@ -340,7 +351,7 @@ export const PostEdit = ({ isPublish }) => {
               <label htmlFor="postLanguage" className="form-label">
                 Language
               </label>
-              <select className="form-select input postLanguage" defaultValue={post.language || 'zh_CN'}>
+              <select id="postLanguage" className="form-select input postLanguage" defaultValue={post.language || 'zh_CN'}>
                 <option value="en_US">en_US</option>
                 <option value="zh_CN">zh_CN</option>
               </select>
@@ -349,7 +360,7 @@ export const PostEdit = ({ isPublish }) => {
               <label htmlFor="postType" className="form-label">
                 Type
               </label>
-              <select className="form-select input postType" defaultValue={post.type || 'markdown'}>
+              <select id="postType" className="form-select input postType" defaultValue={post.type || 'markdown'}>
                 <option value="markdown">Markdown</option>
                 <option value="slide">Slide</option>
               </select>
@@ -360,23 +371,21 @@ export const PostEdit = ({ isPublish }) => {
             <label htmlFor="postPublishAt" className="form-label">
               Publish Time
             </label>
-            <input type="datetime-local" className="form-control input postPublishAt" defaultValue={initialPublishAt} />
-            <div className="form-text mt-1" style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
-              Timezone: {timezoneLabel}. Value is converted and stored as UTC on submit.
-            </div>
+            <input id="postPublishAt" type="datetime-local" className="form-control input postPublishAt" defaultValue={initialPublishAt} />
+            <div className="form-text mt-1">Timezone: {timezoneLabel}. Value is converted and stored as UTC on submit.</div>
           </div>
 
           {isPublish && (
             <div className="mb-4 p-3 rounded location-panel">
               <div className="d-flex justify-content-between align-items-center mb-2">
-                <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>Location Analytics</span>
+                <span className="location-panel__header">Location Analytics</span>
                 <button type="button" className="btn btn-sm btn-outline-primary" onClick={captureLocation}>
                   Refresh Location
                 </button>
               </div>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: '0 0 0.5rem 0' }}>{locationState.message}</p>
+              <p className="location-panel__message">{locationState.message}</p>
               {locationState.data && (
-                <div className="d-flex gap-3 mt-2" style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>
+                <div className="d-flex gap-3 mt-2 location-panel__coords">
                   <span>City: {locationState.data.city || 'Unknown'}</span>
                   <span>
                     Coordinates: {locationState.data.latitude}, {locationState.data.longitude}
@@ -390,11 +399,17 @@ export const PostEdit = ({ isPublish }) => {
             <label htmlFor="postMarkdown" className="form-label">
               Markdown
             </label>
-            <textarea className="form-control input postMarkdown" defaultValue={post.markdown} rows="40" />
+            <textarea id="postMarkdown" className="form-control input postMarkdown" defaultValue={post.markdown} rows="40" />
           </div>
 
-          <button type="submit" className="btn btn-primary" onClick={submitHandler}>
-            {isPublish ? 'Publish' : 'Save'}
+          {submitError && (
+            <div className="alert alert-danger mb-3" role="alert">
+              {submitError}
+            </div>
+          )}
+
+          <button type="submit" className="btn btn-primary" onClick={submitHandler} disabled={submitting}>
+            {submitting ? (isPublish ? 'Publishing...' : 'Saving...') : isPublish ? 'Publish' : 'Save'}
           </button>
         </div>
       </div>

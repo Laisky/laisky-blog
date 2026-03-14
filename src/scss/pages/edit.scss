@@ -7,9 +7,34 @@
         color: var(--text-primary);
         border: 1px solid var(--border-subtle);
     }
-    
+
+    .post-title {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-text {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+    }
+
     .location-panel {
         border: 1px solid var(--border-subtle);
         background: var(--surface-primary);
+
+        .location-panel__header {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .location-panel__message {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .location-panel__coords {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
     }
 }

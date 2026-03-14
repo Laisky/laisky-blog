@@ -121,7 +121,6 @@ export const Tooltip = ({ children, content, placement = 'top', offset = 8, dela
             position: 'absolute',
             top: `${position.top}px`,
             left: `${position.left}px`,
-            zIndex: 9999,
           }}
           role="tooltip"
         >

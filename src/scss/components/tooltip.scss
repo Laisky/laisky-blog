@@ -3,6 +3,7 @@
 .tooltip {
     position: absolute;
     pointer-events: none;
+    z-index: var(--z-tooltip);
     animation: tooltip-fade-in 0.15s ease-out;
 
     &__content {

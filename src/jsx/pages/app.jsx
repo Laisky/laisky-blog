@@ -62,7 +62,7 @@ export const App = () => {
           await jsutils.LoadJsModules(['https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS']);
           window.dataLayer = window.dataLayer || [];
           function gtag() {
-            dataLayer.push(arguments);
+            window.dataLayer.push(arguments);
           }
           gtag('js', new Date());
           gtag('config', 'G-BVS991NWWS');
@@ -141,7 +141,6 @@ export const App = () => {
           if (node.nodeType === Node.ELEMENT_NODE) {
             // Check if the added node is the Google CSE overlay or contains it
             if (node.classList?.contains('gsc-results-wrapper-overlay') || node.querySelector?.('.gsc-results-wrapper-overlay')) {
-              console.debug('[App] Google CSE overlay detected, closing mobile menu');
               setMobileMenuOpen(false);
             }
           }
@@ -278,15 +277,15 @@ export const App = () => {
               <Search size={16} className="search-icon me-1" />
               <div className="gcse-search" data-gname="post_search" data-enablehistory="true" data-enableautocomplete="true"></div>
             </div>
-            <div className="">{languageDropdown}</div>
+            <div>{languageDropdown}</div>
           </div>
         </div>
       </nav>
 
       {/* page content */}
-      <div id="container">
+      <main id="container">
         <Outlet />
-      </div>
+      </main>
 
       {/* Scroll restoration for browser back/forward navigation */}
       <ScrollRestoration />
@@ -294,21 +293,23 @@ export const App = () => {
   );
 };
 
-let _watchThemeChanged = false;
+let _watchThemeCleanup = null;
 
 /**
- * watchThemeChange watches for system theme changes and updates the state.
+ * watchThemeChange watches for system theme changes via matchMedia listener.
  *
  * @param {Function} setTheme - React state setter for theme
  */
 const watchThemeChange = (setTheme) => {
-  if (_watchThemeChanged) {
+  if (_watchThemeCleanup) {
     return;
   }
 
-  _watchThemeChanged = true;
-  setInterval(() => {
-    const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    setTheme(theme);
-  }, 1000);
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  const handler = (e) => {
+    setTheme(e.matches ? 'dark' : 'light');
+  };
+
+  mediaQuery.addEventListener('change', handler);
+  _watchThemeCleanup = () => mediaQuery.removeEventListener('change', handler);
 };
