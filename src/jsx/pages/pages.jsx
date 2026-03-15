@@ -482,7 +482,7 @@ export const Page = () => {
 
   return (
     <div className="scrollable-content">
-      <div id="pages" className="row align-items-start">
+      <div id="pages" className="row align-items-start" aria-live="polite" aria-busy={!contentLoaded}>
         {content}
       </div>
     </div>

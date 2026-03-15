@@ -135,12 +135,13 @@ export const App = () => {
     // Add click handler for backdrop
     document.addEventListener('click', handleBackdropClick, true);
 
+    // Only observe direct children of body for CSE overlay injection
+    // (Google CSE appends the overlay as a direct child of body)
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         for (const node of mutation.addedNodes) {
           if (node.nodeType === Node.ELEMENT_NODE) {
-            // Check if the added node is the Google CSE overlay or contains it
-            if (node.classList?.contains('gsc-results-wrapper-overlay') || node.querySelector?.('.gsc-results-wrapper-overlay')) {
+            if (node.classList?.contains('gsc-results-wrapper-overlay') || node.classList?.contains('gsc-modal-background-image')) {
               setMobileMenuOpen(false);
             }
           }
@@ -150,7 +151,7 @@ export const App = () => {
 
     observer.observe(document.body, {
       childList: true,
-      subtree: true,
+      subtree: false,
     });
 
     return () => {
@@ -219,6 +220,9 @@ export const App = () => {
 
   return (
     <>
+      <a href="#container" className="skip-link">
+        Skip to content
+      </a>
       <nav className="navbar navbar-expand-sm bg-body-tertiary fixed-top" id="headerbar" onClick={scrollToTop}>
         <div className="container-fluid">
           <Link to="/pages/0/" className="navbar-brand d-flex align-items-center">

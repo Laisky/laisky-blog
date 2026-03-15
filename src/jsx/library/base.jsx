@@ -175,8 +175,8 @@ export const getUserLanguage = async () => {
   // This handles variants like zh-Hans-CN, zh-TW, zh-HK, etc.
   const normalizedLang = langLower.startsWith('zh') ? 'zh_CN' : 'en_US';
 
-  // Update the html document language attribute with the normalized code
-  document.documentElement.lang = normalizedLang;
+  // Update the html document language attribute with a valid BCP 47 tag
+  document.documentElement.lang = normalizedLang === 'zh_CN' ? 'zh-CN' : 'en-US';
 
   return normalizedLang;
 };

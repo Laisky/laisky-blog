@@ -152,6 +152,7 @@ export const Post = ({ isHistory }) => {
   const [menuHtml, setMenuHtml] = useState(null);
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [imageModalSrc, setImageModalSrc] = useState('');
+  const [imageModalAlt, setImageModalAlt] = useState('');
 
   // Keyboard navigation
   useEffect(() => {
@@ -260,9 +261,9 @@ export const Post = ({ isHistory }) => {
                     </div>
                   </div>
                 )}
-                <h2 className="post-title">
+                <h1 className="post-title">
                   <Link to={`/p/${post.name}/`}>{isHistory ? `[History] ${post.title}` : post.title}</Link>
-                </h2>
+                </h1>
                 <div className="post-meta">
                   <span>published: </span>
                   <Tooltip content={ts2UTC(post.created_at)} placement="top">
@@ -303,7 +304,7 @@ export const Post = ({ isHistory }) => {
     let cleanupActiveState;
 
     (async () => {
-      bindPostImageModal(setImageModalOpen, setImageModalSrc);
+      bindPostImageModal(setImageModalOpen, setImageModalSrc, setImageModalAlt);
       await renderMathjax();
       watchLanguageChange(setLanguage);
 
@@ -358,7 +359,7 @@ export const Post = ({ isHistory }) => {
       </div>
       {menuHtml && <aside id="post-menu" className="post-menu d-none d-xl-block" dangerouslySetInnerHTML={{ __html: menuHtml }} />}
       <Modal isOpen={imageModalOpen} onClose={() => setImageModalOpen(false)} className="modal--image">
-        <img src={imageModalSrc} alt="" />
+        <img src={imageModalSrc} alt={imageModalAlt || 'Enlarged image'} />
       </Modal>
     </>
   );
@@ -389,23 +390,33 @@ const enhancePostMenu = () => {
         link.removeAttribute('title');
       });
 
-      menuLinks.forEach((link) => {
+      // Batch DOM reads: create all measurement spans at once
+      const container = document.createElement('div');
+      container.style.cssText = 'visibility:hidden;position:absolute;top:0;left:0;pointer-events:none;';
+      const measurements = Array.from(menuLinks).map((link) => {
         const linkText = link.textContent.trim();
-
-        // Create temp element to measure text width accurately
         const tempSpan = document.createElement('span');
-        tempSpan.style.visibility = 'hidden';
-        tempSpan.style.position = 'absolute';
         tempSpan.style.whiteSpace = 'nowrap';
         tempSpan.style.font = window.getComputedStyle(link).font;
         tempSpan.textContent = linkText;
-        document.body.appendChild(tempSpan);
+        container.appendChild(tempSpan);
+        return { link, linkText, tempSpan };
+      });
+      document.body.appendChild(container);
 
-        const textWidth = tempSpan.offsetWidth;
-        const availableWidth = link.offsetWidth - 20;
-        document.body.removeChild(tempSpan);
+      // Single forced layout: read all widths
+      const results = measurements.map(({ link, linkText, tempSpan }) => ({
+        link,
+        linkText,
+        textWidth: tempSpan.offsetWidth,
+        availableWidth: link.offsetWidth - 20,
+      }));
 
-        // Use native title for simple tooltip
+      // Clean up measurement container in one operation
+      document.body.removeChild(container);
+
+      // Batch DOM writes: set title attributes
+      results.forEach(({ link, linkText, textWidth, availableWidth }) => {
         if (textWidth > availableWidth) {
           link.setAttribute('title', linkText);
         }
@@ -797,7 +808,7 @@ const loadPostTails = async (post) => {
 /**
  * bindPostImageModal binds click events to post images to open modal.
  */
-const bindPostImageModal = (setImageModalOpen, setImageModalSrc) => {
+const bindPostImageModal = (setImageModalOpen, setImageModalSrc, setImageModalAlt) => {
   const postImgs = document.querySelectorAll('.post-content p img');
   postImgs.forEach((img) => {
     if (img.dataset.bindmodal) {
@@ -810,6 +821,7 @@ const bindPostImageModal = (setImageModalOpen, setImageModalSrc) => {
       evt.stopPropagation();
 
       setImageModalSrc(img.src);
+      setImageModalAlt(img.alt || '');
       setImageModalOpen(true);
     });
   });

@@ -1,4 +1,5 @@
 import jsutils from '@laisky/js-utils';
+import DOMPurify from 'dompurify';
 import { gql } from 'graphql-request';
 import React, { useEffect, useRef, useState } from 'react';
 import { graphqlQuery, ts2UTC } from '../library/base.jsx';
@@ -499,7 +500,7 @@ const CommentItem = ({ comment, onReply, onLike, isLiked, likedComments }) => {
           </Tooltip>
         </div>
       </div>
-      <div className="comment-content" dangerouslySetInnerHTML={{ __html: comment.content }}></div>
+      <div className="comment-content" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(comment.content) }}></div>
       <div className="comment-actions">
         <button className="btn btn-sm btn-link" onClick={() => onReply(comment.id)}>
           Reply

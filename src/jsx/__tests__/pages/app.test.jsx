@@ -136,7 +136,7 @@ describe('App Component', () => {
     });
   });
 
-  test('closes mobile menu when element containing GSC overlay is added', async () => {
+  test('closes mobile menu when GSC modal backdrop is added directly to body', async () => {
     const router = createTestRouter();
     render(<RouterProvider router={router} />);
 
@@ -147,13 +147,11 @@ describe('App Component', () => {
     fireEvent.click(toggler);
     expect(collapse).toHaveClass('show');
 
-    // Simulate a parent element containing the overlay being added
+    // Simulate Google CSE backdrop appended directly to body
     await act(async () => {
-      const parent = document.createElement('div');
-      const overlay = document.createElement('div');
-      overlay.className = 'gsc-results-wrapper-overlay';
-      parent.appendChild(overlay);
-      document.body.appendChild(parent);
+      const backdrop = document.createElement('div');
+      backdrop.className = 'gsc-modal-background-image';
+      document.body.appendChild(backdrop);
       // Wait for MutationObserver to process
       await new Promise((resolve) => setTimeout(resolve, 50));
     });
@@ -162,6 +160,9 @@ describe('App Component', () => {
     await waitFor(() => {
       expect(collapse).not.toHaveClass('show');
     });
+
+    // Clean up
+    document.querySelector('.gsc-modal-background-image')?.remove();
   });
 
   test('mobile menu stays open if unrelated element is added to DOM', async () => {

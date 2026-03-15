@@ -14,7 +14,33 @@
 @use './pages/categories';
 @use './pages/edit';
 
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600&display=swap');
+// Fonts loaded via <link> in index.html for non-blocking rendering
+
+// ============================================
+// Skip Navigation Link (Accessibility)
+// ============================================
+
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 9999;
+    padding: 0.75rem 1.5rem;
+    background: var(--accent-color);
+    color: var(--text-inverse);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    opacity: 0;
+    transition: top 0.2s ease, opacity 0.2s ease;
+
+    &:focus {
+        position: fixed;
+        top: 0.5rem;
+        opacity: 1;
+    }
+}
 
 // ============================================
 // CSS Reset / Normalize
@@ -953,12 +979,17 @@ pre[class*="language-"] {
     }
 }
 
+pre {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
 pre::-webkit-scrollbar {
     height: 6px;
 }
 
 pre::-webkit-scrollbar-thumb {
-    background: var(--border-strong);
+    background: var(--scrollbar-thumb);
     border-radius: 10px;
 }
 
@@ -1049,7 +1080,7 @@ table {
 
 nav#headerbar {
     padding: 0;
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--navbar-bg);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-subtle);
     z-index: var(--z-navbar);
@@ -1117,7 +1148,7 @@ nav#headerbar {
 }
 
 [data-theme='dark'] nav#headerbar {
-    background: rgba(28, 28, 30, 0.8);
+    background: var(--navbar-bg);
     border-bottom-color: var(--border-subtle);
 }
 

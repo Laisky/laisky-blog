@@ -130,7 +130,7 @@ describe('base.jsx', () => {
 
       const lang = await getUserLanguage();
       expect(lang).toBe('en_US');
-      expect(document.documentElement.lang).toBe('en_US');
+      expect(document.documentElement.lang).toBe('en-US');
     });
 
     test('uses url lang query before storage access', async () => {
@@ -138,7 +138,7 @@ describe('base.jsx', () => {
 
       const lang = await getUserLanguage();
       expect(lang).toBe('zh_CN');
-      expect(document.documentElement.lang).toBe('zh_CN');
+      expect(document.documentElement.lang).toBe('zh-CN');
       expect(jsutils.KvGet).not.toHaveBeenCalled();
     });
   });

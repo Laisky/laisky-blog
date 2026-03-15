@@ -223,7 +223,12 @@
             margin-top: 0.4rem;
 
             .btn-link {
-                padding: 0;
+                padding: 0.375rem 0.5rem;
+                min-height: 44px;
+                min-width: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
                 color: var(--text-tertiary);
                 text-decoration: none;
                 font-size: 0.75rem;

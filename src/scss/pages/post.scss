@@ -131,18 +131,20 @@
                 display: inline-block;
                 vertical-align: middle;
 
-                // Add subtle visual cue for scrollable content
+                    scrollbar-width: thin;
+                scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+
                 &::-webkit-scrollbar {
                     height: 4px;
                 }
 
                 &::-webkit-scrollbar-track {
-                    background: rgba(0, 0, 0, 0.05);
+                    background: var(--scrollbar-track);
                     border-radius: 2px;
                 }
 
                 &::-webkit-scrollbar-thumb {
-                    background: rgba(0, 0, 0, 0.2);
+                    background: var(--scrollbar-thumb);
                     border-radius: 2px;
                 }
             }
@@ -841,101 +843,6 @@
                 padding: 0.5rem 1rem;
                 font-size: 0.95rem;
             }
-        }
-    }
-}
-
-// Comments section styling
-
-.comments {
-    margin-top: 3rem;
-
-    h3 {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-        font-weight: 600;
-        position: relative;
-        color: var(--text-primary);
-
-        &::after {
-            content: '';
-            position: absolute;
-            bottom: -0.65rem;
-            left: 0;
-            height: 2px;
-            width: 42px;
-            background: var(--border-strong);
-            border-radius: 3px;
-        }
-    }
-
-    .comment-item {
-        margin-bottom: 1.5rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid var(--border-subtle);
-
-        &:last-child {
-            border-bottom: none;
-        }
-
-        .comment-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.75rem;
-
-            .comment-avatar {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                margin-right: 0.75rem;
-                background-color: var(--surface-secondary);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: 600;
-                color: var(--text-secondary);
-            }
-
-            .comment-author {
-                font-weight: 600;
-                margin-right: 0.5rem;
-            }
-
-            .comment-time {
-                font-size: 0.85rem;
-                color: var(--text-tertiary);
-            }
-        }
-
-        .comment-body {
-            padding-left: calc(40px + 0.75rem);
-            line-height: 1.6;
-        }
-    }
-
-    .comment-form {
-        margin-top: 2rem;
-        background-color: var(--surface-secondary);
-        padding: clamp(1.5rem, 2.5vw, 2rem);
-        border-radius: var(--radius-lg);
-
-        .form-control {
-            background-color: var(--surface-primary);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-
-            &:focus {
-                outline: 2px solid rgba(var(--accent-color-rgb), 0.2);
-            }
-        }
-
-        .btn-primary {
-            background: var(--accent-color);
-            padding: 0.5rem 1.5rem;
-            border-radius: 999px;
-            font-weight: 500;
         }
     }
 }

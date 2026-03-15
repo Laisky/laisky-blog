@@ -17,6 +17,7 @@
     "@testing-library/dom": "^10.4.0",
     "bootstrap": "^5.3.3",
     "disqus-react": "^1.1.6",
+    "dompurify": "^3.3.3",
     "events": "^3.3.0",
     "graphql": "^16.10.0",
     "graphql-request": "^7.1.2",

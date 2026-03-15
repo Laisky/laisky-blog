@@ -47,6 +47,32 @@
     --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.08);
     --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.1);
 
+    // Navbar
+    --navbar-bg: rgba(255, 255, 255, 0.8);
+
+    // Scrollbar
+    --scrollbar-thumb: var(--border-strong);
+    --scrollbar-track: rgba(0, 0, 0, 0.05);
+
+    // Paper tape (pages list) decorative tokens
+    --tape-line-color: rgba(180, 160, 140, 0.06);
+    --tape-fiber-color: rgba(200, 180, 160, 0.015);
+    --tape-base-start: #fefcf9;
+    --tape-base-mid1: #fffdf8;
+    --tape-base-mid2: #fefbf6;
+    --tape-base-mid3: #fdf9f4;
+    --tape-base-end: #fcf8f3;
+    --tape-glow: rgba(255, 252, 248, 0.8);
+    --tape-edge-shadow: rgba(0, 0, 0, 0.02);
+    --tape-depth-shadow: rgba(0, 0, 0, 0.04);
+    --tape-border-color: rgba(200, 180, 160, 0.15);
+    --tape-hole-color: rgba(200, 180, 160, 0.12);
+    --tape-hole-ring: rgba(200, 180, 160, 0.08);
+    --tape-fold-shadow: rgba(0, 0, 0, 0.04);
+    --tape-bg-weave: rgba(200, 180, 160, 0.015);
+    --tape-bg-vignette-start: rgba(255, 252, 248, 0.3);
+    --tape-blend-mode: soft-light;
+
     --content-width: 800px;
     --sidebar-width: 300px;
     --navbar-height: 52px;
@@ -116,4 +142,30 @@
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
     --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.4);
     --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.5);
+
+    // Navbar
+    --navbar-bg: rgba(28, 28, 30, 0.8);
+
+    // Scrollbar
+    --scrollbar-thumb: var(--border-strong);
+    --scrollbar-track: rgba(255, 255, 255, 0.05);
+
+    // Paper tape decorative tokens (dark variant)
+    --tape-line-color: rgba(100, 90, 80, 0.08);
+    --tape-fiber-color: rgba(80, 70, 60, 0.03);
+    --tape-base-start: var(--surface-secondary);
+    --tape-base-mid1: var(--surface-primary);
+    --tape-base-mid2: var(--surface-primary);
+    --tape-base-mid3: var(--surface-secondary);
+    --tape-base-end: var(--surface-secondary);
+    --tape-glow: rgba(0, 0, 0, 0.2);
+    --tape-edge-shadow: rgba(0, 0, 0, 0.15);
+    --tape-depth-shadow: rgba(0, 0, 0, 0.3);
+    --tape-border-color: var(--border-subtle);
+    --tape-hole-color: rgba(100, 90, 80, 0.12);
+    --tape-hole-ring: rgba(100, 90, 80, 0.08);
+    --tape-fold-shadow: rgba(0, 0, 0, 0.08);
+    --tape-bg-weave: rgba(100, 90, 80, 0.03);
+    --tape-bg-vignette-start: rgba(60, 55, 50, 0.2);
+    --tape-blend-mode: overlay;
 }
