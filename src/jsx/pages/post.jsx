@@ -226,6 +226,14 @@ export const Post = ({ isHistory }) => {
 
       const parseOptions = {
         replace: (domNode) => {
+          // Convert post_series "key" attribute to "data-series-key" so it survives
+          // React rendering. React reserves "key" as an internal prop and strips it
+          // from the DOM, which prevents parseAndReplacePostSeries() from reading it.
+          if (domNode.name === 'div' && domNode.attribs?.class?.includes('post_series') && domNode.attribs?.key) {
+            domNode.attribs['data-series-key'] = domNode.attribs.key;
+            delete domNode.attribs.key;
+          }
+
           if (domNode.name === 'pre') {
             // Skip mermaid blocks
             if (domNode.attribs.class?.includes('mermaid')) {
@@ -850,7 +858,14 @@ const watchLanguageChange = async (setLanguage) => {
 const parseAndReplacePostSeries = async () => {
   const seriesElements = document.querySelectorAll('.post .post-content div.post_series');
   const tasks = Array.from(seriesElements).map(async (seEle) => {
-    const postkey = seEle.getAttribute('key');
+    // Read from data-series-key (converted from "key" during html-react-parser processing),
+    // with fallback to "key" for backward compatibility (e.g. server-rendered content).
+    const postkey = seEle.getAttribute('data-series-key') || seEle.getAttribute('key');
+    if (!postkey) {
+      console.debug('[post_series] skipping element: no series key found', seEle);
+      return;
+    }
+
     const se = await loadSeries(postkey);
     if (!se) {
       return;

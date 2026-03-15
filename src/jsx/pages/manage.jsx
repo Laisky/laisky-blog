@@ -5,14 +5,7 @@ import { gql } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import {
-  formatTs,
-  getCurrentUsername,
-  getUserLanguage,
-  graphqlMutation,
-  graphqlQuery,
-  KvKeyUserToken,
-} from '../library/base.jsx';
+import { formatTs, getCurrentUsername, getUserLanguage, graphqlMutation, graphqlQuery, KvKeyUserToken } from '../library/base.jsx';
 
 /**
  * loadAllPosts fetches all posts with category info for management.
@@ -90,9 +83,13 @@ const amendPostCategory = async (postName, categoryUrl, token) => {
   let lastErr;
   for (const candidate of candidates) {
     try {
-      await graphqlMutation(mutations[0], { post: candidate }, {
-        Authorization: `Bearer ${token}`,
-      });
+      await graphqlMutation(
+        mutations[0],
+        { post: candidate },
+        {
+          Authorization: `Bearer ${token}`,
+        }
+      );
       return;
     } catch (err) {
       lastErr = err;
@@ -223,14 +220,8 @@ export const Manage = () => {
               {/* Batch action bar */}
               <div className="manage-toolbar">
                 <label className="manage-checkbox-label">
-                  <input
-                    type="checkbox"
-                    checked={selectedPosts.size === posts.length && posts.length > 0}
-                    onChange={toggleSelectAll}
-                  />
-                  <span>
-                    {selectedPosts.size > 0 ? `${selectedPosts.size} selected` : 'Select all'}
-                  </span>
+                  <input type="checkbox" checked={selectedPosts.size === posts.length && posts.length > 0} onChange={toggleSelectAll} />
+                  <span>{selectedPosts.size > 0 ? `${selectedPosts.size} selected` : 'Select all'}</span>
                 </label>
 
                 <div className="manage-batch-action">
@@ -266,16 +257,9 @@ export const Manage = () => {
               {/* Post list */}
               <div className="manage-list">
                 {posts.map((post) => (
-                  <div
-                    className={`manage-item ${selectedPosts.has(post.name) ? 'manage-item--selected' : ''}`}
-                    key={post.name}
-                  >
+                  <div className={`manage-item ${selectedPosts.has(post.name) ? 'manage-item--selected' : ''}`} key={post.name}>
                     <label className="manage-checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={selectedPosts.has(post.name)}
-                        onChange={() => toggleSelect(post.name)}
-                      />
+                      <input type="checkbox" checked={selectedPosts.has(post.name)} onChange={() => toggleSelect(post.name)} />
                     </label>
 
                     <div className="manage-item__content">
@@ -284,9 +268,7 @@ export const Manage = () => {
                       </Link>
                       <div className="manage-item__meta">
                         <span className="manage-item__date">{formatTs(post.created_at)}</span>
-                        {post.category && (
-                          <span className="manage-item__category">{post.category.name}</span>
-                        )}
+                        {post.category && <span className="manage-item__category">{post.category.name}</span>}
                       </div>
                     </div>
 
