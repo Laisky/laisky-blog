@@ -9,6 +9,7 @@ import { About } from './pages/about';
 import { App } from './pages/app';
 import { Categories, loader as categoriesLoader } from './pages/categories';
 import { PostEdit } from './pages/edit';
+import { Manage } from './pages/manage';
 import NotFound from './pages/notfound';
 import { Page, loader as pageLoader } from './pages/pages';
 import { Post } from './pages/post';
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: 'publish/',
         element: <PostEdit isPublish="true" />,
+      },
+      {
+        path: 'admin/',
+        element: <Manage />,
       },
       {
         path: 'about/:tab/',
