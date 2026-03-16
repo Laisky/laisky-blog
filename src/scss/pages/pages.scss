@@ -23,8 +23,8 @@
     .posts-container {
         padding: 0; // Remove extra padding
         margin-bottom: 1rem;
-        perspective: 2000px;
-        perspective-origin: 50% 50%;
+        perspective: 1000px;
+        perspective-origin: 50% 40%;
         position: relative;
         color: var(--text-secondary);
         overflow: visible;
@@ -155,19 +155,45 @@
                 padding: 2.5rem 4rem;
                 margin: 0;
                 transition:
-                    transform 0.2s ease-out,
-                    opacity 0.2s ease-out,
-                    filter 0.2s ease-out;
+                    transform 0.15s ease-out,
+                    opacity 0.15s ease-out,
+                    filter 0.15s ease-out;
                 position: relative;
                 z-index: 2;
                 color: var(--text-secondary);
                 font-weight: 500;
 
-                // Smooth folding effect properties (no scaleY to avoid gaps)
+                // Punch-card folding effect
                 opacity: var(--fold-opacity, 1);
                 filter: blur(var(--fold-blur, 0px));
-                transform: translateY(var(--fold-translate, 0px)) perspective(800px) rotateX(var(--fold-rotate, 0deg));
-                transform-origin: center center;
+                transform:
+                    translateY(var(--fold-translate, 0px))
+                    translateZ(var(--fold-translateZ, 0px))
+                    rotateX(var(--fold-rotate, 0deg));
+                transform-origin: var(--fold-origin, center center);
+                transform-style: preserve-3d;
+                backface-visibility: hidden;
+
+                // Fold crease line at the hinge edge
+                &::after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    bottom: -1px;
+                    height: 2px;
+                    background: linear-gradient(
+                        90deg,
+                        transparent 5%,
+                        var(--tape-fold-shadow, rgba(0, 0, 0, 0.15)) 20%,
+                        var(--tape-fold-shadow, rgba(0, 0, 0, 0.25)) 50%,
+                        var(--tape-fold-shadow, rgba(0, 0, 0, 0.15)) 80%,
+                        transparent 95%
+                    );
+                    opacity: var(--fold-crease, 0);
+                    pointer-events: none;
+                    z-index: 5;
+                }
 
                 &:last-child {
                     border-bottom: none;
@@ -522,6 +548,11 @@
         border-bottom: 1px solid var(--border-subtle);
         background: transparent;
         border-radius: 0;
+
+        // Hide fold crease on mobile
+        &::after {
+            display: none;
+        }
 
         &:last-child {
             border-bottom: none;

@@ -293,27 +293,34 @@ export const Page = () => {
           scrollDirection: direction,
         });
 
-        // Smooth visual effects that don't create gaps
-        // Use easeOutCubic for smoother transition
+        // easeOutCubic for snappy fold onset, smooth finish
         const easedProgress = 1 - Math.pow(1 - fadeProgress, 3);
 
-        // Opacity: gentle fade (never below 0.2 for continuity)
-        const opacity = 1 - easedProgress * 0.8;
+        // Opacity: fold to 0.3 (card still faintly visible)
+        const opacity = 1 - easedProgress * 0.7;
 
-        // Subtle vertical movement (no scaling to avoid gaps)
-        const translateY = easedProgress * 15 * (isTop ? -1 : 1);
+        // Strong 3D rotation for punch-card fold (up to 55 deg)
+        const rotateX = easedProgress * 55 * (isTop ? 1 : -1);
 
-        // Gentle rotation for paper-fold feel
-        const rotateX = easedProgress * 10 * (isTop ? 1 : -1);
+        // Subtle depth shift along Z while folding
+        const translateZ = easedProgress * -60;
 
-        // Blur for depth effect - reduced and only for scrolled-out content
-        const blur = easedProgress * 1.5;
+        // Blur for depth-of-field on folded cards
+        const blur = easedProgress * 2.5;
+
+        // Fold crease line: 0 = invisible, 1 = fully visible
+        const creaseOpacity = easedProgress;
+
+        // Transform-origin: fold from the edge that connects to the next card
+        const origin = isTop ? 'center bottom' : 'center top';
 
         post.style.setProperty('--fold-opacity', opacity);
-        post.style.setProperty('--fold-translate', `${translateY}px`);
+        post.style.setProperty('--fold-translate', '0px');
+        post.style.setProperty('--fold-translateZ', `${translateZ}px`);
         post.style.setProperty('--fold-rotate', `${rotateX}deg`);
         post.style.setProperty('--fold-blur', `${blur}px`);
-        post.style.setProperty('--fold-scale', 1); // No scaling to prevent gaps
+        post.style.setProperty('--fold-origin', origin);
+        post.style.setProperty('--fold-crease', creaseOpacity);
       });
     };
 

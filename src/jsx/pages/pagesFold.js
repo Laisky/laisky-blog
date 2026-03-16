@@ -9,66 +9,64 @@
 export const clamp01 = (value) => Math.min(1, Math.max(0, value));
 
 /**
- * calculateRibbonFold determines the fold progress for a single post.
+ * calculateRibbonFold determines the fold progress for a single post
+ * using a punch-card / paper-tape metaphor.
  *
- * This is intentionally a pure function so the visual behavior can be unit-tested.
+ * The viewport is divided into three conceptual zones:
+ *   - Centre "reading window": the post here is fully flat and readable.
+ *   - Upper fold zone: posts above the window fold upward (like a card
+ *     flipping away from the reader at its bottom edge).
+ *   - Lower fold zone: posts below the window fold downward (like a card
+ *     flipping toward the reader at its top edge).
  *
- * Mobile behavior change (requested):
- * - When scrolling down, the top fold is triggered by the post's bottom edge.
- *   The fold starts once the bottom passes 1/3 of the viewport height.
- * - When scrolling up, we keep the original "top-edge under navbar" driven fold,
- *   which makes the fold/unfold feel responsive and consistent.
- *
- * @param {Object} input - Calculation input.
- * @param {{top:number,bottom:number,height:number}} input.rect - Bounding rect of the post.
- * @param {number} input.viewportHeight - Window inner height.
- * @param {number} input.navbarHeight - Fixed navbar height.
- * @param {boolean} input.isMobile - Whether to use mobile rules.
- * @param {'up'|'down'} input.scrollDirection - Current scroll direction.
- * @returns {{fadeProgress:number,isTop:boolean}} Fold progress and whether it folds toward the top.
+ * @param {Object} input
+ * @param {{top:number,bottom:number,height:number}} input.rect
+ * @param {number} input.viewportHeight
+ * @param {number} input.navbarHeight
+ * @param {boolean} input.isMobile
+ * @param {'up'|'down'} input.scrollDirection
+ * @returns {{fadeProgress:number, isTop:boolean}}
  */
 export const calculateRibbonFold = ({ rect, viewportHeight, navbarHeight, isMobile, scrollDirection }) => {
-  // Bottom-entry fold: keep existing reel feel (applies on all viewports).
-  const bottomZoneStart = viewportHeight - 100;
-  const bottomTransitionRange = 80;
+  // The "safe" reading window: the central portion of the viewport
+  // where the active card stays completely flat.
+  const safeTop = navbarHeight + viewportHeight * 0.1;
+  const safeBottom = viewportHeight * 0.75;
 
-  // Top fold (mobile) uses a bottom-edge trigger when scrolling down.
-  const topTriggerLine = viewportHeight / 3;
-  const topTransitionRange = Math.min(140, Math.max(90, Math.round(viewportHeight * 0.18)));
+  // Transition range (pixels) over which the fold animates from 0 → 1.
+  const transitionRange = isMobile ? Math.max(80, viewportHeight * 0.12) : Math.max(100, viewportHeight * 0.15);
 
-  // Calculate how much of the post is visible/faded
-  let fadeProgress = 0; // 0 = fully visible, 1 = fully folded
-  let isTop = false;
-
-  // Hard-stop: completely above the navbar.
+  // --- Hard stop: completely above navbar ---
   if (rect.bottom <= navbarHeight) {
     return { fadeProgress: 1, isTop: true };
   }
 
-  // Top fold behavior
-  if (isMobile && scrollDirection === 'down') {
-    // Delay the top fold for long articles: start only after the bottom rises above 1/3 viewport.
-    if (rect.bottom < topTriggerLine) {
-      const progress = (topTriggerLine - rect.bottom) / topTransitionRange;
-      fadeProgress = clamp01(progress);
-      isTop = true;
-    }
-  } else {
-    // Original behavior: fold when the top slides under the navbar.
-    if (rect.top < navbarHeight && rect.bottom > navbarHeight && rect.height > 0) {
-      const visibleHeight = rect.bottom - navbarHeight;
-      const hiddenRatio = 1 - visibleHeight / rect.height;
-      fadeProgress = clamp01(hiddenRatio * 1.5);
-      isTop = true;
-    }
+  // --- Hard stop: completely below viewport ---
+  if (rect.top >= viewportHeight) {
+    return { fadeProgress: 1, isTop: false };
   }
 
-  // Bottom fold behavior (entering/leaving at bottom edge of the viewport).
-  if (fadeProgress <= 0 && rect.top > bottomZoneStart) {
-    const distanceFromSafeZone = rect.top - bottomZoneStart;
-    fadeProgress = clamp01(distanceFromSafeZone / bottomTransitionRange);
-    isTop = false;
+  // --- Upper fold zone ---
+  // The post's vertical centre relative to the safe zone top.
+  const postCentre = (rect.top + rect.bottom) / 2;
+
+  if (postCentre < safeTop) {
+    const distance = safeTop - postCentre;
+    return {
+      fadeProgress: clamp01(distance / transitionRange),
+      isTop: true,
+    };
   }
 
-  return { fadeProgress, isTop };
+  // --- Lower fold zone ---
+  if (postCentre > safeBottom) {
+    const distance = postCentre - safeBottom;
+    return {
+      fadeProgress: clamp01(distance / transitionRange),
+      isTop: false,
+    };
+  }
+
+  // --- Inside the reading window: fully visible ---
+  return { fadeProgress: 0, isTop: false };
 };
