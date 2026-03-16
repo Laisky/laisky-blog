@@ -7,31 +7,55 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { formatTs, getCurrentUsername, getUserLanguage, graphqlMutation, graphqlQuery, KvKeyUserToken } from '../library/base.jsx';
 
+const PAGE_SIZE = 200;
+
 /**
- * loadAllPosts fetches all posts with category info for management.
+ * loadAllPosts fetches all posts with category info for management,
+ * paginating in batches of PAGE_SIZE to stay within the server limit of [0~200].
  *
  * @returns {Promise<Array>} Array of post objects sorted by created_at desc.
  */
 const loadAllPosts = async () => {
-  const gqBody = gql`
-    query {
-      BlogPosts(
-        language: ${await getUserLanguage()}
-        page: { page: 0, size: 9999 }
-      ) {
-        name
-        title
-        created_at
-        category {
+  const language = await getUserLanguage();
+  const allPosts = [];
+  let page = 0;
+
+  while (true) {
+    console.debug(`[manage] loadAllPosts: fetching page=${page}, size=${PAGE_SIZE}`);
+    const gqBody = gql`
+      query {
+        BlogPosts(
+          language: ${language}
+          page: { page: ${page}, size: ${PAGE_SIZE} }
+        ) {
           name
-          url
+          title
+          created_at
+          category {
+            name
+            url
+          }
         }
       }
-    }
-  `;
+    `;
 
-  const resp = await graphqlQuery(gqBody);
-  return resp.BlogPosts;
+    const resp = await graphqlQuery(gqBody);
+    const batch = resp.BlogPosts;
+    if (!batch || batch.length === 0) {
+      break;
+    }
+
+    allPosts.push(...batch);
+
+    if (batch.length < PAGE_SIZE) {
+      break;
+    }
+
+    page++;
+  }
+
+  console.debug(`[manage] loadAllPosts: fetched ${allPosts.length} total posts`);
+  return allPosts;
 };
 
 /**
