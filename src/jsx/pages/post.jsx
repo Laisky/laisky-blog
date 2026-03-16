@@ -1,10 +1,10 @@
 'use strict';
 
 import jsutils from '@laisky/js-utils';
+import DOMPurify from 'dompurify';
 import { gql } from 'graphql-request';
 import parse from 'html-react-parser';
 import { Archive, BookOpen, ChevronRight, FileText, Info } from 'lucide-react';
-import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -42,9 +42,9 @@ export const loader = async ({ params }) => {
   }
 
   const gqBody = gql`
-        query {
+        query($name: String!) {
             BlogPosts(
-                name: "${params.name}"
+                name: $name
                 language: ${await getUserLanguage()}
             ) {
                 name
@@ -67,7 +67,7 @@ export const loader = async ({ params }) => {
         }
     `;
 
-  const resp = await graphqlQuery(gqBody);
+  const resp = await graphqlQuery(gqBody, { name: params.name });
   const result = resp.BlogPosts[0];
 
   // update cache
@@ -92,9 +92,9 @@ export const historyLoader = async ({ params }) => {
   }
 
   const gqBody = gql`
-        query Blog {
+        query Blog($fileId: String!) {
             BlogPostHistory(
-                file_id: "${params.name}"
+                file_id: $fileId
                 language: ${await getUserLanguage()}
             ) {
                 name
@@ -116,7 +116,7 @@ export const historyLoader = async ({ params }) => {
             }
         }`;
 
-  const resp = await graphqlQuery(gqBody);
+  const resp = await graphqlQuery(gqBody, { fileId: params.name });
   const result = resp.BlogPostHistory;
 
   // update cache
@@ -232,6 +232,12 @@ export const Post = ({ isHistory }) => {
           if (domNode.name === 'div' && domNode.attribs?.class?.includes('post_series') && domNode.attribs?.key) {
             domNode.attribs['data-series-key'] = domNode.attribs.key;
             delete domNode.attribs.key;
+          }
+
+          // Add lazy loading to images
+          if (domNode.name === 'img' && !domNode.attribs?.loading) {
+            domNode.attribs = domNode.attribs || {};
+            domNode.attribs.loading = 'lazy';
           }
 
           if (domNode.name === 'pre') {
@@ -365,7 +371,9 @@ export const Post = ({ isHistory }) => {
           {content}
         </div>
       </div>
-      {menuHtml && <aside id="post-menu" className="post-menu d-none d-xl-block" dangerouslySetInnerHTML={{ __html: menuHtml }} />}
+      {menuHtml && (
+        <aside id="post-menu" className="post-menu d-none d-xl-block" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(menuHtml) }} />
+      )}
       <Modal isOpen={imageModalOpen} onClose={() => setImageModalOpen(false)} className="modal--image">
         <img src={imageModalSrc} alt={imageModalAlt || 'Enlarged image'} />
       </Modal>
@@ -787,7 +795,7 @@ const loadPostTails = async (post) => {
     const historyItems = post['arweave_id'].slice(0, maxHistory).map((history) => (
       <DropdownItem key={history.id} href={`/p/history/${history.id}/`}>
         <Tooltip content={ts2UTC(history.time)} placement="right">
-          <span className="tooltip-trigger">{moment(history.time).format('YYYY-MM-DD HH:mm')}</span>
+          <span className="tooltip-trigger">{formatTs(history.time)}</span>
         </Tooltip>
       </DropdownItem>
     ));
@@ -889,7 +897,7 @@ const parseAndReplacePostSeries = async () => {
                     ${html}
                 </ul>
             </div>`;
-    seEle.innerHTML = html;
+    seEle.innerHTML = DOMPurify.sanitize(html);
   });
 
   await Promise.all(tasks);
@@ -908,23 +916,21 @@ async function loadSeries(postkey) {
   }
 
   const gqBody = gql`
-        query {
-            GetBlogPostSeries(
-                key: "${postkey}"
-            ) {
-                remark
-                posts {
-                    name
-                    title
-                }
-                children {
-                    key
-                }
-            }
+    query ($key: String!) {
+      GetBlogPostSeries(key: $key) {
+        remark
+        posts {
+          name
+          title
         }
-    `;
+        children {
+          key
+        }
+      }
+    }
+  `;
 
-  const resp = await graphqlQuery(gqBody);
+  const resp = await graphqlQuery(gqBody, { key: postkey });
 
   if (resp.GetBlogPostSeries.length < 1) {
     return null;

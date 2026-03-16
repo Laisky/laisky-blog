@@ -1179,7 +1179,7 @@ nav#headerbar {
     display: flex;
     align-items: center;
     border: 1px solid var(--border-subtle);
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     cursor: text;
     position: relative;
     // Local stacking context within navbar
@@ -1199,6 +1199,7 @@ nav#headerbar {
         background: var(--surface-primary);
         border-color: var(--accent-color);
         box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.15);
+        transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .search-icon {

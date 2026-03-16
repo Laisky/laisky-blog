@@ -19,7 +19,7 @@
 .dropdown-menu {
     position: absolute;
     top: 100%;
-    z-index: 1000;
+    z-index: var(--z-dropdown);
     min-width: 160px;
     padding: 0.5rem;
     margin-top: 4px;
@@ -89,13 +89,13 @@
 
     &.active {
         background: var(--accent-color, #0071e3);
-        color: #fff;
+        color: var(--text-inverse);
 
         &:hover,
         &:focus {
             background: var(--accent-color, #0071e3);
             filter: brightness(1.1);
-            color: #fff;
+            color: var(--text-inverse);
         }
     }
 }

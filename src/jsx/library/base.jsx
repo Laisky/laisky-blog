@@ -3,7 +3,6 @@
 import jsutils from '@laisky/js-utils';
 import request, { GraphQLClient } from 'graphql-request';
 import { jwtDecode } from 'jwt-decode';
-import moment from 'moment';
 
 export const GraphqlAPI = 'https://gq_v2.laisky.com/query/';
 
@@ -182,9 +181,13 @@ export const getUserLanguage = async () => {
 };
 
 export const formatTs = (ts) => {
-  return moment(ts).format('YYYY-MM-DD');
+  const d = new Date(ts);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 };
 
 export const ts2UTC = (ts) => {
-  return moment(ts).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
+  return new Date(ts).toISOString().replace(/\.\d{3}Z$/, 'Z');
 };

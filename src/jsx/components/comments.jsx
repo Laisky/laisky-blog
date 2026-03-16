@@ -2,7 +2,7 @@ import jsutils from '@laisky/js-utils';
 import DOMPurify from 'dompurify';
 import { gql } from 'graphql-request';
 import React, { useEffect, useRef, useState } from 'react';
-import { graphqlQuery, ts2UTC } from '../library/base.jsx';
+import { graphqlMutation, graphqlQuery, ts2UTC } from '../library/base.jsx';
 import { Tooltip } from './Tooltip.jsx';
 
 // Cache keys for user data
@@ -152,35 +152,32 @@ export const Comments = ({ postName }) => {
       try {
         // Fetch comments
         const commentsQuery = gql`
-                    query {
-                        BlogComments(
-                        postName: "${postName}"
-                        page: { page: ${page}, size: 10 }
-                        sort: { sort_by: "created_at", order: DESC }
-                        ) {
-                        id
-                        content
-                        authorName
-                        authorWebsite
-                        createdAt
-                        isApproved
-                        likes
-                        parentId
-                        replies {
-                            id
-                            content
-                            authorName
-                            authorWebsite
-                            createdAt
-                            isApproved
-                            likes
-                        }
-                        }
+          query ($postName: String!, $page: Int!, $size: Int!) {
+            BlogComments(postName: $postName, page: { page: $page, size: $size }, sort: { sort_by: "created_at", order: DESC }) {
+              id
+              content
+              authorName
+              authorWebsite
+              createdAt
+              isApproved
+              likes
+              parentId
+              replies {
+                id
+                content
+                authorName
+                authorWebsite
+                createdAt
+                isApproved
+                likes
+              }
+            }
 
-                        BlogCommentCount(postName: "${postName}")
-                    }`;
+            BlogCommentCount(postName: $postName)
+          }
+        `;
 
-        const resp = await graphqlQuery(commentsQuery);
+        const resp = await graphqlQuery(commentsQuery, { postName, page, size: 10 });
 
         // Validate response
         if (!resp || !resp.BlogComments) {
@@ -218,28 +215,42 @@ export const Comments = ({ postName }) => {
     setIsSubmitting(true);
     try {
       const createCommentMutation = gql`
-                mutation {
-                    BlogCreateComment(
-                        postName: "${postName}"
-                        content: ${JSON.stringify(commentContent).slice(1, -1)}
-                        authorName: ${JSON.stringify(authorName).slice(1, -1)}
-                        authorEmail: ${JSON.stringify(authorEmail).slice(1, -1)}
-                        authorWebsite: ${JSON.stringify(authorWebsite).slice(1, -1)}
-                        ${replyTo ? `parentId: "${replyTo}"` : ''}
-                    ) {
-                        id
-                        content
-                        authorName
-                        authorWebsite
-                        createdAt
-                        isApproved
-                        likes
-                        parentId
-                    }
-                }
-            `;
+        mutation (
+          $postName: String!
+          $content: String!
+          $authorName: String!
+          $authorEmail: String!
+          $authorWebsite: String
+          $parentId: String
+        ) {
+          BlogCreateComment(
+            postName: $postName
+            content: $content
+            authorName: $authorName
+            authorEmail: $authorEmail
+            authorWebsite: $authorWebsite
+            parentId: $parentId
+          ) {
+            id
+            content
+            authorName
+            authorWebsite
+            createdAt
+            isApproved
+            likes
+            parentId
+          }
+        }
+      `;
 
-      const resp = await graphqlQuery(createCommentMutation);
+      const resp = await graphqlMutation(createCommentMutation, {
+        postName,
+        content: commentContent,
+        authorName,
+        authorEmail,
+        authorWebsite: authorWebsite || null,
+        parentId: replyTo || null,
+      });
       const newComment = resp.BlogCreateComment;
 
       // Save user data to cache after successful comment submission
@@ -289,17 +300,15 @@ export const Comments = ({ postName }) => {
       setComments((prevComments) => updateCommentLikes(prevComments, commentId, 1));
 
       const likeCommentMutation = gql`
-                mutation {
-                BlogToggleCommentLike(
-                    commentId: "${commentId}"
-                ) {
-                    id
-                    likes
-                }
-                }
-            `;
+        mutation ($commentId: String!) {
+          BlogToggleCommentLike(commentId: $commentId) {
+            id
+            likes
+          }
+        }
+      `;
 
-      const resp = await graphqlQuery(likeCommentMutation);
+      const resp = await graphqlMutation(likeCommentMutation, { commentId });
 
       if (!resp || !resp.BlogToggleCommentLike) {
         throw new Error('Invalid response from server');

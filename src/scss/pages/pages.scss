@@ -351,6 +351,10 @@
         width: var(--sidebar-width);
         right: max(2rem, calc((100vw - var(--container-xl-max)) / 2 + 1rem));
         z-index: 100;
+        max-height: calc(100vh - var(--navbar-height) - 4rem);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-thumb) transparent;
     }
 
     @media (max-width: 1199px) {
@@ -388,7 +392,8 @@
                     display: inline-flex;
                     align-items: center;
                     gap: 0.2rem;
-                    padding: 0.2rem 0;
+                    padding: 0.4rem 0.25rem;
+                    min-height: 36px;
                     font-size: 0.8rem;
 
                     &:hover {
@@ -425,7 +430,10 @@
                 cursor: pointer;
                 background: var(--surface-primary);
                 color: var(--text-secondary);
-                padding: 0.3rem;
+                padding: 0.3rem 0.5rem;
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
                 border-radius: 6px;
                 border: 1px solid var(--border-subtle);
                 font-size: 0.8rem;
@@ -489,6 +497,10 @@
 }
 
 @media (max-width: 1199px) {
+    #pages {
+        background-attachment: scroll;
+    }
+
     #pages .posts {
         max-width: 100%;
     }

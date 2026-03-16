@@ -1,7 +1,7 @@
 'use strict';
 
 import { gql } from 'graphql-request';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import jsutils from '@laisky/js-utils';
@@ -10,9 +10,9 @@ import { buildLocationPayload, buildMutationPostCandidates, datetimeLocalValueTo
 
 export const postEditLoader = async ({ params }) => {
   const gqBody = gql`
-        query {
+        query($name: String!) {
             BlogPosts(
-                name: "${params.name}"
+                name: $name
                 language: ${await getUserLanguage()}
             ) {
                 name
@@ -35,7 +35,7 @@ export const postEditLoader = async ({ params }) => {
         }
     `;
 
-  const resp = await graphqlQuery(gqBody);
+  const resp = await graphqlQuery(gqBody, { name: params.name });
   return resp.BlogPosts[0];
 };
 
@@ -63,6 +63,12 @@ export const PostEdit = ({ isPublish }) => {
   });
   const navigate = useNavigate();
   const params = useParams();
+  const titleRef = useRef(null);
+  const nameRef = useRef(null);
+  const languageRef = useRef(null);
+  const typeRef = useRef(null);
+  const publishAtRef = useRef(null);
+  const markdownRef = useRef(null);
 
   useEffect(() => {
     (async () => {
@@ -226,15 +232,14 @@ export const PostEdit = ({ isPublish }) => {
 
     setSubmitError(null);
 
-    const postEle = document.getElementById('postEdit');
-    const selectedLanguage = postEle.querySelector('.input.postLanguage').value;
-    const publishAtValue = postEle.querySelector('.input.postPublishAt').value;
+    const selectedLanguage = languageRef.current.value;
+    const publishAtValue = publishAtRef.current.value;
 
     const basePost = {
-      title: postEle.querySelector('.input.postTitle').value,
-      name: postEle.querySelector('.input.postName').value,
-      markdown: postEle.querySelector('.input.postMarkdown').value,
-      type: postEle.querySelector('.input.postType').value,
+      title: titleRef.current.value,
+      name: nameRef.current.value,
+      markdown: markdownRef.current.value,
+      type: typeRef.current.value,
     };
 
     // check empty
@@ -332,7 +337,7 @@ export const PostEdit = ({ isPublish }) => {
             <label htmlFor="postTitle" className="form-label">
               Title
             </label>
-            <input id="postTitle" type="text" className="form-control input postTitle" defaultValue={post.title} />
+            <input id="postTitle" ref={titleRef} type="text" className="form-control input postTitle" defaultValue={post.title} />
           </div>
           <div className="mb-3">
             <label htmlFor="postName" className="form-label">
@@ -340,6 +345,7 @@ export const PostEdit = ({ isPublish }) => {
             </label>
             <input
               id="postName"
+              ref={nameRef}
               type="text"
               className="form-control input postName"
               {...(isPublish ? {} : { readOnly: true })}
@@ -351,7 +357,12 @@ export const PostEdit = ({ isPublish }) => {
               <label htmlFor="postLanguage" className="form-label">
                 Language
               </label>
-              <select id="postLanguage" className="form-select input postLanguage" defaultValue={post.language || 'zh_CN'}>
+              <select
+                id="postLanguage"
+                ref={languageRef}
+                className="form-select input postLanguage"
+                defaultValue={post.language || 'zh_CN'}
+              >
                 <option value="en_US">en_US</option>
                 <option value="zh_CN">zh_CN</option>
               </select>
@@ -360,7 +371,7 @@ export const PostEdit = ({ isPublish }) => {
               <label htmlFor="postType" className="form-label">
                 Type
               </label>
-              <select id="postType" className="form-select input postType" defaultValue={post.type || 'markdown'}>
+              <select id="postType" ref={typeRef} className="form-select input postType" defaultValue={post.type || 'markdown'}>
                 <option value="markdown">Markdown</option>
                 <option value="slide">Slide</option>
               </select>
@@ -371,7 +382,13 @@ export const PostEdit = ({ isPublish }) => {
             <label htmlFor="postPublishAt" className="form-label">
               Publish Time
             </label>
-            <input id="postPublishAt" type="datetime-local" className="form-control input postPublishAt" defaultValue={initialPublishAt} />
+            <input
+              id="postPublishAt"
+              ref={publishAtRef}
+              type="datetime-local"
+              className="form-control input postPublishAt"
+              defaultValue={initialPublishAt}
+            />
             <div className="form-text mt-1">Timezone: {timezoneLabel}. Value is converted and stored as UTC on submit.</div>
           </div>
 
@@ -399,7 +416,13 @@ export const PostEdit = ({ isPublish }) => {
             <label htmlFor="postMarkdown" className="form-label">
               Markdown
             </label>
-            <textarea id="postMarkdown" className="form-control input postMarkdown" defaultValue={post.markdown} rows="40" />
+            <textarea
+              id="postMarkdown"
+              ref={markdownRef}
+              className="form-control input postMarkdown"
+              defaultValue={post.markdown}
+              rows="40"
+            />
           </div>
 
           {submitError && (

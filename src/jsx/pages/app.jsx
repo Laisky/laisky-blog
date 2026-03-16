@@ -75,7 +75,10 @@ export const App = () => {
       await Promise.all(fs);
     })();
 
-    watchThemeChange(setTheme);
+    const cleanupTheme = watchThemeChange(setTheme);
+    return () => {
+      if (cleanupTheme) cleanupTheme();
+    };
   }, []);
 
   // watch theme change
@@ -297,23 +300,18 @@ export const App = () => {
   );
 };
 
-let _watchThemeCleanup = null;
-
 /**
  * watchThemeChange watches for system theme changes via matchMedia listener.
  *
  * @param {Function} setTheme - React state setter for theme
+ * @returns {Function} Cleanup function to remove the listener
  */
 const watchThemeChange = (setTheme) => {
-  if (_watchThemeCleanup) {
-    return;
-  }
-
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
   const handler = (e) => {
     setTheme(e.matches ? 'dark' : 'light');
   };
 
   mediaQuery.addEventListener('change', handler);
-  _watchThemeCleanup = () => mediaQuery.removeEventListener('change', handler);
+  return () => mediaQuery.removeEventListener('change', handler);
 };

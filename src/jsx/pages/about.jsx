@@ -156,7 +156,7 @@ export const About = () => {
                 The content of this site is available under the "Attribution 4.0 International (CC BY 4.0)" license, meaning that the
                 content can be used freely as long as the attribution is preserved.
               </p>
-              <img src="https://s3.laisky.com/uploads/images/cc-by-4_0.jpg" alt="cc by 4.0" />
+              <img src="https://s3.laisky.com/uploads/images/cc-by-4_0.jpg" alt="cc by 4.0" loading="lazy" />
             </article>
           </div>
         </div>
