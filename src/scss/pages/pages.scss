@@ -22,40 +22,23 @@
 
     .posts-container {
         padding: 0; // Remove extra padding
-        margin-bottom: 1rem;
+        margin-bottom: 0;
         perspective: 1000px;
         perspective-origin: 50% 40%;
         position: relative;
         color: var(--text-secondary);
         overflow: visible;
 
-        // Subtle gradient overlays at top/bottom edges (no fixed slots)
-        &::before,
-        &::after {
-            content: '';
-            position: fixed;
-            left: 0;
-            right: 0;
-            height: 60px;
-            z-index: 50;
-            pointer-events: none;
-        }
-
-        &::before {
-            top: var(--navbar-height);
-            background: linear-gradient(to bottom, var(--page-bg) 30%, transparent);
-        }
-
-        &::after {
-            bottom: 0;
-            background: linear-gradient(to top, var(--page-bg) 30%, transparent);
-        }
 
         .page-heading {
             margin-top: 1rem;
             margin-bottom: 1rem;
             text-align: center;
             color: var(--text-tertiary);
+            position: relative;
+            z-index: 2;
+            border-bottom: none;
+            padding-bottom: 0;
 
             h1 {
                 font-weight: 300;
@@ -108,10 +91,10 @@
             box-shadow:
                 inset 0 0 60px var(--tape-glow),
                 -3px 0 8px var(--tape-edge-shadow),
-                3px 0 8px var(--tape-edge-shadow),
-                0 20px 50px var(--tape-depth-shadow);
+                3px 0 8px var(--tape-edge-shadow);
 
-            // Refined border with paper-like edges
+            // Refined border with paper-like edges (sides only)
+            border: none;
             border-left: 1px solid var(--tape-border-color);
             border-right: 1px solid var(--tape-border-color);
 
@@ -150,50 +133,14 @@
             .post {
                 background: transparent;
                 border: none;
-                border-bottom: 1px dashed var(--border-subtle);
+                border-bottom: none;
                 border-radius: 0;
                 padding: 2.5rem 4rem;
                 margin: 0;
-                transition:
-                    transform 0.15s ease-out,
-                    opacity 0.15s ease-out,
-                    filter 0.15s ease-out;
                 position: relative;
                 z-index: 2;
                 color: var(--text-secondary);
                 font-weight: 500;
-
-                // Punch-card folding effect
-                opacity: var(--fold-opacity, 1);
-                filter: blur(var(--fold-blur, 0px));
-                transform:
-                    translateY(var(--fold-translate, 0px))
-                    translateZ(var(--fold-translateZ, 0px))
-                    rotateX(var(--fold-rotate, 0deg));
-                transform-origin: var(--fold-origin, center center);
-                transform-style: preserve-3d;
-                backface-visibility: hidden;
-
-                // Fold crease line at the hinge edge
-                &::after {
-                    content: '';
-                    position: absolute;
-                    left: 0;
-                    right: 0;
-                    bottom: -1px;
-                    height: 2px;
-                    background: linear-gradient(
-                        90deg,
-                        transparent 5%,
-                        var(--tape-fold-shadow, rgba(0, 0, 0, 0.15)) 20%,
-                        var(--tape-fold-shadow, rgba(0, 0, 0, 0.25)) 50%,
-                        var(--tape-fold-shadow, rgba(0, 0, 0, 0.15)) 80%,
-                        transparent 95%
-                    );
-                    opacity: var(--fold-crease, 0);
-                    pointer-events: none;
-                    z-index: 5;
-                }
 
                 &:last-child {
                     border-bottom: none;
@@ -202,7 +149,7 @@
                 &.pagination-segment {
                     padding: 3rem;
                     border-bottom: none;
-                    background: var(--surface-muted);
+                    background: transparent;
                 }
 
                 .post-title {
@@ -234,7 +181,7 @@
                     color: var(--text-tertiary);
                     margin-bottom: 1.25rem;
                     padding-bottom: 1.25rem;
-                    border-bottom: 1px solid var(--border-subtle);
+                    border-bottom: none;
                     flex-wrap: wrap;
                     font-family: var(--code-font);
                     text-transform: uppercase;
@@ -557,18 +504,9 @@
     #pages .posts-container .post {
         padding: 1rem;
         margin: 0;
-        border-bottom: 1px solid var(--border-subtle);
+        border-bottom: none;
         background: transparent;
         border-radius: 0;
-
-        // Hide fold crease on mobile
-        &::after {
-            display: none;
-        }
-
-        &:last-child {
-            border-bottom: none;
-        }
 
         &.pagination-segment {
             padding: 1.5rem 0.5rem;

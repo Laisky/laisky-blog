@@ -7,7 +7,7 @@ import { Link, useLoaderData, useNavigate, useParams, useLocation } from 'react-
 
 import { Sidebar } from '../components/sidebar.jsx';
 import { Tooltip } from '../components/Tooltip.jsx';
-import { calculateRibbonFold } from './pagesFold.js';
+
 import {
   KvKeyLanguage,
   KvKeyPrefixCache,
@@ -239,126 +239,6 @@ export const Page = () => {
     })();
   }, [params.nPage]);
 
-  useEffect(() => {
-    /**
-     * handleScroll implements a smooth paper-ribbon effect for articles.
-     *
-     * Design philosophy:
-     * - Uses native window scrolling for full browser compatibility
-     * - First article always starts fully visible (no blur on page load)
-     * - Gentle transitions: articles smoothly fade/reveal at edges
-     * - Reading-friendly: large central zone stays fully visible
-     */
-    let lastScrollY = window.scrollY;
-    let scrollDirection = 'down';
-
-    /**
-     * updateScrollDirection updates the current scroll direction.
-     *
-     * @returns {void} No return value.
-     */
-    const updateScrollDirection = () => {
-      const currentY = window.scrollY;
-      if (currentY > lastScrollY + 1) {
-        scrollDirection = 'down';
-      } else if (currentY < lastScrollY - 1) {
-        scrollDirection = 'up';
-      }
-
-      lastScrollY = currentY;
-    };
-
-    /**
-     * handleScroll applies fold/blur CSS variables to all posts.
-     *
-     * @param {'up'|'down'} direction - Current scroll direction.
-     * @returns {void} No return value.
-     */
-    const handleScroll = (direction) => {
-      const posts = document.querySelectorAll('.tape .post');
-      if (posts.length === 0) return;
-
-      const viewportHeight = window.innerHeight;
-      const navbarHeight = 52;
-      const isMobile = window.matchMedia('(max-width: 991.98px)').matches;
-
-      posts.forEach((post) => {
-        const rect = post.getBoundingClientRect();
-
-        const { fadeProgress, isTop } = calculateRibbonFold({
-          rect,
-          viewportHeight,
-          navbarHeight,
-          isMobile,
-          scrollDirection: direction,
-        });
-
-        // easeOutCubic for snappy fold onset, smooth finish
-        const easedProgress = 1 - Math.pow(1 - fadeProgress, 3);
-
-        // Opacity: fold to 0.3 (card still faintly visible)
-        const opacity = 1 - easedProgress * 0.7;
-
-        // Strong 3D rotation for punch-card fold (up to 55 deg)
-        const rotateX = easedProgress * 55 * (isTop ? 1 : -1);
-
-        // Subtle depth shift along Z while folding
-        const translateZ = easedProgress * -60;
-
-        // Blur for depth-of-field on folded cards
-        const blur = easedProgress * 2.5;
-
-        // Fold crease line: 0 = invisible, 1 = fully visible
-        const creaseOpacity = easedProgress;
-
-        // Transform-origin: fold from the edge that connects to the next card
-        const origin = isTop ? 'center bottom' : 'center top';
-
-        post.style.setProperty('--fold-opacity', opacity);
-        post.style.setProperty('--fold-translate', '0px');
-        post.style.setProperty('--fold-translateZ', `${translateZ}px`);
-        post.style.setProperty('--fold-rotate', `${rotateX}deg`);
-        post.style.setProperty('--fold-blur', `${blur}px`);
-        post.style.setProperty('--fold-origin', origin);
-        post.style.setProperty('--fold-crease', creaseOpacity);
-      });
-    };
-
-    let ticking = false;
-    const onScroll = () => {
-      updateScrollDirection();
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          handleScroll(scrollDirection);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    // Listen to native window scroll events
-    window.addEventListener('scroll', onScroll);
-    window.addEventListener('resize', onScroll);
-
-    // Use MutationObserver to detect when posts are actually added to the DOM
-    const observer = new MutationObserver(() => {
-      handleScroll(scrollDirection);
-    });
-
-    const tapeElement = document.querySelector('.tape');
-    if (tapeElement) {
-      observer.observe(tapeElement, { childList: true, subtree: true });
-    }
-
-    // Initial call - ensure first article is clear
-    handleScroll(scrollDirection);
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      observer.disconnect();
-    };
-  }, [content]);
 
   /**
    * generatePostsContent generates the HTML content for the posts on the current page.
@@ -400,11 +280,11 @@ export const Page = () => {
       <>
         {/* blog posts */}
         <div className="col-12 col-xl-8 posts posts-container">
-          <header className="page-heading">
-            <h1>Articles</h1>
-            <p>{`Page ${humanPage} of ${totalPage}`}</p>
-          </header>
           <div className="tape">
+            <header className="page-heading">
+              <h1>Articles</h1>
+              <p>{`Page ${humanPage} of ${totalPage}`}</p>
+            </header>
             {postsContent}
             {/* pagination as part of the tape */}
             <div className="post pagination-segment">
