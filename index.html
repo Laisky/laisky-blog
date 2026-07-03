@@ -28,6 +28,34 @@
     <link rel="api-catalog" type="application/linkset+json" href="/.well-known/api-catalog" />
     <link rel="agent-skills" type="application/json" href="/.well-known/agent-skills/index.json" />
     <link rel="mcp-server-card" type="application/json" href="/.well-known/mcp/server-card.json" />
+    <script>
+      (() => {
+        const registerTool = globalThis.navigator?.modelContext?.registerTool;
+        if (typeof registerTool !== 'function') return;
+
+        registerTool({
+          name: 'discover_laisky_resources',
+          description: 'Return canonical public Laisky Blog and MCP discovery resources.',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              query: {
+                type: 'string',
+                description: 'Optional public resource need.'
+              }
+            },
+            additionalProperties: false
+          },
+          execute: async () => ({
+            resources: [
+              'https://blog.laisky.com/llms.txt',
+              'https://blog.laisky.com/openapi.json',
+              'https://blog.laisky.com/.well-known/mcp/server-card.json'
+            ]
+          })
+        });
+      })();
+    </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",

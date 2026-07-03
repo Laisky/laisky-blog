@@ -9,6 +9,7 @@
   "service_documentation": "https://blog.laisky.com/auth.md",
   "agent_auth": {
     "registration_required": false,
+    "register_uri": "https://blog.laisky.com/auth.md#4-registration",
     "registration_template": {
       "client_name": "agent-name",
       "client_uri": "https://agent.example",

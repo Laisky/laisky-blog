@@ -1,0 +1,11 @@
+{
+  "events": [
+    "resource.updated",
+    "resource.deleted"
+  ],
+  "signature": {
+    "header": "X-Laisky-Signature",
+    "algorithm": "HMAC-SHA256",
+    "documentation": "https://blog.laisky.com/webhooks.md"
+  }
+}

@@ -1,0 +1,7 @@
+# Laisky MCP
+
+Use this section-level llms.txt for Laisky MCP discovery.
+
+- MCP app: https://mcp.laisky.com
+- Server card: https://blog.laisky.com/.well-known/mcp/server-card.json
+- MCP App HTML view: https://blog.laisky.com/mcp-app.html

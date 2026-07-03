@@ -24,19 +24,35 @@ Read `/.well-known/oauth-authorization-server` next. The metadata advertises the
 
 No registration is required for public read resources. If a future private workflow is added, the agent should use the `agent_auth.registration_template` value from authorization server metadata and ask the user before submitting any account-specific information.
 
-## 5. Authorization
+## 5. Pick a method
+
+Pick zero-auth public read access for `public.read` resources. Use OAuth authorization code with PKCE only if a future private resource explicitly asks for it.
+
+## 6. Claim
+
+Claim only the `public.read` scope for static resources. Do not claim write, admin, payment, or account scopes.
+
+## 7. Use credential
+
+No credential is required for public resources. If a future credential is issued, send it as `Authorization: Bearer <token>` and never place it in URLs, logs, or Markdown output.
+
+## 8. Revocation
+
+No revocation is needed for zero-auth public resources. If a future user credential is issued, discard it after the task and direct the user to the account UI for revocation.
+
+## 9. Authorization
 
 Public resources are zero-auth. Browser-only actions may require a user session and must be completed manually by the user.
 
-## 6. Token exchange
+## 10. Token exchange
 
 No token exchange is needed for public read resources. Agents should not create or infer API keys.
 
-## 7. Scopes
+## 11. Scopes
 
 - `public.read`: Read public discovery documents and static metadata.
 
-## 8. Error handling
+## 12. Error handling
 
 API-style errors use JSON objects with `code`, `message`, and optional `recovery` fields. Retry only when the status code or response headers indicate a transient condition.
 

@@ -233,6 +233,71 @@
         }
       }
     },
+    "/v1/jobs": {
+      "post": {
+        "operationId": "createPublicResourceJob",
+        "summary": "Create async public resource job",
+        "description": "Creates a static demonstration async job for public resource processing. Clients should send Idempotency-Key when retrying.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJobRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Job accepted.",
+            "headers": {
+              "Location": {
+                "description": "URL to poll for job status.",
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncJob"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/v1/webhooks": {
+      "get": {
+        "operationId": "listWebhookEvents",
+        "summary": "List webhook event types",
+        "description": "Returns documented webhook event types and signature guidance.",
+        "responses": {
+          "200": {
+            "description": "Webhook event catalog.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookCatalog"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ask": {
       "get": {
         "operationId": "askPublicResources",
@@ -277,6 +342,36 @@
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/ask-stream": {
+      "get": {
+        "operationId": "streamPublicResourceAnswer",
+        "summary": "Stream an NLWeb answer",
+        "description": "Streams a simple NLWeb-style answer as server-sent events.",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Question about public blog or MCP resources.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Server-sent event stream.",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -451,6 +546,44 @@
           "result_url": {
             "type": "string",
             "format": "uri"
+          }
+        }
+      },
+      "CreateJobRequest": {
+        "type": "object",
+        "properties": {
+          "resource_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "WebhookCatalog": {
+        "type": "object",
+        "required": ["events", "signature"],
+        "properties": {
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["resource.updated", "resource.deleted"]
+            }
+          },
+          "signature": {
+            "type": "object",
+            "required": ["header", "algorithm"],
+            "properties": {
+              "header": {
+                "type": "string",
+                "const": "X-Laisky-Signature"
+              },
+              "algorithm": {
+                "type": "string",
+                "const": "HMAC-SHA256"
+              }
+            }
           }
         }
       },

@@ -1,0 +1,25 @@
+{
+  "name": "Laisky MCP",
+  "description": "WebMCP discovery metadata for public Laisky Blog resources.",
+  "version": "2026-07-03",
+  "tools": [
+    {
+      "name": "discover_laisky_resources",
+      "description": "Return canonical public Laisky Blog and MCP discovery resources.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  ],
+  "mcp": {
+    "serverCard": "https://blog.laisky.com/.well-known/mcp/server-card.json",
+    "url": "https://mcp.laisky.com",
+    "transport": "streamable-http"
+  }
+}
