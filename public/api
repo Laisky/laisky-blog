@@ -19,6 +19,16 @@
       "mediaType": "application/vnd.oai.openapi+json"
     },
     {
+      "name": "api_llms",
+      "url": "https://blog.laisky.com/api/llms.txt",
+      "mediaType": "text/plain"
+    },
+    {
+      "name": "mcp_llms",
+      "url": "https://blog.laisky.com/mcp/llms.txt",
+      "mediaType": "text/plain"
+    },
+    {
       "name": "mcp_server_card",
       "url": "https://blog.laisky.com/.well-known/mcp/server-card.json",
       "mediaType": "application/json"

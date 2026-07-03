@@ -58,6 +58,44 @@
         }
       }
     },
+    "/api/llms.txt": {
+      "get": {
+        "operationId": "getApiLlmsText",
+        "summary": "Get API-specific agent guide",
+        "description": "Returns a narrow llms.txt guide for API, NLWeb, webhook, and versioning resources.",
+        "responses": {
+          "200": {
+            "description": "API-specific agent guide in plain text.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mcp/llms.txt": {
+      "get": {
+        "operationId": "getMcpLlmsText",
+        "summary": "Get MCP-specific agent guide",
+        "description": "Returns a narrow llms.txt guide for MCP discovery resources.",
+        "responses": {
+          "200": {
+            "description": "MCP-specific agent guide in plain text.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/index.md": {
       "get": {
         "operationId": "getMarkdownHome",
@@ -302,7 +340,7 @@
       "get": {
         "operationId": "askPublicResources",
         "summary": "Ask about public resources",
-        "description": "NLWeb-style read endpoint that answers simple questions about public Laisky Blog resources.",
+        "description": "NLWeb-style read endpoint that answers simple questions about public Laisky Blog resources. Set stream=true to receive server-sent events on the same endpoint.",
         "parameters": [
           {
             "name": "q",
@@ -648,8 +686,11 @@
       },
       "AskResponse": {
         "type": "object",
-        "required": ["answer", "citations"],
+        "required": ["_meta", "answer", "citations"],
         "properties": {
+          "_meta": {
+            "$ref": "#/components/schemas/NLWebMeta"
+          },
           "answer": {
             "type": "string"
           },
@@ -659,6 +700,27 @@
               "type": "string",
               "format": "uri"
             }
+          }
+        }
+      },
+      "NLWebMeta": {
+        "type": "object",
+        "required": ["protocol", "version", "openapi"],
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "nlweb"
+          },
+          "version": {
+            "type": "string"
+          },
+          "stream": {
+            "type": "string",
+            "format": "uri"
+          },
+          "openapi": {
+            "type": "string",
+            "format": "uri"
           }
         }
       },
@@ -728,7 +790,7 @@
       },
       "ErrorResponse": {
         "type": "object",
-        "required": ["code", "message"],
+        "required": ["code", "message", "recovery", "status"],
         "properties": {
           "code": {
             "type": "string"
@@ -738,6 +800,11 @@
           },
           "recovery": {
             "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "minimum": 400,
+            "maximum": 599
           }
         }
       }

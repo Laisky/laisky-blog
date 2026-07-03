@@ -1,4 +1,10 @@
 {
+  "_meta": {
+    "protocol": "nlweb",
+    "version": "2026-07-03",
+    "stream": "https://blog.laisky.com/ask?stream=true",
+    "openapi": "https://blog.laisky.com/openapi.json"
+  },
   "answer": "Laisky's Blog is a public engineering blog and agent discovery surface for Laisky MCP. Start with /llms.txt, /index.md, /openapi.json, and /.well-known/mcp/server-card.json.",
   "citations": [
     "https://blog.laisky.com/llms.txt",

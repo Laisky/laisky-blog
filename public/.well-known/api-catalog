@@ -12,6 +12,16 @@
           "href": "https://blog.laisky.com/api",
           "type": "application/json",
           "title": "Public resource index"
+        },
+        {
+          "href": "https://blog.laisky.com/api/llms.txt",
+          "type": "text/plain",
+          "title": "API-specific llms.txt"
+        },
+        {
+          "href": "https://blog.laisky.com/mcp/llms.txt",
+          "type": "text/plain",
+          "title": "MCP-specific llms.txt"
         }
       ],
       "service-desc": [

@@ -19,6 +19,8 @@ Laisky's Blog publishes technical articles and operational notes about Go, distr
 
 - [Homepage](https://blog.laisky.com/)
 - [Markdown overview](https://blog.laisky.com/index.md)
+- [MCP-specific llms.txt](https://blog.laisky.com/mcp/llms.txt)
+- [API-specific llms.txt](https://blog.laisky.com/api/llms.txt)
 - [Posts](https://blog.laisky.com/pages/0/)
 - [RSS feed](https://s3.laisky.com/public/rss.xml)
 - [MCP app](https://mcp.laisky.com)
@@ -33,6 +35,13 @@ Laisky's Blog publishes technical articles and operational notes about Go, distr
 - [Auth](https://blog.laisky.com/auth.md)
 - [Source repository](https://github.com/Laisky/laisky-blog)
 - [Agent coding instructions](https://github.com/Laisky/laisky-blog/blob/v2/AGENTS.md)
+
+## Modular guides
+
+Use the section-level guides when an agent only needs a narrow context window:
+
+- `https://blog.laisky.com/mcp/llms.txt`: Laisky MCP discovery, manifests, and server card resources.
+- `https://blog.laisky.com/api/llms.txt`: Public OpenAPI, NLWeb, webhook, and versioning resources.
 
 ## Agent guidance
 

@@ -1,0 +1,18 @@
+# Laisky Blog Public API
+
+This section-level llms.txt describes the API and protocol resources for blog.laisky.com.
+
+## Start here
+
+- OpenAPI: https://blog.laisky.com/openapi.json
+- API catalog: https://blog.laisky.com/.well-known/api-catalog
+- Public resource index: https://blog.laisky.com/api
+- Versioned resources: https://blog.laisky.com/v1/resources
+- NLWeb ask endpoint: https://blog.laisky.com/ask
+- NLWeb stream endpoint: https://blog.laisky.com/ask?stream=true
+- Webhook catalog: https://blog.laisky.com/v1/webhooks
+- Versioning policy: https://blog.laisky.com/deprecation.md
+
+## Agent notes
+
+All listed resources are public and read-only. JSON errors use `code`, `message`, `recovery`, and `status` fields. Versioned API responses include rate-limit headers, `Deprecation`, and `Sunset` metadata.

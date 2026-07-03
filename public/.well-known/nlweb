@@ -1,7 +1,9 @@
 {
   "name": "Laisky Blog NLWeb",
   "ask": "https://blog.laisky.com/ask",
-  "stream": "https://blog.laisky.com/ask-stream",
+  "stream": "https://blog.laisky.com/ask?stream=true",
+  "alternateStream": "https://blog.laisky.com/ask-stream",
   "methods": ["GET", "POST"],
+  "responseSchema": "https://blog.laisky.com/openapi.json#/components/schemas/AskResponse",
   "description": "Ask simple public questions about Laisky Blog and MCP discovery resources."
 }

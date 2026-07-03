@@ -13,4 +13,15 @@ The public API surface is intentionally small and read-only. It exists to help a
 
 ## Errors
 
-Static resources return standard HTTP status codes. Agents should treat non-2xx responses as retryable only when the response status or headers indicate a transient condition.
+JSON API errors use a normalized envelope:
+
+```json
+{
+  "code": "not_found",
+  "message": "No public resource exists at this path.",
+  "recovery": "Use /api, /openapi.json, /llms.txt, or /v1/resources.",
+  "status": 404
+}
+```
+
+Agents should treat non-2xx responses as retryable only when the response status or headers indicate a transient condition.
