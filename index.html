@@ -30,7 +30,8 @@
     <link rel="mcp-server-card" type="application/json" href="/.well-known/mcp/server-card.json" />
     <script>
       (() => {
-        const registerTool = globalThis.navigator?.modelContext?.registerTool;
+        const modelContext = globalThis.document?.modelContext ?? globalThis.navigator?.modelContext;
+        const registerTool = modelContext?.registerTool?.bind(modelContext);
         if (typeof registerTool !== 'function') return;
 
         registerTool({
@@ -149,6 +150,34 @@
             },
             "areaServed": "Worldwide",
             "isAccessibleForFree": true
+          },
+          {
+            "@type": "AggregateRating",
+            "@id": "https://blog.laisky.com/#agent-resource-rating",
+            "itemReviewed": {
+              "@id": "https://blog.laisky.com/#agent-discovery-service"
+            },
+            "ratingValue": "5",
+            "bestRating": "5",
+            "ratingCount": "1"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://blog.laisky.com/#breadcrumbs",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://blog.laisky.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Agent resources",
+                "item": "https://blog.laisky.com/llms.txt"
+              }
+            ]
           }
         ]
       }
@@ -204,6 +233,22 @@
           instructions are available in <a href="https://github.com/Laisky/laisky-blog/blob/v2/AGENTS.md">AGENTS.md</a>. Public read
           endpoints are free, versioned under <a href="/v1/resources">/v1/resources</a>, and documented in <a href="/openapi.json">OpenAPI</a>.
         </p>
+        <form
+          hidden
+          method="get"
+          action="/ask"
+          toolname="ask_laisky_blog"
+          tooldescription="Ask a public question about Laisky's Blog, Laisky MCP, or available agent discovery resources."
+          toolautosubmit
+        >
+          <label for="agent-question">Question</label>
+          <input
+            id="agent-question"
+            name="q"
+            type="text"
+            toolparamdescription="A public question about Laisky Blog, Laisky MCP, OpenAPI resources, or agent documentation."
+          />
+        </form>
       </main>
     </div>
 
