@@ -22,6 +22,21 @@
           "href": "https://blog.laisky.com/mcp/llms.txt",
           "type": "text/plain",
           "title": "MCP-specific llms.txt"
+        },
+        {
+          "href": "https://blog.laisky.com/docs/llms.txt",
+          "type": "text/plain",
+          "title": "Docs-specific llms.txt"
+        },
+        {
+          "href": "https://blog.laisky.com/developers/llms.txt",
+          "type": "text/plain",
+          "title": "Developers-specific llms.txt"
+        },
+        {
+          "href": "https://blog.laisky.com/pages/0.md",
+          "type": "text/markdown",
+          "title": "Archive Markdown twin"
         }
       ],
       "service-desc": [

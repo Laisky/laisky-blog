@@ -1,0 +1,14 @@
+# Laisky Blog Developer Resources
+
+This section-level llms.txt narrows context to developer-facing resources on blog.laisky.com.
+
+## Quickstart
+
+1. Read https://blog.laisky.com/llms.txt for the site-wide guide.
+2. Fetch https://blog.laisky.com/openapi.json for machine-readable endpoints.
+3. Use https://blog.laisky.com/api/llms.txt for API, NLWeb, webhooks, and versioning.
+4. Use https://blog.laisky.com/mcp/llms.txt for MCP discovery.
+
+## Repository
+
+The public source repository is https://github.com/Laisky/laisky-blog. Agent coding instructions are published at https://github.com/Laisky/laisky-blog/blob/v2/AGENTS.md.

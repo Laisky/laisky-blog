@@ -1,0 +1,16 @@
+# Laisky Blog Documentation
+
+This section-level llms.txt describes documentation resources for agents.
+
+## Resources
+
+- Developer guide: https://blog.laisky.com/developers.md
+- API guide: https://blog.laisky.com/api.md
+- Authentication notes: https://blog.laisky.com/auth.md
+- Webhook notes: https://blog.laisky.com/webhooks.md
+- Versioning policy: https://blog.laisky.com/deprecation.md
+- OpenAPI: https://blog.laisky.com/openapi.json
+
+## Guidance
+
+Use these Markdown files before scraping rendered HTML. Public read resources do not require credentials.

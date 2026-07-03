@@ -29,6 +29,21 @@
       "mediaType": "text/plain"
     },
     {
+      "name": "docs_llms",
+      "url": "https://blog.laisky.com/docs/llms.txt",
+      "mediaType": "text/plain"
+    },
+    {
+      "name": "developers_llms",
+      "url": "https://blog.laisky.com/developers/llms.txt",
+      "mediaType": "text/plain"
+    },
+    {
+      "name": "archive_markdown",
+      "url": "https://blog.laisky.com/pages/0.md",
+      "mediaType": "text/markdown"
+    },
+    {
       "name": "mcp_server_card",
       "url": "https://blog.laisky.com/.well-known/mcp/server-card.json",
       "mediaType": "application/json"

@@ -96,6 +96,44 @@
         }
       }
     },
+    "/docs/llms.txt": {
+      "get": {
+        "operationId": "getDocsLlmsText",
+        "summary": "Get documentation-specific agent guide",
+        "description": "Returns a narrow llms.txt guide for Markdown documentation resources.",
+        "responses": {
+          "200": {
+            "description": "Documentation-specific agent guide in plain text.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/developers/llms.txt": {
+      "get": {
+        "operationId": "getDevelopersLlmsText",
+        "summary": "Get developer-specific agent guide",
+        "description": "Returns a narrow llms.txt guide for developer resources and repository entry points.",
+        "responses": {
+          "200": {
+            "description": "Developer-specific agent guide in plain text.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/index.md": {
       "get": {
         "operationId": "getMarkdownHome",
