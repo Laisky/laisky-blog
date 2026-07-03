@@ -377,6 +377,44 @@
       }
     }
   },
+  "webhooks": {
+    "resource.updated": {
+      "post": {
+        "operationId": "receiveResourceUpdatedWebhook",
+        "summary": "Receive resource update webhook",
+        "description": "Webhook receiver contract for public resource update notifications. Verify X-Laisky-Signature with HMAC-SHA256 before processing.",
+        "parameters": [
+          {
+            "name": "X-Laisky-Signature",
+            "in": "header",
+            "required": true,
+            "description": "HMAC-SHA256 signature of the raw webhook payload.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookEvent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Webhook accepted."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    }
+  },
   "components": {
     "parameters": {
       "Limit": {
@@ -587,6 +625,27 @@
           }
         }
       },
+      "WebhookEvent": {
+        "type": "object",
+        "required": ["id", "type", "created_at", "data"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["resource.updated", "resource.deleted"]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
       "AskResponse": {
         "type": "object",
         "required": ["answer", "citations"],
@@ -717,6 +776,16 @@
             "$ref": "#/components/headers/RateLimitReset"
           }
         },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "The signature or credential was invalid.",
         "content": {
           "application/json": {
             "schema": {

@@ -1,0 +1,7 @@
+{
+  "name": "Laisky Blog NLWeb",
+  "ask": "https://blog.laisky.com/ask",
+  "stream": "https://blog.laisky.com/ask-stream",
+  "methods": ["GET", "POST"],
+  "description": "Ask simple public questions about Laisky Blog and MCP discovery resources."
+}
