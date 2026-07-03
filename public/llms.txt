@@ -17,19 +17,22 @@ Laisky's Blog publishes technical articles and operational notes about Go, distr
 
 ## Important URLs
 
-- Homepage: https://blog.laisky.com/
-- Markdown overview: https://blog.laisky.com/index.md
-- Posts: https://blog.laisky.com/pages/0/
-- RSS feed: https://s3.laisky.com/public/rss.xml
-- MCP app: https://mcp.laisky.com
-- OpenAPI: https://blog.laisky.com/openapi.json
-- API catalog: https://blog.laisky.com/.well-known/api-catalog
-- AI catalog: https://blog.laisky.com/.well-known/ai-catalog.json
-- MCP server card: https://blog.laisky.com/.well-known/mcp/server-card.json
-- Agent card: https://blog.laisky.com/.well-known/agent-card.json
-- Agent skills: https://blog.laisky.com/.well-known/agent-skills/index.json
-- Developers: https://blog.laisky.com/developers.md
-- Auth: https://blog.laisky.com/auth.md
+- [Homepage](https://blog.laisky.com/)
+- [Markdown overview](https://blog.laisky.com/index.md)
+- [Posts](https://blog.laisky.com/pages/0/)
+- [RSS feed](https://s3.laisky.com/public/rss.xml)
+- [MCP app](https://mcp.laisky.com)
+- [OpenAPI](https://blog.laisky.com/openapi.json)
+- [Versioned resource API](https://blog.laisky.com/v1/resources)
+- [API catalog](https://blog.laisky.com/.well-known/api-catalog)
+- [AI catalog](https://blog.laisky.com/.well-known/ai-catalog.json)
+- [MCP server card](https://blog.laisky.com/.well-known/mcp/server-card.json)
+- [Agent card](https://blog.laisky.com/.well-known/agent-card.json)
+- [Agent skills](https://blog.laisky.com/.well-known/agent-skills/index.json)
+- [Developers](https://blog.laisky.com/developers.md)
+- [Auth](https://blog.laisky.com/auth.md)
+- [Source repository](https://github.com/Laisky/laisky-blog)
+- [Agent coding instructions](https://github.com/Laisky/laisky-blog/blob/v2/AGENTS.md)
 
 ## Agent guidance
 

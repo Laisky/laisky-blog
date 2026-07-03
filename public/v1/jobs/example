@@ -1,0 +1,6 @@
+{
+  "id": "example",
+  "object": "job",
+  "status": "succeeded",
+  "result_url": "https://blog.laisky.com/v1/resources"
+}

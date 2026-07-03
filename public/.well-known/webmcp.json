@@ -1,0 +1,15 @@
+{
+  "name": "Laisky MCP",
+  "description": "WebMCP discovery metadata for public Laisky Blog resources.",
+  "version": "2026-07-03",
+  "mcp": {
+    "serverCard": "https://blog.laisky.com/.well-known/mcp/server-card.json",
+    "url": "https://mcp.laisky.com",
+    "transport": "streamable-http"
+  },
+  "resources": [
+    "https://blog.laisky.com/llms.txt",
+    "https://blog.laisky.com/openapi.json",
+    "https://blog.laisky.com/mcp-app.html"
+  ]
+}

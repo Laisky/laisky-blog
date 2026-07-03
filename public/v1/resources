@@ -1,0 +1,25 @@
+{
+  "object": "list",
+  "version": "v1",
+  "data": [
+    {
+      "id": "llms",
+      "url": "https://blog.laisky.com/llms.txt",
+      "mediaType": "text/plain"
+    },
+    {
+      "id": "openapi",
+      "url": "https://blog.laisky.com/openapi.json",
+      "mediaType": "application/vnd.oai.openapi+json"
+    },
+    {
+      "id": "mcp-server-card",
+      "url": "https://blog.laisky.com/.well-known/mcp/server-card.json",
+      "mediaType": "application/json"
+    }
+  ],
+  "pagination": {
+    "limit": 25,
+    "next_cursor": null
+  }
+}

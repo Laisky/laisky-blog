@@ -1,0 +1,16 @@
+{
+  "object": "batch",
+  "version": "v1",
+  "data": [
+    {
+      "id": "llms",
+      "status": "ok",
+      "url": "https://blog.laisky.com/llms.txt"
+    },
+    {
+      "id": "openapi",
+      "status": "ok",
+      "url": "https://blog.laisky.com/openapi.json"
+    }
+  ]
+}

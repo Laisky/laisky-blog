@@ -1,3 +1,12 @@
 {
-  "keys": []
+  "keys": [
+    {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "kid": "laisky-blog-public-2026-07-03",
+      "x": "11qYAYKxCrfVSZlTEKB3h6j2AB8gwWAJ8H4cSc1srT4",
+      "use": "sig",
+      "alg": "EdDSA"
+    }
+  ]
 }

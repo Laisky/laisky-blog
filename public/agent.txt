@@ -1,0 +1,7 @@
+# Laisky Blog Agent Mode
+
+Use this view when an agent requests `?mode=agent` or needs a concise non-JavaScript summary of blog.laisky.com.
+
+When to use: public blog research, Laisky MCP discovery, RSS lookup, OpenAPI discovery, and agent-readable documentation.
+
+Do not use this view for private account actions, credential handling, checkout, or user-specific data. Ask the user to complete any required browser login manually.

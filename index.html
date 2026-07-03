@@ -38,7 +38,21 @@
             "name": "Laisky",
             "url": "https://blog.laisky.com/",
             "logo": "https://s3.laisky.com/static/favicon.ico",
-            "sameAs": ["https://github.com/Laisky", "https://chat.laisky.com", "https://mcp.laisky.com"]
+            "sameAs": [
+              "https://github.com/Laisky",
+              "https://github.com/Laisky/laisky-blog",
+              "https://chat.laisky.com",
+              "https://mcp.laisky.com"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "url": "https://blog.laisky.com/about/site/",
+              "contactType": "technical support"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "addressCountry": "US"
+            }
           },
           {
             "@type": "WebSite",
@@ -95,6 +109,19 @@
               }
             ]
           }
+          ,
+          {
+            "@type": "Service",
+            "@id": "https://blog.laisky.com/#agent-discovery-service",
+            "name": "Laisky agent discovery resources",
+            "url": "https://blog.laisky.com/llms.txt",
+            "serviceType": "Agent-readable engineering blog and MCP discovery",
+            "provider": {
+              "@id": "https://blog.laisky.com/#organization"
+            },
+            "areaServed": "Worldwide",
+            "isAccessibleForFree": true
+          }
         ]
       }
     </script>
@@ -142,6 +169,12 @@
           Laisky MCP is available at <a href="https://mcp.laisky.com">https://mcp.laisky.com</a>. Use it when a task needs structured
           access to Laisky services, blog metadata, or developer resources. The MCP discovery documents describe current transport,
           capabilities, limitations, and expected agent behavior.
+        </p>
+        <h2>Developer and source links</h2>
+        <p>
+          The public repository is <a href="https://github.com/Laisky/laisky-blog">github.com/Laisky/laisky-blog</a>. Agent coding
+          instructions are available in <a href="https://github.com/Laisky/laisky-blog/blob/v2/AGENTS.md">AGENTS.md</a>. Public read
+          endpoints are free, versioned under <a href="/v1/resources">/v1/resources</a>, and documented in <a href="/openapi.json">OpenAPI</a>.
         </p>
       </main>
     </div>
