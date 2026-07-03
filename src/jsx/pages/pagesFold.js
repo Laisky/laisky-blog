@@ -24,10 +24,9 @@ export const clamp01 = (value) => Math.min(1, Math.max(0, value));
  * @param {number} input.viewportHeight
  * @param {number} input.navbarHeight
  * @param {boolean} input.isMobile
- * @param {'up'|'down'} input.scrollDirection
  * @returns {{fadeProgress:number, isTop:boolean}}
  */
-export const calculateRibbonFold = ({ rect, viewportHeight, navbarHeight, isMobile, scrollDirection }) => {
+export const calculateRibbonFold = ({ rect, viewportHeight, navbarHeight, isMobile }) => {
   // The "safe" reading window: the central portion of the viewport
   // where the active card stays completely flat.
   const safeTop = navbarHeight + viewportHeight * 0.1;

@@ -1,0 +1,13 @@
+{
+  "name": "laisky-mcp",
+  "displayName": "Laisky MCP",
+  "description": "Public MCP discovery document for Laisky resources.",
+  "version": "2026-07-03",
+  "url": "https://mcp.laisky.com",
+  "transport": "streamable-http",
+  "serverCard": "https://blog.laisky.com/.well-known/mcp/server-card.json",
+  "auth": {
+    "type": "none"
+  },
+  "documentationUrl": "https://blog.laisky.com/developers.md"
+}

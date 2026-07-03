@@ -1,0 +1,26 @@
+{
+  "name": "Laisky Blog Agent",
+  "description": "A read-only discovery agent card for Laisky's Blog and Laisky MCP public resources.",
+  "url": "https://blog.laisky.com",
+  "version": "2026-07-03",
+  "provider": {
+    "name": "Laisky",
+    "url": "https://blog.laisky.com"
+  },
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "defaultInputModes": ["text/plain", "text/markdown", "application/json"],
+  "defaultOutputModes": ["text/plain", "text/markdown", "application/json"],
+  "skills": [
+    {
+      "id": "discover_laisky_resources",
+      "name": "Discover Laisky resources",
+      "description": "Find public blog, API, MCP, and agent discovery resources for Laisky.",
+      "tags": ["blog", "mcp", "discovery"],
+      "examples": ["Find the Laisky MCP server card", "Get the Markdown overview for Laisky's Blog"]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "publisher": {
+    "name": "Laisky",
+    "url": "https://blog.laisky.com"
+  },
+  "skills": [
+    {
+      "name": "laisky-blog",
+      "type": "skill-md",
+      "description": "Use when an agent needs to read Laisky's Blog, discover Laisky MCP resources, or cite canonical public metadata from blog.laisky.com.",
+      "url": "https://blog.laisky.com/.well-known/agent-skills/laisky-blog/SKILL.md",
+      "digest": "sha256:c9c6d4285143a27b64c6b862b20cc017f077baa04e8bfec133e4a150b2fc4536"
+    }
+  ]
+}

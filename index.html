@@ -5,9 +5,99 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Blog by Laisky - Exploring code, technology, and life" />
+    <meta
+      name="description"
+      content="Laisky's Blog publishes engineering notes, distributed systems articles, AI tooling experiments, and public agent resources for the Laisky MCP service."
+    />
+    <meta name="author" content="Laisky" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Laisky's Blog" />
+    <meta property="og:description" content="Engineering notes, AI tooling experiments, and public agent resources for Laisky MCP." />
+    <meta property="og:url" content="https://blog.laisky.com/" />
+    <meta property="og:image" content="https://s3.laisky.com/static/favicon.ico" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="mcp-server" content="https://mcp.laisky.com" />
+    <meta name="mcp-registry" content="https://blog.laisky.com/.well-known/mcp/server-card.json" />
+    <link rel="canonical" href="https://blog.laisky.com/" />
     <link rel="shortcut icon" href="https://s3.laisky.com/static/favicon.ico" />
     <link rel="alternate" type="application/rss+xml" title="Articles" href="https://s3.laisky.com/public/rss.xml" />
+    <link rel="alternate" type="text/markdown" title="Markdown overview" href="/index.md" />
+    <link rel="llms-txt" type="text/plain" href="/llms.txt" />
+    <link rel="openapi" type="application/vnd.oai.openapi+json" href="/openapi.json" />
+    <link rel="api-catalog" type="application/linkset+json" href="/.well-known/api-catalog" />
+    <link rel="agent-skills" type="application/json" href="/.well-known/agent-skills/index.json" />
+    <link rel="mcp-server-card" type="application/json" href="/.well-known/mcp/server-card.json" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://blog.laisky.com/#organization",
+            "name": "Laisky",
+            "url": "https://blog.laisky.com/",
+            "logo": "https://s3.laisky.com/static/favicon.ico",
+            "sameAs": ["https://github.com/Laisky", "https://chat.laisky.com", "https://mcp.laisky.com"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://blog.laisky.com/#website",
+            "name": "Laisky's Blog",
+            "url": "https://blog.laisky.com/",
+            "description": "Engineering notes, AI tooling experiments, and public agent resources for Laisky MCP.",
+            "publisher": {
+              "@id": "https://blog.laisky.com/#organization"
+            },
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://blog.laisky.com/pages/0/?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            },
+            "speakable": {
+              "@type": "SpeakableSpecification",
+              "cssSelector": ["#agent-entry h1", "#agent-entry .agent-summary"]
+            }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://mcp.laisky.com/#mcp",
+            "name": "Laisky MCP",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Web",
+            "url": "https://mcp.laisky.com",
+            "description": "Laisky MCP is a public Model Context Protocol surface that helps AI agents discover Laisky services, blog content, status information, and related developer resources.",
+            "provider": {
+              "@id": "https://blog.laisky.com/#organization"
+            },
+            "softwareHelp": "https://blog.laisky.com/developers.md",
+            "isAccessibleForFree": true
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://blog.laisky.com/#agent-faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is Laisky's Blog?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Laisky's Blog is an engineering blog covering Go, distributed systems, security, operations, AI tooling, and practical software notes."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How should AI agents use this site?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Agents should start with /llms.txt or /index.md, use /openapi.json for machine-readable endpoints, and use /.well-known/mcp/server-card.json for MCP discovery."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,24 +107,43 @@
   </head>
 
   <body>
-    <noscript
-      ><p style="text-align: center; padding: 2rem">
-        This site requires JavaScript to function. Please enable JavaScript in your browser settings.
-      </p></noscript
-    >
+    <noscript>
+      <section style="padding: 2rem; max-width: 48rem; margin: 0 auto">
+        <h1>Laisky's Blog</h1>
+        <p>
+          Laisky's Blog publishes engineering notes about Go, distributed systems, security, operations, AI tooling, and production debugging.
+          Agents can use the Markdown and well-known discovery files linked from this page to understand the site without executing JavaScript.
+        </p>
+        <p>
+          Start with <a href="/llms.txt">llms.txt</a>, <a href="/index.md">index.md</a>, <a href="/openapi.json">OpenAPI</a>, or the
+          <a href="/.well-known/mcp/server-card.json">MCP server card</a>.
+        </p>
+      </section>
+    </noscript>
     <div id="root">
-      <div id="pages" class="row align-items-start scrollable-content">
-        <div class="row">
-          <p>Please wait to load...</p>
-        </div>
-        <div class="posts placeholder-glow">
-          <span class="placeholder col-7"></span>
-          <span class="placeholder col-4"></span>
-          <span class="placeholder col-4"></span>
-          <span class="placeholder col-6"></span>
-          <span class="placeholder col-8"></span>
-        </div>
-      </div>
+      <main id="agent-entry">
+        <h1>Laisky's Blog</h1>
+        <p class="agent-summary">
+          Laisky's Blog is the public engineering notebook for Laisky. It covers Go services, distributed systems, security operations,
+          observability, AI tooling, and lessons from running production software. The site is also the canonical discovery point for
+          agent-facing resources related to Laisky MCP.
+        </p>
+        <h2>Agent entry points</h2>
+        <p>
+          AI agents should use the plain-text and structured resources before scraping the JavaScript app:
+          <a href="/llms.txt">/llms.txt</a>, <a href="/index.md">/index.md</a>, <a href="/agents.md">/agents.md</a>,
+          <a href="/developers.md">/developers.md</a>, <a href="/api.md">/api.md</a>, <a href="/auth.md">/auth.md</a>,
+          <a href="/openapi.json">/openapi.json</a>, <a href="/.well-known/api-catalog">/.well-known/api-catalog</a>,
+          <a href="/.well-known/ai-catalog.json">/.well-known/ai-catalog.json</a>, and
+          <a href="/.well-known/mcp/server-card.json">/.well-known/mcp/server-card.json</a>.
+        </p>
+        <h2>Laisky MCP</h2>
+        <p>
+          Laisky MCP is available at <a href="https://mcp.laisky.com">https://mcp.laisky.com</a>. Use it when a task needs structured
+          access to Laisky services, blog metadata, or developer resources. The MCP discovery documents describe current transport,
+          capabilities, limitations, and expected agent behavior.
+        </p>
+      </main>
     </div>
 
     <script async src="https://js.sentry-cdn.com/0a5aa56db9cb55dc305a90b5ec8a5c51.min.js" crossorigin="anonymous"></script>

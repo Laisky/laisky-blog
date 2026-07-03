@@ -1,0 +1,5 @@
+# Laisky's Blog
+
+See the canonical agent guide at https://blog.laisky.com/llms.txt.
+
+This domain publishes engineering articles and agent discovery resources for Laisky MCP. Start with `/index.md`, `/openapi.json`, `/.well-known/ai-catalog.json`, and `/.well-known/mcp/server-card.json`.

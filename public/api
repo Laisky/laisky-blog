@@ -1,0 +1,31 @@
+{
+  "name": "Laisky Blog public resource index",
+  "version": "2026-07-03",
+  "description": "Read-only JSON index for public agent and developer resources on blog.laisky.com.",
+  "resources": [
+    {
+      "name": "llms",
+      "url": "https://blog.laisky.com/llms.txt",
+      "mediaType": "text/plain"
+    },
+    {
+      "name": "markdown_home",
+      "url": "https://blog.laisky.com/index.md",
+      "mediaType": "text/markdown"
+    },
+    {
+      "name": "openapi",
+      "url": "https://blog.laisky.com/openapi.json",
+      "mediaType": "application/vnd.oai.openapi+json"
+    },
+    {
+      "name": "mcp_server_card",
+      "url": "https://blog.laisky.com/.well-known/mcp/server-card.json",
+      "mediaType": "application/json"
+    }
+  ],
+  "auth": {
+    "required": false,
+    "notes": "Public read resources do not require authentication."
+  }
+}

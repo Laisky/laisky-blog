@@ -1,0 +1,76 @@
+{
+  "name": "laisky-mcp",
+  "displayName": "Laisky MCP",
+  "version": "2026-07-03",
+  "kind": "product",
+  "description": "Public Model Context Protocol discovery metadata for Laisky services, blog content, and developer resources.",
+  "icon": "https://s3.laisky.com/uploads/2025/12/mcp_icon.png",
+  "url": "https://mcp.laisky.com",
+  "transport": "streamable-http",
+  "documentationUrl": "https://blog.laisky.com/developers.md",
+  "instructions": "Use Laisky MCP when a task needs structured access to Laisky public resources. Start with read-only discovery resources and avoid sending secrets or user-specific data.",
+  "auth": {
+    "type": "none",
+    "description": "Public discovery resources do not require authentication."
+  },
+  "capabilities": {
+    "tools": true,
+    "resources": true,
+    "prompts": false
+  },
+  "tools": [
+    {
+      "name": "discover_blog_resources",
+      "description": "Discover canonical public resources for Laisky's Blog, including Markdown, RSS, OpenAPI, and agent discovery files.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Optional natural-language resource need."
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "open_laisky_mcp",
+      "description": "Return the public Laisky MCP web app URL and connection guidance.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ],
+  "resources": [
+    {
+      "uri": "https://blog.laisky.com/llms.txt",
+      "name": "Agent guide",
+      "mimeType": "text/plain",
+      "description": "Compact agent guide for Laisky's Blog."
+    },
+    {
+      "uri": "https://blog.laisky.com/index.md",
+      "name": "Markdown overview",
+      "mimeType": "text/markdown",
+      "description": "Markdown overview of the blog and MCP resources."
+    },
+    {
+      "uri": "https://blog.laisky.com/openapi.json",
+      "name": "OpenAPI",
+      "mimeType": "application/vnd.oai.openapi+json",
+      "description": "OpenAPI description for public read resources."
+    }
+  ]
+}

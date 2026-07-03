@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="https://schema.org/">
+  <url>
+    <loc>https://blog.laisky.com/</loc>
+    <schema>Organization, WebSite, Blog, SoftwareApplication, FAQPage</schema>
+  </url>
+  <url>
+    <loc>https://blog.laisky.com/developers.md</loc>
+    <schema>TechArticle</schema>
+  </url>
+  <url>
+    <loc>https://blog.laisky.com/openapi.json</loc>
+    <schema>SoftwareSourceCode</schema>
+  </url>
+</urlset>

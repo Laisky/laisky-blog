@@ -1,0 +1,49 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Laisky's Blog",
+    "identifier": "did:web:blog.laisky.com",
+    "documentationUrl": "https://blog.laisky.com/developers.md"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:blog.laisky.com:mcp:laisky",
+      "displayName": "Laisky MCP",
+      "type": "application/mcp-server-card+json",
+      "url": "https://blog.laisky.com/.well-known/mcp/server-card.json",
+      "description": "Public MCP discovery metadata for Laisky services, blog content, and developer resources.",
+      "tags": ["mcp", "blog", "developer-tools", "agent-discovery"],
+      "capabilities": ["discover_blog_resources", "read_public_agent_metadata", "open_laisky_mcp"],
+      "representativeQueries": ["find Laisky MCP resources", "read Laisky blog agent metadata", "discover Laisky developer resources"],
+      "trustManifest": {
+        "identity": "did:web:blog.laisky.com",
+        "identityType": "did"
+      }
+    },
+    {
+      "identifier": "urn:air:blog.laisky.com:api:public-resources",
+      "displayName": "Laisky Blog Public Resources API",
+      "type": "application/vnd.oai.openapi+json;version=3.1",
+      "url": "https://blog.laisky.com/openapi.json",
+      "description": "Read-only OpenAPI description for public agent and developer resources.",
+      "tags": ["api", "openapi", "agent-docs"],
+      "trustManifest": {
+        "identity": "did:web:blog.laisky.com",
+        "identityType": "did"
+      }
+    },
+    {
+      "identifier": "urn:air:blog.laisky.com:skill:laisky-blog",
+      "displayName": "Use Laisky's Blog",
+      "type": "application/ai-skill+md",
+      "url": "https://blog.laisky.com/.well-known/agent-skills/laisky-blog/SKILL.md",
+      "description": "Instructions for agents that need to read Laisky blog content or discover Laisky MCP resources.",
+      "tags": ["skill", "blog", "mcp"],
+      "representativeQueries": ["use Laisky blog as a source", "find Laisky MCP discovery files"],
+      "trustManifest": {
+        "identity": "did:web:blog.laisky.com",
+        "identityType": "did"
+      }
+    }
+  ]
+}

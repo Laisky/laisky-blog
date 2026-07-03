@@ -1,0 +1,211 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Laisky Blog Public Resources API",
+    "summary": "Read-only discovery endpoints for Laisky's Blog and Laisky MCP.",
+    "description": "This API documents static public resources that AI agents can fetch without executing JavaScript.",
+    "version": "2026-07-03",
+    "contact": {
+      "name": "Laisky",
+      "url": "https://blog.laisky.com/about/site/"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://blog.laisky.com",
+      "description": "Production blog domain"
+    }
+  ],
+  "paths": {
+    "/api": {
+      "get": {
+        "operationId": "getPublicResourceIndex",
+        "summary": "Get public resource index",
+        "description": "Returns a JSON index of public agent and developer resources on blog.laisky.com.",
+        "responses": {
+          "200": {
+            "description": "Public resource index.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicResourceIndex"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/llms.txt": {
+      "get": {
+        "operationId": "getLlmsText",
+        "summary": "Get agent guide",
+        "description": "Returns the canonical plain-text agent guide.",
+        "responses": {
+          "200": {
+            "description": "Agent guide in plain text.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/index.md": {
+      "get": {
+        "operationId": "getMarkdownHome",
+        "summary": "Get Markdown overview",
+        "description": "Returns the Markdown homepage overview for crawlers and agents.",
+        "responses": {
+          "200": {
+            "description": "Markdown overview.",
+            "content": {
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/.well-known/api-catalog": {
+      "get": {
+        "operationId": "getApiCatalog",
+        "summary": "Get API catalog",
+        "description": "Returns the RFC 9727 Linkset API catalog.",
+        "responses": {
+          "200": {
+            "description": "API catalog Linkset.",
+            "content": {
+              "application/linkset+json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/.well-known/mcp/server-card.json": {
+      "get": {
+        "operationId": "getMcpServerCard",
+        "summary": "Get MCP server card",
+        "description": "Returns the MCP server card for discovering Laisky MCP.",
+        "responses": {
+          "200": {
+            "description": "MCP server card.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/McpServerCard"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PublicResourceIndex": {
+        "type": "object",
+        "required": ["name", "version", "resources"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "resources": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "url", "mediaType"],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "mediaType": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "auth": {
+            "type": "object",
+            "properties": {
+              "required": {
+                "type": "boolean"
+              },
+              "notes": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "McpServerCard": {
+        "type": "object",
+        "required": ["name", "description", "url", "transport"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "transport": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": ["code", "message"],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responses": {
+      "NotFound": {
+        "description": "The requested static resource was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    }
+  }
+}

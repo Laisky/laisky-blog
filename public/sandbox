@@ -1,0 +1,11 @@
+# Sandbox
+
+The blog exposes public read-only discovery resources that can be safely fetched by agents for testing:
+
+- `/llms.txt`
+- `/index.md`
+- `/api`
+- `/openapi.json`
+- `/.well-known/api-catalog`
+
+Do not submit secrets or user-specific data to these static endpoints.

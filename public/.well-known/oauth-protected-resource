@@ -1,0 +1,7 @@
+{
+  "resource": "https://blog.laisky.com",
+  "authorization_servers": ["https://blog.laisky.com/.well-known/oauth-authorization-server"],
+  "scopes_supported": ["public.read"],
+  "bearer_methods_supported": ["header"],
+  "resource_documentation": "https://blog.laisky.com/auth.md"
+}

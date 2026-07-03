@@ -3,7 +3,7 @@
 import parse from 'html-react-parser';
 import React from 'react';
 import { render } from '@testing-library/react';
-import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
+import { describe, expect, test, beforeEach, afterEach } from 'vitest';
 
 /**
  * Tests for the post_series key attribute handling.

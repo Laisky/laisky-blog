@@ -1,0 +1,31 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://blog.laisky.com/",
+      "item": [
+        {
+          "href": "https://blog.laisky.com/openapi.json",
+          "type": "application/vnd.oai.openapi+json",
+          "title": "Laisky Blog Public Resources API"
+        },
+        {
+          "href": "https://blog.laisky.com/api",
+          "type": "application/json",
+          "title": "Public resource index"
+        }
+      ],
+      "service-desc": [
+        {
+          "href": "https://blog.laisky.com/openapi.json",
+          "type": "application/vnd.oai.openapi+json"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://blog.laisky.com/developers.md",
+          "type": "text/markdown"
+        }
+      ]
+    }
+  ]
+}

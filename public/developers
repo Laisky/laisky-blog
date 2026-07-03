@@ -1,0 +1,5 @@
+# Laisky Blog Developer Resources
+
+See the canonical Markdown document at https://blog.laisky.com/developers.md.
+
+Public discovery resources include `/llms.txt`, `/index.md`, `/openapi.json`, `/.well-known/api-catalog`, `/.well-known/ai-catalog.json`, and `/.well-known/mcp/server-card.json`.

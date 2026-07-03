@@ -1,0 +1,40 @@
+# Laisky's Blog
+
+> Engineering notes, AI tooling experiments, and agent-facing resources for Laisky MCP.
+
+Use this file as the first stop for AI agents that need to understand blog.laisky.com without running JavaScript.
+
+## Overview
+
+Laisky's Blog publishes technical articles and operational notes about Go, distributed systems, security, observability, infrastructure, and AI tooling. The site also links to Laisky MCP at https://mcp.laisky.com and publishes discovery files for agents.
+
+## Use cases
+
+- Find public engineering posts and RSS content from Laisky.
+- Discover Laisky MCP and related agent metadata.
+- Retrieve a Markdown overview instead of scraping the JavaScript app.
+- Locate public API, OAuth, MCP, and Agent Skills discovery documents.
+
+## Important URLs
+
+- Homepage: https://blog.laisky.com/
+- Markdown overview: https://blog.laisky.com/index.md
+- Posts: https://blog.laisky.com/pages/0/
+- RSS feed: https://s3.laisky.com/public/rss.xml
+- MCP app: https://mcp.laisky.com
+- OpenAPI: https://blog.laisky.com/openapi.json
+- API catalog: https://blog.laisky.com/.well-known/api-catalog
+- AI catalog: https://blog.laisky.com/.well-known/ai-catalog.json
+- MCP server card: https://blog.laisky.com/.well-known/mcp/server-card.json
+- Agent card: https://blog.laisky.com/.well-known/agent-card.json
+- Agent skills: https://blog.laisky.com/.well-known/agent-skills/index.json
+- Developers: https://blog.laisky.com/developers.md
+- Auth: https://blog.laisky.com/auth.md
+
+## Agent guidance
+
+Prefer the Markdown and JSON resources listed above. Do not rely on private APIs or browser-only state. Public read resources are free and do not require authentication. Do not submit credentials, API keys, or personal user data to this site unless the user explicitly asks and completes the browser login flow themselves.
+
+## Constraints
+
+This is a personal engineering blog and agent discovery surface. It does not sell paid plans and does not provide a checkout flow. Payment protocol checks are not applicable.
