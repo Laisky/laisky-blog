@@ -4,4 +4,10 @@ Use this view when an agent requests `?mode=agent` or needs a concise non-JavaSc
 
 When to use: public blog research, Laisky MCP discovery, RSS lookup, OpenAPI discovery, and agent-readable documentation.
 
+Primary endpoints: /llms.txt, /index.md, /openapi.json, /api, /v1/resources, /ask, /ask?stream=true, /.well-known/mcp, and /mcp.
+
+Authentication: public read endpoints do not require credentials. Do not send secrets, cookies, API keys, or private user data.
+
+Capabilities: discover public Markdown docs, RSS metadata, OpenAPI resources, scoped llms.txt guides, and Laisky MCP metadata.
+
 Do not use this view for private account actions, credential handling, checkout, or user-specific data. Ask the user to complete any required browser login manually.
