@@ -1,7 +1,7 @@
 'use strict';
 
 import jsutils from '@laisky/js-utils';
-import request, { GraphQLClient } from 'graphql-request';
+import { GraphQLClient } from 'graphql-request';
 import { jwtDecode } from 'jwt-decode';
 
 export const GraphqlAPI = 'https://gq_v2.laisky.com/query/';
@@ -13,6 +13,76 @@ export const KvKeyPrefixCache = '@cache_';
 
 export const DurationDay = 24 * 60 * 60 * 1000;
 export const DurationWeek = 7 * DurationDay;
+
+const GraphqlJsonContentTypes = ['application/graphql-response+json', 'application/json'];
+
+/**
+ * isGraphqlJsonContentType checks whether a Content-Type header is parseable as GraphQL JSON.
+ *
+ * @param {string|null} contentType - The response Content-Type header value.
+ * @returns {boolean} True when the content type is a GraphQL JSON content type.
+ */
+export const isGraphqlJsonContentType = (contentType) => {
+  if (!contentType) {
+    return false;
+  }
+
+  const normalizedContentType = contentType.toLowerCase();
+  return GraphqlJsonContentTypes.some((expectedContentType) => normalizedContentType.includes(expectedContentType));
+};
+
+/**
+ * isJsonExecutionResult checks whether text can be parsed as a GraphQL execution result.
+ *
+ * @param {string} text - The response body text to inspect.
+ * @returns {boolean} True when the text parses to an object or array.
+ */
+export const isJsonExecutionResult = (text) => {
+  try {
+    const result = JSON.parse(text);
+    return Array.isArray(result) || (typeof result === 'object' && result !== null);
+  } catch {
+    return false;
+  }
+};
+
+/**
+ * normalizeGraphqlResponseContentType fixes GraphQL JSON responses with incorrect content types.
+ *
+ * @param {Response} response - The fetch response to normalize.
+ * @returns {Promise<Response>} A response with a JSON content type when the body is a JSON execution result.
+ */
+export const normalizeGraphqlResponseContentType = async (response) => {
+  if (isGraphqlJsonContentType(response.headers.get('Content-Type'))) {
+    return response;
+  }
+
+  const text = await response.clone().text();
+  if (!isJsonExecutionResult(text)) {
+    return response;
+  }
+
+  const headers = new globalThis.Headers(response.headers);
+  headers.set('Content-Type', 'application/json');
+
+  return new globalThis.Response(text, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+};
+
+/**
+ * graphqlFetch fetches GraphQL responses and normalizes mislabeled JSON bodies.
+ *
+ * @param {RequestInfo|URL} input - The fetch resource.
+ * @param {RequestInit} init - The fetch options.
+ * @returns {Promise<Response>} The normalized fetch response.
+ */
+export const graphqlFetch = async (input, init) => {
+  const response = await globalThis.fetch(input, init);
+  return normalizeGraphqlResponseContentType(response);
+};
 
 /**
  * safeKvGet loads a value from KV storage and returns a fallback value on storage errors.
@@ -40,6 +110,7 @@ const safeKvGet = async (key, fallbackValue = null) => {
 export const graphqlQuery = async (body, vars, headers) => {
   const client = new GraphQLClient(getGraphqlAPI(), {
     method: 'GET',
+    fetch: graphqlFetch,
   });
 
   if (isForce()) {
@@ -59,7 +130,11 @@ export const graphqlQuery = async (body, vars, headers) => {
  * @param {object} headers - The graphql mutation headers.
  */
 export const graphqlMutation = async (body, vars, headers) => {
-  return await request(getGraphqlAPI(), body, vars, headers);
+  const client = new GraphQLClient(getGraphqlAPI(), {
+    fetch: graphqlFetch,
+  });
+
+  return await client.request(body, vars, headers);
 };
 
 /**
