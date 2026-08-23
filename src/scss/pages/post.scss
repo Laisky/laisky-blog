@@ -5,6 +5,19 @@
     width: 100%;
     margin-left: auto;
     margin-right: auto;
+    background:
+        repeating-linear-gradient(-45deg,
+            transparent,
+            transparent 80px,
+            var(--tape-bg-weave) 80px,
+            var(--tape-bg-weave) 81px),
+        repeating-linear-gradient(45deg,
+            transparent,
+            transparent 80px,
+            var(--tape-bg-weave) 80px,
+            var(--tape-bg-weave) 81px),
+        radial-gradient(ellipse at 50% 0%, var(--tape-bg-vignette-start) 0%, transparent 70%);
+    background-attachment: fixed;
     // Prevent horizontal scrolling of the entire post container
     overflow-x: hidden;
 
@@ -20,6 +33,48 @@
         @media (min-width: 768px) {
             max-width: var(--content-width); // Constrained width on larger screens
         }
+    }
+}
+
+// Keep article pages in the same visual system as the pages list without
+// applying the list's punched-paper decoration to long-form reading content.
+#post .post {
+    background: var(--tape-base-mid1);
+    border: none;
+    border-radius: 0;
+    padding: 2.5rem 2rem 2rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+
+    .post-title {
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.01em;
+        line-height: 1.3;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .post-meta {
+        width: auto;
+        display: inline-flex;
+        justify-content: flex-start;
+        gap: 1rem;
+        align-items: center;
+        font-size: 0.85rem;
+        color: var(--text-tertiary);
+        margin-bottom: 1.25rem;
+        padding-bottom: 1.25rem;
+        border-bottom: none;
+        flex-wrap: wrap;
+        font-family: var(--code-font);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .post-content {
+        margin-bottom: 1.5rem;
+        font-size: 1rem;
+        line-height: 1.7;
     }
 }
 
@@ -620,9 +675,17 @@
     }
 }
 
+@media (max-width: 1199px) {
+    #post {
+        background-attachment: scroll;
+    }
+}
+
 // Mobile optimization: maximize content viewing area
 @media (max-width: 767px) {
     #post {
+        background: none;
+
         width: 100%;
         margin: 0;
         padding: 0;
@@ -633,7 +696,7 @@
             max-width: 100%;
 
             .post {
-                padding: 0.5rem 0.25rem;
+                padding: 1rem;
                 margin: 0;
                 border-radius: 0;
                 box-shadow: none;
@@ -647,16 +710,17 @@
                 }
 
                 .post-title {
-                    font-size: 1.85rem;
-                    line-height: 1.2;
-                    margin-bottom: 0.75rem;
-                    font-weight: 800;
+                    font-size: 1.25rem;
+                    line-height: 1.3;
+                    margin-bottom: 0.5rem;
+                    font-weight: 600;
                 }
 
                 .post-meta {
-                    margin-bottom: 1rem;
-                    padding-bottom: 0.5rem;
-                    font-size: 0.8rem;
+                    margin-bottom: 0.75rem;
+                    padding-bottom: 0.75rem;
+                    font-size: 0.75rem;
+                    gap: 0.5rem;
 
                     span {
                         margin-right: 0.5rem;
@@ -669,7 +733,7 @@
 
                 .post-content {
                     margin-bottom: 1rem;
-                    font-size: 1.05rem;
+                    font-size: 0.95rem;
                     line-height: 1.7;
 
                     img {

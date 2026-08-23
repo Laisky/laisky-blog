@@ -1,0 +1,84 @@
+@use '../variables' as *;
+
+// paper-tape applies the shared ruled-paper surface and perforated margins.
+@mixin paper-tape {
+    $sprocket-width: 28px;
+    $sprocket-hole-r: 3.5px;
+    $sprocket-spacing: 24px;
+
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 0 auto;
+    max-width: 850px;
+    padding-left: $sprocket-width;
+    padding-right: $sprocket-width;
+
+    // Paper background: ruled lines + grain + warm base.
+    background:
+        repeating-linear-gradient(0deg,
+            transparent,
+            transparent 23px,
+            var(--tape-line-color) 23px,
+            var(--tape-line-color) 24px),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"),
+        linear-gradient(180deg,
+            var(--tape-base-start) 0%,
+            var(--tape-base-mid1) 25%,
+            var(--tape-base-mid2) 50%,
+            var(--tape-base-mid3) 75%,
+            var(--tape-base-end) 100%);
+    background-size: auto, 180px 180px, 100% 100%;
+    background-blend-mode: normal, var(--tape-blend-mode), normal;
+
+    // Soft paper edge shadows.
+    box-shadow:
+        inset 0 0 40px var(--tape-glow),
+        -2px 0 6px var(--tape-edge-shadow),
+        2px 0 6px var(--tape-edge-shadow);
+    border: none;
+    border-left: 1px solid var(--tape-border-color);
+    border-right: 1px solid var(--tape-border-color);
+
+    // Perforated margin strips.
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: $sprocket-width;
+        z-index: 10;
+        pointer-events: none;
+        background:
+            radial-gradient(
+                circle #{$sprocket-hole-r} at #{$sprocket-width * 0.5} #{$sprocket-spacing * 0.5},
+                var(--tape-hole-fill) #{$sprocket-hole-r - 0.5px},
+                var(--tape-hole-ring) #{$sprocket-hole-r},
+                transparent #{$sprocket-hole-r + 0.5px}
+            ),
+            linear-gradient(to right, var(--tape-margin-bg), transparent);
+        background-size: #{$sprocket-width} #{$sprocket-spacing}, 100% 100%;
+        background-repeat: repeat-y, no-repeat;
+    }
+
+    &::before {
+        left: 0;
+        border-right: 1px dashed var(--tape-margin-line);
+    }
+
+    &::after {
+        right: 0;
+        border-left: 1px dashed var(--tape-margin-line);
+        background:
+            radial-gradient(
+                circle #{$sprocket-hole-r} at #{$sprocket-width * 0.5} #{$sprocket-spacing * 0.5},
+                var(--tape-hole-fill) #{$sprocket-hole-r - 0.5px},
+                var(--tape-hole-ring) #{$sprocket-hole-r},
+                transparent #{$sprocket-hole-r + 0.5px}
+            ),
+            linear-gradient(to left, var(--tape-margin-bg), transparent);
+        background-size: #{$sprocket-width} #{$sprocket-spacing}, 100% 100%;
+        background-repeat: repeat-y, no-repeat;
+    }
+}

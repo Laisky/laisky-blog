@@ -1,170 +1,22 @@
-# Repository Guidelines
-
-**No matter what language you receive, Only using English as output for codes, comments, chat, documents and everything else.**
-
-## Package Management
-
-Use `yarn` for managing packages. Avoid using `npm` to prevent potential conflicts in the `yarn.lock` file.
-
-## Dev
-
-You can start the test server with `make run`; any code changes will be automatically refreshed.
-
-After the test server starts, you can access http://100.75.198.70:11300/ via Chrome DevTools MCP.
-
-Prefer to work with tabs that are already open and try not to open new ones. My network can be unstable, and loading a fresh page often takes excessive time.
-
-If you come across a page that requires logging in or any other manual steps before you can proceed, please notify me. I’ll perform the necessary actions and then let you continue.
-
-## General
-
-Every single code file should not exceed 800 lines. If a file exceeds this limit, please split it into smaller files based on functionality. Automatically generated files are exempt from this rule.
-
-When debugging, add targeted DEBUG logs that include essential details to help developers pinpoint hard‑to‑diagnose issues. After debugging, retain any logs that could be useful for future troubleshooting, but **never** include sensitive data like API keys or passwords in those logs.
-
-### Agents
-
-Multiple agents might be modifying the code at the same time. If you come across changes that aren't yours, preserve them and avoid interfering with other agents' work. Only halt the task and inform me when you encounter an irreconcilable conflict.
-
-Should use TODOs tool to track tasks and progress.
-
-After making any code changes, always verify that the code is correct: the syntax must be valid, the project should still build successfully(via `go vet ./...`, `go test -race ./...` or `make build-frontend-modern`), and all unit tests must pass. If any test fails, investigate whether the problem lies in the implementation or the test itself, and, respecting the user's specifications, fix the issue carefully.
-
-### Security
-
-Always use constant time comparison for sensitive data. Follow OWASP recommendations for password hashing iterations (minimum 10,000 in this context).
-
-Never directly use user input or any untrusted external input to build a database query or allocate memory, to prevent injection or DoS attacks. Always sanitize and validate user inputs before using them in queries.
-
-### TimeZone
-
-Always use UTC for time handling in servers, databases, and APIs.
-
-### Date Range
-
-For any date‑range query, the handling of the ending date must encompass the entire final day. That means the database query should terminate **just before** 00:00 on the next day, ensuring that all hours of the last day are included.
-
-### Testing
-
-Please create suitable unit tests based on the current project circumstances. Whenever a new issue arises, update the unit tests during the fix to ensure thorough coverage of the problem by the test cases. Avoid creating temporary, one-off test scripts, and focus on continuously enhancing the unit test cases.
-
-Use `"github.com/stretchr/testify/require"` for assertions in tests.
-
-### Comments
-
-Every function/interface must have a comment explaining its purpose, parameters, and return values. This is crucial for maintaining code clarity and facilitating future maintenance.
-The comment should start with the function/interface name and be in complete sentences.
-
-## Golang Style
-
-This project is developed and run using Go 1.25. Please use the newest Go syntax and features as much as possible.
-
-Ideally, a single file should not exceed 600 lines. Please split the overly long files according to their functionality.
-
-### Context
-
-Whenever feasible, utilize context to manage the lifecycle of the call chain.
-
-### Golang Error Handling
-
-All errors should be handled, and the error handling should be as close to the source of the error as possible.
-
-Never use `err == nil` to avoid shadowing the error variable.
-
-Use `github.com/Laisky/errors/v2`, its interface is as same as `github.com/Laisky/errors/v2`. Never return bare error, always wrap it by `errors.Wrap`/`errors.Wrapf`/`errors.WithStack`, check all files
-
-Every error must be processed a single time—either returned or logged—but never both.
-
-Avoid returning raw errors; wrap them with errors.Wrap, errors.Wrapf, or errors.WithStack to preserve essential stack traces and contextual information.
-
-### Golang ORM
-
-Use `gorm.io/gorm`, never use `gorm.io/gorm/clause`/`Preload`.
-
-The performance of ORMs is often quite inefficient. Therefore, adopt the data reading method that puts the least pressure on the database whenever possible. my philosophy is to use SQL for reading and reserve ORM for writing or modifying data.
-
-Example:
-
-```go
-// When retrieving data, utilize Model/Find/First as much as possible,
-// and rely on SQL for query conditions whenever you can.
-db.Model(&User{}).
-    Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").
-    Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").
-    Find(&user)
-
-// Use Scan only when the data being read does not align with the database table structure.
-db.Model(&User{}).
-    Select("users.name AS name, emails.email AS email").
-    Joins("left join emails on emails.user_id = users.id").
-    Scan(&result{})
-
-```
-
-### Logging
-
-All code paths invoked by a request must use `gmw.GetLogger(c)` to retrieve the logger instead of the global `logger.Logger`. The logger returned by `gmw.GetLogger(c)` embeds rich call‑specific context.
-
-Adopt these logger and error‑handling best practices:
-
-1. Call `gmw.GetLogger(c)` only once per function and store the result in a local variable.
-2. Use `zap.Error(err)` rather than `err.Error()` when logging errors.
-3. Prefer the structured Zap logger over `fmt.Sprintf` for log messages.
-4. Never swallow errors silently; every error should be returned or recorded in the logs.
-
-## CSS Style
-
-Avoid using `!important` in CSS. If you find yourself needing to use it, consider whether the CSS can be refactored to avoid this necessity.
-
-Avoid inline styles in HTML or JSX. Instead, use CSS classes to manage styles. This approach promotes better maintainability and separation of concerns in your codebase.
-
-## Web
-
-When using the web console for debugging, avoid logging objects—they’re hard to copy. Strive to log only strings, making it simple for me to copy all the output and analyze it.
-
-## Philosophy
-
-You are a very strong reasoner and planner. Use these critical instructions to structure your plans, thoughts, and responses.
-
-Before taking any action (either tool calls _or_ responses to the user), you must proactively, methodically, and independently plan and reason about:
-
-1.  **Logical dependencies and constraints:** Analyze the intended action against the following conflicts in order of importance:
-    1.  Policy-based rules, mandatory prerequisites, and constraints.
-    2.  Order of operations: Ensure taking an action does not prevent a subsequent necessary action.
-        1.  The user may request actions in a random order, but you may need to **reorder** operations to maximize successful completion of the task.
-    3.  Other prerequisites (information and/or actions needed).
-    4.  Explicit user constraints or preferences.
-
-2.  **Risk assessment:** What are the consequences of taking this action? Will it cause any future issues?
-    1.  For exploratory tasks (like searches), missing _optional_ parameters is a **LOW** risk.
-    2.  **Prefer calling the tool with the available information over asking the user, unless** your 'Rule 1' (Logical Dependencies) reasoning determines that optional information is required for a later step in your plan.
-
-3.  **Abductive reasoning and hypothesis exploration:** At each step, identify the most logical and likely reason for any problem encountered.
-    1.  Look beyond immediate or obvious causes. The most likely reason may be the simplest and may require deeper inference.
-    2.  Hypotheses may require additional research. Each hypothesis may take multiple steps to test.
-    3.  Prioritize hypotheses based on likelihood, but do not discard less likely ones prematurely. A low-probability event may still be the root cause.
-
-4.  **Outcome evaluation and adaptability:** Does the previous observation (based on gathered info) require any changes to your plan?
-    1.  If your initial hypotheses are disproven, actively generate new ones.
-
-5.  **Information availability:** Incorporate all applicable and alternative sources of information, including:
-    1.  Using available tools and their capabilities.
-    2.  All policies, rules, checklists, and constraints.
-    3.  Previous observations and conversation history.
-    4.  Information only available by asking the user.
-
-6.  **Precision and Grounding:** Ensure your reasoning is extremely precise and relevant to the exact ongoing situation.
-    1.  Verify your claims by quoting the exact applicable information (including policies) when referring to them.
-
-7.  **Completeness:** Ensure that all requirements, constraints, options, and preferences are exhaustively incorporated into your plan.
-    1.  Resolve conflicts using the order of importance in Rule #1.
-    2.  Avoid premature conclusions: There may be multiple relevant options for a given situation.
-        1.  To check for whether an option is relevant, reason from Rule #5.
-        2.  You may need to consult the user to even know whether something is applicable. Do not assume it is not applicable without checking.
-    3.  Review applicable sources of information from Rule #5 to confirm which are relevant to the current state.
-
-8.  **Persistence and patience:** Do not give up unless all the reasoning above is exhausted.
-    1.  Don't be dissuaded by time taken or user frustration.
-    2.  This persistence must be intelligent: On _transient_ errors (e.g., "please try again"), you **must** retry **unless an explicit retry limit (e.g., max x tries) has been reached**. If such a limit is hit, you _must_ stop. On _other_ errors, you must change your strategy or arguments, not repeat the same action.
-
-9.  **Inhibit your response:** Only take an action after all the above reasoning is completed. Once you've taken an action, you cannot take it back.
+# Agent Instructions
+
+- **Read private instructions FIRST:** Whenever `.github/instructions/laisky.instructions.md` exists, you MUST read and follow it before any other work; it contains environment-specific details and private tooling guidance that must never be leaked, quoted, logged, or committed.
+- **Project:** `laisky-blog` is Laisky's React 19 single-page blog frontend. It uses Vite, React Router, Vitest, React Testing Library, SCSS, and Bootstrap; `src/jsx/` contains the application, `src/scss/` contains styles, `public/` contains published static and agent-facing documents, and Nginx serves the production build. Do not introduce unrelated Go, ORM, or server-side workflow guidance.
+- **Source of truth:** Keep application behavior, tests, metadata, public API/agent documents, and deployment configuration aligned with the shipped frontend. Treat `package.json`, `yarn.lock`, the implementation, and focused repository documentation as authoritative for their domains; when they conflict, investigate and resolve the mismatch explicitly instead of inventing a third behavior.
+- **English only:** Output **English** for all code, comments, chat, documents, logs, commit messages, and UI text, regardless of the language used in a request.
+- **Package management:** Use `yarn` exclusively and treat `yarn.lock` as authoritative. Do not use `npm`, generate npm-driven dependency changes, or modify `package-lock.json` as part of package operations.
+- **Secrets:** Treat credentials, tokens, private endpoints, and environment-specific values as sensitive; never echo, log, expose to the browser bundle, commit, or reproduce them. Client-side authentication and validation are convenience controls, never security boundaries.
+- **Research over memory:** Do not trust model memory for libraries, browser APIs, platform behavior, or current best practices. Verify implementation-sensitive claims against current official primary sources before changing behavior, and preserve durable project-specific findings in the appropriate repository documentation.
+- **Development & browser checks:** Run the hot-reloading development server with `make dev` (equivalent to `yarn dev`), then use `http://100.75.198.70:11300/` from an external browser. Reuse an existing browser tab when practical because fresh loads may be slow; if login or another manual step is required, notify the user and wait for them to complete it.
+- **Testing & CI:** After code changes, run `yarn lint`, `yarn test --run`, and `yarn build` (plus narrower relevant checks while iterating); all must pass before completion. Add or update Vitest and React Testing Library coverage for features and bug fixes, prefer behavior-focused assertions, and never replace durable tests with one-off scripts or bypass lint/build failures.
+- **Acceptance beyond existing tests:** Do not treat the current test suite or existing behavior as the complete acceptance baseline. Derive intended behavior from the request, implementation, published documents, and surrounding product behavior; reproduce defects with a failing regression test when feasible, then verify the same test passes after the fix.
+- **Frontend style:** Follow the existing React functional-component, hooks, ES module, and SCSS conventions. Keep components accessible, semantic, responsive, and compatible with light and dark themes. Avoid inline styles and CSS `!important`; use reusable classes and existing design patterns instead.
+- **Code quality:** Keep manually written code files under **800 lines** and ideally under **600 lines**; split oversized files by responsibility (generated files are exempt). Every function and interface must have a complete-sentence comment beginning with its name and explaining its purpose, parameters, and return value. Handle asynchronous work with explicit lifecycle cleanup and cancellation where feasible.
+- **Errors & logging:** Handle every error close to its source and exactly once—either surface/return it or log it, never both and never silently. Add targeted DEBUG diagnostics for hard-to-reproduce problems and retain useful ones, but never include secrets or personal data. In browser-console debugging, log concise strings rather than objects so output is easy to copy.
+- **Security & data handling:** Validate and bound all untrusted input before using it in requests, rendering, parsing, storage, or memory allocation; sanitize untrusted HTML and Markdown, preserve safe URL handling, and avoid injection and denial-of-service risks. Use UTC for server/API-facing timestamps, and make inclusive date-range filters cover the entire final day by ending just before 00:00 of the following day.
+- **Concurrency & tracking:** Multiple agents may edit the repository concurrently—preserve changes you did not make, avoid overwriting unrelated work, and stop only for an irreconcilable conflict. Use the TODOs tool to keep tasks and progress current and actionable.
+- **Method:** Plan before acting: check constraints and prerequisites, order operations safely, prefer progress with available information over blocking on optional details, and revise hypotheses when evidence disproves them. Reproduce anomalies before fixing them, retry transient failures to a reasonable limit, change strategy for non-transient failures, and ask the user only when missing information blocks the next safe step.
+- **Sub-agent discipline:** Use sub-agents for parallel independent investigations or context-isolated work when doing so materially helps. Give each a narrow task, require these same repository rules, and request distilled findings rather than raw output or full file dumps.
+- **Sub-agent routing:** Assign difficult problems and architecture design or architectural changes to an `architec` sub-agent. Use a `worker` sub-agent for routine implementation, testing, repository inspection, and web research.
+- **Expert escalation:** For a major problem that remains difficult after reasonable investigation, pause further work on the active goal and prepare a self-contained request report for the user to forward to the expert committee. The committee cannot read the repository, so include all relevant project and architectural context, requirements and constraints, relevant paths and code excerpts, current and expected behavior, reproduction steps, evidence and diagnostics, hypotheses, attempted approaches and their outcomes, risks and tradeoffs, and the precise questions requiring expert judgment. Before presenting the report to the user, have an `architec` sub-agent review it and revise it for completeness, technical accuracy, and clarity.
+- **Code search:** Prefer `ast-grep --lang <language> -p '<pattern>'` for syntax-aware searches; use `rg` for filenames, text, configuration, styles, or cases where structural matching is not appropriate.
