@@ -613,31 +613,6 @@
     }
 }
 
-#showImageModal {
-    .modal-dialog {
-        max-width: 90%;
-        width: fit-content;
-        margin-top: 2rem;
-
-        .modal-content {
-            background-color: var(--surface-primary);
-            border: 1px solid var(--border-subtle);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .modal-body {
-            overflow: auto;
-            padding: 0;
-
-            img {
-                max-width: none;
-                border-radius: var(--radius-md);
-                box-shadow: none;
-            }
-        }
-    }
-}
-
 @media (min-width: 1200px) {
     #post {
         gap: 0;

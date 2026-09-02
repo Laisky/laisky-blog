@@ -374,7 +374,23 @@ export const Post = ({ isHistory }) => {
       {menuHtml && (
         <aside id="post-menu" className="post-menu d-none d-xl-block" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(menuHtml) }} />
       )}
-      <Modal isOpen={imageModalOpen} onClose={() => setImageModalOpen(false)} className="modal--image">
+      <Modal
+        isOpen={imageModalOpen}
+        onClose={() => setImageModalOpen(false)}
+        size="fullscreen"
+        className="modal--image"
+        closeOnContentClick
+      >
+        <button
+          type="button"
+          className="image-modal__close"
+          onClick={() => setImageModalOpen(false)}
+          aria-label="Close image"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
         <img src={imageModalSrc} alt={imageModalAlt || 'Enlarged image'} />
       </Modal>
     </>

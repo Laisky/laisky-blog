@@ -12,6 +12,7 @@ import { createPortal } from 'react-dom';
  * @param {React.ReactNode} props.children - Modal content
  * @param {string} [props.title] - Optional modal title
  * @param {boolean} [props.closeOnBackdrop=true] - Whether clicking backdrop closes modal
+ * @param {boolean} [props.closeOnContentClick=false] - Whether clicking the modal body's own empty area closes modal
  * @param {boolean} [props.closeOnEscape=true] - Whether pressing Escape closes modal
  * @param {string} [props.size='medium'] - Modal size: 'small', 'medium', 'large', 'fullscreen'
  * @param {string} [props.className] - Additional CSS class for the modal
@@ -23,6 +24,7 @@ export const Modal = ({
   children,
   title,
   closeOnBackdrop = true,
+  closeOnContentClick = false,
   closeOnEscape = true,
   size = 'medium',
   className = '',
@@ -65,6 +67,17 @@ export const Modal = ({
    */
   const handleBackdropClick = (event) => {
     if (closeOnBackdrop && event.target === event.currentTarget) {
+      onClose();
+    }
+  };
+
+  /**
+   * handleBodyClick closes the modal when the click lands on the modal body's own
+   * empty area. It is opt-in through closeOnContentClick because modals that fill
+   * the viewport (such as the image viewer) leave almost no backdrop to click.
+   */
+  const handleBodyClick = (event) => {
+    if (closeOnContentClick && event.target === event.currentTarget) {
       onClose();
     }
   };
@@ -121,7 +134,9 @@ export const Modal = ({
             </button>
           </div>
         )}
-        <div className="modal__body">{children}</div>
+        <div className="modal__body" onClick={handleBodyClick} role="presentation">
+          {children}
+        </div>
       </div>
     </div>
   );

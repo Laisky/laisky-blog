@@ -110,27 +110,66 @@
 }
 
 // Image modal specific styles
+// The image viewer fills the visible viewport and shows the image at its natural
+// size, so the modal itself never scrolls: the body is the scroll container and
+// the image keeps its intrinsic dimensions inside it.
 .modal--image {
     padding: 0;
     background: transparent;
     border: none;
     box-shadow: none;
-    max-width: 90vw;
-    max-height: 90vh;
+    max-width: none;
+    max-height: none;
+    overflow: hidden;
 
     .modal__body {
         padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        overscroll-behavior: contain;
         display: flex;
-        align-items: center;
-        justify-content: center;
     }
 
     img {
-        max-width: 90vw;
-        max-height: 90vh;
-        object-fit: contain;
+        display: block;
+        // Auto margins centre the image when it fits and collapse to zero when it
+        // overflows, so the top-left corner stays reachable while panning. Flex
+        // alignment (justify-content/align-items: center) would clip it instead.
+        margin: auto;
+        flex: none;
+        max-width: none;
+        max-height: none;
         border-radius: var(--radius-md, 8px);
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    }
+}
+
+// Floating close button for the image viewer, which has no modal header.
+.image-modal__close {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.75);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--accent-color, #0071e3);
+        outline-offset: 2px;
     }
 }
 
