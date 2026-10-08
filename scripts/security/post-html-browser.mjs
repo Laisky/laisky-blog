@@ -30,16 +30,16 @@ let browser;
 try {
   await server.listen();
   browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome', headless: true });
-  const fixtures = process.argv.includes('--reproduce') ? [
-    { mode: 'history', source: 'cache', authorization: 'deny' },
-  ] : [
-    { mode: 'live', source: 'graphql', authorization: 'allow' },
-    { mode: 'live', source: 'cache', authorization: 'allow' },
-    { mode: 'history', source: 'graphql', authorization: 'allow' },
-    { mode: 'history', source: 'cache', authorization: 'allow' },
-    { mode: 'history', source: 'graphql', authorization: 'deny' },
-    { mode: 'history', source: 'cache', authorization: 'deny' },
-  ];
+  const fixtures = process.argv.includes('--reproduce')
+    ? [{ mode: 'history', source: 'cache', authorization: 'deny' }]
+    : [
+        { mode: 'live', source: 'graphql', authorization: 'allow' },
+        { mode: 'live', source: 'cache', authorization: 'allow' },
+        { mode: 'history', source: 'graphql', authorization: 'allow' },
+        { mode: 'history', source: 'cache', authorization: 'allow' },
+        { mode: 'history', source: 'graphql', authorization: 'deny' },
+        { mode: 'history', source: 'cache', authorization: 'deny' },
+      ];
   for (const fixture of fixtures) {
     const context = await browser.newContext({ serviceWorkers: 'block' });
     await context.route('**/*', (route) => {
@@ -50,7 +50,10 @@ try {
     const errors = [];
     page.on('pageerror', (error) => errors.push(error.message));
     await page.goto(`http://127.0.0.1:11307/scripts/security/post-html.html?${new URLSearchParams(fixture)}`);
-    if (fixture.authorization === 'allow' && !(process.argv.includes('--reproduce') && fixture.mode === 'history' && fixture.source === 'cache')) {
+    if (
+      fixture.authorization === 'allow' &&
+      !(process.argv.includes('--reproduce') && fixture.mode === 'history' && fixture.source === 'cache')
+    ) {
       await page.getByRole('heading', { name: 'Author heading' }).waitFor();
       await page.waitForFunction(() => document.querySelector('.post-content .mermaid svg'));
     }

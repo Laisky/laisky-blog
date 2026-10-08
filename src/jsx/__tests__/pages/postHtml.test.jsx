@@ -30,15 +30,24 @@ vi.mock('mermaid', () => ({ default: { run: vi.fn() } }));
 
 /** createPost returns an entirely local authored Slide fixture with the supplied body. */
 const createPost = (content) => ({
-  name: 'local-test', title: 'Author slide', type: 'slide', content, menu: '', created_at: '2026-01-01', arweave_id: [],
+  name: 'local-test',
+  title: 'Author slide',
+  type: 'slide',
+  content,
+  menu: '',
+  created_at: '2026-01-01',
+  arweave_id: [],
 });
 
 /** renderPost mounts the actual article renderer in a local live or historical route. */
-const renderPost = (history) => render(
-  <MemoryRouter initialEntries={['/p/local-test/']}>
-    <Routes><Route path="/p/:name/" element={<Post isHistory={history ? 'true' : 'false'} />} /></Routes>
-  </MemoryRouter>
-);
+const renderPost = (history) =>
+  render(
+    <MemoryRouter initialEntries={['/p/local-test/']}>
+      <Routes>
+        <Route path="/p/:name/" element={<Post isHistory={history ? 'true' : 'false'} />} />
+      </Routes>
+    </MemoryRouter>
+  );
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -75,7 +84,9 @@ describe('history publication authorization', () => {
 
 describe('authored article compatibility', () => {
   it.each([false, true])('preserves established authored Slide HTML for history=%s', async (history) => {
-    const authored = createPost('<h2>Author heading</h2><section class="slides" style="color:blue"><iframe title="Authored embed" srcdoc="<p>Authored slide</p>"></iframe><video controls src="/local.mp4"></video><svg><path d="M0 0"></path></svg><math><mi>x</mi></math></section>');
+    const authored = createPost(
+      '<h2>Author heading</h2><section class="slides" style="color:blue"><iframe title="Authored embed" srcdoc="<p>Authored slide</p>"></iframe><video controls src="/local.mp4"></video><svg><path d="M0 0"></path></svg><math><mi>x</mi></math></section>'
+    );
     graphqlQuery.mockResolvedValue({ BlogPosts: [authored], BlogPostHistory: authored });
     const { container } = renderPost(history);
     await screen.findByRole('heading', { name: 'Author heading' });
@@ -94,12 +105,15 @@ const HistoryNavigation = () => {
 };
 
 /** renderHistoryNavigation keeps the same Post instance mounted across history routes. */
-const renderHistoryNavigation = () => render(
-  <MemoryRouter initialEntries={['/p/local-test/']}>
-    <HistoryNavigation />
-    <Routes><Route path="/p/:name/" element={<Post isHistory="true" />} /></Routes>
-  </MemoryRouter>
-);
+const renderHistoryNavigation = () =>
+  render(
+    <MemoryRouter initialEntries={['/p/local-test/']}>
+      <HistoryNavigation />
+      <Routes>
+        <Route path="/p/:name/" element={<Post isHistory="true" />} />
+      </Routes>
+    </MemoryRouter>
+  );
 
 describe('historical authorization lifecycle', () => {
   it('shows a safe unavailable state when historical authorization is denied', async () => {
@@ -112,9 +126,11 @@ describe('historical authorization lifecycle', () => {
 
   it('clears previous historical body and menu while the next archive is checked', async () => {
     let rejectNext;
-    const next = new Promise((_resolve, reject) => { rejectNext = reject; });
+    const next = new Promise((_resolve, reject) => {
+      rejectNext = reject;
+    });
     const first = { ...createPost('<h2>First authorized body</h2>'), menu: '<a href="#first">Previous menu</a>' };
-    graphqlQuery.mockImplementation(async (_query, variables) => variables.fileId === 'foreign-id' ? next : { BlogPostHistory: first });
+    graphqlQuery.mockImplementation(async (_query, variables) => (variables.fileId === 'foreign-id' ? next : { BlogPostHistory: first }));
     const { container } = renderHistoryNavigation();
     await screen.findByText('First authorized body');
     expect(container.querySelector('#post-menu')).not.toBeNull();
@@ -129,9 +145,12 @@ describe('historical authorization lifecycle', () => {
 
   it('ignores an obsolete historical result after a newer route has been authorized', async () => {
     let resolveFirst;
-    const first = new Promise((resolve) => { resolveFirst = resolve; });
-    graphqlQuery.mockImplementation(async (_query, variables) => variables.fileId === 'foreign-id'
-      ? { BlogPostHistory: createPost('<h2>Current authorized body</h2>') } : first);
+    const first = new Promise((resolve) => {
+      resolveFirst = resolve;
+    });
+    graphqlQuery.mockImplementation(async (_query, variables) =>
+      variables.fileId === 'foreign-id' ? { BlogPostHistory: createPost('<h2>Current authorized body</h2>') } : first
+    );
     renderHistoryNavigation();
     await waitFor(() => expect(graphqlQuery).toHaveBeenCalled());
     fireEvent.click(screen.getByRole('button', { name: 'Other archive' }));

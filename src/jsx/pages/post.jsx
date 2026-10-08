@@ -198,7 +198,9 @@ export const Post = ({ isHistory }) => {
       // Clear the previous historical body and menu before authorizing a new route.
       setMenuHtml(null);
       setContent(
-        <div className="col-12 col-xl-9"><p role="status">Loading historical article…</p></div>
+        <div className="col-12 col-xl-9">
+          <p role="status">Loading historical article…</p>
+        </div>
       );
     }
     (async () => {
@@ -210,7 +212,9 @@ export const Post = ({ isHistory }) => {
           if (!cancelled) {
             setMenuHtml(null);
             setContent(
-              <div className="col-12 col-xl-9"><p role="status">This historical article is unavailable.</p></div>
+              <div className="col-12 col-xl-9">
+                <p role="status">This historical article is unavailable.</p>
+              </div>
             );
           }
           return;
@@ -396,12 +400,7 @@ export const Post = ({ isHistory }) => {
         className="modal--image"
         closeOnContentClick
       >
-        <button
-          type="button"
-          className="image-modal__close"
-          onClick={() => setImageModalOpen(false)}
-          aria-label="Close image"
-        >
+        <button type="button" className="image-modal__close" onClick={() => setImageModalOpen(false)} aria-label="Close image">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 6L6 18M6 6l12 12" />
           </svg>

@@ -3,8 +3,20 @@ const html =
   '<pre><code class="language-js">const answer = 42;</code></pre><pre class="mermaid">graph TD; A--&gt;B;</pre>' +
   '<div class="post_series" key="local-series"></div><video controls src="/local.mp4"></video><svg><path d="M0 0"></path></svg><math><mi>x</mi></math>' +
   '<iframe title="Authored embed" srcdoc="&lt;script&gt;parent.document.body.dataset.authoredCanary=1&lt;/script&gt;"></iframe></section>';
-const post = { name: 'local-test', title: 'Author slide', type: 'slide', content: html, menu: '', created_at: '2026-01-01', arweave_id: [] };
-const foreign = { ...post, content: '<h2>Foreign cached body</h2><iframe srcdoc="&lt;script&gt;parent.document.body.dataset.foreignCanary=1&lt;/script&gt;"></iframe>' };
+const post = {
+  name: 'local-test',
+  title: 'Author slide',
+  type: 'slide',
+  content: html,
+  menu: '',
+  created_at: '2026-01-01',
+  arweave_id: [],
+};
+const foreign = {
+  ...post,
+  content:
+    '<h2>Foreign cached body</h2><iframe srcdoc="&lt;script&gt;parent.document.body.dataset.foreignCanary=1&lt;/script&gt;"></iframe>',
+};
 const series = { remark: 'Local', posts: [{ name: 'safe', title: 'Safe series entry' }], children: [] };
 /** formatTs accepts no arguments and returns a deterministic display timestamp. */
 export const formatTs = () => 'today';
