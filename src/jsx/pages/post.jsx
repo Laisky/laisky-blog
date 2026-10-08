@@ -83,14 +83,8 @@ export const loader = async ({ params }) => {
  * @returns {Promise<Object>} Historical post object
  */
 export const historyLoader = async ({ params }) => {
-  const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`postHistory:${await getUserLanguage()}:${params.name}`));
-  if (!isForce()) {
-    const cacheData = await jsutils.GetCache(cacheKey);
-    if (cacheData) {
-      return cacheData;
-    }
-  }
-
+  // Historical cache entries predate publication authorization. Always recheck the server
+  // before accepting an archive body, including previously cached or now-protected archives.
   const gqBody = gql`
         query Blog($fileId: String!) {
             BlogPostHistory(
@@ -118,9 +112,6 @@ export const historyLoader = async ({ params }) => {
 
   const resp = await graphqlQuery(gqBody, { fileId: params.name });
   const result = resp.BlogPostHistory;
-
-  // update cache
-  await jsutils.SetCache(cacheKey, result);
 
   return result;
 };
@@ -202,15 +193,39 @@ export const Post = ({ isHistory }) => {
 
   // Load post content
   useEffect(() => {
+    let cancelled = false;
+    if (isHistory) {
+      // Clear the previous historical body and menu before authorizing a new route.
+      setMenuHtml(null);
+      setContent(
+        <div className="col-12 col-xl-9">
+          <p role="status">Loading historical article…</p>
+        </div>
+      );
+    }
     (async () => {
       let post;
       if (isHistory) {
-        post = await historyLoader({ params });
+        try {
+          post = await historyLoader({ params });
+        } catch {
+          if (!cancelled) {
+            setMenuHtml(null);
+            setContent(
+              <div className="col-12 col-xl-9">
+                <p role="status">This historical article is unavailable.</p>
+              </div>
+            );
+          }
+          return;
+        }
       } else {
         post = await loader({ params });
       }
+      if (cancelled) return;
 
       const postTail = await loadPostTails(post);
+      if (cancelled) return;
 
       // change page title
       document.title = isHistory ? `[History] ${post.title}` : post.title;
@@ -305,6 +320,10 @@ export const Post = ({ isHistory }) => {
 
       setContent(content);
     })();
+    // Ignore a completed request after navigation, language change, or unmount.
+    return () => {
+      cancelled = true;
+    };
   }, [params.name, language, isHistory]);
 
   // After render effects
@@ -381,12 +400,7 @@ export const Post = ({ isHistory }) => {
         className="modal--image"
         closeOnContentClick
       >
-        <button
-          type="button"
-          className="image-modal__close"
-          onClick={() => setImageModalOpen(false)}
-          aria-label="Close image"
-        >
+        <button type="button" className="image-modal__close" onClick={() => setImageModalOpen(false)} aria-label="Close image">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 6L6 18M6 6l12 12" />
           </svg>
