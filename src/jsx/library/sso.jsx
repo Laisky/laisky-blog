@@ -61,18 +61,24 @@ const buildCurrentURLWithoutSSOToken = () => {
 };
 
 /**
- * consumeSSOCallbackToken persists SSO callback token and redirects to stored path.
+ * consumeSSOCallbackToken cleans the callback URL, persists its token, and redirects to the stored path.
  *
  * @returns {Promise<boolean>} True if callback token was present and handled.
  */
 export const consumeSSOCallbackToken = async () => {
   const queryParams = new window.URLSearchParams(window.location.search);
-  const ssoToken = queryParams.get('sso_token');
-  if (!ssoToken) {
+  if (!queryParams.has('sso_token')) {
     return false;
   }
 
+  const ssoToken = queryParams.get('sso_token');
   const cleanCurrentURL = buildCurrentURLWithoutSSOToken();
+  // Remove the credential before validation, session storage, or any asynchronous work.
+  // This containment cannot remove the token from the initial HTTP request.
+  window.history.replaceState({}, document.title, cleanCurrentURL);
+  if (!ssoToken) {
+    return false;
+  }
   const redirectPath = sanitizeRedirectPath(window.sessionStorage.getItem(KvKeySSORedirectPath));
   window.sessionStorage.removeItem(KvKeySSORedirectPath);
 
@@ -87,7 +93,6 @@ export const consumeSSOCallbackToken = async () => {
   } catch {
     await jsutils.KvDel(KvKeyAuthUser);
     await jsutils.KvDel(KvKeyUserToken);
-    window.history.replaceState({}, document.title, cleanCurrentURL);
     return true;
   }
 
@@ -96,6 +101,5 @@ export const consumeSSOCallbackToken = async () => {
     return true;
   }
 
-  window.history.replaceState({}, document.title, cleanCurrentURL);
   return true;
 };
