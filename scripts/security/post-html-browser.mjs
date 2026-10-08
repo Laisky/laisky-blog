@@ -2,6 +2,7 @@
 import assert from 'node:assert/strict';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
+import { tmpdir } from 'node:os';
 import { createServer } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -12,6 +13,7 @@ const { chromium } = await import(modulePath ? pathToFileURL(modulePath).href : 
 const server = await createServer({
   root,
   configFile: false,
+  cacheDir: path.join(tmpdir(), `blog187-vite-${process.pid}`),
   plugins: [react()],
   define: { global: 'window' },
   optimizeDeps: { entries: ['scripts/security/post-html.html'] },
