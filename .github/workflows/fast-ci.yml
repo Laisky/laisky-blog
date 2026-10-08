@@ -1,0 +1,61 @@
+name: Fast CI
+
+on:
+  pull_request:
+    branches: [v2]
+  push:
+    branches: [v2]
+  workflow_dispatch:
+    inputs:
+      base_sha:
+        description: Full nonzero comparison base commit SHA
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fast-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CI: 'true'
+      FAST_CI_BASE: ${{ github.event.pull_request.base.sha || github.event.before || inputs.base_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+      - name: Set receipt and cache paths
+        run: |
+          echo "FAST_CI_EVIDENCE=$RUNNER_TEMP/fast-ci" >> "$GITHUB_ENV"
+          echo "YARN_CACHE_FOLDER=$RUNNER_TEMP/yarn-cache" >> "$GITHUB_ENV"
+      - name: Select Yarn Classic
+        run: |
+          corepack enable
+          corepack prepare yarn@1.22.22 --activate
+          test "$(yarn --version)" = '1.22.22'
+      - uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/yarn-cache
+          key: fast-ci-yarn-${{ runner.os }}-node22-${{ hashFiles('yarn.lock') }}
+      - name: Verify failure controls
+        run: node --test .scripts/test_fast_ci.mjs
+      - name: Frozen setup, changed-file formatting and essential units
+        run: node .scripts/fast_ci.mjs
+      - name: Retain discovery, native exits and timings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fast-ci-${{ github.sha }}
+          path: ${{ runner.temp }}/fast-ci
+          if-no-files-found: error
+          retention-days: 14
