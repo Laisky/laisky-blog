@@ -1,25 +1,19 @@
-# Article HTML security boundary
+# Historical article publication boundary
 
-Current posts, historical posts, and both cache paths converge on `sanitizeArticleHtml` before `html-react-parser` converts the HTML to React elements. The menu uses the same formatting policy. Source records and caches remain unchanged; each render sanitizes them.
+This frontend change accompanies the backend archive-provenance repair for [issue 187](https://github.com/Laisky/laisky-blog/issues/187). The historical loader always asks `BlogPostHistory` for an authorized body and never returns legacy `postHistory` cached bodies. A previous cached foreign archive or a newly protected publication therefore cannot bypass the server check. Live article caching and authored article rendering remain unchanged.
 
-The allowlist preserves headings and anchors, text formatting, lists, tables, details, figures, images, code blocks, and series metadata. It excludes scripts, frames, embedded objects, forms, styles, templates, resource tags, custom elements, and source SVG/MathML. URL attributes allow HTTP(S) and relative resources; links also allow `mailto:` and `tel:`. Inline data and other resource protocols are excluded. External HTTP(S) content origins remain supported. Heading IDs and the legacy series `key` attribute survive so existing navigation and series replacements continue working.
+The earlier broad sanitizer proposal is superseded. Source-authored iframes, Slide HTML, style, media, SVG/MathML, and the existing menu, Mermaid, series and image behavior are preserved. A deliberately authored iframe can execute HTML; that conditional browser behavior alone does not establish an unintended attacker publishing path. The confirmed defect was acceptance of an arbitrary unregistered gateway archive by the public history API and subsequent cache reuse.
 
-Code replacement creates React text nodes. Series metadata is escaped before interpolation, and post names are URL encoded before the generated HTML is sanitized; trusted Lucide icons remain available. Mermaid uses its strict security level, preventing source diagram directives from enabling HTML or click handlers. Trusted MathJax rendering continues after source HTML sanitization.
+Backend repair requires trusted current publication metadata before any gateway fetch. Unknown/unrelated/never-published IDs, hidden/password-protected posts, explicit nonpublish status, and database lookup failures are denied. Registered public archive bodies retain their exact authored content, including legacy/gzip/translations and registered legacy missing-status compatibility.
 
-## Regression checks
+The ten unit regressions verify server rejection and fresh authorization with cache hit/miss, preserve live caching, clear previous history bodies/menus during fresh authorization, ignore obsolete route results, show safe denial text, and exercise the actual renderer with source-authored HTML and Slide markup. The local Chrome fixture exercises live/history and cached/network controls with the actual `Post` renderer, real Mermaid, and local mocked server decisions. All requests outside its exact loopback origin are aborted and service workers are blocked; it performs no production or blockchain actions.
 
-Run the fast route and policy tests with `yarn test --run src/jsx/__tests__/pages/postHtml.test.jsx --maxWorkers=1`. They use mocked GraphQL, caches, identity, and comments. The checks cover the four live/history and GraphQL/cache combinations plus safe formatting and generated series content.
+```sh
+PLAYWRIGHT_MODULE=/absolute/path/to/playwright/index.mjs \
+CHROME_PATH=/usr/bin/google-chrome \
+node scripts/security/post-html-browser.mjs
+```
 
-The retained browser harness imports the actual `Post` component into a local fixture. It replaces remote services with deterministic mocks, stubs MathJax, renders real Mermaid diagrams, blocks every request outside its loopback origin, and uses DOM markers as execution canaries. It never signs in, sends account requests, or opens production pages.
+The fixed browser matrix retains the authored iframe execution marker and formatting/media/code/diagram/series/image-modal controls, while rejected historical bodies cannot render or execute even when a foreign body exists in the legacy cache. The `--reproduce` flag is for a checkout with the original historical loader: it requires the cached foreign marker to execute without any server authorization call. Browser fixtures mock server decisions; retained backend Mongo-wire/HTTP-transport regressions separately establish the actual authorization boundary before outbound fetch.
 
-Run `node scripts/security/post-html-browser.mjs` with an installed Playwright module available. When Playwright is provided outside this checkout, set `PLAYWRIGHT_MODULE` to its `index.mjs` path; optionally set `CHROME_PATH` to a local Chromium executable. No browser dependency is added to normal CI. The harness starts and stops its own Vite server on loopback port 11307, checks non-execution and active-node removal in all four cases, and verifies code, diagrams, series, lazy images, and the image modal. The `--reproduce` mode requires the vulnerable iframe marker and is intended only for a vulnerable baseline checkout.
-
-Before the fix, all four browser cases executed the local iframe `srcdoc` canary. The async external-script marker was absent in that baseline, so it is retained as a rejection test without claiming baseline execution. After the fix, neither marker executes and no canary node is rendered.
-
-Required repository acceptance checks remain `yarn lint`, `yarn test --run`, and `yarn build`. Run the full unit suite with one worker when sharing a busy development host. Production response headers were not measured and CSP is not changed by this repair.
-
-## Primary references
-
-- [DOMPurify configuration and post-sanitization guidance](https://github.com/cure53/DOMPurify)
-- [React script resource handling](https://react.dev/reference/react-dom/components/script)
-- [Mermaid strict security and protected configuration keys](https://mermaid.js.org/config/schema-docs/config.html#securitylevel)
+Each history view now requires server availability and a fresh archive lookup/fetch. Heavy browser verification remains local; CI stays limited to formatting and fast units.

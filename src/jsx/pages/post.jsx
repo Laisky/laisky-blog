@@ -11,7 +11,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Comments } from '../components/comments.jsx';
 
 import mermaid from 'mermaid';
-import { escapeArticleText, sanitizeArticleHtml } from '../library/articleHtml.js';
 import { CodeBlock } from '../components/CodeBlock.jsx';
 import { Dropdown, DropdownItem } from '../components/Dropdown.jsx';
 import { Modal } from '../components/Modal.jsx';
@@ -84,14 +83,8 @@ export const loader = async ({ params }) => {
  * @returns {Promise<Object>} Historical post object
  */
 export const historyLoader = async ({ params }) => {
-  const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`postHistory:${await getUserLanguage()}:${params.name}`));
-  if (!isForce()) {
-    const cacheData = await jsutils.GetCache(cacheKey);
-    if (cacheData) {
-      return cacheData;
-    }
-  }
-
+  // Historical cache entries predate publication authorization. Always recheck the server
+  // before accepting an archive body, including previously cached or now-protected archives.
   const gqBody = gql`
         query Blog($fileId: String!) {
             BlogPostHistory(
@@ -119,9 +112,6 @@ export const historyLoader = async ({ params }) => {
 
   const resp = await graphqlQuery(gqBody, { fileId: params.name });
   const result = resp.BlogPostHistory;
-
-  // update cache
-  await jsutils.SetCache(cacheKey, result);
 
   return result;
 };
@@ -203,15 +193,35 @@ export const Post = ({ isHistory }) => {
 
   // Load post content
   useEffect(() => {
+    let cancelled = false;
+    if (isHistory) {
+      // Clear the previous historical body and menu before authorizing a new route.
+      setMenuHtml(null);
+      setContent(
+        <div className="col-12 col-xl-9"><p role="status">Loading historical article…</p></div>
+      );
+    }
     (async () => {
       let post;
       if (isHistory) {
-        post = await historyLoader({ params });
+        try {
+          post = await historyLoader({ params });
+        } catch {
+          if (!cancelled) {
+            setMenuHtml(null);
+            setContent(
+              <div className="col-12 col-xl-9"><p role="status">This historical article is unavailable.</p></div>
+            );
+          }
+          return;
+        }
       } else {
         post = await loader({ params });
       }
+      if (cancelled) return;
 
       const postTail = await loadPostTails(post);
+      if (cancelled) return;
 
       // change page title
       document.title = isHistory ? `[History] ${post.title}` : post.title;
@@ -285,7 +295,7 @@ export const Post = ({ isHistory }) => {
                     <span className="tooltip-trigger">{formatTs(post.created_at)}</span>
                   </Tooltip>
                 </div>
-                <div className="post-content">{parse(sanitizeArticleHtml(post.content), parseOptions)}</div>
+                <div className="post-content">{parse(post.content, parseOptions)}</div>
                 {postTail}
                 {isHistory ? (
                   <div className="history-comment-prompt">
@@ -306,6 +316,10 @@ export const Post = ({ isHistory }) => {
 
       setContent(content);
     })();
+    // Ignore a completed request after navigation, language change, or unmount.
+    return () => {
+      cancelled = true;
+    };
   }, [params.name, language, isHistory]);
 
   // After render effects
@@ -333,8 +347,7 @@ export const Post = ({ isHistory }) => {
 
       parseAndReplacePostSeries();
       try {
-        mermaid.initialize({ startOnLoad: false, securityLevel: 'strict' });
-        await mermaid.run({ querySelector: '.post-content .mermaid' });
+        mermaid.run();
       } catch (e) {
         console.error(`failed to render mermaid: ${e}`);
       }
@@ -374,7 +387,7 @@ export const Post = ({ isHistory }) => {
         </div>
       </div>
       {menuHtml && (
-        <aside id="post-menu" className="post-menu d-none d-xl-block" dangerouslySetInnerHTML={{ __html: sanitizeArticleHtml(menuHtml) }} />
+        <aside id="post-menu" className="post-menu d-none d-xl-block" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(menuHtml) }} />
       )}
       <Modal
         isOpen={imageModalOpen}
@@ -383,7 +396,12 @@ export const Post = ({ isHistory }) => {
         className="modal--image"
         closeOnContentClick
       >
-        <button type="button" className="image-modal__close" onClick={() => setImageModalOpen(false)} aria-label="Close image">
+        <button
+          type="button"
+          className="image-modal__close"
+          onClick={() => setImageModalOpen(false)}
+          aria-label="Close image"
+        >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 6L6 18M6 6l12 12" />
           </svg>
@@ -904,7 +922,7 @@ const parseAndReplacePostSeries = async () => {
             <div class="post-series">
                 <div class="post-series-header">
                     ${iconHtml}
-                    <span class="post-series-title">${escapeArticleText(se.remark)} Serials</span>
+                    <span class="post-series-title">${se.remark} Serials</span>
                 </div>
                 <ul class="post-series-list">
                     ${html}
@@ -968,9 +986,9 @@ function parseSeriesHTML(se) {
       let p = se.posts[i];
       html += `
                 <li class="post-series-entry">
-                    <a class="post-series-link" href="https://blog.laisky.com/p/${encodeURIComponent(p.name)}/">
+                    <a class="post-series-link" href="https://blog.laisky.com/p/${p.name}/">
                         ${iconHtml}
-                        <span>${escapeArticleText(p.title)}</span>
+                        <span>${p.title}</span>
                     </a>
                 </li>`;
     }
@@ -999,7 +1017,7 @@ async function parseSeriesChildren(seriesKey) {
                 <details class="series-details">
                     <summary class="series-toggle">
                         ${iconHtml}
-                        <span>${escapeArticleText(se.remark)} Serials</span>
+                        <span>${se.remark} Serials</span>
                     </summary>
                     <div class="series-content">
                         <ul class="post-series-list">
