@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import process from 'node:process';
 import { suites, validateBase, validateDiscovery, validateReport, runCommand } from './fast_ci.mjs';
 
 /** discovery returns the nine expected synthetic discovery entries for validation controls. */

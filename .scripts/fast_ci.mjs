@@ -1,7 +1,10 @@
 /** Fast CI records native failures and requires exact discovery and test completion. */
 import { spawnSync } from 'node:child_process';
+import console from 'node:console';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve, relative } from 'node:path';
+import { performance } from 'node:perf_hooks';
+import process from 'node:process';
 import { pathToFileURL } from 'node:url';
 
 export const suites = {

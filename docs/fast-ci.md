@@ -57,8 +57,15 @@ tests execute anew. A five-minute timeout bounds the automatic job.
 corepack enable
 corepack prepare yarn@1.22.22 --activate
 node --test .scripts/test_fast_ci.mjs
-FAST_CI_BASE=<full-base-sha> FAST_CI_EVIDENCE=/tmp/blog-fast-ci node .scripts/fast_ci.mjs
+BASE_SHA=$(git rev-parse --verify 'origin/v2^{commit}')
+FAST_CI_BASE="$BASE_SHA" FAST_CI_EVIDENCE=/tmp/blog-fast-ci node .scripts/fast_ci.mjs
 ```
+
+Fetch `origin/v2` before using this local example and verify that it is the
+intended comparison base for the full candidate change. If another base is
+needed, resolve that commit instead. `FAST_CI_BASE` must contain a valid full,
+nonzero commit SHA available in the checkout; it is not a branch name or shell
+placeholder.
 
 ## Retained local dev/staging qualification
 
