@@ -49,6 +49,8 @@ jobs:
           key: fast-ci-yarn-${{ runner.os }}-node22-${{ hashFiles('yarn.lock') }}
       - name: Verify failure controls
         run: node --test .scripts/test_fast_ci.mjs
+      - name: Verify scoped release failure controls
+        run: python3 -m unittest discover -s .scripts -p test_deploy_blog.py -v
       - name: Frozen setup, changed-file formatting and essential units
         run: node .scripts/fast_ci.mjs
       - name: Retain discovery, native exits and timings

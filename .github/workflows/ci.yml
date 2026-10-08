@@ -6,8 +6,8 @@ on:
       - 'v2'
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: blog-v2-release
+  cancel-in-progress: false
 
 jobs:
   build_latest:
@@ -39,6 +39,9 @@ jobs:
 
   build_hash:
     runs-on: ubuntu-latest
+    outputs:
+      digest: ${{ steps.build.outputs.digest }}
+      source_commit: ${{ github.sha }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,27 +62,66 @@ jobs:
         run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
 
       - name: Build and push hash label
+        id: build
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ppcelery/laisky-blog-v2:${{ env.SHORT_SHA }}
+          labels: org.opencontainers.image.revision=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build_latest
+    timeout-minutes: 30
+    needs: build_hash
+    env:
+      BLOG_DEPLOY_DIGEST: ${{ needs.build_hash.outputs.digest }}
+      BLOG_DEPLOY_COMMIT: ${{ needs.build_hash.outputs.source_commit }}
     steps:
-      - name: executing remote ssh commands using password
+      - name: Checkout exact release helper
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Encode release helper
+        run: |
+          python3 - <<'PY'
+          import base64
+          import os
+          import pathlib
+          payload = base64.b64encode(pathlib.Path('.scripts/deploy_blog.py').read_bytes()).decode('ascii')
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write('BLOG_DEPLOY_HELPER_B64=' + payload + '\n')
+          PY
+
+      - name: Reject superseded release
+        id: current
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          current_sha="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/v2" --jq '.object.sha')"
+          [[ "$current_sha" =~ ^[0-9a-f]{40}$ ]]
+          if [[ "$current_sha" = "$GITHUB_SHA" ]]; then
+            echo 'deploy=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'deploy=false' >> "$GITHUB_OUTPUT"
+            echo 'Superseded source commit; skipping all remote deployment actions.'
+          fi
+
+      - name: Deploy and verify the exact Blog image
+        if: steps.current.outputs.deploy == 'true'
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.TARGET_HOST }}
           username: ${{ secrets.TARGET_HOST_USERNAME }}
           password: ${{ secrets.TARGET_HOST_PASSWORD }}
           port: ${{ secrets.TARGET_HOST_SSH_PORT }}
+          envs: BLOG_DEPLOY_DIGEST,BLOG_DEPLOY_COMMIT,BLOG_DEPLOY_HELPER_B64
+          command_timeout: 25m
           script: |
-            docker pull ppcelery/laisky-blog-v2:latest
-            cd /home/laisky/repo/VPS
-            docker-compose -f b1-docker-compose.yml up -d --remove-orphans --force-recreate blog-v2
-            docker ps
+            set -eu
+            python3 -c 'import base64, os; exec(compile(base64.b64decode(os.environ["BLOG_DEPLOY_HELPER_B64"]), "deploy_blog.py", "exec"))'
