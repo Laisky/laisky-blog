@@ -1,4 +1,5 @@
 import DOMPurify from 'dompurify';
+import { parse, stringify } from 'flatted';
 import mermaid from 'mermaid';
 import { beforeAll, describe, expect, it } from 'vitest';
 
@@ -10,6 +11,19 @@ function initializeMermaid() {
 beforeAll(initializeMermaid);
 
 describe('frontend dependency compatibility', () => {
+  it('rejects inherited array properties as circular JSON references', () => {
+    const parsed = parse('[{"value":"__proto__"}]');
+    expect(parsed.value).toBeUndefined();
+  });
+
+  it('retains supported circular JSON round trips for dependency tooling', () => {
+    const record = { label: 'cache record' };
+    record.self = record;
+    const parsed = parse(stringify(record));
+    expect(parsed.label).toBe('cache record');
+    expect(parsed.self).toBe(parsed);
+  });
+
   it('keeps authored menu anchors and text while removing executable menu markup', () => {
     const menu = document.createElement('div');
     menu.innerHTML = DOMPurify.sanitize(
