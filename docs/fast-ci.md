@@ -85,3 +85,30 @@ Run browser, integration, accessibility, performance and environment checks
 against local dev/staging when the change affects those behaviors. These manual
 commands preserve the full suite and expose existing failures; this policy does
 not waive them. Publishing/deployment remains owned by the existing workflow.
+
+## CircleCI fast-gate adapter (2026-10-09)
+
+CircleCI was connected to this repository but no configuration exists in its
+full recorded history. It rejected PR #195 at configuration discovery, before
+any application test ran. `.circleci/config.yml` now executes the same frozen
+formatting and nine-unit gate on one small executor; it does not build, publish,
+run browser campaigns, or deploy. The Node 22.22.3 executor image is pinned by
+manifest digest, and Yarn Classic must report 1.22.22. Existing GitHub Actions
+release and quality workflows remain authoritative and unchanged.
+
+The adapter fetches `v2` and compares a candidate branch with its merge base,
+including a branch's first pipeline when CircleCI has no previous build SHA.
+When the checkout equals the fetched `v2` tip, it compares with the first parent
+(the complete merged PR delta for a merge or squash commit). This parent rule
+does not claim push-event coverage for multiple directly pushed commits; use
+the GitHub push gate's event-before SHA for that. Missing or unrelated history
+fails closed. Five local Git-fixture controls cover these cases without remote
+requests. The existing eleven runner controls and release-helper controls run
+before the real gate. The gate command is bounded to five minutes and retains
+its native output, discovery, assertions and timing receipts as artifacts.
+
+No external integration, branch-protection rule, secret, context or account
+setting is modified. GitHub's branch-protection endpoint was inaccessible to
+the available integration (403); an empty ruleset list does not establish
+whether legacy required-status checks are configured. CircleCI hosted
+acceptance must therefore be checked at the exact candidate head.
