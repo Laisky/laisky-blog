@@ -1,20 +1,24 @@
 # Fast CI policy (2026-10-08)
 
-The maintainer requests minimal automatic pre-merge checks. `Fast CI / test`
-adds changed-file formatting and nine existing deterministic unit tests on
-pull requests and pushes to `v2`. This CI scheduling policy supersedes general
-lint/test/build requirements for CI-only scheduling changes. Application changes
-still require full local dev/staging qualification before promotion.
+The maintainer requests minimal automatic pre-merge checks. CircleCI is the
+single automatic provider for changed-file formatting and nine existing
+deterministic unit tests. The GitHub `Fast CI / test` job remains available
+through explicit manual dispatch with a verified full comparison SHA; it no
+longer repeats the automatic CircleCI gate on pull requests or pushes. This CI
+scheduling policy supersedes general lint/test/build requirements for CI-only
+scheduling changes. Application changes still require full local dev/staging
+qualification before promotion.
 
 The existing `ci.yml` publishing and deployment workflow is separate and
 unchanged. This change does not alter production builds, health checks,
-credentials, secrets, security scanning or branch protection. The new test job
+credentials, secrets, security scanning or branch protection. The retained manual GitHub test job
 has read-only permissions and does not retain checkout credentials.
 
 ## Formatting scope and existing debt
 
-Prettier checks supported files changed since the verified PR base SHA or push
-before SHA, plus this workflow, policy and runner/control files. Renamed files
+Prettier checks supported files changed since the verified candidate merge base
+or `v2` first parent in CircleCI, or the explicitly provided full base SHA in
+manual GitHub dispatch, plus this workflow, policy and runner/control files. Renamed files
 are checked at their new paths; deletions have no content to check. The existing
 Prettier configuration and ignore file remain authoritative (including the
 existing SCSS exclusion). Missing, malformed, unknown or all-zero base SHAs fail
@@ -94,21 +98,48 @@ any application test ran. `.circleci/config.yml` now executes the same frozen
 formatting and nine-unit gate on one small executor; it does not build, publish,
 run browser campaigns, or deploy. The Node 22.22.3 executor image is pinned by
 manifest digest, and Yarn Classic must report 1.22.22. Existing GitHub Actions
-release and quality workflows remain authoritative and unchanged.
+release remains unchanged, while its duplicate fast gate is manual only.
 
 The adapter fetches `v2` and compares a candidate branch with its merge base,
 including a branch's first pipeline when CircleCI has no previous build SHA.
 When the checkout equals the fetched `v2` tip, it compares with the first parent
 (the complete merged PR delta for a merge or squash commit). This parent rule
 does not claim push-event coverage for multiple directly pushed commits; use
-the GitHub push gate's event-before SHA for that. Missing or unrelated history
+manual GitHub dispatch with the complete pre-push comparison SHA for that. Missing or unrelated history
 fails closed. Five local Git-fixture controls cover these cases without remote
 requests. The existing eleven runner controls and release-helper controls run
 before the real gate. The gate command is bounded to five minutes and retains
 its native output, discovery, assertions and timing receipts as artifacts.
 
 No external integration, branch-protection rule, secret, context or account
-setting is modified. GitHub's branch-protection endpoint was inaccessible to
-the available integration (403); an empty ruleset list does not establish
-whether legacy required-status checks are configured. CircleCI hosted
-acceptance must therefore be checked at the exact candidate head.
+setting is modified. The detailed protection endpoint is inaccessible to the
+available integration (403), but the readable `v2` branch summary reports
+protection disabled and required-status enforcement off with empty checks;
+repository rulesets are empty. No observed protection requires the duplicate
+GitHub fast job. CircleCI hosted acceptance is checked at the exact candidate
+head rather than assuming a valid configuration implies successful tests.
+
+## Automatic duplication removed (2026-10-09)
+
+The authorized simplification removes only the GitHub fast workflow's
+`pull_request` and `push` subscriptions. Its job, failure controls, explicit
+manual-dispatch base input, artifact receipts, and all underlying test coverage
+remain intact. CircleCI continues the genuine automatic frozen setup,
+formatting and nine-unit gate. Its all-branch/tag-ignore filters and external
+trigger settings are unchanged; no extra job or account setting is introduced.
+The three-job GitHub release workflow and its `v2` push trigger remain
+byte-for-byte identical.
+
+When both providers would have triggered, a pull request's repository-defined
+quality jobs decrease from two to one, and a `v2` push's quality plus release
+jobs decrease from five to four. Other branch pipelines remain one CircleCI
+job. These conditional counts exclude unchanged managed CodeQL analyses,
+Snyk and CodeRabbit. Actual CircleCI push/PR subscriptions are external and
+have not been modified. The removed GitHub duplicate's measured job time and
+the retained fast-gate receipt are recorded in PR #195; no reduction is claimed
+for unobserved CircleCI queue or execution time.
+
+Full lint, the complete unit suite, build, coverage and security/browser
+regressions remain local or explicitly manual. The `yarn coverage` command,
+test files and assertions are unchanged; no vulnerability, coverage or other
+result is converted to success or discarded.

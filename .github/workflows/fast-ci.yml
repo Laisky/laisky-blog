@@ -1,10 +1,6 @@
 name: Fast CI
 
 on:
-  pull_request:
-    branches: [v2]
-  push:
-    branches: [v2]
   workflow_dispatch:
     inputs:
       base_sha:
