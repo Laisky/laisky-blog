@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { getCurrentUsername, KvKeyAuthUser, KvKeyUserToken } from '../library/base';
-import { buildSSOLoginURL, startSSOLogin } from '../library/sso';
+import { startSSOLogin } from '../library/sso';
 
 /**
  * Admin renders login status and admin actions.
@@ -16,6 +16,7 @@ import { buildSSOLoginURL, startSSOLogin } from '../library/sso';
 export const Admin = () => {
   const [loginBtn, setLoginBtn] = useState('');
   const [username, setUsername] = useState(null);
+  const [loginError, setLoginError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,10 +57,10 @@ export const Admin = () => {
         element = (
           <ul>
             <li>
-              <a href={buildSSOLoginURL()} onClick={loginHandler} className="d-inline-flex align-items-center">
+              <button type="button" onClick={loginHandler} className="btn btn-link p-0 d-inline-flex align-items-center">
                 <LogIn size={14} className="me-2" />
                 Login
-              </a>
+              </button>
             </li>
           </ul>
         );
@@ -73,12 +74,21 @@ export const Admin = () => {
   /**
    * loginHandler redirects user to SSO login page directly.
    *
-   * @param {React.MouseEvent<HTMLAnchorElement>} evt - The login link click event.
-   * @returns {void} No return value.
+   * @param {React.MouseEvent<HTMLButtonElement>} evt - The login button click event.
+   * @returns {Promise<void>} Resolves after navigation or displaying a safe error.
    */
-  const loginHandler = (evt) => {
+  const loginHandler = async (evt) => {
     evt.preventDefault();
-    startSSOLogin();
+    const button = evt.currentTarget;
+    button.disabled = true;
+    setLoginError('');
+    try {
+      await startSSOLogin();
+    } catch {
+      setLoginError('Sign-in could not be started. Please try again.');
+    } finally {
+      button.disabled = false;
+    }
   };
 
   /**
@@ -102,6 +112,7 @@ export const Admin = () => {
         Admin
       </h2>
       {loginBtn}
+      {loginError && <p role="alert">{loginError}</p>}
     </section>
   );
 };
