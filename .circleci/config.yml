@@ -10,8 +10,31 @@ jobs:
       FAST_CI_EVIDENCE: /tmp/blog-fast-ci
       YARN_CACHE_FOLDER: /tmp/blog-yarn-cache
     steps:
-      - checkout:
-          method: full
+      - run:
+          name: Checkout the exact public commit over HTTPS
+          command: |
+            set -euo pipefail
+            [[ "${CIRCLE_SHA1:-}" =~ ^[0-9a-f]{40}$ ]]
+            [[ "$CIRCLE_SHA1" != '0000000000000000000000000000000000000000' ]]
+            test ! -e .git
+            export GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null
+            export GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=/bin/false SSH_ASKPASS=/bin/false
+            unset GIT_CONFIG_PARAMETERS GIT_CONFIG_COUNT GIT_SSH GIT_SSH_COMMAND
+            GIT_HOME="$(mktemp -d /tmp/blog-circleci-git-home.XXXXXX)"
+            trap 'rm -rf -- "$GIT_HOME"' EXIT
+            # public_git uses an empty home and anonymous HTTPS settings for each Git command.
+            public_git() {
+              HOME="$GIT_HOME" XDG_CONFIG_HOME="$GIT_HOME" git \
+                -c credential.helper= -c http.extraHeader= -c http.followRedirects=false "$@"
+            }
+            public_git init --quiet
+            public_git remote add origin https://github.com/Laisky/laisky-blog.git
+            public_git fetch --quiet --no-tags origin "$CIRCLE_SHA1" +refs/heads/v2:refs/remotes/origin/v2
+            public_git checkout --quiet --detach "$CIRCLE_SHA1"
+            test "$(public_git rev-parse --verify 'HEAD^{commit}')" = "$CIRCLE_SHA1"
+            if public_git symbolic-ref --quiet HEAD; then
+              exit 1
+            fi
       - restore_cache:
           keys:
             - blog-fast-yarn-node22-v1-{{ checksum "yarn.lock" }}
@@ -23,12 +46,12 @@ jobs:
             test "$(yarn --version)" = '1.22.22'
             node --test .scripts/test_fast_ci.mjs .scripts/test_circleci_base.mjs
             python3 -m unittest discover -s .scripts -p test_deploy_blog.py -v
+            python3 -m unittest discover -s .scripts -p test_circleci_checkout.py -v
       - run:
           name: Frozen setup, changed-file formatting and nine essential units
           no_output_timeout: 5m
           command: |
             set -euo pipefail
-            git fetch --quiet --no-tags origin +refs/heads/v2:refs/remotes/origin/v2
             BASE_SHA="$(node .scripts/circleci_base.mjs)"
             FAST_CI_BASE="$BASE_SHA" timeout 300s node .scripts/fast_ci.mjs
       - save_cache:
