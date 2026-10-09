@@ -28,7 +28,11 @@ as a new session or sent to the issuer.
 
 The exchanged JWT continues to use the existing auth_user/user_token keys and
 Authorization bearer path; existing stored sessions remain compatible. Partial
-writes restore previous keys when storage permits. JWT decoding and expiry
+writes attempt to restore previous keys when storage permits; callback handling and
+application bootstrap wait until both recovery attempts settle. These separate KV
+writes are not atomic: a permanently failing restore can leave mixed user/token
+values. Waiting preserves the generic error but does not guarantee restoration.
+JWT decoding and expiry
 checks are UI sanity checks, not signature verification or server authorization.
 The mutation backend still enforces authorization. This change does not migrate
 sessions into cookies or change JWT scope or lifetime.

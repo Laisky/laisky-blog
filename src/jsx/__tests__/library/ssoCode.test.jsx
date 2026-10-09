@@ -1,9 +1,11 @@
 import jsutils from '@laisky/js-utils';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { KvKeyAuthUser, KvKeyUserToken } from '../../library/base';
+import { bootstrapApplication } from '../../library/bootstrap';
 import { consumeSSOCallbackToken, KvKeySSOTransaction, SSOExchangeURL, SSOTransactionLifetime } from '../../library/sso';
 
 vi.mock('@laisky/js-utils', () => ({ default: { KvSet: vi.fn(), KvGet: vi.fn(), KvDel: vi.fn() } }));
+vi.mock('../../library/telemetry', () => ({ initializeOptionalTelemetry: vi.fn() }));
 
 const code = 'A'.repeat(43);
 const state = 'B'.repeat(42) + 'A';
@@ -226,6 +228,63 @@ test('restores a prior session after a partial write failure', async () => {
   await expect(consumeSSOCallbackToken()).rejects.toThrow('Sign-in could not');
   expect(jsutils.KvSet).toHaveBeenCalledWith(KvKeyAuthUser, oldUser);
   expect(jsutils.KvSet).toHaveBeenCalledWith(KvKeyUserToken, 'previous-local-token');
+  expect(window.location.replace).not.toHaveBeenCalled();
+});
+
+test.each(['callback', 'bootstrap'])('waits for every rollback attempt before completing %s', async (entry) => {
+  const oldUser = { sub: 'previous-local' };
+  const oldToken = 'previous-local-token';
+  const stored = new Map([
+    [KvKeyAuthUser, oldUser],
+    [KvKeyUserToken, oldToken],
+  ]);
+  const operations = [];
+  const mount = vi.fn();
+  let releaseRestore;
+  const delayedRestore = new Promise((resolve) => {
+    releaseRestore = resolve;
+  });
+  jsutils.KvGet.mockImplementation(async (key) => stored.get(key));
+  jsutils.KvSet.mockImplementation(async (key, value) => {
+    operations.push(key + (value === oldUser || value === oldToken ? ':restore' : ':new'));
+    if (key === KvKeyAuthUser && value === oldUser) throw new Error('local restore failure');
+    if (key === KvKeyUserToken && value === oldToken) await delayedRestore;
+    stored.set(key, value);
+    // js-utils can reject after a committed put if a synchronous listener throws.
+    if (key === KvKeyUserToken && value === token) throw new Error('local post-write failure');
+  });
+  let finished = false;
+  let failure;
+  const pending = (entry === 'callback' ? consumeSSOCallbackToken() : bootstrapApplication(mount))
+    .catch((error) => {
+      failure = error.message;
+    })
+    .finally(() => {
+      finished = true;
+    });
+  try {
+    await vi.waitFor(() => expect(operations).toHaveLength(4), { timeout: 500, interval: 5 });
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(operations).toContain(KvKeyAuthUser + ':restore');
+    expect(operations).toContain(KvKeyUserToken + ':restore');
+    expect(finished).toBe(false);
+    expect(mount).not.toHaveBeenCalled();
+  } finally {
+    releaseRestore();
+    await pending;
+  }
+  if (entry === 'callback') {
+    expect(failure).toBe('Sign-in could not be completed. Please try again.');
+  } else {
+    const alert = document.querySelector('[role="alert"]');
+    expect(alert?.textContent).toBe('Sign-in could not be completed. Please try again.');
+    expect(mount).toHaveBeenCalledOnce();
+    alert.remove();
+  }
+  // Waiting does not guarantee restoration when one write remains broken.
+  expect(stored.get(KvKeyAuthUser).sub).toBe('local-only');
+  expect(stored.get(KvKeyUserToken)).toBe(oldToken);
   expect(window.location.replace).not.toHaveBeenCalled();
 });
 

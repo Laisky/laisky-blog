@@ -214,10 +214,10 @@ const exchangeCode = async (code, transaction) => {
 };
 
 /**
- * persistSession writes existing auth keys and restores their prior values after a partial failure.
+ * persistSession writes existing auth keys and awaits best-effort recovery after a partial failure.
  *
  * @param {{token: string, user: object}} session - The exchanged bearer and UI claims.
- * @returns {Promise<void>} Resolves after both writes, or rejects after rollback.
+ * @returns {Promise<void>} Resolves after both writes, or rejects after all recovery attempts settle.
  */
 const persistSession = async (session) => {
   const previousUser = await jsutils.KvGet(KvKeyAuthUser);
@@ -226,7 +226,7 @@ const persistSession = async (session) => {
     await jsutils.KvSet(KvKeyAuthUser, session.user);
     await jsutils.KvSet(KvKeyUserToken, session.token);
   } catch {
-    await Promise.all([
+    await Promise.allSettled([
       previousUser == null ? jsutils.KvDel(KvKeyAuthUser) : jsutils.KvSet(KvKeyAuthUser, previousUser),
       previousToken == null ? jsutils.KvDel(KvKeyUserToken) : jsutils.KvSet(KvKeyUserToken, previousToken),
     ]);
