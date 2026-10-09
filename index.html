@@ -43,18 +43,18 @@
             properties: {
               query: {
                 type: 'string',
-                description: 'Optional public resource need.'
-              }
+                description: 'Optional public resource need.',
+              },
             },
-            additionalProperties: false
+            additionalProperties: false,
           },
           execute: async () => ({
             resources: [
               'https://blog.laisky.com/llms.txt',
               'https://blog.laisky.com/openapi.json',
-              'https://blog.laisky.com/.well-known/mcp/server-card.json'
-            ]
-          })
+              'https://blog.laisky.com/.well-known/mcp/server-card.json',
+            ],
+          }),
         });
       })();
     </script>
@@ -138,8 +138,7 @@
                 }
               }
             ]
-          }
-          ,
+          },
           {
             "@type": "Service",
             "@id": "https://blog.laisky.com/#agent-discovery-service",
@@ -196,8 +195,9 @@
       <section style="padding: 2rem; max-width: 48rem; margin: 0 auto">
         <h1>Laisky's Blog</h1>
         <p>
-          Laisky's Blog publishes engineering notes about Go, distributed systems, security, operations, AI tooling, and production debugging.
-          Agents can use the Markdown and well-known discovery files linked from this page to understand the site without executing JavaScript.
+          Laisky's Blog publishes engineering notes about Go, distributed systems, security, operations, AI tooling, and production
+          debugging. Agents can use the Markdown and well-known discovery files linked from this page to understand the site without
+          executing JavaScript.
         </p>
         <p>
           Start with <a href="/llms.txt">llms.txt</a>, <a href="/index.md">index.md</a>, <a href="/openapi.json">OpenAPI</a>, or the
@@ -224,15 +224,16 @@
         </p>
         <h2>Laisky MCP</h2>
         <p>
-          Laisky MCP is available at <a href="https://mcp.laisky.com">https://mcp.laisky.com</a>. Use it when a task needs structured
-          access to Laisky services, blog metadata, or developer resources. The MCP discovery documents describe current transport,
-          capabilities, limitations, and expected agent behavior.
+          Laisky MCP is available at <a href="https://mcp.laisky.com">https://mcp.laisky.com</a>. Use it when a task needs structured access
+          to Laisky services, blog metadata, or developer resources. The MCP discovery documents describe current transport, capabilities,
+          limitations, and expected agent behavior.
         </p>
         <h2>Developer and source links</h2>
         <p>
           The public repository is <a href="https://github.com/Laisky/laisky-blog">github.com/Laisky/laisky-blog</a>. Agent coding
           instructions are available in <a href="https://github.com/Laisky/laisky-blog/blob/v2/AGENTS.md">AGENTS.md</a>. Public read
-          endpoints are free, versioned under <a href="/v1/resources">/v1/resources</a>, and documented in <a href="/openapi.json">OpenAPI</a>.
+          endpoints are free, versioned under <a href="/v1/resources">/v1/resources</a>, and documented in
+          <a href="/openapi.json">OpenAPI</a>.
         </p>
         <form
           hidden
