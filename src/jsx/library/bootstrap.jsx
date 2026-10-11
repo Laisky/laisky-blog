@@ -1,4 +1,4 @@
-import { consumeSSOCallbackToken, hasSSOCallbackParameters } from './sso';
+import { consumeSSOBootstrap, consumeSSOCallbackToken, hasSSOCallbackParameters } from './sso';
 import { initializeOptionalTelemetry } from './telemetry';
 
 /**
@@ -31,6 +31,7 @@ const showSignInError = (replaceApplication) => {
 export const bootstrapApplication = async (mountApplication) => {
   let callbackFailed = false;
   try {
+    if (await consumeSSOBootstrap()) return false;
     await consumeSSOCallbackToken();
   } catch {
     callbackFailed = true;

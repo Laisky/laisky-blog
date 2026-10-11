@@ -35,7 +35,18 @@ let browser;
 try {
   await server.listen();
   browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome', headless: true });
-  for (const mode of ['fresh', 'replay', 'wrong-state', 'expired', 'legacy', 'storage-failure', 'interrupted']) {
+  for (const mode of [
+    'fresh',
+    'replay',
+    'wrong-state',
+    'expired',
+    'legacy',
+    'legacy-alias',
+    'legacy-hash',
+    'mixed-hash',
+    'storage-failure',
+    'interrupted',
+  ]) {
     const context = await browser.newContext({ serviceWorkers: 'block' });
     let exchanges = 0;
     let telemetry = 0;
@@ -45,7 +56,7 @@ try {
       ({ mode, state, verifier }) => {
         window.fixtureMode = mode;
         const query = new URL(window.location.href).searchParams;
-        if (query.has('sso_code') || query.has('sso_token')) {
+        if (query.has('sso_code') || query.has('sso_token') || query.has('SSO_TOKEN') || mode === 'legacy-hash') {
           window.sessionStorage.setItem(
             'sso_code_transaction',
             JSON.stringify({
@@ -105,8 +116,7 @@ try {
         // Read frame metadata synchronously; successful callbacks replace the document.
         const documentURL = new URL(request.frame().url());
         assert.equal(documentURL.origin, 'https://blog.laisky.com');
-        assert.equal(documentURL.searchParams.has('sso_code'), false);
-        assert.equal(documentURL.searchParams.has('sso_token'), false);
+        assert.equal(/sso_(?:code|token|state)/i.test(documentURL.search + documentURL.hash), false);
         if (mode === 'fresh') assert.equal(exchanges, 1);
         return route.fulfill({ status: 200, contentType: 'application/javascript', body: '/* local optional SDK fixture */' });
       }
@@ -131,7 +141,12 @@ try {
     });
     const page = await context.newPage();
     page.on('pageerror', (error) => errors.push(error.message));
-    const query = mode === 'legacy' ? '?sso_token=LOCAL_ONLY_CANARY' : '?sso_code=' + code + '&sso_state=' + state;
+    const query =
+      mode === 'legacy-hash'
+        ? '#SSO_TOKEN=LOCAL_ONLY_CANARY'
+        : ['legacy', 'legacy-alias'].includes(mode)
+          ? '?' + (mode === 'legacy-alias' ? 'SSO_TOKEN' : 'sso_token') + '=LOCAL_ONLY_CANARY'
+          : '?sso_code=' + code + '&sso_state=' + state + (mode === 'mixed-hash' ? '#SSO_TOKEN=LOCAL_ONLY_CANARY' : '');
     await page.goto('https://blog.laisky.com/' + query);
     await page.waitForFunction(() => document.body.dataset.ready === 'true');
     if (mode === 'fresh') await page.waitForURL('https://blog.laisky.com/?done=1#intro');
@@ -140,11 +155,11 @@ try {
       outcome: window.fixtureOutcome,
       token: JSON.parse(window.sessionStorage.getItem('fixture:user_token')),
       user: JSON.parse(window.sessionStorage.getItem('fixture:auth_user')),
-      query: window.location.search,
+      query: window.location.search + window.location.hash,
       transaction: window.sessionStorage.getItem('sso_code_transaction'),
     }));
     assert.equal(result.transaction, null);
-    assert.equal(/sso_(?:token|code|state)/.test(result.query), false);
+    assert.equal(/sso_(?:token|code|state)/i.test(result.query), false);
     assert.deepEqual(errors, []);
     if (mode === 'fresh') {
       assert.equal(result.token, token);

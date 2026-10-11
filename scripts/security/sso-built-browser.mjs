@@ -31,15 +31,33 @@ const assetType = (filename) => {
 
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome', headless: true });
 try {
-  for (const mode of ['fresh', 'legacy', 'wrong-state', 'expired', 'interrupted', 'history-failure']) {
+  for (const mode of [
+    'fresh',
+    'bootstrap',
+    'bootstrap-mcp',
+    'bootstrap-unsafe',
+    'bootstrap-history-failure',
+    'legacy',
+    'legacy-alias',
+    'legacy-hash',
+    'mixed-hash',
+    'wrong-state',
+    'expired',
+    'interrupted',
+    'history-failure',
+  ]) {
     const context = await browser.newContext({ serviceWorkers: 'block' });
     const code = randomBytes(32).toString('base64url');
     let binding;
     let exchanges = 0;
+    let taintedCallbackStarted = false;
     const requests = [];
     const errors = [];
     await context.addInitScript((mode) => {
-      if (mode === 'history-failure' && new URL(window.location.href).searchParams.has('sso_code')) {
+      if (
+        (mode === 'history-failure' && new URL(window.location.href).searchParams.has('sso_code')) ||
+        (mode === 'bootstrap-history-failure' && new URL(window.location.href).searchParams.has('sso_start'))
+      ) {
         window.history.replaceState = () => {
           throw new Error('Local fixture history failure');
         };
@@ -54,11 +72,13 @@ try {
       const request = route.request();
       const url = new URL(request.url());
       const referer = request.headers().referer || '';
-      requests.push({ url: url.toString(), referer });
+      requests.push({ url: url.toString(), referer, taintedCallbackStarted });
       assert.equal(referer, '', 'Callback and code-exchange referrers must be absent');
       assert.equal(url.toString().includes(token), false);
-      if (url.origin === 'https://sso.laisky.com') {
-        if (url.pathname === '/' && request.method() === 'GET') {
+      if (url.origin === 'https://sso.laisky.com' || url.origin === 'https://mcp.laisky.com') {
+        const loginOrigin = mode === 'bootstrap-mcp' ? 'https://mcp.laisky.com' : 'https://sso.laisky.com';
+        const loginPath = mode === 'bootstrap-mcp' ? '/sso/login' : '/';
+        if (url.origin === loginOrigin && url.pathname === loginPath && request.method() === 'GET') {
           binding = new URL(url.searchParams.get('redirect_to'));
           assert.equal(binding.origin, 'https://blog.laisky.com');
           assert.equal(binding.pathname, '/');
@@ -117,7 +137,10 @@ try {
       if (['https://js.sentry-cdn.com', 'https://www.googletagmanager.com', 'https://cse.google.com'].includes(url.origin)) {
         const documentURL = new URL(request.frame().url());
         assert.equal(documentURL.origin, 'https://blog.laisky.com');
-        assert.equal(/sso_(?:token|code|state)/.test(documentURL.search), false);
+        assert.equal(
+          /sso_(?:token|code|state|flow|challenge|verifier|start|return|issuer)|code_verifier/i.test(documentURL.search + documentURL.hash),
+          false
+        );
         return route.fulfill({
           contentType: 'application/javascript',
           headers: { 'Access-Control-Allow-Origin': 'https://blog.laisky.com' },
@@ -137,20 +160,50 @@ try {
     });
     const page = await context.newPage();
     page.on('pageerror', (error) => errors.push(error.message));
-    if (mode === 'legacy') {
-      await page.goto('https://blog.laisky.com/?sso_token=LOCAL_ONLY_BEARER_CANARY');
+    if (mode === 'legacy-hash') {
+      await page.goto('https://blog.laisky.com/#SSO_TOKEN=LOCAL_ONLY_BEARER_CANARY');
+    } else if (mode === 'legacy' || mode === 'legacy-alias') {
+      await page.goto('https://blog.laisky.com/?' + (mode === 'legacy-alias' ? 'SSO_TOKEN' : 'sso_token') + '=LOCAL_ONLY_BEARER_CANARY');
+    } else if (mode === 'bootstrap-unsafe') {
+      await page.goto('https://blog.laisky.com/?sso_start=1&sso_return=' + encodeURIComponent('//other.invalid/'));
+    } else if (mode === 'bootstrap-history-failure') {
+      taintedCallbackStarted = true;
+      await page.goto('https://blog.laisky.com/?sso_start=1&sso_return=' + encodeURIComponent('/pages/0/'));
     } else {
-      await page.goto('https://blog.laisky.com/pages/0/?view=compact#intro');
-      await page.getByRole('button', { name: 'Login', exact: true }).click();
-      await page.waitForURL((url) => url.origin === 'https://sso.laisky.com');
+      if (mode === 'bootstrap' || mode === 'bootstrap-mcp') {
+        await page.goto(
+          'https://blog.laisky.com/?sso_start=1&sso_return=' +
+            encodeURIComponent('/pages/0/?view=compact#intro') +
+            (mode === 'bootstrap-mcp' ? '&sso_issuer=mcp' : '')
+        );
+      } else {
+        await page.goto('https://blog.laisky.com/pages/0/?view=compact#intro');
+        await page.getByRole('button', { name: 'Login', exact: true }).click();
+      }
+      await page.waitForURL((url) => url.origin === (mode === 'bootstrap-mcp' ? 'https://mcp.laisky.com' : 'https://sso.laisky.com'));
+      if (mode === 'bootstrap' || mode === 'bootstrap-mcp') {
+        assert.equal(
+          requests.some((entry) =>
+            ['https://js.sentry-cdn.com', 'https://www.googletagmanager.com', 'https://cse.google.com'].includes(new URL(entry.url).origin)
+          ),
+          false,
+          'Bootstrap must not initialize optional SDKs before navigation'
+        );
+      }
       const state = mode === 'wrong-state' ? randomBytes(32).toString('base64url') : binding.searchParams.get('sso_state');
-      await page.goto('https://blog.laisky.com/?sso_code=' + code + '&sso_state=' + state);
+      await page.goto(
+        'https://blog.laisky.com/?sso_code=' +
+          code +
+          '&sso_state=' +
+          state +
+          (mode === 'mixed-hash' ? '#SSO_TOKEN=LOCAL_ONLY_BEARER_CANARY' : '')
+      );
     }
-    if (mode === 'fresh') {
+    if (mode === 'fresh' || mode === 'bootstrap' || mode === 'bootstrap-mcp') {
       await page.waitForURL('https://blog.laisky.com/pages/0/?view=compact#intro');
       await page.getByText('Welcome, Local SSO Fixture').waitFor();
       assert.equal(exchanges, 1);
-    } else if (mode === 'history-failure') {
+    } else if (mode === 'history-failure' || mode === 'bootstrap-history-failure') {
       await page.getByRole('alert').filter({ hasText: 'Sign-in could not be completed' }).waitFor();
       await page.getByRole('link', { name: 'Continue to articles' }).waitFor();
       assert.equal(await page.getByRole('button', { name: 'Login', exact: true }).count(), 0);
@@ -162,12 +215,27 @@ try {
       await page.getByRole('button', { name: 'Login', exact: true }).waitFor();
       assert.equal(exchanges, mode === 'interrupted' ? 1 : 0);
     }
-    if (mode === 'history-failure') {
+    if (mode === 'history-failure' || mode === 'bootstrap-history-failure') {
       // The failed history API cannot clean the URL; the local-only UI must instead prevent App/SDK initialization.
-      assert.equal(/sso_code=/.test(new URL(page.url()).search), true);
+      const marker = mode === 'bootstrap-history-failure' ? 'sso_start' : 'sso_code';
+      assert.equal(new URL(page.url()).searchParams.has(marker), true);
+      assert.equal(
+        requests.some(
+          (entry) =>
+            entry.taintedCallbackStarted &&
+            ['https://js.sentry-cdn.com', 'https://www.googletagmanager.com', 'https://cse.google.com'].includes(new URL(entry.url).origin)
+        ),
+        false,
+        'The marker-bearing failed-cleanup document must not initialize SDKs; the earlier clean article may do so'
+      );
     } else {
       assert.equal(await page.evaluate(() => window.sessionStorage.getItem('sso_code_transaction')), null);
-      assert.equal(/sso_(?:token|code|state)/.test(new URL(page.url()).search), false);
+      assert.equal(
+        /sso_(?:token|code|state|flow|challenge|verifier|start|return|issuer)|code_verifier/i.test(
+          new URL(page.url()).search + new URL(page.url()).hash
+        ),
+        false
+      );
     }
     assert.deepEqual(errors, []);
     console.log(JSON.stringify({ mode, passed: true, exchanges, actualBuiltUI: true, noBearerURLs: true, noReferrers: true }));
