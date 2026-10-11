@@ -1,24 +1,25 @@
 # Fast CI policy (2026-10-08)
 
-The maintainer requests minimal automatic pre-merge checks. CircleCI is the
-single automatic provider for changed-file formatting and nine existing
-deterministic unit tests. The GitHub `Fast CI / test` job remains available
-through explicit manual dispatch with a verified full comparison SHA; it no
-longer repeats the automatic CircleCI gate on pull requests or pushes. This CI
-scheduling policy supersedes general lint/test/build requirements for CI-only
-scheduling changes. Application changes still require full local dev/staging
-qualification before promotion.
+The maintainer requests minimal automatic pre-merge checks. GitHub
+`Fast CI / test` retains the current `v2` baseline: changed-file formatting and
+nine existing deterministic unit tests on pull requests and pushes to `v2`.
+Manual GitHub dispatch remains available with a verified full comparison SHA.
+CircleCI provides the same fast gate only through an explicit opt-in pipeline
+parameter; it is disabled by default. This CI scheduling policy supersedes
+general lint/test/build requirements for CI-only scheduling changes. Application
+changes still require full local dev/staging qualification before promotion.
 
 The existing `ci.yml` publishing and deployment workflow is separate and
 unchanged. This change does not alter production builds, health checks,
-credentials, secrets, security scanning or branch protection. The retained manual GitHub test job
-has read-only permissions and does not retain checkout credentials.
+credentials, secrets, security scanning or branch protection. The GitHub test
+job has read-only permissions and does not retain checkout credentials.
 
 ## Formatting scope and existing debt
 
-Prettier checks supported files changed since the verified candidate merge base
-or `v2` first parent in CircleCI, or the explicitly provided full base SHA in
-manual GitHub dispatch, plus this workflow, policy and runner/control files. Renamed files
+Prettier checks supported files changed since the verified PR base SHA, push
+before SHA or explicit manual-dispatch SHA in GitHub. An opted-in CircleCI run
+uses the candidate merge base or `v2` first parent described below. Both include
+the workflow, policy and runner/control files. Renamed files
 are checked at their new paths; deletions have no content to check. The existing
 Prettier configuration and ignore file remain authoritative (including the
 existing SCSS exclusion). Missing, malformed, unknown or all-zero base SHAs fail
@@ -55,7 +56,7 @@ An additional real formatter probe must reject deliberately unformatted input
 with exit 1, so a dropped `--check` option cannot turn formatting into success.
 Raw command outputs, discovery, JSON reports and measured setup/gate wall times
 are retained on success and failure. Dependency/build caching is allowed;
-tests execute anew. A five-minute timeout bounds the automatic job.
+tests execute anew. A five-minute timeout bounds the automatic GitHub job and the opted-in CircleCI gate.
 
 ```sh
 corepack enable
@@ -98,7 +99,8 @@ any application test ran. `.circleci/config.yml` now executes the same frozen
 formatting and nine-unit gate on one small executor; it does not build, publish,
 run browser campaigns, or deploy. The Node 22.22.3 executor image is pinned by
 manifest digest, and Yarn Classic must report 1.22.22. Existing GitHub Actions
-release remains unchanged, while its duplicate fast gate is manual only.
+fast checks and release controls remain unchanged. The CircleCI workflow is
+disabled unless a caller explicitly sets the boolean `run-fast-ci` to `true`.
 
 The adapter fetches `v2` and compares a candidate branch with its merge base,
 including a branch's first pipeline when CircleCI has no previous build SHA.
@@ -112,32 +114,46 @@ before the real gate. The gate command is bounded to five minutes and retains
 its native output, discovery, assertions and timing receipts as artifacts.
 
 No external integration, branch-protection rule, secret, context or account
-setting is modified. The detailed protection endpoint is inaccessible to the
-available integration (403), but the readable `v2` branch summary reports
-protection disabled and required-status enforcement off with empty checks;
-repository rulesets are empty. No observed protection requires the duplicate
-GitHub fast job. CircleCI hosted acceptance is checked at the exact candidate
-head rather than assuming a valid configuration implies successful tests.
+setting is modified. Local parsing and control tests do not establish hosted
+config compilation or execution; any opted-in hosted acceptance must be checked
+at the exact candidate head.
 
-## Automatic duplication removed (2026-10-09)
+## Explicit CircleCI opt-in (2026-10-11)
 
-The authorized simplification removes only the GitHub fast workflow's
-`pull_request` and `push` subscriptions. Its job, failure controls, explicit
-manual-dispatch base input, artifact receipts, and all underlying test coverage
-remain intact. CircleCI continues the genuine automatic frozen setup,
-formatting and nine-unit gate. Its all-branch/tag-ignore filters and external
-trigger settings are unchanged; no extra job or account setting is introduced.
-The three-job GitHub release workflow and its `v2` push trigger remain
-byte-for-byte identical.
+The current `v2` GitHub fast workflow keeps its `pull_request`, `push` and manual
+dispatch subscriptions byte-for-byte. The additional CircleCI workflow declares
+a top-level boolean `run-fast-ci` with default `false` and uses it in its
+workflow-level `when` condition. A normal pipeline omitting the parameter
+schedules no CircleCI job. To request the bounded fast gate explicitly, trigger
+a branch pipeline from the CircleCI web app or API with:
 
-When both providers would have triggered, a pull request's repository-defined
-quality jobs decrease from two to one, and a `v2` push's quality plus release
-jobs decrease from five to four. Other branch pipelines remain one CircleCI
-job. These conditional counts exclude unchanged managed CodeQL analyses,
-Snyk and CodeRabbit. Actual CircleCI push/PR subscriptions are external and
-have not been modified. The removed GitHub duplicate's measured job time and
-the retained fast-gate receipt are recorded in PR #195; no reduction is claimed
-for unobserved CircleCI queue or execution time.
+```json
+{
+  "parameters": {
+    "run-fast-ci": true
+  }
+}
+```
+
+The opt-in changes scheduling only. Existing anonymous exact-commit checkout,
+image pin, small executor, frozen setup, formatting, nine units, failure
+controls, base resolution and artifact receipts remain intact. Tags remain
+ignored. External subscriptions may still create CircleCI pipeline records;
+this configuration does not claim to prevent pipeline creation or change
+external trigger/account settings.
+
+When external CircleCI subscriptions would have created a pipeline, the
+unconditional inherited adapter plus restored GitHub subscriptions would
+schedule two quality jobs for a pull request to `v2`, five quality/release jobs
+for a `v2` push (two quality plus three release), and one job for another branch.
+With the default-false CircleCI condition these counts become one, four and
+zero respectively, preserving the current `v2` automatic baseline. An explicit
+CircleCI opt-in schedules one additional fast job for a branch pipeline.
+Counts exclude unchanged managed CodeQL analyses, Snyk and CodeRabbit and do not
+claim savings in unobserved provider queue or execution time.
+
+CircleCI documents this exact boolean-default-false and workflow-level `when`
+pattern in [Pipeline parameters and conditional workflows](https://circleci.com/docs/guides/orchestrate/pipeline-variables/#pipeline-parameters-and-conditional-workflows).
 
 Full lint, the complete unit suite, build, coverage and security/browser
 regressions remain local or explicitly manual. The `yarn coverage` command,
