@@ -1,29 +1,13 @@
 import jsutils from '@laisky/js-utils';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
-import { KvKeyUserToken } from '../../library/base';
-import { consumeSSOCallbackToken, KvKeySSORedirectPath } from '../../library/sso';
+import { consumeSSOCallbackToken, KvKeySSOTransaction } from '../../library/sso';
 
 vi.mock('@laisky/js-utils', () => ({
-  default: { KvSet: vi.fn(), KvDel: vi.fn() },
+  default: { KvSet: vi.fn(), KvGet: vi.fn(), KvDel: vi.fn() },
 }));
-
-/**
- * buildSyntheticToken returns an unsigned local-only callback value with the given expiry.
- *
- * @param {number} expiry - The Unix timestamp used in the synthetic payload.
- * @returns {string} A JWT-like string that is not a usable service credential.
- */
-const buildSyntheticToken = (expiry) =>
-  [
-    window.btoa(JSON.stringify({ alg: 'none' })),
-    window.btoa(JSON.stringify({ sub: 'local-test-only', exp: expiry })),
-    'local-test-only',
-  ].join('.');
 
 beforeEach(() => {
   vi.resetAllMocks();
-  jsutils.KvSet.mockResolvedValue(undefined);
-  jsutils.KvDel.mockResolvedValue(undefined);
   vi.stubGlobal(
     'fetch',
     vi.fn(() => {
@@ -32,121 +16,71 @@ beforeEach(() => {
   );
   window.sessionStorage.clear();
 });
-
 afterEach(() => {
+  vi.restoreAllMocks();
   vi.unstubAllGlobals();
   window.sessionStorage.clear();
   window.history.replaceState({}, '', '/');
 });
 
-test('cleans the callback URL before a pending storage write while preserving legacy login', async () => {
-  const token = buildSyntheticToken(Math.floor(Date.now() / 1000) + 60);
-  let releaseWrite;
-  jsutils.KvSet.mockImplementationOnce(
-    () =>
-      new Promise((resolve) => {
-        releaseWrite = resolve;
-      })
-  );
-  window.history.replaceState({}, '', '/pages/0/?view=compact&sso_token=' + encodeURIComponent(token) + '#intro');
-  window.sessionStorage.setItem(KvKeySSORedirectPath, '/pages/0/?view=compact#intro');
-
+test.each([
+  'sso_token=local-invalid',
+  'sso_token=',
+  'sso_token=first&sso_token=second',
+  'sso_code=' + 'A'.repeat(43) + '&sso_state=' + 'B'.repeat(43) + '&sso_token=local',
+  'sso_code=' + 'A'.repeat(43) + '&sso_code=' + 'A'.repeat(43) + '&sso_state=' + 'B'.repeat(43),
+  'sso_code=' + 'A'.repeat(43) + '&sso_state=' + 'B'.repeat(43) + '&sso_state=' + 'B'.repeat(43),
+  'sso_code=short&sso_state=' + 'B'.repeat(43),
+  'sso_code=' + 'A'.repeat(43),
+  'sso_state=' + 'B'.repeat(43),
+  'sso_flow=code&sso_challenge=local&sso_challenge_method=plain',
+])('cleans invalid callback markers synchronously and preserves existing sessions: %s', async (query) => {
+  window.history.replaceState({}, '', '/pages/0/?view=compact&' + query + '#intro');
   const pending = consumeSSOCallbackToken();
-  expect(jsutils.KvSet).toHaveBeenCalledTimes(1);
-  const urlWhileStoragePending = window.location.pathname + window.location.search + window.location.hash;
-  releaseWrite();
-  await pending;
-
-  expect(urlWhileStoragePending).toBe('/pages/0/?view=compact#intro');
-  expect(jsutils.KvSet).toHaveBeenCalledWith(KvKeyUserToken, token);
-  expect(globalThis.fetch).not.toHaveBeenCalled();
-});
-
-test('removes invalid callback values before a pending cache deletion', async () => {
-  let releaseDeletion;
-  jsutils.KvDel.mockImplementationOnce(
-    () =>
-      new Promise((resolve) => {
-        releaseDeletion = resolve;
-      })
-  );
-  window.history.replaceState({}, '', '/pages/0/?sso_token=local-invalid&view=compact#intro');
-
-  const pending = consumeSSOCallbackToken();
-  const urlWhileDeletionPending = window.location.pathname + window.location.search + window.location.hash;
-  releaseDeletion();
-  await pending;
-
-  expect(urlWhileDeletionPending).toBe('/pages/0/?view=compact#intro');
+  expect(window.location.pathname + window.location.search + window.location.hash).toBe('/pages/0/?view=compact#intro');
+  await expect(pending).rejects.toThrow('Sign-in could not');
   expect(jsutils.KvSet).not.toHaveBeenCalled();
-  expect(jsutils.KvDel).toHaveBeenCalledTimes(2);
+  expect(jsutils.KvGet).not.toHaveBeenCalled();
+  expect(jsutils.KvDel).not.toHaveBeenCalled();
   expect(globalThis.fetch).not.toHaveBeenCalled();
 });
 
-test('keeps the URL clean when storage writes fail', async () => {
-  const token = buildSyntheticToken(Math.floor(Date.now() / 1000) + 60);
-  jsutils.KvSet.mockRejectedValueOnce(new Error('Local storage unavailable'));
+test('rejects a synthetic reusable bearer while preserving a previously stored session', async () => {
+  const token = [
+    window.btoa('{"alg":"none"}'),
+    window.btoa(
+      JSON.stringify({
+        sub: 'local-only',
+        exp: Math.floor(Date.now() / 1000) + 300,
+      })
+    ),
+    'local-only',
+  ].join('.');
   window.history.replaceState({}, '', '/pages/0/?sso_token=' + encodeURIComponent(token));
-
-  expect(await consumeSSOCallbackToken()).toBe(true);
+  await expect(consumeSSOCallbackToken()).rejects.toThrow('Sign-in could not');
   expect(window.location.search).toBe('');
-  expect(jsutils.KvDel).toHaveBeenCalledTimes(2);
-  expect(globalThis.fetch).not.toHaveBeenCalled();
-});
-
-test('keeps the URL clean even if invalid-token cache deletion rejects', async () => {
-  jsutils.KvDel.mockRejectedValueOnce(new Error('Local cache deletion unavailable'));
-  window.history.replaceState({}, '', '/pages/0/?sso_token=local-invalid');
-
-  await expect(consumeSSOCallbackToken()).rejects.toThrow('Local cache deletion unavailable');
-  expect(window.location.search).toBe('');
-  expect(jsutils.KvSet).not.toHaveBeenCalled();
-  expect(globalThis.fetch).not.toHaveBeenCalled();
-});
-
-test('removes all duplicated authentication parameters while preserving the other URL parts', async () => {
-  window.history.replaceState({}, '', '/pages/0/?sso_token=local-invalid&sso_token=local-other&view=compact#intro');
-
-  expect(await consumeSSOCallbackToken()).toBe(true);
-  expect(window.location.pathname + window.location.search + window.location.hash).toBe('/pages/0/?view=compact#intro');
-});
-
-test('cleans an empty callback parameter without establishing a session', async () => {
-  window.history.replaceState({}, '', '/pages/0/?sso_token=&view=compact#intro');
-
-  expect(await consumeSSOCallbackToken()).toBe(false);
-  expect(window.location.pathname + window.location.search + window.location.hash).toBe('/pages/0/?view=compact#intro');
   expect(jsutils.KvSet).not.toHaveBeenCalled();
   expect(jsutils.KvDel).not.toHaveBeenCalled();
+  expect(globalThis.fetch).not.toHaveBeenCalled();
 });
 
-test('leaves ordinary URLs and existing storage unchanged', async () => {
+test('cleans markers before a tab-storage error and never submits an exchange', async () => {
+  window.history.replaceState({}, '', '/?sso_code=' + 'A'.repeat(43) + '&sso_state=' + 'B'.repeat(43));
+  vi.spyOn(window.Storage.prototype, 'removeItem').mockImplementation(() => {
+    throw new Error('unavailable');
+  });
+  await expect(consumeSSOCallbackToken()).rejects.toThrow('Sign-in could not');
+  expect(window.location.search).toBe('');
+  expect(globalThis.fetch).not.toHaveBeenCalled();
+});
+
+test('leaves ordinary URLs and stored sessions unchanged', async () => {
   window.history.replaceState({}, '', '/pages/0/?view=compact#intro');
-
+  window.sessionStorage.setItem(KvKeySSOTransaction, 'local pending transaction');
   expect(await consumeSSOCallbackToken()).toBe(false);
   expect(window.location.pathname + window.location.search + window.location.hash).toBe('/pages/0/?view=compact#intro');
+  expect(window.sessionStorage.getItem(KvKeySSOTransaction)).toBe('local pending transaction');
   expect(jsutils.KvSet).not.toHaveBeenCalled();
   expect(jsutils.KvDel).not.toHaveBeenCalled();
-});
-
-test('removes expired callback values before a pending cache deletion', async () => {
-  const token = buildSyntheticToken(Math.floor(Date.now() / 1000) - 60);
-  let releaseDeletion;
-  jsutils.KvDel.mockImplementationOnce(
-    () =>
-      new Promise((resolve) => {
-        releaseDeletion = resolve;
-      })
-  );
-  window.history.replaceState({}, '', '/pages/0/?sso_token=' + encodeURIComponent(token));
-
-  const pending = consumeSSOCallbackToken();
-  const queryWhileDeletionPending = window.location.search;
-  releaseDeletion();
-  await pending;
-
-  expect(queryWhileDeletionPending).toBe('');
-  expect(jsutils.KvSet).not.toHaveBeenCalled();
-  expect(jsutils.KvDel).toHaveBeenCalledTimes(2);
   expect(globalThis.fetch).not.toHaveBeenCalled();
 });
