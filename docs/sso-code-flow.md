@@ -130,6 +130,7 @@ obsolete cached code cannot safely accept a reusable URL bearer. This change
 does not shorten existing sessions or accept previously leaked token bookmarks.
 
 Implementation references reviewed 2026-10-11:
+
 - https://www.rfc-editor.org/rfc/rfc7636.html#section-4.1
 - https://www.rfc-editor.org/rfc/rfc9700.html#section-4.1.3
 - https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
