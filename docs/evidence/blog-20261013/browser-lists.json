@@ -1,0 +1,137 @@
+{
+  "section": "lists",
+  "live_traffic_allowed": false,
+  "playwright": "1.57.0",
+  "assets": {
+    "baseline": {
+      "index-C4Ql5MCr.js": "e70691b88f42ad59e1e4e5fb15e4c854943f1cd435f93d5c7fb20c3b129e0d50"
+    },
+    "candidate": {
+      "index-DaARSYtk.js": "85b85245b99cf6c788f1203d3ee8c4431c9a60be608b0e1479715a46aa9cc14f"
+    }
+  },
+  "engine": "143.0.7499.4",
+  "results": [
+    {
+      "build": "baseline",
+      "state": "cold",
+      "operations": 17,
+      "detail_requests": 9,
+      "list_pages": [0, 1, 2, 1, 2],
+      "fixture_body_bytes": 90066
+    },
+    {
+      "build": "baseline",
+      "state": "warm",
+      "operations": 2,
+      "detail_requests": 0,
+      "list_pages": [],
+      "fixture_body_bytes": 58
+    },
+    {
+      "build": "baseline",
+      "state": "forced",
+      "operations": 21,
+      "detail_requests": 9,
+      "list_pages": [0, 0, 1, 2, 0, 0, 1, 2],
+      "fixture_body_bytes": 110803
+    },
+    {
+      "build": "candidate",
+      "state": "cold",
+      "operations": 4,
+      "detail_requests": 0,
+      "list_pages": [0],
+      "fixture_body_bytes": 6995
+    },
+    {
+      "build": "candidate",
+      "state": "warm",
+      "operations": 2,
+      "detail_requests": 0,
+      "list_pages": [],
+      "fixture_body_bytes": 58
+    },
+    {
+      "build": "candidate",
+      "state": "forced",
+      "operations": 4,
+      "detail_requests": 0,
+      "list_pages": [0],
+      "fixture_body_bytes": 6995
+    },
+    {
+      "build": "candidate",
+      "total": 0,
+      "index": 0,
+      "operations": 3,
+      "detail_requests": 0,
+      "list_pages": [],
+      "fixture_body_bytes": 95
+    },
+    {
+      "build": "candidate",
+      "total": 1,
+      "index": 0,
+      "operations": 4,
+      "detail_requests": 0,
+      "list_pages": [0],
+      "fixture_body_bytes": 883
+    },
+    {
+      "build": "candidate",
+      "total": 10,
+      "index": 0,
+      "operations": 4,
+      "detail_requests": 0,
+      "list_pages": [0],
+      "fixture_body_bytes": 7760
+    },
+    {
+      "build": "candidate",
+      "total": 11,
+      "index": 1,
+      "operations": 4,
+      "detail_requests": 0,
+      "list_pages": [1],
+      "fixture_body_bytes": 886
+    },
+    {
+      "build": "candidate",
+      "total": 21,
+      "index": 2,
+      "operations": 4,
+      "detail_requests": 0,
+      "list_pages": [2],
+      "fixture_body_bytes": 886
+    },
+    {
+      "build": "candidate",
+      "total": 21,
+      "index": 3,
+      "operations": 1,
+      "detail_requests": 0,
+      "list_pages": [],
+      "fixture_body_bytes": 38
+    },
+    {
+      "build": "candidate",
+      "total": 21,
+      "index": -1,
+      "operations": 0,
+      "detail_requests": 0,
+      "list_pages": [],
+      "fixture_body_bytes": 0
+    },
+    {
+      "build": "candidate",
+      "total": 21,
+      "index": "NaN",
+      "operations": 0,
+      "detail_requests": 0,
+      "list_pages": [],
+      "fixture_body_bytes": 0
+    }
+  ],
+  "passed": true
+}

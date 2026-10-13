@@ -1,44 +1,14 @@
 'use strict';
 
 import jsutils from '@laisky/js-utils';
-import { gql } from 'graphql-request';
-import React, { useEffect, useState, useRef } from 'react';
-import { Link, useLoaderData, useNavigate, useParams, useLocation } from 'react-router-dom';
+import React, { useEffect, useState, useRef, useId } from 'react';
+import { Link, useLoaderData, useNavigate, useParams, useLocation, useRevalidator } from 'react-router-dom';
 
 import { Sidebar } from '../components/sidebar.jsx';
 import { Tooltip } from '../components/Tooltip.jsx';
 
-import {
-  KvKeyLanguage,
-  KvKeyPrefixCache,
-  formatTs,
-  ts2UTC,
-  getCurrentUsername,
-  getUserLanguage,
-  graphqlQuery,
-  isForce,
-} from '../library/base.jsx';
-import { loader as postLoader } from './post.jsx';
-
-/**
- * loader loads page data including posts and total post count.
- *
- * @param {Object} params - Route params containing nPage
- * @returns {Promise<Object>} Object containing postsData and nPosts
- */
-export const loader = async ({ params }) => {
-  const [postsData, nPosts] = await Promise.all([loadPage(params.nPage), loadPostInfo()]);
-
-  // preload surrounding pages
-  const nPage = parseInt(params.nPage, 10);
-  const preloadFrom = Math.max(0, nPage - 3);
-  const preloadTo = Math.min(nPosts, nPage + 3);
-  for (let i = preloadFrom; i < preloadTo; i++) {
-    loadPage(i);
-  }
-
-  return { postsData, nPosts };
-};
+import { KvKeyLanguage, formatTs, ts2UTC, getCurrentUsername } from '../library/base.jsx';
+export { loadPageData as loader } from './pagesData.js';
 
 // Session storage key for scroll positions
 const SCROLL_POSITIONS_KEY = 'blog_scroll_positions';
@@ -118,7 +88,12 @@ export const Page = () => {
   const params = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { nPosts } = useLoaderData();
+  const { postsData, nPosts, nPage, problem } = useLoaderData();
+  const revalidator = useRevalidator();
+  const listenerName = useId();
+  const revalidatorRef = useRef(revalidator);
+  revalidatorRef.current = revalidator;
+  const [listenerFailed, setListenerFailed] = useState(false);
   const scrollRestoredRef = useRef(false);
   const lastScrollYRef = useRef(0);
 
@@ -229,23 +204,58 @@ export const Page = () => {
   }, [params.nPage, nPosts, navigate]);
 
   useEffect(() => {
-    (async () => {
-      await generatePostsContent();
-      watchLanguageChange();
+    let cancelled = false;
+    if (!problem) {
+      generatePostsContent(() => !cancelled).catch(() => {
+        if (!cancelled) {
+          setContent(<p role="alert">Article display is unavailable. Please reload this page.</p>);
+          setContentLoaded(true);
+        }
+      });
+      document.title = `Page ${nPage + 1}`;
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, [postsData, nPosts, nPage, problem]);
 
-      // update page title
-      const currentPage = parseInt(params.nPage, 10) + 1;
-      document.title = `Page ${currentPage}`;
-    })();
-  }, [params.nPage]);
-
+  useEffect(() => {
+    let cancelled = false;
+    /** registerLanguageListener revalidates the router for language changes and removes its own named subscription on cleanup. */
+    const registerLanguageListener = async () => {
+      try {
+        await jsutils.KvAddListener(
+          KvKeyLanguage,
+          (key, op, oldVal, newVal) => {
+            if (!cancelled && op === jsutils.KvOp.SET && key === KvKeyLanguage && oldVal !== newVal) {
+              Promise.resolve()
+                .then(() => revalidatorRef.current.revalidate())
+                .catch(() => {
+                  if (!cancelled) setListenerFailed(true);
+                });
+            }
+          },
+          listenerName
+        );
+        if (cancelled) jsutils.KvRemoveListener?.(KvKeyLanguage, listenerName);
+      } catch {
+        if (!cancelled) setListenerFailed(true);
+      }
+    };
+    registerLanguageListener();
+    return () => {
+      cancelled = true;
+      jsutils.KvRemoveListener?.(KvKeyLanguage, listenerName);
+    };
+  }, [listenerName]);
 
   /**
    * generatePostsContent generates the HTML content for the posts on the current page.
    */
-  const generatePostsContent = async () => {
-    const currentPage = parseInt(params.nPage, 10);
-    const { postsData, nPosts } = await loader({ params });
+  const generatePostsContent = async (isCurrent) => {
+    const currentPage = nPage;
+    const editable = Boolean(await getCurrentUsername());
+    if (!isCurrent()) return;
     const totalPage = Math.max(1, Math.ceil(nPosts / 10));
     const isFirstPage = currentPage <= 0;
     const isLastPage = currentPage >= totalPage - 1;
@@ -253,10 +263,7 @@ export const Page = () => {
 
     const postsContent = [];
     for (const post of postsData) {
-      // preload post to cache
-      postLoader({ params: { name: post.name } });
-
-      const postTail = await getPostTails(post);
+      const postTail = editable ? <Link to={`/edit/${post.name}/`}>Edit</Link> : null;
       const postElement = (
         <div className="post" id={post.name} key={post.name}>
           <h2 className="post-title">
@@ -285,7 +292,7 @@ export const Page = () => {
               <h1>Articles</h1>
               <p>{`Page ${humanPage} of ${totalPage}`}</p>
             </header>
-            {postsContent}
+            {postsContent.length ? postsContent : <p>No articles have been published yet.</p>}
             {/* pagination as part of the tape */}
             <div className="post pagination-segment">
               <nav className="footer">
@@ -296,12 +303,9 @@ export const Page = () => {
                     </Link>
                   </li>
 
-                  {Array.from({ length: totalPage }, (_, i) => {
-                    const page = i;
-                    const startPage = Math.max(0, currentPage - 3);
-                    const endPage = Math.min(totalPage - 1, currentPage + 3);
-
-                    if (page >= startPage && page <= endPage) {
+                  {Array.from({ length: Math.min(7, totalPage) }, (_, i) => {
+                    const page = Math.max(0, Math.min(currentPage - 3, totalPage - 7)) + i;
+                    if (page < totalPage) {
                       return (
                         <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
                           <Link className="page-link" to={`/pages/${page}/`}>
@@ -334,129 +338,45 @@ export const Page = () => {
       </>
     );
 
+    if (!isCurrent()) return;
     setContent(cnt);
     setContentLoaded(true);
   };
 
-  /**
-   * watchLanguageChange watches for language changes and regenerates content.
-   */
-  const watchLanguageChange = async () => {
-    await jsutils.KvAddListener(
-      KvKeyLanguage,
-      async (key, op, oldVal, newVal) => {
-        if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
-          return;
-        }
-
-        await generatePostsContent();
-      },
-      'page_pages'
-    );
-  };
-
-  /**
-   * getPostTails gets the edit link for posts if user is logged in.
-   */
-  const getPostTails = async (post) => {
-    let articleEditable;
-    if (await getCurrentUsername()) {
-      articleEditable = <Link to={`/edit/${post.name}/`}>Edit</Link>;
-    }
-
-    return articleEditable;
-  };
-
   return (
     <div className="scrollable-content">
-      <div id="pages" className="row align-items-start" aria-live="polite" aria-busy={!contentLoaded}>
-        {content}
+      <div
+        id="pages"
+        className="row align-items-start"
+        aria-live="polite"
+        aria-busy={(!problem && !contentLoaded) || revalidator.state === 'loading'}
+      >
+        {listenerFailed && <p role="status">Page updates are unavailable. Reload this page to try again.</p>}
+        {problem ? (
+          <section className="col-12" role="alert">
+            <h1>{problem === 'request' ? 'Articles could not be loaded.' : 'This article page does not exist.'}</h1>
+            {problem === 'request' && (
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                disabled={revalidator.state === 'loading'}
+                onClick={() => {
+                  Promise.resolve()
+                    .then(() => revalidatorRef.current.revalidate())
+                    .catch(() => setListenerFailed(true));
+                }}
+              >
+                Retry loading articles
+              </button>
+            )}
+            <p>
+              <Link to="/pages/0/">Go to the first page</Link>
+            </p>
+          </section>
+        ) : (
+          content
+        )}
       </div>
     </div>
   );
-};
-
-/**
- * loadPage loads posts for a specific page number.
- *
- * @param {number} nPage - The page number to load
- * @returns {Promise<Array>} Array of post objects
- */
-const loadPage = async (nPage) => {
-  const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`loadPage:${await getUserLanguage()}:${nPage}`));
-  if (!isForce()) {
-    const cacheData = await jsutils.GetCache(cacheKey);
-    if (cacheData) {
-      return cacheData;
-    }
-  }
-
-  const gqBody = gql`
-        query {
-            BlogPosts(
-                language: ${await getUserLanguage()}
-                length: 600
-                page: {
-                    page: ${nPage}
-                    size: 10
-                }
-            ) {
-                name
-                created_at
-                modified_at
-                type
-                title
-                menu
-                markdown
-                tags
-                category {
-                    name
-                    url
-                }
-                arweave_id {
-                    id
-                    time
-                }
-            }
-        }
-    `;
-
-  const resp = await graphqlQuery(gqBody);
-  const result = resp.BlogPosts;
-
-  // update cache
-  await jsutils.SetCache(cacheKey, result);
-
-  return result;
-};
-
-/**
- * loadPostInfo loads the total post count.
- *
- * @returns {Promise<number>} Total number of posts
- */
-const loadPostInfo = async () => {
-  const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`loadPostInfo`));
-  if (!isForce()) {
-    const cacheData = await jsutils.GetCache(cacheKey);
-    if (cacheData) {
-      return cacheData;
-    }
-  }
-
-  const gqBody = gql`
-    query postinfo {
-      BlogPostInfo {
-        total
-      }
-    }
-  `;
-
-  const resp = await graphqlQuery(gqBody);
-  const result = resp.BlogPostInfo.total;
-
-  // update cache
-  await jsutils.SetCache(cacheKey, result);
-
-  return result;
 };

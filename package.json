@@ -9,7 +9,11 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "predev": "node .scripts/repair-startup-dependencies.mjs",
+    "prebuild": "node .scripts/repair-startup-dependencies.mjs",
+    "pretest": "node .scripts/repair-startup-dependencies.mjs",
+    "precoverage": "node .scripts/repair-startup-dependencies.mjs"
   },
   "dependencies": {
     "@laisky/js-utils": "0.0.5",

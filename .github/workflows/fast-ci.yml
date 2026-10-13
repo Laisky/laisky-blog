@@ -48,11 +48,17 @@ jobs:
           path: ${{ runner.temp }}/yarn-cache
           key: fast-ci-yarn-${{ runner.os }}-node22-${{ hashFiles('yarn.lock') }}
       - name: Verify failure controls
-        run: node --test .scripts/test_fast_ci.mjs
+        run: node --test .scripts/test_fast_ci.mjs .scripts/test_blog_regressions.mjs .scripts/test_dependency_repair.mjs .scripts/test_circleci_base.mjs
       - name: Verify scoped release failure controls
-        run: python3 -m unittest discover -s .scripts -p test_deploy_blog.py -v
+        run: |
+          python3 -m unittest discover -s .scripts -p test_deploy_blog.py -v
+          python3 -m unittest discover -s .scripts -p test_circleci_checkout.py -v
       - name: Frozen setup, changed-file formatting and essential units
         run: node .scripts/fast_ci.mjs
+      - name: Full units and retained blog regression accounting
+        run: |
+          yarn test --run --maxWorkers=2 --allowOnly=false --passWithNoTests=false --reporter=json --outputFile="$FAST_CI_EVIDENCE/blog-tests.json"
+          node .scripts/check_blog_regressions.mjs "$FAST_CI_EVIDENCE/blog-tests.json"
       - name: Retain discovery, native exits and timings
         if: always()
         uses: actions/upload-artifact@v4

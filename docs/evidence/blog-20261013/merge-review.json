@@ -1,0 +1,166 @@
+{
+  "source_parent": "34fabca2d9c3aa1259be5c602f955760b024b56b",
+  "node": "22.16.0",
+  "yarn": "1.22.22",
+  "live_traffic_allowed": false,
+  "units": {
+    "files": 20,
+    "passed": 174,
+    "failed": 0,
+    "skipped": 0,
+    "required_handoff_regressions": 89
+  },
+  "lint": "passed",
+  "production_build": "passed",
+  "native_node_controls": 22,
+  "deployment_helper_controls": 12,
+  "new_dom_regression_before": {
+    "passed": 1,
+    "failed": 6
+  },
+  "script_browser": {
+    "section": "scripts",
+    "live_traffic_allowed": false,
+    "playwright": "1.57.0",
+    "assets": {
+      "baseline": {
+        "index-DaARSYtk.js": "85b85245b99cf6c788f1203d3ee8c4431c9a60be608b0e1479715a46aa9cc14f"
+      },
+      "candidate": {
+        "index-Bkwg43V1.js": "14a7a0c0e583c8ffab3633d37f67c4bb698e93aeee9bd151ec030fc4d355ba56"
+      }
+    },
+    "engine": "143.0.7499.4",
+    "results": [
+      {
+        "build": "baseline",
+        "held_feature": "analytics",
+        "other_executed_before_release": false,
+        "both_executed_after_release": true,
+        "expected_outcome_matched": true
+      },
+      {
+        "build": "baseline",
+        "held_feature": "search",
+        "other_executed_before_release": true,
+        "both_executed_after_release": true,
+        "expected_outcome_matched": true
+      },
+      {
+        "build": "baseline",
+        "scenario": "search-timeout-retry",
+        "retry_executed_before_release": false,
+        "retained_consumers_before_release": 2,
+        "recovered_after_release": true,
+        "script_requests": {
+          "analytics": 1,
+          "search": 1
+        },
+        "expected_outcome_matched": true
+      },
+      {
+        "build": "candidate",
+        "held_feature": "analytics",
+        "other_executed_before_release": true,
+        "both_executed_after_release": true,
+        "expected_outcome_matched": true
+      },
+      {
+        "build": "candidate",
+        "held_feature": "search",
+        "other_executed_before_release": true,
+        "both_executed_after_release": true,
+        "expected_outcome_matched": true
+      },
+      {
+        "build": "candidate",
+        "scenario": "search-timeout-retry",
+        "retry_executed_before_release": false,
+        "retained_consumers_before_release": 1,
+        "recovered_after_release": true,
+        "script_requests": {
+          "analytics": 1,
+          "search": 1
+        },
+        "expected_outcome_matched": true
+      }
+    ],
+    "passed": true
+  },
+  "browser": {
+    "startup": {
+      "cases": 8,
+      "expected_outcomes_matched": true,
+      "engine": "143.0.7499.4",
+      "raw_report_sha256": "fb33137fe97f30085d6824da7882c8f018bc1a393d75ad4db8bbd52ac8d50145"
+    },
+    "lists": {
+      "cases": 14,
+      "expected_outcomes_matched": true,
+      "engine": "143.0.7499.4",
+      "raw_report_sha256": "4b5329632ca65e13cc85844df2b5c3423ab003fbe6f38f64821194d24b6e47c1"
+    },
+    "failures": {
+      "cases": 9,
+      "expected_outcomes_matched": true,
+      "engine": "143.0.7499.4",
+      "raw_report_sha256": "34acfd3cb32d58dd3627461045f24aa51cbf2a3e9158287e6678af6ae217b4bb"
+    },
+    "lifecycle": {
+      "cases": 5,
+      "expected_outcomes_matched": true,
+      "engine": "143.0.7499.4",
+      "raw_report_sha256": "43987f4c7584db04580704e557ca9b708a7c66307d10b43588b80aaa2b03e523"
+    }
+  },
+  "list_fixture": [
+    {
+      "build": "baseline",
+      "state": "cold",
+      "operations": 17,
+      "detail_requests": 9,
+      "list_pages": [0, 1, 2, 1, 2],
+      "fixture_body_bytes": 90066
+    },
+    {
+      "build": "baseline",
+      "state": "warm",
+      "operations": 2,
+      "detail_requests": 0,
+      "list_pages": [],
+      "fixture_body_bytes": 58
+    },
+    {
+      "build": "baseline",
+      "state": "forced",
+      "operations": 21,
+      "detail_requests": 9,
+      "list_pages": [0, 0, 1, 2, 0, 0, 1, 2],
+      "fixture_body_bytes": 110803
+    },
+    {
+      "build": "candidate",
+      "state": "cold",
+      "operations": 4,
+      "detail_requests": 0,
+      "list_pages": [0],
+      "fixture_body_bytes": 6995
+    },
+    {
+      "build": "candidate",
+      "state": "warm",
+      "operations": 2,
+      "detail_requests": 0,
+      "list_pages": [],
+      "fixture_body_bytes": 58
+    },
+    {
+      "build": "candidate",
+      "state": "forced",
+      "operations": 4,
+      "detail_requests": 0,
+      "list_pages": [0],
+      "fixture_body_bytes": 6995
+    }
+  ]
+}

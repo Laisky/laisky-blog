@@ -1,0 +1,61 @@
+{
+  "section": "lifecycle",
+  "live_traffic_allowed": false,
+  "playwright": "1.57.0",
+  "assets": {
+    "baseline": {
+      "index-C4Ql5MCr.js": "e70691b88f42ad59e1e4e5fb15e4c854943f1cd435f93d5c7fb20c3b129e0d50"
+    },
+    "candidate": {
+      "index-DaARSYtk.js": "85b85245b99cf6c788f1203d3ee8c4431c9a60be608b0e1479715a46aa9cc14f"
+    }
+  },
+  "engine": "143.0.7499.4",
+  "results": [
+    {
+      "fault": "timeout",
+      "passed": true,
+      "page_errors": [],
+      "operations": 4,
+      "detail_requests": 3,
+      "list_pages": [],
+      "fixture_body_bytes": 18487
+    },
+    {
+      "fault": "hold",
+      "passed": true,
+      "page_errors": [],
+      "operations": 7,
+      "detail_requests": 2,
+      "list_pages": [0],
+      "fixture_body_bytes": 25482
+    },
+    {
+      "fault": "hold-reject",
+      "passed": true,
+      "page_errors": [],
+      "operations": 6,
+      "detail_requests": 1,
+      "list_pages": [0],
+      "fixture_body_bytes": 16263
+    },
+    {
+      "fault": "series-stale",
+      "passed": true,
+      "page_errors": [],
+      "operations": 9,
+      "detail_requests": 2,
+      "list_pages": [0],
+      "fixture_body_bytes": 25730
+    },
+    {
+      "fault": "keyboard-boundaries-back-forward",
+      "passed": true,
+      "operations": 6,
+      "detail_requests": 0,
+      "list_pages": [0, 1, 2],
+      "fixture_body_bytes": 16234
+    }
+  ],
+  "passed": true
+}
