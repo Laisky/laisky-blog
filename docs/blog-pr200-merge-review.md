@@ -47,3 +47,19 @@ The authoritative HTML processing model distinguishes the ordered dynamic-script
 The user authorized resolving remaining PR problems and merging when qualified. Merge only the reviewed head after current CI passes. The existing `v2` pipeline is the production release path; its scoped helper retains the previous immutable image and verifies rollback if rollout fails. No production result is claimed by this pre-merge receipt. Verify the actual workflow outcome separately.
 
 Rollback remains an isolated revert of the final script change or a revert of the complete PR as appropriate, followed by a clean build and the existing scoped deployment procedure. Keep #199 open: historical syntax-event mapping, private source maps and actual old-engine evidence remain unconfirmed. PR #195 and its ordered SSO migration are not included.
+
+## CircleCI integration reconciliation
+
+The complete commit-status review (not just Actions checks) identified a pre-existing CircleCI integration error: no configuration file was present in `v2` or this PR. The GitHub Fast CI quality gate was passing; the CircleCI failure happened before any quality job existed.
+
+This PR now reuses only the independent CI checkout/base-selection files from PR #195 at `ed553ef3797c1399687d2b25937f5622d3ad2ee3`. No SSO source or runtime migration is included. CircleCI is an explicit optional second provider, gated by the existing `run-fast-ci` boolean defaulting to false. GitHub Fast CI remains automatic and unchanged in its application acceptance. When explicitly enabled, CircleCI runs the frozen setup, changed-file formatting, essential units, the complete unit suite and required-regression accounting. It performs no deployment and introduces no browser downloads or heavy builds.
+
+Five native base-selection controls and four exact-checkout controls were rerun locally; they pass. These controls now also run in GitHub Fast CI. Source matching verifies the three reused helper/test files are byte-identical to their reviewed PR #195 versions. Local YAML parsing and shell syntax checks validate both the opt-in condition and executable steps. This is not a claim that the opt-in executor ran on CircleCI; the actual hosted configuration/status result must be checked after the commit. No remote service settings, credentials, branch protections or status overrides are changed.
+
+The added CI controls bring the totals to 28 native Node controls and 16 Python checkout/deployment controls. Application code and the 174-unit / 42-browser qualification remain unchanged.
+
+CircleCI documents workflow conditions and typed pipeline parameters in its [configuration reference](https://circleci.com/docs/reference/configuration-reference/#using-when-in-workflows) and [pipeline parameter guide](https://circleci.com/docs/guides/orchestrate/pipeline-variables/).
+
+## Retained-identity review correction
+
+Review comment 4258342634 identified a real accounting gap: replacing one retained test with an unrelated passing test in the same file preserved the count and uniqueness checks. The new negative control reproduced this false acceptance before the repair (eight controls passed; the new rejection control failed). The checker now compares exact ancestor/title identities against a reviewed, checked-in manifest of all 89 retained regressions, rather than generating its expectations from the current CI report. A removed/replaced test, duplicate identity, missing file, native failure or skipped test fails closed. Review comment 4258342622 is also addressed by clarifying both function comments' inputs and return behavior. The updated native controls pass; the unchanged complete 174-unit report passes the stricter identity checker.

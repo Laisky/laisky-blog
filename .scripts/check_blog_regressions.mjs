@@ -2,20 +2,13 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
-import { pathToFileURL } from 'node:url';
+import { pathToFileURL, URL } from 'node:url';
 
-export const expected = {
-  'library/sha256Initialization.test.js': 28,
-  'library/sha256Repair.test.js': 4,
-  'library/dayjsInitialization.test.js': 2,
-  'library/bundledHashWrapper.test.js': 4,
-  'library/asyncWork.test.js': 16,
-  'library/optionalScriptLifecycle.test.js': 7,
-  'pages/pageRequests.test.jsx': 19,
-  'pages/failureRecovery.test.jsx': 9,
-};
+// These checked-in identities are reviewed acceptance, not generated during a CI run.
+export const identities = JSON.parse(readFileSync(new URL('./blog_regression_identities.json', import.meta.url), 'utf8'));
+export const expected = Object.fromEntries(Object.entries(identities).map(([file, tests]) => [file, tests.length]));
 
-/** checkReport requires full native success and completion of every retained handoff regression without skips or duplicates. */
+/** checkReport validates the supplied Vitest report against retained test identities, throws on any mismatch, and returns no value. */
 export function checkReport(report) {
   assert.equal(report.success, true);
   assert.equal(report.numFailedTests, 0);
@@ -28,7 +21,13 @@ export function checkReport(report) {
     assert.equal(matches[0].status, 'passed');
     const tests = matches[0].assertionResults;
     assert.equal(tests.length, count, `Unexpected regression count: ${file}`);
-    assert.equal(new Set(tests.map((test) => JSON.stringify([test.ancestorTitles, test.title]))).size, count);
+    const actualIdentities = tests.map((test) => JSON.stringify([test.ancestorTitles, test.title]));
+    assert.equal(new Set(actualIdentities).size, count);
+    assert.deepEqual(
+      actualIdentities.sort(),
+      identities[file].map((identity) => JSON.stringify(identity)).sort(),
+      `Retained identities changed: ${file}`
+    );
     assert.ok(
       tests.every((test) => test.status === 'passed'),
       `Incomplete regression file: ${file}`

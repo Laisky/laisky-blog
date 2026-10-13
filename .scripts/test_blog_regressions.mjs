@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { checkReport, expected } from './check_blog_regressions.mjs';
+import { checkReport, expected, identities } from './check_blog_regressions.mjs';
 
-/** report creates a complete synthetic receipt for the accounting validator's positive and negative controls. */
+/** report takes no parameters and returns a complete synthetic Vitest receipt for positive and negative accounting controls. */
 function report() {
   return {
     success: true,
@@ -10,12 +10,12 @@ function report() {
     numPendingTests: 0,
     numPassedTests: Object.values(expected).reduce((total, count) => total + count, 0),
     numTotalTests: Object.values(expected).reduce((total, count) => total + count, 0),
-    testResults: Object.entries(expected).map(([file, count]) => ({
+    testResults: Object.entries(identities).map(([file, tests]) => ({
       name: `/repo/src/jsx/__tests__/${file}`,
       status: 'passed',
-      assertionResults: Array.from({ length: count }, (_, index) => ({
-        ancestorTitles: ['Fixture'],
-        title: String(index),
+      assertionResults: tests.map(([ancestorTitles, title]) => ({
+        ancestorTitles: [...ancestorTitles],
+        title,
         status: 'passed',
       })),
     })),
@@ -45,6 +45,12 @@ for (const [name, mutate] of [
     'missing test',
     (value) => {
       value.testResults[0].assertionResults.pop();
+    },
+  ],
+  [
+    'replaced retained identity',
+    (value) => {
+      value.testResults[0].assertionResults[0].title = 'Unrelated passing replacement';
     },
   ],
   [

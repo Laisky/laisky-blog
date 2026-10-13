@@ -1,0 +1,158 @@
+{
+  "library/sha256Initialization.test.js": [
+    [["direct hash initialization", "ordinary control"], "preserves SHA-256/SHA-224 and streaming output for \"\""],
+    [["direct hash initialization", "ordinary control"], "preserves SHA-256/SHA-224 and streaming output for \"abc\""],
+    [["direct hash initialization", "ordinary control"], "preserves SHA-256/SHA-224 and streaming output for \"中文 🪿 café\""],
+    [["direct hash initialization", "ordinary control"], "preserves SHA-256/SHA-224 and streaming output for \"loadPage:en_US:0\""],
+    [["direct hash initialization", "ordinary control"], "preserves SHA-256/SHA-224 and streaming output for \"post:zh_CN:example\""],
+    [["direct hash initialization", "ordinary control"], "preserves SHA-256/SHA-224 and streaming output for \"postSeries:golang\""],
+    [
+      ["direct hash initialization", "ordinary control"],
+      "retains binary inputs, long messages, streaming chunks and invalid-input rejection"
+    ],
+    [["direct hash initialization", "inherited read-only toString"], "preserves SHA-256/SHA-224 and streaming output for \"\""],
+    [["direct hash initialization", "inherited read-only toString"], "preserves SHA-256/SHA-224 and streaming output for \"abc\""],
+    [["direct hash initialization", "inherited read-only toString"], "preserves SHA-256/SHA-224 and streaming output for \"中文 🪿 café\""],
+    [
+      ["direct hash initialization", "inherited read-only toString"],
+      "preserves SHA-256/SHA-224 and streaming output for \"loadPage:en_US:0\""
+    ],
+    [
+      ["direct hash initialization", "inherited read-only toString"],
+      "preserves SHA-256/SHA-224 and streaming output for \"post:zh_CN:example\""
+    ],
+    [
+      ["direct hash initialization", "inherited read-only toString"],
+      "preserves SHA-256/SHA-224 and streaming output for \"postSeries:golang\""
+    ],
+    [
+      ["direct hash initialization", "inherited read-only toString"],
+      "retains binary inputs, long messages, streaming chunks and invalid-input rejection"
+    ],
+    [["js-utils transitive hash initialization", "ordinary control"], "preserves SHA-256/SHA-224 and streaming output for \"\""],
+    [["js-utils transitive hash initialization", "ordinary control"], "preserves SHA-256/SHA-224 and streaming output for \"abc\""],
+    [
+      ["js-utils transitive hash initialization", "ordinary control"],
+      "preserves SHA-256/SHA-224 and streaming output for \"中文 🪿 café\""
+    ],
+    [
+      ["js-utils transitive hash initialization", "ordinary control"],
+      "preserves SHA-256/SHA-224 and streaming output for \"loadPage:en_US:0\""
+    ],
+    [
+      ["js-utils transitive hash initialization", "ordinary control"],
+      "preserves SHA-256/SHA-224 and streaming output for \"post:zh_CN:example\""
+    ],
+    [
+      ["js-utils transitive hash initialization", "ordinary control"],
+      "preserves SHA-256/SHA-224 and streaming output for \"postSeries:golang\""
+    ],
+    [
+      ["js-utils transitive hash initialization", "ordinary control"],
+      "retains binary inputs, long messages, streaming chunks and invalid-input rejection"
+    ],
+    [
+      ["js-utils transitive hash initialization", "inherited read-only toString"],
+      "preserves SHA-256/SHA-224 and streaming output for \"\""
+    ],
+    [
+      ["js-utils transitive hash initialization", "inherited read-only toString"],
+      "preserves SHA-256/SHA-224 and streaming output for \"abc\""
+    ],
+    [
+      ["js-utils transitive hash initialization", "inherited read-only toString"],
+      "preserves SHA-256/SHA-224 and streaming output for \"中文 🪿 café\""
+    ],
+    [
+      ["js-utils transitive hash initialization", "inherited read-only toString"],
+      "preserves SHA-256/SHA-224 and streaming output for \"loadPage:en_US:0\""
+    ],
+    [
+      ["js-utils transitive hash initialization", "inherited read-only toString"],
+      "preserves SHA-256/SHA-224 and streaming output for \"post:zh_CN:example\""
+    ],
+    [
+      ["js-utils transitive hash initialization", "inherited read-only toString"],
+      "preserves SHA-256/SHA-224 and streaming output for \"postSeries:golang\""
+    ],
+    [
+      ["js-utils transitive hash initialization", "inherited read-only toString"],
+      "retains binary inputs, long messages, streaming chunks and invalid-input rejection"
+    ]
+  ],
+  "library/sha256Repair.test.js": [
+    [["qualified dependency repair"], "retains the failing original as a negative control"],
+    [["qualified dependency repair"], "is idempotent and preserves the ordinary assignment descriptors"],
+    [["qualified dependency repair"], "rejects drift and any attempted global-prototype workaround"],
+    [["diagram dependency repair controls"], "is idempotent and rejects unqualified source or prototype workarounds"]
+  ],
+  "library/dayjsInitialization.test.js": [
+    [["diagram date dependency initialization"], "retains date operations with inherited protection=false"],
+    [["diagram date dependency initialization"], "retains date operations with inherited protection=true"]
+  ],
+  "library/bundledHashWrapper.test.js": [
+    [["actual bundled utility SHA256 contract"], "preserves asynchronous strings and cache keys with hardened=false, WebCrypto=false"],
+    [["actual bundled utility SHA256 contract"], "preserves asynchronous strings and cache keys with hardened=false, WebCrypto=true"],
+    [["actual bundled utility SHA256 contract"], "preserves asynchronous strings and cache keys with hardened=true, WebCrypto=false"],
+    [["actual bundled utility SHA256 contract"], "preserves asynchronous strings and cache keys with hardened=true, WebCrypto=true"]
+  ],
+  "library/asyncWork.test.js": [
+    [["bounded asynchronous ownership"], "cleans the deadline after a success or a synchronous failure"],
+    [["bounded asynchronous ownership"], "does not start canceled work"],
+    [["bounded asynchronous ownership"], "owns a pending request timeout and consumes its late rejection"],
+    [["bounded asynchronous ownership"], "cancels only the consumer and removes its listener"],
+    [["bounded asynchronous ownership"], "rejects invalid deadline 0"],
+    [["bounded asynchronous ownership"], "rejects invalid deadline -1"],
+    [["bounded asynchronous ownership"], "rejects invalid deadline Infinity"],
+    [["bounded asynchronous ownership"], "rejects invalid deadline NaN"],
+    [["bounded asynchronous ownership"], "rejects invalid deadline 60001"],
+    [["safe optional-script identity"], "replaces a raw DOM event for analytics without retaining request data"],
+    [["safe optional-script identity"], "replaces a raw DOM event for search without retaining request data"],
+    [["safe optional-script identity"], "identifies a timeout separately from a load rejection"],
+    [["safe optional-script identity"], "identifies legitimate consumer cancellation without requesting a script"],
+    [["safe optional-script identity"], "rejects unapproved feature unknown without a request"],
+    [["safe optional-script identity"], "rejects unapproved feature toString without a request"],
+    [["safe optional-script identity"], "rejects unapproved feature __proto__ without a request"]
+  ],
+  "library/optionalScriptLifecycle.test.js": [
+    [["independent optional script DOM lifecycle"], "loads analytics without joining the ordered-script queue"],
+    [["independent optional script DOM lifecycle"], "loads search without joining the ordered-script queue"],
+    [["independent optional script DOM lifecycle"], "removes a canceled consumer script and detaches both handlers"],
+    [["independent optional script DOM lifecycle"], "retires a timed-out attempt before a fresh user retry"],
+    [["independent optional script DOM lifecycle"], "owns raw DOM error events with no retained target or failed URL"],
+    [["independent optional script DOM lifecycle"], "does not insert a script for an already canceled consumer"],
+    [["independent optional script DOM lifecycle"], "owns each feature without a failure removing the other script"]
+  ],
+  "pages/pageRequests.test.jsx": [
+    [["bounded list requests"], "loads only the requested existing page for 0 posts"],
+    [["bounded list requests"], "loads only the requested existing page for 1 posts"],
+    [["bounded list requests"], "loads only the requested existing page for 10 posts"],
+    [["bounded list requests"], "loads only the requested existing page for 11 posts"],
+    [["bounded list requests"], "loads only the requested existing page for 21 posts"],
+    [["bounded list requests"], "rejects invalid route -1 without any request"],
+    [["bounded list requests"], "rejects invalid route 1.5 without any request"],
+    [["bounded list requests"], "rejects invalid route NaN without any request"],
+    [["bounded list requests"], "rejects invalid route Infinity without any request"],
+    [["bounded list requests"], "rejects invalid route 1tail without any request"],
+    [["bounded list requests"], "rejects invalid route  1 without any request"],
+    [["bounded list requests"], "rejects invalid route 9007199254740992 without any request"],
+    [["bounded list requests"], "does not request a page beyond the final page"],
+    [["bounded list requests"], "shares concurrent work and retains warm cache hits"],
+    [["bounded list requests"], "uses a cached zero count instead of repeatedly fetching an empty list"],
+    [["bounded list requests"], "bypasses warm caches on explicit force refresh"],
+    [["bounded list requests"], "renders nine articles without calling a detail loader or fetching the page twice"],
+    [["bounded list requests"], "shows an owned foreground failure and recovers on one user retry"],
+    [["bounded list requests"], "revalidates language once and ignores late language notifications after unmount"]
+  ],
+  "pages/failureRecovery.test.jsx": [
+    [["owned article recovery"], "shows an accessible transport failure and replaces it after one user retry"],
+    [["owned article recovery"], "does not reload the current language during App initialization, but reloads a real language change"],
+    [["owned article recovery"], "distinguishes an empty article result from a request failure"],
+    [["owned article recovery"], "ignores a delayed old article resolve after route navigation"],
+    [["owned article recovery"], "ignores a delayed old article reject after route navigation"],
+    [["owned article recovery"], "keeps the article and independent series when another series root fails"],
+    [["owned article recovery"], "preserves successful nested siblings when a child series fails"],
+    [["independent optional scripts"], "recovers search independently while preserving readable content and analytics"],
+    [["independent optional scripts"], "owns an analytics rejection once without raw DOM diagnostics or blocking search"]
+  ]
+}
