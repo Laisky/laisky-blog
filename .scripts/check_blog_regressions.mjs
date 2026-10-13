@@ -10,6 +10,7 @@ export const expected = {
   'library/dayjsInitialization.test.js': 2,
   'library/bundledHashWrapper.test.js': 4,
   'library/asyncWork.test.js': 16,
+  'library/optionalScriptLifecycle.test.js': 7,
   'pages/pageRequests.test.jsx': 19,
   'pages/failureRecovery.test.jsx': 9,
 };
@@ -20,7 +21,7 @@ export function checkReport(report) {
   assert.equal(report.numFailedTests, 0);
   assert.equal(report.numPendingTests, 0);
   assert.equal(report.numPassedTests, report.numTotalTests);
-  assert.ok(report.numTotalTests >= 82);
+  assert.ok(report.numTotalTests >= Object.values(expected).reduce((total, count) => total + count, 0));
   for (const [file, count] of Object.entries(expected)) {
     const matches = report.testResults.filter((result) => result.name.replaceAll('\\', '/').endsWith(`/src/jsx/__tests__/${file}`));
     assert.equal(matches.length, 1, `Missing or duplicate regression file: ${file}`);

@@ -52,8 +52,20 @@ const mountArticle = (withApp = false) => {
   return { router, ...rendered };
 };
 
+let scriptFailure;
+
 beforeEach(() => {
   vi.clearAllMocks();
+  scriptFailure = null;
+  const append = document.head.appendChild.bind(document.head);
+  vi.spyOn(document.head, 'appendChild').mockImplementation((node) => {
+    const result = append(node);
+    if (node.tagName === 'SCRIPT') {
+      const feature = node.src.includes('googletagmanager') ? 'analytics' : 'search';
+      globalThis.queueMicrotask(() => node.dispatchEvent(new globalThis.Event(feature === scriptFailure ? 'error' : 'load')));
+    }
+    return result;
+  });
   getUserLanguage.mockResolvedValue('en_US');
   setUserLanguage.mockResolvedValue(undefined);
   jsutils.KvAddListener.mockResolvedValue(undefined);
@@ -66,6 +78,7 @@ beforeEach(() => {
 });
 afterEach(() => {
   vi.restoreAllMocks();
+  document.head.querySelectorAll('script').forEach((script) => script.remove());
 });
 
 describe('owned article recovery', () => {
@@ -175,24 +188,18 @@ describe('owned article recovery', () => {
 
 describe('independent optional scripts', () => {
   it('recovers search independently while preserving readable content and analytics', async () => {
-    jsutils.LoadJsModules.mockImplementation(async ([url]) => {
-      if (url.includes('cse.google')) throw new globalThis.Event('error');
-      return true;
-    });
+    scriptFailure = 'search';
     mountArticle(true);
     const retry = await screen.findByRole('button', { name: 'Retry search' });
     await screen.findByRole('heading', { name: 'Readable body' });
     expect(window.dataLayer.length).toBeGreaterThan(0);
-    jsutils.LoadJsModules.mockResolvedValue(true);
+    scriptFailure = null;
     fireEvent.click(retry);
     await waitFor(() => expect(screen.queryByRole('button', { name: 'Retry search' })).not.toBeInTheDocument());
   });
   it('owns an analytics rejection once without raw DOM diagnostics or blocking search', async () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    jsutils.LoadJsModules.mockImplementation(async ([url]) => {
-      if (url.includes('googletagmanager')) throw new globalThis.Event('error');
-      return true;
-    });
+    scriptFailure = 'analytics';
     mountArticle(true);
     await screen.findByRole('heading', { name: 'Readable body' });
     await waitFor(() => expect(warn).toHaveBeenCalledWith('OptionalFeatureError: analytics script load failed (load)'));

@@ -1,15 +1,15 @@
-import jsutils from '@laisky/js-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { runAsyncWork } from '../../library/asyncWork.js';
 import { loadOptionalScript } from '../../library/optionalScripts.js';
 
-vi.mock('@laisky/js-utils', () => ({ default: { LoadJsModules: vi.fn() } }));
 beforeEach(() => {
-  vi.clearAllMocks();
+  document.head.querySelectorAll('script').forEach((script) => script.remove());
   vi.useFakeTimers();
 });
 afterEach(() => {
+  vi.clearAllTimers();
   vi.useRealTimers();
+  document.head.querySelectorAll('script').forEach((script) => script.remove());
 });
 
 describe('bounded asynchronous ownership', () => {
@@ -65,14 +65,16 @@ describe('bounded asynchronous ownership', () => {
 
 describe('safe optional-script identity', () => {
   it.each(['analytics', 'search'])('replaces a raw DOM event for %s without retaining request data', async (feature) => {
-    const script = document.createElement('script');
+    const work = loadOptionalScript(feature);
+    await Promise.resolve();
+    const script = document.head.querySelector('script');
     script.src = 'https://fixture.invalid/?token=secret-canary';
     const event = new globalThis.Event('error');
     Object.defineProperty(event, 'target', { value: script });
-    jsutils.LoadJsModules.mockRejectedValue(event);
+    script.dispatchEvent(event);
     let failure;
     try {
-      await loadOptionalScript(feature);
+      await work;
     } catch (error) {
       failure = error;
     }
@@ -82,7 +84,6 @@ describe('safe optional-script identity', () => {
     expect(vi.getTimerCount()).toBe(0);
   });
   it('identifies a timeout separately from a load rejection', async () => {
-    jsutils.LoadJsModules.mockImplementation(() => new Promise(() => {}));
     const assertion = expect(loadOptionalScript('search', { timeoutMs: 10 })).rejects.toMatchObject({
       feature: 'search',
       stage: 'timeout',
@@ -94,10 +95,10 @@ describe('safe optional-script identity', () => {
     const controller = new globalThis.AbortController();
     controller.abort();
     await expect(loadOptionalScript('search', { signal: controller.signal })).rejects.toMatchObject({ stage: 'canceled' });
-    expect(jsutils.LoadJsModules).not.toHaveBeenCalled();
+    expect(document.head.querySelectorAll('script')).toHaveLength(0);
   });
   it.each(['unknown', 'toString', '__proto__'])('rejects unapproved feature %s without a request', async (feature) => {
     await expect(loadOptionalScript(feature)).rejects.toThrow('Unknown optional feature');
-    expect(jsutils.LoadJsModules).not.toHaveBeenCalled();
+    expect(document.head.querySelectorAll('script')).toHaveLength(0);
   });
 });
