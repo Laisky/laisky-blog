@@ -9,64 +9,41 @@ permissions:
   contents: read
 
 jobs:
-  public-capture:
+  target-control:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Capture bounded public bytes without credentials or browser execution
+      - name: Download the official target engine without executing it
         shell: bash
         run: |
           set -euo pipefail
-          export INPUTS="$RUNNER_TEMP/public-capture"
+          export INPUTS="$RUNNER_TEMP/target-control"
           python3 - <<'PY'
           import datetime
           import hashlib
           import json
           import os
-          import re
           from pathlib import Path
-          import urllib.error
           import urllib.request
           root = Path(os.environ['INPUTS'])
           root.mkdir()
-          origin = 'https://blog.laisky.com'
-          class NoRedirect(urllib.request.HTTPRedirectHandler):
-              """NoRedirect rejects any redirected verification request."""
-              def redirect_request(self, req, fp, code, msg, headers, newurl):
-                  """redirect_request rejects the proposed redirect without issuing another request."""
-                  raise RuntimeError('Unexpected redirect during public capture')
-          opener = urllib.request.build_opener(NoRedirect())
-          records = []
-          def capture(path, name, limit):
-              """capture saves bounded public bytes for path and returns them; errors retain only status."""
-              req = urllib.request.Request(origin + path, headers={'Cache-Control': 'no-cache', 'User-Agent': 'Mozilla/5.0 (Laisky Blog release verification)'})
-              try:
-                  with opener.open(req, timeout=20) as response:
-                      data = response.read(limit + 1)
-                      if len(data) > limit:
-                          raise RuntimeError('Public response exceeds size bound')
-                      records.append({'path': path, 'status': response.status, 'content_type': response.headers.get('Content-Type'), 'sha256': hashlib.sha256(data).hexdigest(), 'bytes': len(data)})
-                  (root / name).write_bytes(data)
-                  return data
-              except urllib.error.HTTPError as error:
-                  records.append({'path': path, 'status': error.code, 'captured': False})
-                  raise RuntimeError('Public capture received HTTP ' + str(error.code)) from None
-          try:
-              html = capture('/pages/0/', 'list.html', 256 * 1024)
-              capture('/golubgrowth', 'unknown.html', 256 * 1024)
-              assets = set(re.findall(r'<script\b[^>]*\bsrc=[\"\x27](/assets/index-[A-Za-z0-9_-]+\.js)[\"\x27]', html.decode()))
-              if len(assets) != 1:
-                  raise RuntimeError('Expected one current entry asset')
-              asset = assets.pop()
-              capture(asset, Path(asset).name, 10 * 1024 * 1024)
-          finally:
-              (root / 'receipt.json').write_text(json.dumps({'captured_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'authenticated': False, 'records': records}, indent=2) + '\n')
+          url = 'https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1045629/chrome-linux.zip'
+          digest = hashlib.sha256()
+          size = 0
+          with urllib.request.urlopen(url, timeout=60) as response, (root / 'chromium-1045629.zip').open('wb') as output:
+              while data := response.read(1024 * 1024):
+                  size += len(data)
+                  if size > 300 * 1024 * 1024:
+                      raise RuntimeError('Snapshot exceeds expected size bound')
+                  digest.update(data)
+                  output.write(data)
+          (root / 'browser-input.json').write_text(json.dumps({'captured_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'revision': '1045629', 'expected_major': 107, 'sha256': digest.hexdigest(), 'size': size, 'source': url}, indent=2) + '\n')
           PY
-      - name: Retain sanitized capture receipt and successful public assets
+      - name: Retain public target control only
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: blog-public-capture-${{ github.sha }}
-          path: ${{ runner.temp }}/public-capture
+          name: blog-target-control-${{ github.sha }}
+          path: ${{ runner.temp }}/target-control
           if-no-files-found: error
           retention-days: 7
