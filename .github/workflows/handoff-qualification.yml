@@ -8,47 +8,33 @@ permissions:
   contents: read
 
 jobs:
-  baseline:
+  browser-tooling:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     env:
       CI: 'true'
+      COREPACK_HOME: ${{ runner.temp }}/corepack
+      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/browsers
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
-      - name: Select the repository package manager
+      - name: Select Yarn Classic
         run: |
           corepack enable
           corepack prepare yarn@1.22.22 --activate
           test "$(yarn --version)" = '1.22.22'
-      - name: Install the unchanged locked dependencies
-        run: yarn install --frozen-lockfile --non-interactive
-      - name: Retain the source and installed public dependencies for isolated local qualification
+      - name: Install pinned isolated browser tooling without changing the application
         run: |
-          mkdir -p "$RUNNER_TEMP/blog-qualification"
-          git archive --format=tar HEAD > "$RUNNER_TEMP/blog-qualification/source.tar"
-          tar -czf "$RUNNER_TEMP/blog-qualification/dependencies.tar.gz" node_modules
-          sha256sum yarn.lock > "$RUNNER_TEMP/blog-qualification/yarn-lock.sha256"
-          node --version > "$RUNNER_TEMP/blog-qualification/node-version.txt"
-      - name: Full lint
-        run: yarn lint
-      - name: Full unit suite
-        if: success() || failure()
-        run: yarn test --run
-      - name: Production build
-        if: success() || failure()
-        run: yarn build
-      - name: Retain qualification inputs and build
-        if: always()
+          mkdir -p "$RUNNER_TEMP/browser-tools"
+          printf '{"private":true}\n' > "$RUNNER_TEMP/browser-tools/package.json"
+          yarn --cwd "$RUNNER_TEMP/browser-tools" add --exact --non-interactive playwright@1.57.0
+          node "$RUNNER_TEMP/browser-tools/node_modules/playwright/cli.js" install chromium --only-shell
+          tar -czf "$RUNNER_TEMP/browser-tooling.tar.gz" -C "$RUNNER_TEMP" browser-tools browsers corepack
+      - name: Retain only public test-tooling packages and binaries
         uses: actions/upload-artifact@v4
         with:
-          name: blog-baseline-${{ github.sha }}
-          path: |
-            ${{ runner.temp }}/blog-qualification
-            dist
+          name: blog-browser-tooling-${{ github.sha }}
+          path: ${{ runner.temp }}/browser-tooling.tar.gz
           if-no-files-found: error
           retention-days: 7
