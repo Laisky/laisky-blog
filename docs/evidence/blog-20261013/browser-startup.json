@@ -1,0 +1,109 @@
+{
+  "section": "startup",
+  "live_traffic_allowed": false,
+  "playwright": "1.57.0",
+  "assets": {
+    "baseline": {
+      "index-C4Ql5MCr.js": "e70691b88f42ad59e1e4e5fb15e4c854943f1cd435f93d5c7fb20c3b129e0d50"
+    },
+    "candidate": {
+      "index-DaARSYtk.js": "85b85245b99cf6c788f1203d3ee8c4431c9a60be608b0e1479715a46aa9cc14f"
+    }
+  },
+  "engine": "143.0.7499.4",
+  "results": [
+    {
+      "build": "baseline",
+      "scheme": "http",
+      "hardened": false,
+      "rendered": true,
+      "page_errors": [],
+      "operations": 17,
+      "detail_requests": 9,
+      "list_pages": [0, 1, 2, 1, 2],
+      "fixture_body_bytes": 90066
+    },
+    {
+      "build": "baseline",
+      "scheme": "http",
+      "hardened": true,
+      "rendered": false,
+      "page_errors": [
+        "TypeError: Cannot assign to read only property 'toString' of object '#<N>'\n    at http://blog.fixture/assets/index-C4Ql5MCr.js:68:8030\n    at http://blog.fixture/assets/index-C4Ql5MCr.js:68:10047\n    at Lq (http://blog.fixture/assets/index-C4Ql5MCr.js:68:10051)\n    at http://blog.fixture/assets/index-C4Ql5MCr.js:68:10075"
+      ],
+      "operations": 0,
+      "detail_requests": 0,
+      "list_pages": [],
+      "fixture_body_bytes": 0
+    },
+    {
+      "build": "baseline",
+      "scheme": "https",
+      "hardened": false,
+      "rendered": true,
+      "page_errors": [],
+      "operations": 17,
+      "detail_requests": 9,
+      "list_pages": [0, 1, 2, 1, 2],
+      "fixture_body_bytes": 90066
+    },
+    {
+      "build": "baseline",
+      "scheme": "https",
+      "hardened": true,
+      "rendered": false,
+      "page_errors": [
+        "TypeError: Cannot assign to read only property 'toString' of object '#<N>'\n    at https://blog.fixture/assets/index-C4Ql5MCr.js:68:8030\n    at https://blog.fixture/assets/index-C4Ql5MCr.js:68:10047\n    at Lq (https://blog.fixture/assets/index-C4Ql5MCr.js:68:10051)\n    at https://blog.fixture/assets/index-C4Ql5MCr.js:68:10075"
+      ],
+      "operations": 0,
+      "detail_requests": 0,
+      "list_pages": [],
+      "fixture_body_bytes": 0
+    },
+    {
+      "build": "candidate",
+      "scheme": "http",
+      "hardened": false,
+      "rendered": true,
+      "page_errors": [],
+      "operations": 4,
+      "detail_requests": 0,
+      "list_pages": [0],
+      "fixture_body_bytes": 6995
+    },
+    {
+      "build": "candidate",
+      "scheme": "http",
+      "hardened": true,
+      "rendered": true,
+      "page_errors": [],
+      "operations": 4,
+      "detail_requests": 0,
+      "list_pages": [0],
+      "fixture_body_bytes": 6995
+    },
+    {
+      "build": "candidate",
+      "scheme": "https",
+      "hardened": false,
+      "rendered": true,
+      "page_errors": [],
+      "operations": 4,
+      "detail_requests": 0,
+      "list_pages": [0],
+      "fixture_body_bytes": 6995
+    },
+    {
+      "build": "candidate",
+      "scheme": "https",
+      "hardened": true,
+      "rendered": true,
+      "page_errors": [],
+      "operations": 4,
+      "detail_requests": 0,
+      "list_pages": [0],
+      "fixture_body_bytes": 6995
+    }
+  ],
+  "passed": true
+}

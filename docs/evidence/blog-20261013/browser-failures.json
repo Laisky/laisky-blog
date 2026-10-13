@@ -1,0 +1,98 @@
+{
+  "section": "failures",
+  "live_traffic_allowed": false,
+  "playwright": "1.57.0",
+  "assets": {
+    "baseline": {
+      "index-C4Ql5MCr.js": "e70691b88f42ad59e1e4e5fb15e4c854943f1cd435f93d5c7fb20c3b129e0d50"
+    },
+    "candidate": {
+      "index-DaARSYtk.js": "85b85245b99cf6c788f1203d3ee8c4431c9a60be608b0e1479715a46aa9cc14f"
+    }
+  },
+  "engine": "143.0.7499.4",
+  "results": [
+    {
+      "fault": "network",
+      "passed": true,
+      "page_errors": [],
+      "operations": 3,
+      "detail_requests": 2,
+      "list_pages": [],
+      "fixture_body_bytes": 9268
+    },
+    {
+      "fault": "http",
+      "passed": true,
+      "page_errors": [],
+      "operations": 3,
+      "detail_requests": 2,
+      "list_pages": [],
+      "fixture_body_bytes": 9268
+    },
+    {
+      "fault": "json",
+      "passed": true,
+      "page_errors": [],
+      "operations": 3,
+      "detail_requests": 2,
+      "list_pages": [],
+      "fixture_body_bytes": 9268
+    },
+    {
+      "fault": "graphql",
+      "passed": true,
+      "page_errors": [],
+      "operations": 3,
+      "detail_requests": 2,
+      "list_pages": [],
+      "fixture_body_bytes": 9268
+    },
+    {
+      "fault": "empty",
+      "passed": true,
+      "page_errors": [],
+      "operations": 1,
+      "detail_requests": 1,
+      "list_pages": [],
+      "fixture_body_bytes": 0
+    },
+    {
+      "fault": "search",
+      "passed": true,
+      "page_errors": [],
+      "operations": 2,
+      "detail_requests": 1,
+      "list_pages": [],
+      "fixture_body_bytes": 9268
+    },
+    {
+      "fault": "analytics",
+      "passed": true,
+      "page_errors": [],
+      "operations": 2,
+      "detail_requests": 1,
+      "list_pages": [],
+      "fixture_body_bytes": 9268
+    },
+    {
+      "fault": "series",
+      "passed": true,
+      "page_errors": [],
+      "operations": 5,
+      "detail_requests": 1,
+      "list_pages": [],
+      "fixture_body_bytes": 9589
+    },
+    {
+      "fault": "diagram",
+      "passed": true,
+      "page_errors": [],
+      "operations": 2,
+      "detail_requests": 1,
+      "list_pages": [],
+      "fixture_body_bytes": 9369
+    }
+  ],
+  "passed": true
+}
