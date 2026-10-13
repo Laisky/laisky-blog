@@ -1,0 +1,54 @@
+name: Blog handoff qualification
+
+on:
+  push:
+    branches: [test/blog-handoffs-20261013]
+
+permissions:
+  contents: read
+
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CI: 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Select the repository package manager
+        run: |
+          corepack enable
+          corepack prepare yarn@1.22.22 --activate
+          test "$(yarn --version)" = '1.22.22'
+      - name: Install the unchanged locked dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+      - name: Retain the source and installed public dependencies for isolated local qualification
+        run: |
+          mkdir -p "$RUNNER_TEMP/blog-qualification"
+          git archive --format=tar HEAD > "$RUNNER_TEMP/blog-qualification/source.tar"
+          tar -czf "$RUNNER_TEMP/blog-qualification/dependencies.tar.gz" node_modules
+          sha256sum yarn.lock > "$RUNNER_TEMP/blog-qualification/yarn-lock.sha256"
+          node --version > "$RUNNER_TEMP/blog-qualification/node-version.txt"
+      - name: Full lint
+        run: yarn lint
+      - name: Full unit suite
+        if: success() || failure()
+        run: yarn test --run
+      - name: Production build
+        if: success() || failure()
+        run: yarn build
+      - name: Retain qualification inputs and build
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blog-baseline-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/blog-qualification
+            dist
+          if-no-files-found: error
+          retention-days: 7
