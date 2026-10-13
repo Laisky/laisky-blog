@@ -1,10 +1,11 @@
-import jsutils from '@laisky/js-utils';
 import { Activity, BotMessageSquare, Factory, FileText, Languages, Menu, Rss, Search, Terminal, User, X } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 
 import { Dropdown, DropdownItem } from '../components/Dropdown';
 import { getUserLanguage, setUserLanguage } from '../library/base';
+import { runAsyncWork } from '../library/asyncWork.js';
+import { loadOptionalScript } from '../library/optionalScripts.js';
 
 /**
  * isActiveRoute checks if the given route name matches the current route.
@@ -27,6 +28,9 @@ export const App = () => {
   const [theme, setTheme] = useState('light');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const [searchAttempt, setSearchAttempt] = useState(0);
+  const [searchStatus, setSearchStatus] = useState('loading');
+  const [languageFailed, setLanguageFailed] = useState(false);
 
   /**
    * scrollToTop scrolls the page to the top when clicking on container areas.
@@ -49,37 +53,64 @@ export const App = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      const lang = await getUserLanguage();
-      setUserLanguage(lang);
-      setUserLang(lang);
+    let active = true;
+    const controller = new globalThis.AbortController();
+    runAsyncWork(
+      async () => {
+        const lang = await getUserLanguage();
+        if (!active) return;
+        await setUserLanguage(lang);
+        if (active) setUserLang(lang);
+      },
+      { signal: controller.signal }
+    ).catch(() => {
+      if (active) setLanguageFailed(true);
+    });
 
-      let fs = [];
-
-      // add google analytics
-      fs.push(
-        (async () => {
-          await jsutils.LoadJsModules(['https://www.googletagmanager.com/gtag/js?id=G-BVS991NWWS']);
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-            window.dataLayer.push(arguments);
-          }
-          gtag('js', new Date());
-          gtag('config', 'G-BVS991NWWS');
-        })()
-      );
-
-      // load google search
-      fs.push(jsutils.LoadJsModules(['https://cse.google.com/cse.js?cx=004733495569415005684:-c6y46kjqva']));
-
-      await Promise.all(fs);
-    })();
+    loadOptionalScript('analytics', { signal: controller.signal })
+      .then(() => {
+        if (!active) return;
+        window.dataLayer = window.dataLayer || [];
+        /** gtag queues the existing analytics initialization arguments after the script succeeds. */
+        function gtag() {
+          window.dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-BVS991NWWS');
+      })
+      .catch((error) => {
+        if (active)
+          console.warn(
+            error?.name === 'OptionalFeatureError'
+              ? `${error.name}: ${error.message}`
+              : 'OptionalFeatureError: analytics initialization failed (initialization)'
+          );
+      });
 
     const cleanupTheme = watchThemeChange(setTheme);
     return () => {
-      if (cleanupTheme) cleanupTheme();
+      active = false;
+      controller.abort();
+      cleanupTheme?.();
     };
   }, []);
+
+  useEffect(() => {
+    let active = true;
+    const controller = new globalThis.AbortController();
+    setSearchStatus('loading');
+    loadOptionalScript('search', { signal: controller.signal })
+      .then(() => {
+        if (active) setSearchStatus('ready');
+      })
+      .catch(() => {
+        if (active) setSearchStatus('failed');
+      });
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [searchAttempt]);
 
   // watch theme change
   useEffect(() => {
@@ -283,6 +314,14 @@ export const App = () => {
             <div className="navbar-search d-flex mx-2" onClick={() => document.querySelector('.navbar-search input.gsc-input')?.focus()}>
               <Search size={16} className="search-icon me-1" />
               <div className="gcse-search" data-gname="post_search" data-enablehistory="true" data-enableautocomplete="true"></div>
+              {searchStatus === 'failed' && (
+                <div role="status">
+                  <span>Search is unavailable. Articles remain readable.</span>{' '}
+                  <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => setSearchAttempt((value) => value + 1)}>
+                    Retry search
+                  </button>
+                </div>
+              )}
             </div>
             <div>{languageDropdown}</div>
           </div>
@@ -291,6 +330,7 @@ export const App = () => {
 
       {/* page content */}
       <main id="container">
+        {languageFailed && <p role="status">Language preferences are unavailable. Reload the page to try again.</p>}
         <Outlet />
       </main>
 
