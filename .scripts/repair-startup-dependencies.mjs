@@ -1,5 +1,5 @@
-import { createHash } from 'node:crypto';
-import { readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { createHash, randomUUID } from 'node:crypto';
+import fs, { readFileSync, rmSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import process from 'node:process';
@@ -39,6 +39,17 @@ export function repairDayjsSource(source) {
   return original.replace(DAYJS_ORIGINAL_ALIAS, DAYJS_REPAIRED_ALIAS);
 }
 
+/** writeSourceAtomically replaces one qualified source without truncating its current bytes on an interrupted write. */
+export function writeSourceAtomically(filename, source) {
+  const temporary = `${filename}.repair-${process.pid}-${randomUUID()}`;
+  try {
+    fs.writeFileSync(temporary, source, { encoding: 'utf8', flag: 'wx', mode: fs.statSync(filename).mode });
+    fs.renameSync(temporary, filename);
+  } finally {
+    fs.rmSync(temporary, { force: true });
+  }
+}
+
 /** repairInstalledDependencies validates every inclusion path before repairing only package-owned initializer aliases. */
 export function repairInstalledDependencies(root) {
   const require = createRequire(path.join(root, 'package.json'));
@@ -54,7 +65,7 @@ export function repairInstalledDependencies(root) {
   repairs.push({ filename, source, repaired: repairDayjsSource(source) });
   const changed = repairs.filter(({ source, repaired }) => source !== repaired);
   for (const { filename, repaired } of changed) {
-    writeFileSync(filename, repaired);
+    writeSourceAtomically(filename, repaired);
   }
   if (changed.length) {
     // Vite's optimizer may otherwise reuse output made from the unpatched locked version.
