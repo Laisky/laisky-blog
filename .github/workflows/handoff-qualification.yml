@@ -13,12 +13,14 @@ jobs:
     timeout-minutes: 15
     env:
       CI: 'true'
-      COREPACK_HOME: ${{ runner.temp }}/corepack
-      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/browsers
     steps:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
+      - name: Set tooling paths
+        run: |
+          echo "COREPACK_HOME=$RUNNER_TEMP/corepack" >> "$GITHUB_ENV"
+          echo "PLAYWRIGHT_BROWSERS_PATH=$RUNNER_TEMP/browsers" >> "$GITHUB_ENV"
       - name: Select Yarn Classic
         run: |
           corepack enable
