@@ -1,0 +1,96 @@
+name: Blog engine evidence inputs
+
+on:
+  push:
+    branches: [test/blog-199-engine-evidence-20261013]
+    paths: [.github/workflows/engine-evidence.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  inputs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Download official browser snapshots without executing them
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/evidence-inputs"
+          export INPUTS="$RUNNER_TEMP/evidence-inputs"
+          python3 - <<'PY'
+          import datetime
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import urllib.request
+          root = Path(os.environ['INPUTS'])
+          manifest = {'captured_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'browsers': []}
+          for revision, major in [('818858', 88), ('843427', 89), ('869685', 91)]:
+              url = f'https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/{revision}/chrome-linux.zip'
+              target = root / f'chromium-{revision}.zip'
+              digest = hashlib.sha256()
+              size = 0
+              with urllib.request.urlopen(url, timeout=60) as response, target.open('wb') as output:
+                  while data := response.read(1024 * 1024):
+                      size += len(data)
+                      if size > 300 * 1024 * 1024:
+                          raise RuntimeError('Snapshot exceeds expected size bound')
+                      digest.update(data)
+                      output.write(data)
+              manifest['browsers'].append({'revision': revision, 'expected_major': major, 'sha256': digest.hexdigest(), 'size': size, 'source': url})
+          (root / 'browser-inputs.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          PY
+      - name: Capture unauthenticated public HTML and the exact current entry asset
+        shell: bash
+        run: |
+          set -euo pipefail
+          export INPUTS="$RUNNER_TEMP/evidence-inputs"
+          python3 - <<'PY'
+          import datetime
+          import hashlib
+          import json
+          import os
+          import re
+          from pathlib import Path
+          import urllib.request
+          root = Path(os.environ['INPUTS']) / 'public'
+          root.mkdir()
+          origin = 'https://blog.laisky.com'
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  raise RuntimeError('Unexpected redirect during public capture')
+          opener = urllib.request.build_opener(NoRedirect())
+          records = []
+          for path, name in [('/pages/0/', 'list.html'), ('/golubgrowth', 'unknown.html')]:
+              req = urllib.request.Request(origin + path, headers={'Cache-Control': 'no-cache', 'User-Agent': 'Blog release verification'})
+              with opener.open(req, timeout=20) as response:
+                  data = response.read(256 * 1024 + 1)
+                  if len(data) > 256 * 1024:
+                      raise RuntimeError('HTML exceeds size bound')
+                  record = {'path': path, 'status': response.status, 'content_type': response.headers.get('Content-Type'), 'sha256': hashlib.sha256(data).hexdigest(), 'bytes': len(data)}
+              (root / name).write_bytes(data)
+              records.append(record)
+          html = (root / 'list.html').read_text()
+          assets = set(re.findall(r'<script\b[^>]*\bsrc=[\"\x27](/assets/index-[A-Za-z0-9_-]+\.js)[\"\x27]', html))
+          if len(assets) != 1:
+              raise RuntimeError('Expected one current entry asset')
+          asset = assets.pop()
+          with opener.open(origin + asset, timeout=30) as response:
+              data = response.read(10 * 1024 * 1024 + 1)
+              if len(data) > 10 * 1024 * 1024:
+                  raise RuntimeError('Entry exceeds size bound')
+              records.append({'path': asset, 'status': response.status, 'content_type': response.headers.get('Content-Type'), 'sha256': hashlib.sha256(data).hexdigest(), 'bytes': len(data)})
+          (root / Path(asset).name).write_bytes(data)
+          (root / 'receipt.json').write_text(json.dumps({'captured_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'authenticated': False, 'records': records}, indent=2) + '\n')
+          PY
+      - name: Retain public inputs only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blog-engine-inputs-${{ github.sha }}
+          path: ${{ runner.temp }}/evidence-inputs
+          if-no-files-found: error
+          retention-days: 7
