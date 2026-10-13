@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "record_type": "derived_summary_of_native_engine_receipts",
+  "source_commit": "c8f8fc3d19c7ac1bc880b18ba6edcad14729ff47",
+  "source_tree": "1f831e300849230cf34c4677ed339d88f83117cb",
+  "baseline_commit": "d6f59f62fc91ccc86e41b32aad0aa4169e7ece2b",
+  "deployed_entry": {
+    "path": "/assets/index-Bkwg43V1.js",
+    "sha256": "14a7a0c0e583c8ffab3633d37f67c4bb698e93aeee9bd151ec030fc4d355ba56"
+  },
+  "baseline_entry": {
+    "path": "/assets/index-C4Ql5MCr.js",
+    "sha256": "e70691b88f42ad59e1e4e5fb15e4c854943f1cd435f93d5c7fb20c3b129e0d50"
+  },
+  "harness_sha256": "75d31d5f0c713d0ac492aa39177a615cb03db0200c3284333f4332ef70eaed63",
+  "fixture_sha256": "8543ced28dbaceeed3a1dfb89ea7d2486ae5f88edcb6b13b4489765e92976f6e",
+  "case_count": 67,
+  "routes_per_build": ["/pages/0/", "/p/article-0/", "/golubgrowth", "/flexcds"],
+  "feature_controls": ["nullish", "top-level-await", "object-has-own", "truncated-negative-control", "regexp-negative-control"],
+  "expected_failure_is_not_application_success": true,
+  "user_agent_override": false,
+  "browser_network_intercepted": true,
+  "browser_support_policy_changed": false,
+  "sentry_event_attribution_confirmed": false,
+  "engines": [
+    {
+      "engine": "88.0.4298.0",
+      "case_count": 13,
+      "application_cases": 8,
+      "all_expectations_matched": true,
+      "application_rendered": false,
+      "nullish_control": ["fallback", 0, false, ""],
+      "application_exceptions": [
+        {
+          "type": "SyntaxError",
+          "message": "SyntaxError: Unexpected reserved word",
+          "asset": "/assets/index-C4Ql5MCr.js",
+          "line": 788,
+          "column": 73
+        },
+        {
+          "type": "SyntaxError",
+          "message": "SyntaxError: Unexpected reserved word",
+          "asset": "/assets/index-Bkwg43V1.js",
+          "line": 739,
+          "column": 8739
+        }
+      ],
+      "receipt_file": "chromium88.json",
+      "receipt_sha256": "86c57080cc27df9784312f8c81de4b334f194b7d06a6b36c34ebb29c65c8a777",
+      "browser_binary_sha256": "f766be30e06773a538dc665b75417ea2d93313ee502ef09085fafccb27d2dea8",
+      "execution_environment": "isolated local fixture",
+      "captured_at_utc": "2026-10-13T13:58:20.098896+00:00"
+    },
+    {
+      "engine": "89.0.4389.0",
+      "case_count": 13,
+      "application_cases": 8,
+      "all_expectations_matched": true,
+      "application_rendered": false,
+      "nullish_control": ["fallback", 0, false, ""],
+      "application_exceptions": [
+        {
+          "type": "TypeError",
+          "message": "TypeError: Object.hasOwn is not a function",
+          "asset": "/assets/index-C4Ql5MCr.js",
+          "line": 353,
+          "column": 25849
+        },
+        {
+          "type": "TypeError",
+          "message": "TypeError: Object.hasOwn is not a function",
+          "asset": "/assets/index-Bkwg43V1.js",
+          "line": 380,
+          "column": 27101
+        }
+      ],
+      "receipt_file": "chromium89.json",
+      "receipt_sha256": "07f121235e4e6a9d4c9c34715ba3ddb4ac2af6da2f043f908d3b2b37de540cf9",
+      "browser_binary_sha256": "8f569bc691c4ed409e89ce76ee27db719e3d80ea21873526f6ab50394eb6b2a9",
+      "execution_environment": "isolated local fixture",
+      "captured_at_utc": "2026-10-13T13:58:25.296501+00:00"
+    },
+    {
+      "engine": "91.0.4469.0",
+      "case_count": 13,
+      "application_cases": 8,
+      "all_expectations_matched": true,
+      "application_rendered": false,
+      "nullish_control": ["fallback", 0, false, ""],
+      "application_exceptions": [
+        {
+          "type": "TypeError",
+          "message": "TypeError: Object.hasOwn is not a function",
+          "asset": "/assets/index-C4Ql5MCr.js",
+          "line": 353,
+          "column": 25849
+        },
+        {
+          "type": "TypeError",
+          "message": "TypeError: Object.hasOwn is not a function",
+          "asset": "/assets/index-Bkwg43V1.js",
+          "line": 380,
+          "column": 27101
+        }
+      ],
+      "receipt_file": "chromium91.json",
+      "receipt_sha256": "e19d8d72733913c603e96d09f8815de2a16de79d035e7b01675430cd715b9b0a",
+      "browser_binary_sha256": "2aaa4dbc20bc6d2861ebb7baf9b5aa07682b500ec6935efa3f85d348ff738ec2",
+      "execution_environment": "isolated local fixture",
+      "captured_at_utc": "2026-10-13T13:58:30.674030+00:00"
+    },
+    {
+      "engine": "107.0.5296.0",
+      "case_count": 14,
+      "application_cases": 9,
+      "all_expectations_matched": true,
+      "application_rendered": true,
+      "nullish_control": ["fallback", 0, false, ""],
+      "application_exceptions": [],
+      "receipt_file": "chromium107.json",
+      "receipt_sha256": "545855b3578887140d9fd15f01c65b28df9fe38134c47aae9c9a81aa70f207ad",
+      "browser_binary_sha256": "feb39ee68e43662870c1bff2f4e65b8e07d783fdf703c98bc3e86371ad79279e",
+      "execution_environment": "GitHub Actions 38409329299",
+      "captured_at_utc": "2026-10-13T13:58:52.205516+00:00"
+    },
+    {
+      "engine": "143.0.7499.4",
+      "case_count": 14,
+      "application_cases": 9,
+      "all_expectations_matched": true,
+      "application_rendered": true,
+      "nullish_control": ["fallback", 0, false, ""],
+      "application_exceptions": [],
+      "receipt_file": "chromium143.json",
+      "receipt_sha256": "4686d634637fd0b30484e45c96dc151c3345d302a29aef10294fd000c8ad9c19",
+      "browser_binary_sha256": "20ffc88be1c6f7dc8351bebfaca965ff9a07617bddf696f0b67ef85e5868b29a",
+      "execution_environment": "isolated local fixture",
+      "captured_at_utc": "2026-10-13T13:59:03.555777+00:00"
+    }
+  ],
+  "public_capture": {
+    "captured_at_utc": "2026-10-13T13:40:07.742851+00:00",
+    "authenticated": false,
+    "records": [
+      {
+        "path": "/pages/0/",
+        "status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "94ea02e1085afd39b8c0b550bd8fffeb6777ebd3da47495985a943147105323f",
+        "bytes": 22081
+      },
+      {
+        "path": "/golubgrowth",
+        "status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "2d96b46ef10b6d942c8b3424d544c5a5c4d3566f4aab380a873a65400969ae0c",
+        "bytes": 22081
+      },
+      {
+        "path": "/assets/index-Bkwg43V1.js",
+        "status": 200,
+        "content_type": "application/javascript; charset=utf-8",
+        "sha256": "14a7a0c0e583c8ffab3633d37f67c4bb698e93aeee9bd151ec030fc4d355ba56",
+        "bytes": 2194400
+      }
+    ]
+  },
+  "build_target": {
+    "source_commit": "c8f8fc3d19c7ac1bc880b18ba6edcad14729ff47",
+    "vite": "7.3.7",
+    "build_target": ["chrome107", "edge107", "firefox104", "safari16"],
+    "sourcemap": false,
+    "package_json_sha256": "1feed777e3b9b312f6eef661c4b424aae9135fb0d8414c2dadd5ca31c52d54ba",
+    "yarn_lock_sha256": "10e6fd4fdd7baa75a8741965592d7a23e729b2ed2a240bcfe6120a2874b5cd98",
+    "vite_config_sha256": "8f85b9d576c7bb7b7fbd405e44db86e4c9a7b679c59ad6f0ddd4f52e9f1f07d9",
+    "support_policy_changed": false
+  },
+  "mapped_positions": {
+    "source_commit": "c8f8fc3d19c7ac1bc880b18ba6edcad14729ff47",
+    "entry": "index-Bkwg43V1.js",
+    "entry_sha256": "14a7a0c0e583c8ffab3633d37f67c4bb698e93aeee9bd151ec030fc4d355ba56",
+    "private_map_sha256": "f4925d056f58c680fb8f71687c7d782baebe7d3454f079c406489bf08e2e8033",
+    "generated_and_original_coordinates": "one-based",
+    "public_and_mapped_entry_identical": true,
+    "uploaded_maps": false,
+    "positions": [
+      {
+        "generated": {
+          "line": 739,
+          "column": 8739
+        },
+        "original": {
+          "source": "src/jsx/main.jsx",
+          "line": 17,
+          "column": 1
+        },
+        "source_sha256": "b0a43c062d2cdebc8ec4ead1f92795a23b5f5ca0e5c17a595c07dd0c3cec7a26"
+      },
+      {
+        "generated": {
+          "line": 380,
+          "column": 27101
+        },
+        "original": {
+          "source": "node_modules/mermaid/dist/chunks/mermaid.core/chunk-I66GZJ75.mjs",
+          "line": 38,
+          "column": 21
+        },
+        "source_sha256": "1f80c6dbb665fb56014a24ab05a5089e868ee2f23f2e51282d9445bb69be0cef"
+      }
+    ]
+  },
+  "fresh_units": {
+    "passed": 174,
+    "failed": 0,
+    "skipped": 0,
+    "retained_identities": 89
+  },
+  "limitations": [
+    "Linux Chromium snapshots are not the exact reported Android stable patch engines.",
+    "A local Chrome 107 browser-policy block completed zero cases; its separate failure receipt is retained and excluded from 67. The same browser binary subsequently ran in isolated CI without changing local policies.",
+    "The first public script capture returned HTTP 403; a bounded retry with consistent release-verification headers succeeded. Neither is a production outage diagnosis.",
+    "Only the entry script was compared byte-for-byte against a fresh public capture; other application assets came from the reproducible builds.",
+    "Hidden maps were generated locally for byte-identical source mapping, not uploaded or tested in Sentry.",
+    "The five historical syntax groups remain individually unattributed, and no post-release Sentry observation window was queried."
+  ]
+}
