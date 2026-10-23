@@ -210,6 +210,25 @@ class DeploymentTests(unittest.TestCase):
                     fake.deploy()
                 self.assertEqual(fake.rollouts, [])
 
+    def test_newer_compose_plugin_majors_are_accepted(self):
+        """test_newer_compose_plugin_majors_are_accepted keeps releases working after Compose plugin upgrades past v2."""
+        for version in ["2.39.4", "v2.40.1", "5.0.2", "5.1.0-desktop.1"]:
+            with self.subTest(version=version):
+                fake = FakeDocker()
+                fake.version = version
+                fake.deploy()
+                self.assertEqual(fake.rollouts, [{"services": {SERVICE: {"image": IMAGE + "@" + DIGEST}}}])
+
+    def test_legacy_or_malformed_compose_versions_do_not_recreate_any_service(self):
+        """test_legacy_or_malformed_compose_versions_do_not_recreate_any_service fails closed before any rollout."""
+        for version in ["1.29.2", "", "latest", "10", "2.39"]:
+            with self.subTest(version=version):
+                fake = FakeDocker()
+                fake.version = version
+                with self.assertRaisesRegex(DeploymentError, "Compose v2 or newer"):
+                    fake.deploy()
+                self.assertEqual(fake.rollouts, [])
+
     def test_project_mismatch_does_not_recreate_any_service(self):
         """test_project_mismatch_does_not_recreate_any_service preserves other projects and directories."""
         for key in ["com.docker.compose.project", "com.docker.compose.service", "com.docker.compose.project.working_dir"]:
