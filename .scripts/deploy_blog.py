@@ -62,7 +62,7 @@ def command(arguments, timeout=10):
     operation = {
         "ps": "Blog service lookup", "inspect": "Blog container metadata inspection",
         "pull": "Candidate image pull", "image": "Immutable image inspection",
-        "compose": "Compose rollout" if "up" in arguments else "Compose v2 availability check",
+        "compose": "Compose rollout" if "up" in arguments else "Compose plugin availability check",
         "exec": "Container Nginx validation" if executable == "nginx" else "Container HTTP verification" if executable == "wget" else "Container asset read",
     }.get(arguments[1], "Docker command")
     try:
@@ -203,8 +203,9 @@ class Deployment:
     def deploy(self):
         """deploy validates preconditions, rolls out the exact build, and fails even after successful rollback."""
         version = text(self.run(["docker", "compose", "version", "--short"])).strip().lstrip("v")
-        if not re.fullmatch(r"2\.\d+\.\d+(?:[-+].*)?", version):
-            raise DeploymentError("The release requires the already-installed Compose v2 command.")
+        match = re.fullmatch(r"(\d+)\.\d+\.\d+(?:[-+].*)?", version)
+        if not match or int(match.group(1)) < 2:
+            raise DeploymentError("The release requires the already-installed Compose v2 or newer plugin command.")
         _, previous = self.container()
         prior = text(self.run(["docker", "image", "inspect", previous, "--format", "{{.Id}}"])).strip()
         if prior != previous:
