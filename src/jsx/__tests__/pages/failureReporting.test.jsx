@@ -130,3 +130,59 @@ describe('failures the page handles itself', () => {
     expect(messages()).toEqual(['article_list failed (RangeError)']);
   });
 });
+
+describe('a failed historical article', () => {
+  /** graphqlError builds the error graphql-request raises for a response carrying GraphQL errors. */
+  const graphqlError = (message) =>
+    Object.assign(new Error(`${message}: {"response":{}}`), { response: { status: 200, errors: [{ message }] } });
+
+  /** mountHistory mounts the real historical article route. */
+  const mountHistory = () => {
+    const router = createMemoryRouter([{ path: '/p/:name/', element: <Post isHistory="true" /> }], { initialEntries: ['/p/sample/'] });
+    return render(<RouterProvider router={router} />);
+  };
+
+  it.each([
+    'post history archive is not registered: mongo: no documents in result',
+    'post history is not publicly available',
+    'post history is not published',
+    'validate file id: invalid arweave file id "sample"',
+  ])('stays quiet for the expected denial: %s', async (message) => {
+    graphqlQuery.mockRejectedValue(graphqlError(message));
+    mountHistory();
+    expect((await screen.findByText('This historical article is unavailable.')).getAttribute('role')).toBe('status');
+    expect(window.Sentry.captureMessage).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['a network failure', new TypeError('Load failed'), 'article_load failed (TypeError)'],
+    [
+      'a server failure',
+      Object.assign(new Error('GraphQL Error (Code: 502)'), { response: { status: 502 } }),
+      'article_load failed (ClientError)',
+    ],
+    [
+      'a database failure behind the denial text',
+      graphqlError('post history archive is not registered: server selection timeout'),
+      'article_load failed (ClientError)',
+    ],
+    ['a gateway failure', graphqlError('got status code `503`'), 'article_load failed (ClientError)'],
+    ['a deadline', Object.assign(new Error('deadline'), { name: 'TimeoutError' }), 'article_load failed (TimeoutError)'],
+  ])('reports %s without response detail', async (_name, error, expected) => {
+    graphqlQuery.mockRejectedValue(error);
+    mountHistory();
+    await screen.findByText('This historical article is unavailable.');
+    expect(messages()).toEqual([expected]);
+    expect(JSON.stringify(window.Sentry.captureMessage.mock.calls)).not.toContain('selection timeout');
+  });
+
+  it('does not report a request abandoned by leaving the page', async () => {
+    let reject;
+    graphqlQuery.mockImplementation(() => new Promise((_resolve, fail) => (reject = fail)));
+    const { unmount } = mountHistory();
+    await waitFor(() => expect(graphqlQuery).toHaveBeenCalled());
+    unmount();
+    await act(async () => reject(new TypeError('Load failed')));
+    expect(window.Sentry.captureMessage).not.toHaveBeenCalled();
+  });
+});

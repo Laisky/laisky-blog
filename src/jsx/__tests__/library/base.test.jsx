@@ -111,15 +111,15 @@ describe('base.jsx', () => {
       expect(jsutils.KvDel).toHaveBeenCalledTimes(2);
     });
 
-    test('decodes token to get username when cache missing and token valid', async () => {
+    test('decodes the username from a valid token without storing a copy', async () => {
       const future = Math.floor(Date.now() / 1000) + 300;
       const token = makeToken({ exp: future, display_name: 'Alice' });
-      jsutils.KvGet.mockResolvedValueOnce(token) // token
-        .mockResolvedValueOnce(null); // auth_user missing
+      jsutils.KvGet.mockResolvedValueOnce(token);
 
       const name = await getCurrentUsername();
       expect(name).toBe('Alice');
-      expect(jsutils.KvSet).toHaveBeenCalled();
+      expect(jsutils.KvGet).toHaveBeenCalledTimes(1);
+      expect(jsutils.KvSet).not.toHaveBeenCalled();
     });
 
     test('returns undefined when KvGet throws InvalidStateError', async () => {

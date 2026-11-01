@@ -4,9 +4,9 @@ import { FilePlus, LogIn, LogOut, Settings, Shield, User } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { getCurrentUsername, KvKeyAuthUser, KvKeyUserToken } from '../library/base';
+import { getCurrentUsername } from '../library/base';
+import { signOut } from '../library/session.js';
 import { startSSOLogin } from '../library/sso';
-import { kvDel } from '../library/storage.js';
 
 /**
  * Admin renders login status and admin actions.
@@ -16,7 +16,7 @@ import { kvDel } from '../library/storage.js';
 export const Admin = () => {
   const [loginBtn, setLoginBtn] = useState('');
   const [username, setUsername] = useState(null);
-  const [loginError, setLoginError] = useState('');
+  const [authError, setAuthError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -81,26 +81,31 @@ export const Admin = () => {
     evt.preventDefault();
     const button = evt.currentTarget;
     button.disabled = true;
-    setLoginError('');
+    setAuthError('');
     try {
       await startSSOLogin();
     } catch {
-      setLoginError('Sign-in could not be started. Please try again.');
+      setAuthError('Sign-in could not be started. Please try again.');
     } finally {
       button.disabled = false;
     }
   };
 
   /**
-   * logoutHandler clears local auth cache and reloads the current route.
+   * logoutHandler removes the session and reloads the current route, or keeps the page and says so when it cannot.
    *
    * @param {React.MouseEvent<HTMLAnchorElement>} evt - The logout click event.
-   * @returns {Promise<void>} Resolves after logout completion.
+   * @returns {Promise<void>} Resolves after logout completion or displaying a safe error.
    */
   const logoutHandler = async (evt) => {
     evt.preventDefault();
-    await kvDel(KvKeyAuthUser);
-    await kvDel(KvKeyUserToken);
+    setAuthError('');
+    try {
+      await signOut();
+    } catch {
+      setAuthError('Sign-out could not be completed, so you are still signed in. Please try again.');
+      return;
+    }
     setUsername(null);
     navigate(0);
   };
@@ -112,7 +117,7 @@ export const Admin = () => {
         Admin
       </h2>
       {loginBtn}
-      {loginError && <p role="alert">{loginError}</p>}
+      {authError && <p role="alert">{authError}</p>}
     </section>
   );
 };

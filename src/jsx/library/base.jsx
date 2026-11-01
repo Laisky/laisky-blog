@@ -1,14 +1,13 @@
 'use strict';
 
 import { GraphQLClient } from 'graphql-request';
-import { jwtDecode } from 'jwt-decode';
-import { kvDel, kvGet, kvGetStrict, kvSet } from './storage.js';
+import { kvGet, kvSet } from './storage.js';
+
+export { getCurrentUsername, isJwtExpired, KvKeyAuthUser, KvKeyUserToken, requireUserToken } from './session.js';
 
 export const GraphqlAPI = 'https://gq_v2.laisky.com/query/';
 
 export const KvKeyLanguage = 'language';
-export const KvKeyUserToken = 'user_token';
-export const KvKeyAuthUser = 'auth_user';
 export const KvKeyPrefixCache = '@cache_';
 
 export const DurationDay = 24 * 60 * 60 * 1000;
@@ -144,77 +143,6 @@ export const getGraphqlAPI = () => {
 
 export const getCurrentPathName = () => {
   return location.pathname;
-};
-
-/**
- * Check if a JWT token is expired based on its `exp` claim.
- *
- * @param {string} token - The JWT token string.
- * @returns {boolean} - True if expired or invalid, false otherwise.
- */
-export const isJwtExpired = (token) => {
-  try {
-    const payload = jwtDecode(token);
-    if (!payload || typeof payload.exp !== 'number') {
-      // No exp means we treat it as invalid for safety
-      return true;
-    }
-    const now = Date.now(); // ms
-    const expMs = payload.exp * 1000; // exp is in seconds
-    return now >= expMs;
-  } catch {
-    // Bad token format
-    return true;
-  }
-};
-
-/**
- * Get the current username.
- *
- * @returns {string|null} The username or null if not available.
- */
-export const getCurrentUsername = async () => {
-  // Ensure we have a valid, non-expired token before trusting cached user info
-  let token;
-  try {
-    token = await kvGetStrict(KvKeyUserToken);
-  } catch {
-    // An unreadable sign-in is not a missing one, so it must not be deleted below.
-    return;
-  }
-  if (!token || isJwtExpired(token)) {
-    await kvDel(KvKeyAuthUser);
-    await kvDel(KvKeyUserToken);
-    return;
-  }
-
-  // Try to read cached auth user; if missing, decode from token and cache it
-  let userinfo = await kvGet(KvKeyAuthUser);
-  if (!userinfo) {
-    try {
-      userinfo = jwtDecode(token);
-      if (userinfo) {
-        await kvSet(KvKeyAuthUser, userinfo);
-      }
-    } catch {
-      return;
-    }
-  }
-
-  // Prefer display_name; fall back to common fields
-  return userinfo['display_name'] || userinfo['username'] || userinfo['name'] || userinfo['sub'];
-};
-
-/**
- * requireUserToken reads the bearer token for a privileged request, so that request never carries "Bearer null".
- *
- * @returns {Promise<string>} The stored token.
- * @throws {Error} When storage is unusable or no one is signed in.
- */
-export const requireUserToken = async () => {
-  const token = await kvGetStrict(KvKeyUserToken);
-  if (!token) throw new Error('Sign in is required.');
-  return token;
 };
 
 /**

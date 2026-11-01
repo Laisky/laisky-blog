@@ -10,6 +10,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Comments } from '../components/comments.jsx';
 import { runAsyncWork } from '../library/asyncWork.js';
 import { reportFailure } from '../library/failureReport.js';
+import { isHistoryDenial } from './historyDenial.js';
 import { parseAndReplacePostSeries } from './postSeries.jsx';
 import {
   enhancePostMenu,
@@ -245,22 +246,11 @@ export const Post = ({ isHistory }) => {
         return (isHistory ? historyLoader : loader)({ params, language: selectedLanguage });
       };
       let post;
-      if (isHistory) {
-        try {
-          post = await runAsyncWork(loadSelectedPost, { signal: controller.signal });
-        } catch {
-          if (!cancelled) {
-            setMenuHtml(null);
-            setContent(
-              <div className="col-12 col-xl-9">
-                <p role="status">This historical article is unavailable.</p>
-              </div>
-            );
-          }
-          return;
-        }
-      } else {
+      try {
         post = await runAsyncWork(loadSelectedPost, { signal: controller.signal });
+      } catch (error) {
+        // A denied archive is an expected answer. Every other failure is reported below.
+        if (!isHistory || !isHistoryDenial(error)) throw error;
       }
       if (cancelled) return;
 

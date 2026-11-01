@@ -1,8 +1,7 @@
 'use strict';
 
 import { jwtDecode } from 'jwt-decode';
-import { KvKeyAuthUser, KvKeyUserToken } from './base.jsx';
-import { kvGetStrict, kvRestore, kvSetStrict } from './storage.js';
+import { saveSession } from './session.js';
 
 export const SSOLoginEntryURL = 'https://sso.laisky.com/';
 export const SSOCallbackURL = 'https://blog.laisky.com';
@@ -233,7 +232,7 @@ const takeTransaction = (state) => {
  *
  * @param {string} code - The short-lived code.
  * @param {object} transaction - The consumed state and verifier.
- * @returns {Promise<{token: string, user: object}>} The existing bearer and decoded UI claims.
+ * @returns {Promise<string>} The existing bearer, once its claims pass the UI sanity checks.
  */
 const exchangeCode = async (code, transaction) => {
   const controller = new globalThis.AbortController();
@@ -291,27 +290,9 @@ const exchangeCode = async (code, transaction) => {
     const user = jwtDecode(data.access_token);
     if (!Number.isFinite(user.exp) || user.exp <= Math.floor(Date.now() / 1000)) throw new Error(SignInError);
     // These are UI sanity checks; the issuer and mutation backend verify signature and authorization.
-    return { token: data.access_token, user };
+    return data.access_token;
   } finally {
     clearTimeout(timeout);
-  }
-};
-
-/**
- * persistSession writes existing auth keys and awaits best-effort recovery after a partial failure.
- *
- * @param {{token: string, user: object}} session - The exchanged bearer and UI claims.
- * @returns {Promise<void>} Resolves after both writes, or rejects after all recovery attempts settle.
- */
-const persistSession = async (session) => {
-  const previousUser = await kvGetStrict(KvKeyAuthUser);
-  const previousToken = await kvGetStrict(KvKeyUserToken);
-  try {
-    await kvSetStrict(KvKeyAuthUser, session.user);
-    await kvSetStrict(KvKeyUserToken, session.token);
-  } catch {
-    await Promise.allSettled([kvRestore(KvKeyAuthUser, previousUser), kvRestore(KvKeyUserToken, previousToken)]);
-    throw new Error(SignInError);
   }
 };
 
@@ -346,8 +327,7 @@ export const consumeSSOCallbackToken = async () => {
       throw new Error(SignInError);
     }
     const transaction = takeTransaction(state);
-    const session = await exchangeCode(code, transaction);
-    await persistSession(session);
+    await saveSession(await exchangeCode(code, transaction));
     const redirect = sanitizeRedirectPath(transaction.redirectPath);
     if (redirect !== cleanURL) window.location.replace(redirect);
     return true;

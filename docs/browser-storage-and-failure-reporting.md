@@ -29,14 +29,31 @@ have no deadline or page-memory fallback.
   unusable. An unrelated success proves nothing.
 - `kvGet`, `kvSet`, `kvDel`, `getCache` and `setCache` never reject. Values fall
   back to page memory, which keeps language switching working.
-- During an outage `kvDel` only hides a value for the page. `getCurrentUsername`
-  reads the token strictly, so a sign-in that could not be read is not treated as
-  missing and is never deleted.
-- `kvGetStrict`, `kvSetStrict` and `kvDelStrict` reject. Sign-in uses these, because
-  a session held only in page memory would disappear on reload while appearing to
-  succeed. Sign-in in a private window fails visibly instead.
-- `kvRestore` undoes a partial multi-key write even when the store is stalled, because
-  a skipped rollback leaves the keys inconsistent once a slow store catches up.
+- During an outage `kvDel` only hides a value for the page. That is right for a
+  preference and wrong for anything a reload must not bring back.
+- `kvGetStrict`, `kvSetStrict` and `kvDelStrict` reject, for callers that cannot
+  accept page memory as an answer.
+- `kvRestore` puts a value back after a failed write even when the store is stalled,
+  because a write that timed out can still commit.
+
+### The session has different rules
+
+`src/jsx/library/session.js` owns the session, and nothing else touches its keys.
+These invariants are enforced by `sessionInvariants.test.jsx`:
+
+- Reading survives a storage failure.
+- Sign-in never succeeds without a durable token. Sign-in in a private window fails
+  visibly instead, because a session held in page memory would vanish on reload.
+- Logout never claims success while a token may remain. The token delete is strict and
+  ignores the stalled flag, because a page memory tombstone would end at the reload and
+  the session would return when storage recovers. On failure the page stays as it is
+  and says so.
+- The displayed identity always matches the token sent with privileged requests. Both
+  come from `user_token`: the token is one key, so a session changes in one write and
+  needs no multi-key rollback. Every release stored `auth_user` as the decoded token, so
+  dropping it changes no name, and leftover values are ignored until removed.
+- `getCurrentUsername` reads the token strictly, so a sign-in that could not be read is
+  not treated as missing and is never deleted.
 - `requireUserToken` guards privileged requests, so they fail before being sent rather
   than carrying `Bearer null`.
 
@@ -62,12 +79,18 @@ page catches, and a promise that never settles, produce neither. Each owning bou
 therefore calls `reportFailure` from `src/jsx/library/failureReport.js`.
 
 A report made before the async SDK has loaded is held, up to 8 per page, and sent when the
-Loader finishes. It sends `captureMessage` with allowlisted static labels and never the error text,
+Loader finishes. A held report the SDK refuses is dropped without costing the others. It sends `captureMessage` with allowlisted static labels and never the error text,
 because a GraphQL `ClientError` message embeds the request and response. Message
 events also do not start an on-error replay: with the SDK in buffer mode, an uncaught
 throw uploaded a replay and `reportFailure` did not, so reporting does not increase
-replay collection. It ignores `AbortError`. The historical-article catch is
-deliberately not reported, because a denied archive is an expected authorization result.
+replay collection. It ignores `AbortError`.
+
+A denied archive is an expected authorization result, so it is not reported. Everything
+else on a historical article is, including a network failure, a gateway failure and a
+database failure. `isHistoryDenial` in `src/jsx/pages/historyDenial.js` tells them apart by
+the backend's fixed GraphQL messages, because the backend sends no error code. The denial
+for an unknown archive shares its prefix with a database failure, so it is matched whole.
+If the wording changes, denials get reported rather than failures being silenced.
 
 ## Reporting must not depend on the bundle
 
@@ -83,6 +106,12 @@ Module scripts run before the window `load` event, so bootstrap sets
 covers a 503, a network failure and an empty body, none of which raise a window `error`.
 A truncated bundle also raises a global `SyntaxError`, so it produces two events. They
 are kept separate: one carries the parser position and the other is a stable alert.
+
+The check at `load` does not need a retry for a late SDK. The Loader is inserted during
+parsing, so the window `load` event waits for it to run or fail, and the Loader's own
+`Sentry.captureMessage` buffers until the full SDK arrives. This was measured in Chrome
+and Firefox with the Loader delayed by 0, 1.5 and 5 seconds beside a 503 bundle: it always
+ran before `load` and the event was captured. If it is blocked, there is nothing to wait for.
 
 Reports cannot be sent when the SDK is blocked, and a callback URL whose bundle fails
 reports nothing, because the SDK is deliberately absent there.

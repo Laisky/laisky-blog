@@ -103,16 +103,17 @@ export const kvSetStrict = async (key, value) => {
  * kvDelStrict removes a value and rejects when storage is unusable.
  *
  * @param {string} key - The key to remove.
+ * @param {{force?: boolean}} [options] - Set force to attempt the removal even when the store is known to be stalled.
  * @returns {Promise<void>} Resolves after the removal.
  */
-export const kvDelStrict = async (key) => {
-  await bounded(() => jsutils.KvDel(key));
+export const kvDelStrict = async (key, options) => {
+  await bounded(() => jsutils.KvDel(key), options);
   memory.delete(key);
 };
 
 /**
- * kvRestore puts back a value captured before a multi-key write failed. It runs even when the store is known to be
- * stalled, because a rollback skipped after a timeout would leave the keys inconsistent once a slow store catches up.
+ * kvRestore puts back a value captured before a write failed. It runs even when the store is known to be stalled,
+ * because a write that timed out can still commit, and a skipped rollback would then leave the failed value in place.
  *
  * @param {string} key - The key to restore.
  * @param {*} previous - The earlier value; null or undefined removes the key.

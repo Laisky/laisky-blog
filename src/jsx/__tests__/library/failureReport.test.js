@@ -124,4 +124,23 @@ describe('a failure that beats the SDK', () => {
     };
     expect(() => deliverPendingReports()).not.toThrow();
   });
+
+  it('delivers the remaining held reports when one delivery throws', () => {
+    reportFailure('article_load', new Error('first'));
+    reportFailure('article_list', new Error('second'));
+    reportFailure('language_preferences', new TypeError('third'));
+    captureMessage.mockImplementationOnce(() => {
+      throw new Error('sdk failure');
+    });
+    window.Sentry = { captureMessage };
+    deliverPendingReports();
+    expect(captureMessage.mock.calls.map(([message]) => message)).toEqual([
+      'article_load failed (Error)',
+      'article_list failed (Error)',
+      'language_preferences failed (TypeError)',
+    ]);
+    captureMessage.mockClear();
+    deliverPendingReports();
+    expect(captureMessage).not.toHaveBeenCalled();
+  });
 });

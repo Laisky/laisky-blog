@@ -16,17 +16,20 @@ const failureType = (error) => {
 };
 
 /**
- * deliverPendingReports sends reports that were held until the SDK loaded.
+ * deliverPendingReports sends reports that were held until the SDK loaded. A report the SDK refuses is dropped rather
+ * than retried, because holding it could repeat the failure forever, but it does not cost the reports after it.
  *
  * @returns {void} No return value.
  */
 export const deliverPendingReports = () => {
-  try {
-    if (!window.Sentry?.captureMessage) return;
-    pendingReports.splice(0).forEach(([message, context]) => window.Sentry.captureMessage(message, context));
-  } catch {
-    // Reporting is best effort and must never change what the reader sees.
-  }
+  if (!window.Sentry?.captureMessage) return;
+  pendingReports.splice(0).forEach(([message, context]) => {
+    try {
+      window.Sentry.captureMessage(message, context);
+    } catch {
+      // Reporting is best effort and must never change what the reader sees.
+    }
+  });
 };
 
 /**
