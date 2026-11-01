@@ -17,11 +17,13 @@ import {
   KvKeyPrefixCache,
   ts2UTC,
 } from '../library/base.jsx';
+import { getCache, setCache } from '../library/storage.js';
+import { useKvChange } from '../library/useKvChange.js';
 
 export const loader = async ({ params }) => {
   const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`categories:${await getUserLanguage()}:${params.category}`));
   if (!isForce()) {
-    const cacheData = await jsutils.GetCache(cacheKey);
+    const cacheData = await getCache(cacheKey);
     if (cacheData) {
       return cacheData;
     }
@@ -69,7 +71,7 @@ export const loader = async ({ params }) => {
   };
 
   // update cache
-  jsutils.SetCache(cacheKey, result, DurationDay);
+  setCache(cacheKey, result, DurationDay);
 
   return result;
 };
@@ -81,7 +83,6 @@ export const Categories = () => {
 
   useEffect(() => {
     updateContent();
-    watchLanguageChange();
   }, [params.category]);
 
   const updateContent = async () => {
@@ -91,19 +92,7 @@ export const Categories = () => {
     setIsLoading(false);
   };
 
-  const watchLanguageChange = async () => {
-    await jsutils.KvAddListener(
-      KvKeyLanguage,
-      async (key, op, oldVal, newVal) => {
-        if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
-          return;
-        }
-
-        updateContent();
-      },
-      'page_categories'
-    );
-  };
+  useKvChange(KvKeyLanguage, updateContent);
 
   const categorySlug = params.category || 'all';
   const categoryName =

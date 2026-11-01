@@ -142,7 +142,7 @@ test('exchanges once, removes markers before I/O, and restores the safe initiati
   });
   expect(await consumeSSOCallbackToken()).toBe(true);
   expect(jsutils.KvSet).toHaveBeenCalledWith(KvKeyUserToken, token);
-  expect(jsutils.KvSet).toHaveBeenCalledWith(KvKeyAuthUser, expect.objectContaining({ sub: 'local-only' }));
+  expect(jsutils.KvDel).toHaveBeenCalledWith(KvKeyAuthUser);
   expect(location.replace).toHaveBeenCalledWith('/publish/?view=compact#intro');
   callbackLocation();
   await expect(consumeSSOCallbackToken()).rejects.toThrow('Sign-in could not');
@@ -221,23 +221,18 @@ test('aborts a stalled exchange at the bounded deadline', async () => {
   expect(window.sessionStorage.getItem(KvKeySSOTransaction)).toBeNull();
 });
 
-test('restores a prior session after a partial write failure', async () => {
-  const oldUser = { sub: 'previous-local' };
-  jsutils.KvGet.mockResolvedValueOnce(oldUser).mockResolvedValueOnce('previous-local-token');
-  jsutils.KvSet.mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('storage unavailable')).mockResolvedValue(undefined);
+test('restores a prior session when a write that failed may still have committed', async () => {
+  jsutils.KvGet.mockResolvedValueOnce('previous-local-token');
+  jsutils.KvSet.mockRejectedValueOnce(new Error('storage unavailable')).mockResolvedValue(undefined);
   await expect(consumeSSOCallbackToken()).rejects.toThrow('Sign-in could not');
-  expect(jsutils.KvSet).toHaveBeenCalledWith(KvKeyAuthUser, oldUser);
   expect(jsutils.KvSet).toHaveBeenCalledWith(KvKeyUserToken, 'previous-local-token');
+  expect(jsutils.KvSet).not.toHaveBeenCalledWith(KvKeyAuthUser, expect.anything());
   expect(window.location.replace).not.toHaveBeenCalled();
 });
 
-test.each(['callback', 'bootstrap'])('waits for every rollback attempt before completing %s', async (entry) => {
-  const oldUser = { sub: 'previous-local' };
+test.each(['callback', 'bootstrap'])('waits for the rollback attempt before completing %s', async (entry) => {
   const oldToken = 'previous-local-token';
-  const stored = new Map([
-    [KvKeyAuthUser, oldUser],
-    [KvKeyUserToken, oldToken],
-  ]);
+  const stored = new Map([[KvKeyUserToken, oldToken]]);
   const operations = [];
   const mount = vi.fn();
   let releaseRestore;
@@ -246,12 +241,11 @@ test.each(['callback', 'bootstrap'])('waits for every rollback attempt before co
   });
   jsutils.KvGet.mockImplementation(async (key) => stored.get(key));
   jsutils.KvSet.mockImplementation(async (key, value) => {
-    operations.push(key + (value === oldUser || value === oldToken ? ':restore' : ':new'));
-    if (key === KvKeyAuthUser && value === oldUser) throw new Error('local restore failure');
-    if (key === KvKeyUserToken && value === oldToken) await delayedRestore;
+    operations.push(key + (value === oldToken ? ':restore' : ':new'));
+    if (value === oldToken) await delayedRestore;
     stored.set(key, value);
     // js-utils can reject after a committed put if a synchronous listener throws.
-    if (key === KvKeyUserToken && value === token) throw new Error('local post-write failure');
+    if (value === token) throw new Error('local post-write failure');
   });
   let finished = false;
   let failure;
@@ -263,11 +257,12 @@ test.each(['callback', 'bootstrap'])('waits for every rollback attempt before co
       finished = true;
     });
   try {
-    await vi.waitFor(() => expect(operations).toHaveLength(4), { timeout: 500, interval: 5 });
+    await vi.waitFor(() => expect(operations).toEqual([KvKeyUserToken + ':new', KvKeyUserToken + ':restore']), {
+      timeout: 500,
+      interval: 5,
+    });
     await Promise.resolve();
     await Promise.resolve();
-    expect(operations).toContain(KvKeyAuthUser + ':restore');
-    expect(operations).toContain(KvKeyUserToken + ':restore');
     expect(finished).toBe(false);
     expect(mount).not.toHaveBeenCalled();
   } finally {
@@ -282,16 +277,20 @@ test.each(['callback', 'bootstrap'])('waits for every rollback attempt before co
     expect(mount).toHaveBeenCalledOnce();
     alert.remove();
   }
-  // Waiting does not guarantee restoration when one write remains broken.
-  expect(stored.get(KvKeyAuthUser).sub).toBe('local-only');
   expect(stored.get(KvKeyUserToken)).toBe(oldToken);
   expect(window.location.replace).not.toHaveBeenCalled();
 });
 
-test('removes partial new auth keys when there was no prior session', async () => {
-  jsutils.KvSet.mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('storage unavailable'));
+test('completes a failed sign-in even when its rollback also fails', async () => {
+  jsutils.KvGet.mockResolvedValueOnce('previous-local-token');
+  jsutils.KvSet.mockRejectedValue(new Error('storage unavailable'));
   await expect(consumeSSOCallbackToken()).rejects.toThrow('Sign-in could not');
-  expect(jsutils.KvDel).toHaveBeenCalledWith(KvKeyAuthUser);
+  expect(jsutils.KvSet).toHaveBeenCalledTimes(2);
+});
+
+test('removes a possibly committed token when there was no prior session', async () => {
+  jsutils.KvSet.mockRejectedValueOnce(new Error('storage unavailable'));
+  await expect(consumeSSOCallbackToken()).rejects.toThrow('Sign-in could not');
   expect(jsutils.KvDel).toHaveBeenCalledWith(KvKeyUserToken);
   expect(window.location.search).toBe('');
 });
@@ -306,4 +305,31 @@ test('uses the safe fallback for an externally targeted stored return path', asy
   storeTransaction({ redirectPath: '/\\other.invalid/' });
   await consumeSSOCallbackToken();
   expect(window.location.replace).toHaveBeenCalledWith('/pages/0/');
+});
+
+test('fails visibly and still mounts when the session store never settles', async () => {
+  let recover;
+  jsutils.KvGet.mockImplementation(() => new Promise((resolve) => (recover = resolve)));
+  const mountApplication = vi.fn();
+  await expect(bootstrapApplication(mountApplication)).resolves.toBe(true);
+  expect(mountApplication).toHaveBeenCalledOnce();
+  expect(document.querySelector('[role="alert"]').textContent).toBe('Sign-in could not be completed. Please try again.');
+  expect(jsutils.KvSet).not.toHaveBeenCalled();
+  // A late answer clears the module's stalled state for the tests that follow.
+  recover(null);
+  await Promise.resolve();
+}, 5000);
+
+test('restores the previous session when the token write times out', async () => {
+  vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+  jsutils.KvGet.mockResolvedValue('previous-token');
+  let finishTokenWrite;
+  jsutils.KvSet.mockImplementationOnce(() => new Promise((resolve) => (finishTokenWrite = resolve)));
+  jsutils.KvSet.mockResolvedValue(undefined);
+  const outcome = consumeSSOCallbackToken().catch((error) => error);
+  await vi.advanceTimersByTimeAsync(2100);
+  expect((await outcome).message).toContain('Sign-in could not');
+  expect(jsutils.KvSet).toHaveBeenCalledWith(KvKeyUserToken, 'previous-token');
+  finishTokenWrite();
+  await vi.advanceTimersByTimeAsync(0);
 });

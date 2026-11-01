@@ -67,3 +67,23 @@ test('a rejected but cleaned callback can still mount ordinary articles without 
   expect(jsutils.KvSet).not.toHaveBeenCalled();
   expect(jsutils.KvDel).not.toHaveBeenCalled();
 });
+
+test('marks the bundle as started before any sign-in work can fail', async () => {
+  delete window.__BLOG_APP_STARTED__;
+  window.history.replaceState({}, '', '/?sso_token=LOCAL_ONLY_CANARY');
+  vi.spyOn(window.history, 'replaceState').mockImplementation(() => {
+    throw new Error('unavailable');
+  });
+  await bootstrapApplication(vi.fn());
+  expect(window.__BLOG_APP_STARTED__).toBe(true);
+});
+
+test('reports a bundle that loaded but could not mount the application', async () => {
+  window.history.replaceState({}, '', '/pages/0/');
+  await expect(
+    bootstrapApplication(() => {
+      throw new Error('mount failed');
+    })
+  ).rejects.toThrow('mount failed');
+  expect(window.__BLOG_APP_STARTED__).toBe(false);
+});

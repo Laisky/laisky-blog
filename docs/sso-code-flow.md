@@ -28,20 +28,25 @@ missing, malformed, mixed legacy, mismatched, expired, and replayed callbacks
 fail without touching an existing session. Legacy sso_token is never accepted
 as a new session or sent to the issuer.
 
-The exchanged JWT continues to use the existing auth_user/user_token keys and
-Authorization bearer path; existing stored sessions remain compatible. Partial
-writes attempt to restore previous keys when storage permits; callback handling and
-application bootstrap wait until both recovery attempts settle. These separate KV
-writes are not atomic: a permanently failing restore can leave mixed user/token
-values. Waiting preserves the generic error but does not guarantee restoration.
+The exchanged JWT continues to use the existing user_token key and Authorization
+bearer path; existing stored sessions remain compatible. The token is the whole
+session: the displayed identity is decoded from it, so one KV write changes the
+session and no mixed state exists. The legacy auth_user key always held the decoded
+token, so it is no longer read or written, and sign-in, logout and expiry remove it.
+A failed write attempts to restore the previous token, because a write that hit its
+deadline can still commit; callback handling and application bootstrap wait until
+that attempt settles. Waiting preserves the generic error but does not guarantee
+restoration. Whichever token survives, the identity shown matches it.
 JWT decoding and expiry
 checks are UI sanity checks, not signature verification or server authorization.
 The mutation backend still enforces authorization. This change does not migrate
 sessions into cookies or change JWT scope or lifetime.
 
 The document sets no-referrer before external resource loading. Optional
-telemetry initializes after callback consumption and remains disabled if any
-callback marker survives cleanup. Existing Nginx root response configuration
+telemetry never starts while a callback marker is visible. The inline loader in
+`index.html` skips any URL carrying a marker, so a callback URL reaches the SDK
+only through bootstrap, after callback consumption, and it remains disabled if
+any callback marker survives cleanup. Existing Nginx root response configuration
 already sets Cache-Control: no-store, no-cache, must-revalidate, matching the
 registered root callback. Asset caching and authored article content are unchanged.
 
@@ -120,7 +125,7 @@ callback cleanup, replay rejection and existing-session recovery remain unchange
 Mixed bootstrap/code/token URLs fail closed, never becoming automatic initiation.
 
 A storage, digest or navigation failure attempts to remove the new transaction and never alters
-auth_user/user_token. If history cleanup fails, the existing static error gate
+the stored session. If history cleanup fails, the existing static error gate
 keeps App and optional SDKs uninitialized. A successful bootstrap does not mount
 them while navigation leaves the document.
 

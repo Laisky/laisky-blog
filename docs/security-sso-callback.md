@@ -8,8 +8,8 @@ canary and mocked regression reproduced those remaining behaviors.
 The frontend now rejects legacy query bearers without clearing existing stored
 sessions. Its opt-in single-use code flow binds state and PKCE, strips callback
 markers synchronously, consumes the initiating tab transaction once, and exchanges
-the code at the fixed issuer endpoint. Optional telemetry starts only after
-callback handling and remains disabled if marker cleanup fails.
+the code at the fixed issuer endpoint. On a callback URL, optional telemetry starts
+only after callback handling and remains disabled if marker cleanup fails.
 
 See [the complete code-flow contract](sso-code-flow.md) for exact endpoint, lifetime,
 storage compatibility, failure handling, and primary protocol references.

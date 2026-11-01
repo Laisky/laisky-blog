@@ -5,6 +5,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Page, loader } from '../../pages/pages.jsx';
 import { graphqlQuery, getUserLanguage, isForce } from '../../library/base.jsx';
+import { kvSet } from '../../library/storage.js';
 import { loader as postLoader } from '../../pages/post.jsx';
 
 vi.mock('@laisky/js-utils', () => ({
@@ -12,9 +13,8 @@ vi.mock('@laisky/js-utils', () => ({
     SHA256: vi.fn(async (value) => value),
     GetCache: vi.fn(),
     SetCache: vi.fn(),
-    KvAddListener: vi.fn(),
-    KvRemoveListener: vi.fn(),
-    KvOp: { SET: 'set' },
+    KvGet: vi.fn(async () => null),
+    KvSet: vi.fn(async () => {}),
   },
 }));
 vi.mock('../../library/base.jsx', () => ({
@@ -33,7 +33,6 @@ vi.mock('../../components/sidebar.jsx', () => ({ Sidebar: () => <aside>Sidebar</
 let total;
 let cache;
 let requests;
-let languageListener;
 /** posts returns distinct local list fixtures without making any external requests. */
 const posts = (page = 0) =>
   Array.from({ length: Math.max(0, Math.min(10, total - page * 10)) }, (_, index) => ({
@@ -68,15 +67,11 @@ beforeEach(() => {
   total = 21;
   cache = new Map();
   requests = [];
-  languageListener = null;
   getUserLanguage.mockResolvedValue('en_US');
   isForce.mockReturnValue(false);
   jsutils.GetCache.mockImplementation(async (key) => cache.get(key));
   jsutils.SetCache.mockImplementation(async (key, value) => {
     cache.set(key, value);
-  });
-  jsutils.KvAddListener.mockImplementation(async (_key, listener) => {
-    languageListener = listener;
   });
   graphqlQuery.mockImplementation(respond);
   window.scrollTo = vi.fn();
@@ -146,19 +141,17 @@ describe('bounded list requests', () => {
   it('revalidates language once and ignores late language notifications after unmount', async () => {
     const router = mountPage();
     await screen.findByRole('heading', { name: 'Article 0' });
-    await waitFor(() => expect(languageListener).toBeTypeOf('function'));
     getUserLanguage.mockResolvedValue('zh_CN');
     await act(async () => {
-      await languageListener('language', 'set', 'en_US', 'zh_CN');
+      await kvSet('language', 'zh_CN');
     });
     await waitFor(() => expect(graphqlQuery.mock.calls.some(([query]) => query.includes('language: zh_CN'))).toBe(true));
     const callCount = graphqlQuery.mock.calls.length;
     router.unmountView();
     router.dispose();
     await act(async () => {
-      await languageListener('language', 'set', 'zh_CN', 'en_US');
+      await kvSet('language', 'en_US');
     });
     expect(graphqlQuery).toHaveBeenCalledTimes(callCount);
-    expect(jsutils.KvRemoveListener).toHaveBeenCalled();
   });
 });

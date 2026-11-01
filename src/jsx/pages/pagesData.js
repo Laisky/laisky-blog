@@ -1,6 +1,8 @@
 import jsutils from '@laisky/js-utils';
 import { gql } from 'graphql-request';
 import { getUserLanguage, graphqlQuery, isForce, KvKeyPrefixCache } from '../library/base.jsx';
+import { reportFailure } from '../library/failureReport.js';
+import { getCache, setCache } from '../library/storage.js';
 
 export const PAGE_SIZE = 10;
 const inFlight = new Map();
@@ -34,14 +36,14 @@ async function cachedQuery(key, context, read, valid) {
     writers.readers += 1;
     try {
       if (!context.force) {
-        const cached = await jsutils.GetCache(cacheKey);
+        const cached = await getCache(cacheKey);
         if (cached != null && valid(cached)) return cached;
       }
       writers.latest = Math.max(writers.latest, serial);
       const result = await read();
       if (!valid(result)) throw new Error('Invalid article-list response');
       // A slow ordinary read must not overwrite a newer forced refresh.
-      if (writers.latest === serial) await jsutils.SetCache(cacheKey, result);
+      if (writers.latest === serial) await setCache(cacheKey, result);
       return result;
     } finally {
       writers.readers -= 1;
@@ -126,6 +128,7 @@ export async function loadPageData({ params = {}, request } = {}) {
   } catch (error) {
     if (request?.signal?.aborted || error?.name === 'AbortError') throw error;
     // The route UI owns this failure. Never return a transport error containing private URLs or bodies.
+    reportFailure('article_list', error);
     return { ...empty, problem: 'request' };
   }
 }

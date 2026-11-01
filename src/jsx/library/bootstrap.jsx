@@ -29,6 +29,8 @@ const showSignInError = (replaceApplication) => {
  * @returns {Promise<boolean>} True when mounted, or false when unsafe callback markers remain.
  */
 export const bootstrapApplication = async (mountApplication) => {
+  // The inline loader in index.html reports a bundle that never reached this line.
+  window.__BLOG_APP_STARTED__ = true;
   let callbackFailed = false;
   try {
     if (await consumeSSOBootstrap()) return false;
@@ -43,6 +45,12 @@ export const bootstrapApplication = async (mountApplication) => {
   }
   if (callbackFailed) showSignInError(false);
   initializeOptionalTelemetry();
-  mountApplication();
+  try {
+    mountApplication();
+  } catch (error) {
+    // The inline loader reports a bundle that loaded but could not mount the application.
+    window.__BLOG_APP_STARTED__ = false;
+    throw error;
+  }
   return true;
 };

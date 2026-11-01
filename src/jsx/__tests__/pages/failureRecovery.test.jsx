@@ -6,15 +6,15 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { App } from '../../pages/app.jsx';
 import { Post } from '../../pages/post.jsx';
 import { graphqlQuery, getUserLanguage, setUserLanguage } from '../../library/base.jsx';
+import { kvSet } from '../../library/storage.js';
 
 vi.mock('@laisky/js-utils', () => ({
   default: {
     SHA256: vi.fn(async (value) => value),
     GetCache: vi.fn(async () => null),
     SetCache: vi.fn(async () => {}),
-    KvAddListener: vi.fn(async () => {}),
-    KvRemoveListener: vi.fn(),
-    KvOp: { SET: 'set' },
+    KvGet: vi.fn(async () => null),
+    KvSet: vi.fn(async () => {}),
     LoadJsModules: vi.fn(),
   },
 }));
@@ -68,7 +68,6 @@ beforeEach(() => {
   });
   getUserLanguage.mockResolvedValue('en_US');
   setUserLanguage.mockResolvedValue(undefined);
-  jsutils.KvAddListener.mockResolvedValue(undefined);
   window.MathJax = { Hub: { Queue: vi.fn() } };
   window.matchMedia = vi.fn(() => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
   window.scrollTo = vi.fn();
@@ -92,26 +91,22 @@ describe('owned article recovery', () => {
     expect(screen.queryByRole('button', { name: 'Retry loading article' })).not.toBeInTheDocument();
   });
   it('does not reload the current language during App initialization, but reloads a real language change', async () => {
-    let notify;
-    jsutils.KvAddListener.mockImplementation(async (_key, listener) => {
-      notify = listener;
-    });
     const { unmount } = mountArticle(true);
     await screen.findByRole('heading', { name: 'Readable body' });
     expect(graphqlQuery).toHaveBeenCalledTimes(1);
     await act(async () => {
-      await notify('language', 'set', null, 'en_US');
+      await kvSet('language', 'en_US');
     });
     expect(graphqlQuery).toHaveBeenCalledTimes(1);
     getUserLanguage.mockResolvedValue('zh_CN');
     await act(async () => {
-      await notify('language', 'set', 'en_US', 'zh_CN');
+      await kvSet('language', 'zh_CN');
     });
     await waitFor(() => expect(graphqlQuery).toHaveBeenCalledTimes(2));
     expect(graphqlQuery.mock.calls[1][0]).toContain('language: zh_CN');
     unmount();
     await act(async () => {
-      await notify('language', 'set', 'zh_CN', 'en_US');
+      await kvSet('language', 'en_US');
     });
     expect(graphqlQuery).toHaveBeenCalledTimes(2);
   });
