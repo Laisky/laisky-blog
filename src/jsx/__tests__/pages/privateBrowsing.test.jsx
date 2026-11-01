@@ -38,7 +38,9 @@ const respond = async (body) => {
   if (body.includes('BlogPostInfo')) return { BlogPostInfo: { total: 1 } };
   if (body.includes('ListBlogPosts')) return { BlogPosts: [{ name: 'sample', title: 'Listed sample', markdown: 'Excerpt' }] };
   return {
-    BlogPosts: [{ name: 'sample', title: 'Readable sample', type: 'post', content: '<p>Readable body</p>', menu: '', created_at: '2026-01-01' }],
+    BlogPosts: [
+      { name: 'sample', title: 'Readable sample', type: 'post', content: '<p>Readable body</p>', menu: '', created_at: '2026-01-01' },
+    ],
   };
 };
 
