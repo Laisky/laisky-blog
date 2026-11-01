@@ -156,21 +156,18 @@ export const setUserLanguage = async (lang) => {
 
 /**
  * Get the current user language.
- * Supports detecting language by prefix to handle variants like "zh-Hans-CN".
+ * The "zh" language subtag and its variants, such as "zh-Hant-TW" or "zh_CN", select Chinese. Anything else, including
+ * an unknown language or a malformed stored value, falls back to English.
  *
  * @returns {string} The normalized user language code (either "zh_CN" or "en_US")
  */
 export const getUserLanguage = async () => {
   // Get language from the URL parameter, kv storage, or browser settings in that order
   const url = new URL(window.location.href);
-  let lang = url.searchParams.get('lang') || (await kvGet(KvKeyLanguage)) || navigator.language || navigator.userLanguage;
+  const lang = url.searchParams.get('lang') || (await kvGet(KvKeyLanguage)) || navigator.language || navigator.userLanguage;
 
-  // Convert to lowercase for consistent comparison
-  const langLower = lang ? lang.toLowerCase() : '';
-
-  // Normalize language: treat any Chinese variant as 'zh_CN', all others as 'en_US'
-  // This handles variants like zh-Hans-CN, zh-TW, zh-HK, etc.
-  const normalizedLang = langLower.startsWith('zh') ? 'zh_CN' : 'en_US';
+  // Match the whole language subtag, so a code that only begins with "zh", such as "zha", is not treated as Chinese.
+  const normalizedLang = typeof lang === 'string' && /^zh(?:[-_]|$)/i.test(lang) ? 'zh_CN' : 'en_US';
 
   // Update the html document language attribute with a valid BCP 47 tag
   document.documentElement.lang = normalizedLang === 'zh_CN' ? 'zh-CN' : 'en-US';
