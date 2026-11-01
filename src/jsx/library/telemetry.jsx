@@ -1,3 +1,4 @@
+import { deliverPendingReports } from './failureReport.js';
 import { hasSSOCallbackParameters } from './sso';
 
 export const TelemetryLoaderURL = 'https://js.sentry-cdn.com/0a5aa56db9cb55dc305a90b5ec8a5c51.min.js';
@@ -20,6 +21,7 @@ export const initializeOptionalTelemetry = () => {
   telemetry.crossOrigin = 'anonymous';
   telemetry.referrerPolicy = 'no-referrer';
   telemetry.src = TelemetryLoaderURL;
+  telemetry.addEventListener('load', deliverPendingReports, { once: true });
   document.body.append(telemetry);
   return true;
 };

@@ -1,4 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest';
+import { reportFailure } from '../../library/failureReport.js';
 import { consumeSSOCallbackToken } from '../../library/sso';
 import { initializeOptionalTelemetry } from '../../library/telemetry';
 
@@ -25,6 +26,16 @@ test('initializes only after callback cleanup, using no-referrer', () => {
   const script = document.querySelector('script[src*="sentry-cdn"]');
   expect(script.referrerPolicy).toBe('no-referrer');
   expect(script.crossOrigin).toBe('anonymous');
+});
+
+test('delivers a report held during sign-in once the bundle loads the SDK', () => {
+  window.history.replaceState({}, '', '/pages/0/');
+  reportFailure('article_load', new Error('held'));
+  expect(initializeOptionalTelemetry()).toBe(true);
+  window.Sentry = { captureMessage: vi.fn() };
+  document.querySelector('script[src*="sentry-cdn"]').dispatchEvent(new window.Event('load'));
+  expect(window.Sentry.captureMessage).toHaveBeenCalledOnce();
+  delete window.Sentry;
 });
 
 test('keeps telemetry disabled if browser history cleanup fails', async () => {

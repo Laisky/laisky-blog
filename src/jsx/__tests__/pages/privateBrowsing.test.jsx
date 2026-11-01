@@ -22,9 +22,6 @@ vi.mock('@laisky/js-utils', () => {
       KvDel: vi.fn(stalled),
       GetCache: vi.fn(stalled),
       SetCache: vi.fn(stalled),
-      KvAddListener: vi.fn(async () => {}),
-      KvRemoveListener: vi.fn(),
-      KvOp: { SET: 1, DEL: 2 },
       LoadJsModules: vi.fn(),
     },
   };

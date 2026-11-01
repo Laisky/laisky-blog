@@ -2,7 +2,7 @@
 
 import { jwtDecode } from 'jwt-decode';
 import { KvKeyAuthUser, KvKeyUserToken } from './base.jsx';
-import { kvDelStrict, kvGetStrict, kvSetStrict } from './storage.js';
+import { kvGetStrict, kvRestore, kvSetStrict } from './storage.js';
 
 export const SSOLoginEntryURL = 'https://sso.laisky.com/';
 export const SSOCallbackURL = 'https://blog.laisky.com';
@@ -310,10 +310,7 @@ const persistSession = async (session) => {
     await kvSetStrict(KvKeyAuthUser, session.user);
     await kvSetStrict(KvKeyUserToken, session.token);
   } catch {
-    await Promise.allSettled([
-      previousUser == null ? kvDelStrict(KvKeyAuthUser) : kvSetStrict(KvKeyAuthUser, previousUser),
-      previousToken == null ? kvDelStrict(KvKeyUserToken) : kvSetStrict(KvKeyUserToken, previousToken),
-    ]);
+    await Promise.allSettled([kvRestore(KvKeyAuthUser, previousUser), kvRestore(KvKeyUserToken, previousToken)]);
     throw new Error(SignInError);
   }
 };

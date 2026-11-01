@@ -320,3 +320,20 @@ test('fails visibly and still mounts when the session store never settles', asyn
   recover(null);
   await Promise.resolve();
 }, 5000);
+
+test('restores the previous session when the token write times out', async () => {
+  vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+  const previousUser = { sub: 'previous' };
+  jsutils.KvGet.mockImplementation(async (key) => (key === KvKeyAuthUser ? previousUser : 'previous-token'));
+  let finishTokenWrite;
+  jsutils.KvSet.mockImplementationOnce(async () => {});
+  jsutils.KvSet.mockImplementationOnce(() => new Promise((resolve) => (finishTokenWrite = resolve)));
+  jsutils.KvSet.mockResolvedValue(undefined);
+  const outcome = consumeSSOCallbackToken().catch((error) => error);
+  await vi.advanceTimersByTimeAsync(2100);
+  expect((await outcome).message).toContain('Sign-in could not');
+  expect(jsutils.KvSet).toHaveBeenCalledWith(KvKeyAuthUser, previousUser);
+  expect(jsutils.KvSet).toHaveBeenCalledWith(KvKeyUserToken, 'previous-token');
+  finishTokenWrite();
+  await vi.advanceTimersByTimeAsync(0);
+});

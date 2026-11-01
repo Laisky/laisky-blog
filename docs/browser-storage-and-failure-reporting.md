@@ -17,18 +17,40 @@ A separate route reaches the same hang: if `indexedDB.open()` throws synchronous
 as WebKit does when storage access is denied, PouchDB's module-level task queue
 keeps `running = true` and queues every later open forever.
 
-All application storage therefore goes through `src/jsx/library/storage.js`:
+KV and cache storage therefore goes through `src/jsx/library/storage.js`. Direct
+`sessionStorage` calls bypass it: scroll positions in `src/jsx/pages/pages.jsx` and the
+SSO transaction in `src/jsx/library/sso.jsx`. `sessionStorage` is synchronous, so it
+cannot hang the way PouchDB can, and those callers handle its errors themselves. They
+have no deadline or page-memory fallback.
 
 - Each operation has a 2-second deadline. The first timeout makes later calls
-  fail fast, and one warning is reported per page. A late success clears this,
-  because it proves the store was slow rather than unusable.
+  fail fast, and one warning is reported per page. Only the timed-out operation's
+  own late success clears this, because that proves the store was slow rather than
+  unusable. An unrelated success proves nothing.
 - `kvGet`, `kvSet`, `kvDel`, `getCache` and `setCache` never reject. Values fall
   back to page memory, which keeps language switching working.
-- During an outage `kvDel` only hides a value for the page. A value that could not
-  be read is never deleted, so a slow store cannot sign a reader out permanently.
+- During an outage `kvDel` only hides a value for the page. `getCurrentUsername`
+  reads the token strictly, so a sign-in that could not be read is not treated as
+  missing and is never deleted.
 - `kvGetStrict`, `kvSetStrict` and `kvDelStrict` reject. Sign-in uses these, because
   a session held only in page memory would disappear on reload while appearing to
   succeed. Sign-in in a private window fails visibly instead.
+- `kvRestore` undoes a partial multi-key write even when the store is stalled, because
+  a skipped rollback leaves the keys inconsistent once a slow store catches up.
+- `requireUserToken` guards privileged requests, so they fail before being sent rather
+  than carrying `Bearer null`.
+
+### Change notifications
+
+`kvSet` is the only source of change notifications. Registration through `kvSubscribe`
+does no storage work, so it cannot fail or wait, and it returns its own unsubscribe
+function. Components use the `useKvChange` hook, which ties the subscription to the
+effect's lifetime, so it ends on unmount and survives StrictMode re-runs.
+
+The js-utils listeners are deliberately not used. They fire only for writes made in the
+same page, and every write now goes through `kvSet`, so they add nothing. Keeping both
+paths caused duplicate delivery after a late write, lost delivery after a failed
+registration, and removal-by-name races under StrictMode.
 
 Playwright WebKit `newContext()` is non-persistent, like a private window. Use
 `launchPersistentContext()` to represent a normal Safari profile.
@@ -39,7 +61,8 @@ The Sentry Loader listens only for `error` and `unhandledrejection`. A failure t
 page catches, and a promise that never settles, produce neither. Each owning boundary
 therefore calls `reportFailure` from `src/jsx/library/failureReport.js`.
 
-It sends `captureMessage` with allowlisted static labels and never the error text,
+A report made before the async SDK has loaded is held, up to 8 per page, and sent when the
+Loader finishes. It sends `captureMessage` with allowlisted static labels and never the error text,
 because a GraphQL `ClientError` message embeds the request and response. Message
 events also do not start an on-error replay: with the SDK in buffer mode, an uncaught
 throw uploaded a replay and `reportFailure` did not, so reporting does not increase
@@ -55,7 +78,7 @@ load it from bootstrap after cleanup. Its marker list must match `SSOCallbackPar
 which `inlineTelemetry.test.js` enforces by running the shipped script for every entry.
 
 Module scripts run before the window `load` event, so bootstrap sets
-`window.__BLOG_APP_STARTED__` and the inline script reports
+`window.__BLOG_APP_STARTED__`, clears it if mounting throws, and the inline script reports
 `application_bundle failed (not_started)` if the flag is still unset at `load`. This
 covers a 503, a network failure and an empty body, none of which raise a window `error`.
 A truncated bundle also raises a global `SyntaxError`, so it produces two events. They
@@ -63,3 +86,10 @@ are kept separate: one carries the parser position and the other is a stable ale
 
 Reports cannot be sent when the SDK is blocked, and a callback URL whose bundle fails
 reports nothing, because the SDK is deliberately absent there.
+
+## Do not keep rendered JSX in state
+
+The article editor once stored its rendered form in state and rebuilt it only when the route
+or language changed. Everything that form closed over went stale: validation and request
+errors never appeared, and the `submitting` guard could never take effect, so a second click
+sent a second publish request. It now stores the loaded post and renders from it.

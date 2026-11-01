@@ -107,6 +107,18 @@ describe('failures the page handles itself', () => {
     expect(messages()).toEqual(['article_list failed (TypeError)']);
   });
 
+  it('does not report a list request aborted while GraphQL is pending', async () => {
+    const controller = new globalThis.AbortController();
+    let fail;
+    graphqlQuery.mockImplementation(() => new Promise((_resolve, reject) => (fail = reject)));
+    const outcome = loader({ params: { nPage: '0' }, request: { signal: controller.signal } }).catch((error) => error);
+    await waitFor(() => expect(graphqlQuery).toHaveBeenCalled());
+    controller.abort();
+    await act(async () => fail(new TypeError('Load failed')));
+    expect(await outcome).toBeInstanceOf(TypeError);
+    expect(window.Sentry.captureMessage).not.toHaveBeenCalled();
+  });
+
   it('reports a failed article list render', async () => {
     getCurrentUsername.mockRejectedValue(new RangeError('Invalid time value'));
     const data = { postsData: [], nPosts: 1, nPage: 0 };

@@ -17,7 +17,8 @@ import {
   KvKeyPrefixCache,
   ts2UTC,
 } from '../library/base.jsx';
-import { getCache, kvAddListener, setCache } from '../library/storage.js';
+import { getCache, setCache } from '../library/storage.js';
+import { useKvChange } from '../library/useKvChange.js';
 
 export const loader = async ({ params }) => {
   const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`categories:${await getUserLanguage()}:${params.category}`));
@@ -82,7 +83,6 @@ export const Categories = () => {
 
   useEffect(() => {
     updateContent();
-    watchLanguageChange();
   }, [params.category]);
 
   const updateContent = async () => {
@@ -92,19 +92,7 @@ export const Categories = () => {
     setIsLoading(false);
   };
 
-  const watchLanguageChange = async () => {
-    await kvAddListener(
-      KvKeyLanguage,
-      async (key, op, oldVal, newVal) => {
-        if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {
-          return;
-        }
-
-        updateContent();
-      },
-      'page_categories'
-    );
-  };
+  useKvChange(KvKeyLanguage, updateContent);
 
   const categorySlug = params.category || 'all';
   const categoryName =

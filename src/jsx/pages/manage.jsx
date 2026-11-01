@@ -4,8 +4,7 @@ import { gql } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { formatTs, getCurrentUsername, getUserLanguage, graphqlMutation, graphqlQuery, KvKeyUserToken } from '../library/base.jsx';
-import { kvGet } from '../library/storage.js';
+import { formatTs, getCurrentUsername, getUserLanguage, graphqlMutation, graphqlQuery, requireUserToken } from '../library/base.jsx';
 
 const PAGE_SIZE = 200;
 
@@ -187,7 +186,7 @@ export const Manage = () => {
     setSubmitResult(null);
 
     try {
-      const token = await kvGet(KvKeyUserToken);
+      const token = await requireUserToken();
       let successCount = 0;
       let failCount = 0;
 

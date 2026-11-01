@@ -84,6 +84,14 @@ describe('inline failure reporting in index.html', () => {
     expect(JSON.stringify(context)).not.toContain('/p/sample/');
   });
 
+  it('reports through an SDK that appears after the loader ran', () => {
+    runInlineLoader();
+    window.Sentry = { captureMessage: vi.fn() };
+    window.dispatchEvent(new window.Event('load'));
+    expect(window.Sentry.captureMessage).toHaveBeenCalledOnce();
+    expect(window.Sentry.captureMessage.mock.calls[0][0]).toBe('application_bundle failed (not_started)');
+  });
+
   it('stays quiet when the bundle started', () => {
     window.Sentry = { captureMessage: vi.fn() };
     runInlineLoader();

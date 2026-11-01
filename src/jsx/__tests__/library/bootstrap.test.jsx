@@ -77,3 +77,13 @@ test('marks the bundle as started before any sign-in work can fail', async () =>
   await bootstrapApplication(vi.fn());
   expect(window.__BLOG_APP_STARTED__).toBe(true);
 });
+
+test('reports a bundle that loaded but could not mount the application', async () => {
+  window.history.replaceState({}, '', '/pages/0/');
+  await expect(
+    bootstrapApplication(() => {
+      throw new Error('mount failed');
+    })
+  ).rejects.toThrow('mount failed');
+  expect(window.__BLOG_APP_STARTED__).toBe(false);
+});

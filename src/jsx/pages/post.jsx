@@ -5,7 +5,7 @@ import DOMPurify from 'dompurify';
 import { gql } from 'graphql-request';
 import parse from 'html-react-parser';
 import { Archive, Info } from 'lucide-react';
-import React, { useEffect, useState, useId, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Comments } from '../components/comments.jsx';
 import { runAsyncWork } from '../library/asyncWork.js';
@@ -34,7 +34,8 @@ import {
   KvKeyPrefixCache,
   ts2UTC,
 } from '../library/base.jsx';
-import { getCache, kvAddListener, kvRemoveListener, setCache } from '../library/storage.js';
+import { getCache, setCache } from '../library/storage.js';
+import { useKvChange } from '../library/useKvChange.js';
 
 /** validCurrentPost checks the required current-article render fields before accepting a network or cache result. */
 const validCurrentPost = (post) =>
@@ -162,7 +163,6 @@ export const Post = ({ isHistory }) => {
   const currentLanguage = useRef(null);
   const [attempt, setAttempt] = useState(0);
   const [enhancementFailed, setEnhancementFailed] = useState(false);
-  const listenerName = useId();
   const [menuHtml, setMenuHtml] = useState(null);
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [imageModalSrc, setImageModalSrc] = useState('');
@@ -396,23 +396,12 @@ export const Post = ({ isHistory }) => {
     };
   }, [params.name, language, isHistory, attempt]);
 
-  useEffect(() => {
-    const controller = new globalThis.AbortController();
-    const signal = controller.signal;
-    /** changeLanguage invalidates the view only when the effective request language actually changes. */
-    const changeLanguage = (nextLanguage) => {
-      if (nextLanguage === currentLanguage.current) return;
-      currentLanguage.current = nextLanguage;
-      setLanguage(nextLanguage);
-    };
-    watchLanguageChange(changeLanguage, listenerName, signal).catch(() => {
-      if (!signal.aborted) setEnhancementFailed(true);
-    });
-    return () => {
-      controller.abort();
-      kvRemoveListener(KvKeyLanguage, listenerName);
-    };
-  }, [listenerName]);
+  // Invalidate the view only when the effective request language actually changes.
+  useKvChange(KvKeyLanguage, (nextLanguage) => {
+    if (nextLanguage === currentLanguage.current) return;
+    currentLanguage.current = nextLanguage;
+    setLanguage(nextLanguage);
+  });
 
   // Article enhancements have independent owners and cannot commit after this content is replaced.
   useEffect(() => {
@@ -606,22 +595,4 @@ const bindPostImageModal = (setImageModalOpen, setImageModalSrc, setImageModalAl
   return () => {
     bindings.forEach((remove) => remove());
   };
-};
-
-/**
- * watchLanguageChange watches for language changes and updates state.
- */
-const watchLanguageChange = async (setLanguage, listenerName, signal) => {
-  await kvAddListener(
-    KvKeyLanguage,
-    async (key, op, oldVal, newVal) => {
-      if (signal.aborted || op !== jsutils.KvOp.SET || key !== KvKeyLanguage || oldVal === newVal) {
-        return;
-      }
-
-      setLanguage(newVal);
-    },
-    listenerName
-  );
-  if (signal.aborted) kvRemoveListener(KvKeyLanguage, listenerName);
 };

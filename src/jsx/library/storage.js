@@ -6,7 +6,7 @@ import { reportFailure } from './failureReport.js';
 export const StorageDeadlineMs = 2000;
 
 const memory = new Map();
-const listeners = new Map();
+const subscribers = new Map();
 let stalled = false;
 let stallReported = false;
 
@@ -39,43 +39,53 @@ const markStalled = (error) => {
  * sessions its setup transaction neither completes nor aborts, so an unbounded call would never settle.
  *
  * @param {function(): Promise<*>} start - The operation to run.
+ * @param {{force?: boolean}} [options] - Set force to run the operation even when the store is known to be stalled.
  * @returns {Promise<*>} The operation result, or a rejection on failure, deadline, or a known stalled store.
  */
-const bounded = (start) => {
-  if (stalled) return Promise.reject(unavailableError());
+const bounded = (start, { force = false } = {}) => {
+  if (stalled && !force) return Promise.reject(unavailableError());
   const work = Promise.resolve().then(start);
-  // A late success proves the store is slow rather than unusable, so later calls may use it again.
+  let timedOut = false;
+  // Only the timed-out operation's own late success proves the store is slow rather than unusable.
   work.then(
     () => {
-      stalled = false;
+      if (timedOut) stalled = false;
     },
     () => {}
   );
   return runAsyncWork(() => work, { timeoutMs: StorageDeadlineMs }).catch((error) => {
-    if (error?.name === 'TimeoutError') markStalled(error);
+    if (error?.name === 'TimeoutError') {
+      timedOut = true;
+      markStalled(error);
+    }
     throw error;
   });
 };
 
 /**
- * notifyListeners delivers a change that only reached page memory, because the store never saw it to notify anyone.
+ * notifySubscribers delivers one change. Each subscriber runs in isolation, so its failure cannot reach the writer or
+ * the other subscribers.
  *
  * @param {string} key - The changed key.
- * @param {*} previous - The earlier page-memory value.
  * @param {*} value - The new value.
+ * @param {*} previous - The earlier value.
  * @returns {void} No return value.
  */
-const notifyListeners = (key, previous, value) => {
-  listeners.get(key)?.forEach((callback) => callback(key, jsutils.KvOp?.SET, previous, value));
+const notifySubscribers = (key, value, previous) => {
+  subscribers.get(key)?.forEach((callback) => {
+    Promise.resolve()
+      .then(() => callback(value, previous))
+      .catch((error) => reportFailure('storage_subscriber', error));
+  });
 };
 
 /**
- * kvGetStrict reads a stored value and rejects when storage is unusable, for callers that must not treat that as absent.
+ * kvGetStrict reads a value and rejects when storage is unusable, for callers that must not treat that as absent.
  *
  * @param {string} key - The key to read.
- * @returns {Promise<*>} The stored value, or null when the key does not exist.
+ * @returns {Promise<*>} The value held for this page or stored, or null when the key does not exist.
  */
-export const kvGetStrict = (key) => bounded(() => jsutils.KvGet(key));
+export const kvGetStrict = async (key) => (memory.has(key) ? memory.get(key) : bounded(() => jsutils.KvGet(key)));
 
 /**
  * kvSetStrict writes a value and rejects when storage is unusable, for callers that need durable persistence.
@@ -101,13 +111,25 @@ export const kvDelStrict = async (key) => {
 };
 
 /**
+ * kvRestore puts back a value captured before a multi-key write failed. It runs even when the store is known to be
+ * stalled, because a rollback skipped after a timeout would leave the keys inconsistent once a slow store catches up.
+ *
+ * @param {string} key - The key to restore.
+ * @param {*} previous - The earlier value; null or undefined removes the key.
+ * @returns {Promise<void>} Resolves after the restore, and rejects on failure or at the deadline.
+ */
+export const kvRestore = async (key, previous) => {
+  await bounded(() => (previous == null ? jsutils.KvDel(key) : jsutils.KvSet(key, previous)), { force: true });
+  memory.delete(key);
+};
+
+/**
  * kvGet reads a value for ordinary page work, preferring anything recorded in page memory during an outage.
  *
  * @param {string} key - The key to read.
  * @returns {Promise<*>} The value, or null when it is absent or storage is unusable.
  */
 export const kvGet = async (key) => {
-  if (memory.has(key)) return memory.get(key);
   try {
     return await kvGetStrict(key);
   } catch {
@@ -117,19 +139,20 @@ export const kvGet = async (key) => {
 
 /**
  * kvSet writes a value and falls back to page memory, so a reader's choice still applies until the page is closed.
+ * It is the only source of change notifications, so subscribers hear each change once however the write ends.
  *
  * @param {string} key - The key to write.
  * @param {*} value - The value to store.
  * @returns {Promise<void>} Resolves after the value is stored or held in memory; it never rejects.
  */
 export const kvSet = async (key, value) => {
+  const previous = await kvGet(key);
   try {
     await kvSetStrict(key, value);
   } catch {
-    const previous = memory.get(key) ?? null;
     memory.set(key, value);
-    notifyListeners(key, previous, value);
   }
+  if (previous !== value) notifySubscribers(key, value, previous);
 };
 
 /**
@@ -178,31 +201,18 @@ export const setCache = async (key, value, ttl) => {
 };
 
 /**
- * kvAddListener subscribes to a key's changes from both the store and page memory.
+ * kvSubscribe watches a key for changes made through kvSet. Registration does no storage work, so it cannot fail or wait.
  *
  * @param {string} key - The key to watch.
- * @param {function(string, *, *, *): void} callback - Receives the key, operation, previous value, and new value.
- * @param {string} name - The stable subscription name.
- * @returns {Promise<void>} Resolves after subscribing; a store failure leaves the page-memory subscription active.
+ * @param {function(*, *): (void|Promise<void>)} callback - Receives the new and previous values.
+ * @returns {function(): void} Removes this subscription and no other.
  */
-export const kvAddListener = async (key, callback, name) => {
-  if (!listeners.has(key)) listeners.set(key, new Map());
-  listeners.get(key).set(name, callback);
-  try {
-    await jsutils.KvAddListener(key, callback, name);
-  } catch {
-    // Page memory still delivers changes while the store is unusable.
-  }
-};
-
-/**
- * kvRemoveListener removes a named subscription from both the store and page memory.
- *
- * @param {string} key - The watched key.
- * @param {string} name - The subscription name.
- * @returns {void} No return value.
- */
-export const kvRemoveListener = (key, name) => {
-  listeners.get(key)?.delete(name);
-  jsutils.KvRemoveListener?.(key, name);
+export const kvSubscribe = (key, callback) => {
+  if (!subscribers.has(key)) subscribers.set(key, new Set());
+  const keySubscribers = subscribers.get(key);
+  const subscription = (value, previous) => callback(value, previous);
+  keySubscribers.add(subscription);
+  return () => {
+    keySubscribers.delete(subscription);
+  };
 };

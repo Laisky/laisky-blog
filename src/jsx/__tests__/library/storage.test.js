@@ -8,9 +8,6 @@ vi.mock('@laisky/js-utils', () => ({
     KvDel: vi.fn(),
     GetCache: vi.fn(),
     SetCache: vi.fn(),
-    KvAddListener: vi.fn(),
-    KvRemoveListener: vi.fn(),
-    KvOp: { SET: 1, DEL: 2 },
   },
 }));
 
@@ -125,23 +122,16 @@ describe('a store that never settles', () => {
     expect(JSON.stringify(captureMessage.mock.calls)).not.toMatch(/one|two|three|four/);
   });
 
-  it('holds a written value in page memory and delivers it to listeners', async () => {
-    const listener = vi.fn();
-    await storage.kvAddListener('language', listener, 'reader');
+  it('holds a written value in page memory and tells subscribers once', async () => {
+    const subscriber = vi.fn();
+    storage.kvSubscribe('language', subscriber);
     await settleWithDeadline(() => storage.kvSet('language', 'zh_CN'));
-    expect(listener).toHaveBeenCalledWith('language', jsutils.KvOp.SET, null, 'zh_CN');
+    await vi.advanceTimersByTimeAsync(0);
+    expect(subscriber).toHaveBeenCalledExactlyOnceWith('zh_CN', null);
     await expect(storage.kvGet('language')).resolves.toBe('zh_CN');
     await storage.kvSet('language', 'en_US');
-    expect(listener).toHaveBeenLastCalledWith('language', jsutils.KvOp.SET, 'zh_CN', 'en_US');
-  });
-
-  it('stops delivering to a removed listener', async () => {
-    const listener = vi.fn();
-    await storage.kvAddListener('language', listener, 'reader');
-    storage.kvRemoveListener('language', 'reader');
-    await settleWithDeadline(() => storage.kvSet('language', 'zh_CN'));
-    expect(listener).not.toHaveBeenCalled();
-    expect(jsutils.KvRemoveListener).toHaveBeenCalledWith('language', 'reader');
+    await vi.advanceTimersByTimeAsync(0);
+    expect(subscriber).toHaveBeenLastCalledWith('en_US', 'zh_CN');
   });
 
   it('hides a deleted value for this page without touching the store', async () => {
@@ -182,22 +172,112 @@ describe('a store that is only slow', () => {
   });
 });
 
-describe('listener registration', () => {
-  it('keeps the page-memory subscription when the store refuses it', async () => {
-    jsutils.KvAddListener.mockRejectedValue(new Error('blocked'));
-    jsutils.KvSet.mockRejectedValue(new Error('blocked'));
-    const listener = vi.fn();
-    await expect(storage.kvAddListener('language', listener, 'reader')).resolves.toBeUndefined();
+describe('subscriptions', () => {
+  it('delivers a successful write once, with the earlier value', async () => {
+    jsutils.KvGet.mockResolvedValue('en_US');
+    jsutils.KvSet.mockResolvedValue(undefined);
+    const subscriber = vi.fn();
+    storage.kvSubscribe('language', subscriber);
     await storage.kvSet('language', 'zh_CN');
-    expect(listener).toHaveBeenCalledOnce();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(subscriber).toHaveBeenCalledExactlyOnceWith('zh_CN', 'en_US');
   });
 
-  it('leaves delivery to the store while the store is healthy', async () => {
+  it('stays silent when a write does not change the value', async () => {
+    jsutils.KvGet.mockResolvedValue('en_US');
     jsutils.KvSet.mockResolvedValue(undefined);
-    const listener = vi.fn();
-    await storage.kvAddListener('language', listener, 'reader');
+    const subscriber = vi.fn();
+    storage.kvSubscribe('language', subscriber);
+    await storage.kvSet('language', 'en_US');
+    await vi.advanceTimersByTimeAsync(0);
+    expect(subscriber).not.toHaveBeenCalled();
+    expect(jsutils.KvSet).toHaveBeenCalledWith('language', 'en_US');
+  });
+
+  it('delivers once when the store answers after the deadline', async () => {
+    const late = deferred();
+    jsutils.KvSet.mockReturnValueOnce(late.promise);
+    jsutils.KvGet.mockResolvedValue(null);
+    const subscriber = vi.fn();
+    storage.kvSubscribe('language', subscriber);
+    await settleWithDeadline(() => storage.kvSet('language', 'zh_CN'));
+    late.resolve();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(subscriber).toHaveBeenCalledOnce();
+  });
+
+  it('removes only the subscription that unsubscribes, even for one shared callback', async () => {
+    jsutils.KvSet.mockRejectedValue(new Error('blocked'));
+    const shared = vi.fn();
+    const unsubscribeFirst = storage.kvSubscribe('language', shared);
+    storage.kvSubscribe('language', shared);
+    unsubscribeFirst();
+    unsubscribeFirst();
     await storage.kvSet('language', 'zh_CN');
-    expect(jsutils.KvAddListener).toHaveBeenCalledWith('language', listener, 'reader');
-    expect(listener).not.toHaveBeenCalled();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(shared).toHaveBeenCalledOnce();
+  });
+
+  it('keeps kvSet resolved and the other subscribers running when one throws', async () => {
+    jsutils.KvSet.mockRejectedValue(new Error('blocked'));
+    const healthy = vi.fn();
+    storage.kvSubscribe('language', () => {
+      throw new Error('subscriber');
+    });
+    storage.kvSubscribe('language', healthy);
+    await expect(storage.kvSet('language', 'zh_CN')).resolves.toBeUndefined();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(healthy).toHaveBeenCalledOnce();
+    expect(captureMessage).toHaveBeenCalledOnce();
+    expect(captureMessage.mock.calls[0][0]).toBe('storage_subscriber failed (Error)');
+  });
+
+  it('owns a rejection from an async subscriber', async () => {
+    jsutils.KvSet.mockRejectedValue(new Error('blocked'));
+    storage.kvSubscribe('language', async () => {
+      throw new TypeError('LOCAL_ONLY_CANARY');
+    });
+    await storage.kvSet('language', 'zh_CN');
+    await vi.advanceTimersByTimeAsync(0);
+    expect(captureMessage.mock.calls[0][0]).toBe('storage_subscriber failed (TypeError)');
+    expect(JSON.stringify(captureMessage.mock.calls)).not.toContain('LOCAL_ONLY_CANARY');
+  });
+});
+
+describe('recovery from a stall', () => {
+  it('stays closed when an unrelated operation succeeds', async () => {
+    const other = deferred();
+    jsutils.KvGet.mockImplementationOnce(never);
+    const first = storage.kvGet('first');
+    await vi.advanceTimersByTimeAsync(storage.StorageDeadlineMs / 2);
+    jsutils.KvGet.mockImplementationOnce(() => other.promise);
+    const second = storage.kvGet('second');
+    await vi.advanceTimersByTimeAsync(storage.StorageDeadlineMs / 2 + 1);
+    await first;
+    other.resolve('late');
+    await second;
+    jsutils.KvGet.mockClear();
+    await expect(storage.kvGet('third')).resolves.toBeNull();
+    expect(jsutils.KvGet).not.toHaveBeenCalled();
+  });
+});
+
+describe('kvRestore', () => {
+  it('reaches a store known to be stalled, because a slow store still applies it', async () => {
+    jsutils.KvGet.mockImplementation(never);
+    jsutils.KvSet.mockResolvedValue(undefined);
+    jsutils.KvDel.mockResolvedValue(undefined);
+    await settleWithDeadline(() => storage.kvGet('key'));
+    await storage.kvRestore('user', { sub: 'previous' });
+    await storage.kvRestore('token', null);
+    expect(jsutils.KvSet).toHaveBeenCalledWith('user', { sub: 'previous' });
+    expect(jsutils.KvDel).toHaveBeenCalledWith('token');
+  });
+
+  it('stays bounded when the store never answers', async () => {
+    jsutils.KvSet.mockImplementation(never);
+    const outcome = storage.kvRestore('user', 'value').catch((error) => error.name);
+    await vi.advanceTimersByTimeAsync(storage.StorageDeadlineMs);
+    await expect(outcome).resolves.toBe('TimeoutError');
   });
 });

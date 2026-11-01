@@ -45,6 +45,12 @@ export const bootstrapApplication = async (mountApplication) => {
   }
   if (callbackFailed) showSignInError(false);
   initializeOptionalTelemetry();
-  mountApplication();
+  try {
+    mountApplication();
+  } catch (error) {
+    // The inline loader reports a bundle that loaded but could not mount the application.
+    window.__BLOG_APP_STARTED__ = false;
+    throw error;
+  }
   return true;
 };

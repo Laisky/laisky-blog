@@ -2,7 +2,7 @@
 
 import { GraphQLClient } from 'graphql-request';
 import { jwtDecode } from 'jwt-decode';
-import { kvDel, kvGet, kvSet } from './storage.js';
+import { kvDel, kvGet, kvGetStrict, kvSet } from './storage.js';
 
 export const GraphqlAPI = 'https://gq_v2.laisky.com/query/';
 
@@ -175,7 +175,13 @@ export const isJwtExpired = (token) => {
  */
 export const getCurrentUsername = async () => {
   // Ensure we have a valid, non-expired token before trusting cached user info
-  const token = await kvGet(KvKeyUserToken);
+  let token;
+  try {
+    token = await kvGetStrict(KvKeyUserToken);
+  } catch {
+    // An unreadable sign-in is not a missing one, so it must not be deleted below.
+    return;
+  }
   if (!token || isJwtExpired(token)) {
     await kvDel(KvKeyAuthUser);
     await kvDel(KvKeyUserToken);
@@ -197,6 +203,18 @@ export const getCurrentUsername = async () => {
 
   // Prefer display_name; fall back to common fields
   return userinfo['display_name'] || userinfo['username'] || userinfo['name'] || userinfo['sub'];
+};
+
+/**
+ * requireUserToken reads the bearer token for a privileged request, so that request never carries "Bearer null".
+ *
+ * @returns {Promise<string>} The stored token.
+ * @throws {Error} When storage is unusable or no one is signed in.
+ */
+export const requireUserToken = async () => {
+  const token = await kvGetStrict(KvKeyUserToken);
+  if (!token) throw new Error('Sign in is required.');
+  return token;
 };
 
 /**

@@ -1,7 +1,6 @@
 'use strict';
 
-import jsutils from '@laisky/js-utils';
-import React, { useEffect, useState, useRef, useId } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLoaderData, useNavigate, useParams, useLocation, useRevalidator } from 'react-router-dom';
 
 import { Sidebar } from '../components/sidebar.jsx';
@@ -9,7 +8,7 @@ import { Tooltip } from '../components/Tooltip.jsx';
 
 import { KvKeyLanguage, formatTs, ts2UTC, getCurrentUsername } from '../library/base.jsx';
 import { reportFailure } from '../library/failureReport.js';
-import { kvAddListener, kvRemoveListener } from '../library/storage.js';
+import { useKvChange } from '../library/useKvChange.js';
 export { loadPageData as loader } from './pagesData.js';
 
 // Session storage key for scroll positions
@@ -92,7 +91,6 @@ export const Page = () => {
   const location = useLocation();
   const { postsData, nPosts, nPage, problem } = useLoaderData();
   const revalidator = useRevalidator();
-  const listenerName = useId();
   const revalidatorRef = useRef(revalidator);
   revalidatorRef.current = revalidator;
   const [listenerFailed, setListenerFailed] = useState(false);
@@ -222,35 +220,11 @@ export const Page = () => {
     };
   }, [postsData, nPosts, nPage, problem]);
 
-  useEffect(() => {
-    let cancelled = false;
-    /** registerLanguageListener revalidates the router for language changes and removes its own named subscription on cleanup. */
-    const registerLanguageListener = async () => {
-      try {
-        await kvAddListener(
-          KvKeyLanguage,
-          (key, op, oldVal, newVal) => {
-            if (!cancelled && op === jsutils.KvOp.SET && key === KvKeyLanguage && oldVal !== newVal) {
-              Promise.resolve()
-                .then(() => revalidatorRef.current.revalidate())
-                .catch(() => {
-                  if (!cancelled) setListenerFailed(true);
-                });
-            }
-          },
-          listenerName
-        );
-        if (cancelled) kvRemoveListener(KvKeyLanguage, listenerName);
-      } catch {
-        if (!cancelled) setListenerFailed(true);
-      }
-    };
-    registerLanguageListener();
-    return () => {
-      cancelled = true;
-      kvRemoveListener(KvKeyLanguage, listenerName);
-    };
-  }, [listenerName]);
+  useKvChange(KvKeyLanguage, () => {
+    Promise.resolve()
+      .then(() => revalidatorRef.current.revalidate())
+      .catch(() => setListenerFailed(true));
+  });
 
   /**
    * generatePostsContent generates the HTML content for the posts on the current page.

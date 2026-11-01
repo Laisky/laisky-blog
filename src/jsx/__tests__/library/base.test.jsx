@@ -1,6 +1,15 @@
 import jsutils from '@laisky/js-utils';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { formatTs, getCurrentPathName, getCurrentUsername, getUserLanguage, isForce, isJwtExpired, ts2UTC } from '../../library/base';
+import {
+  formatTs,
+  getCurrentPathName,
+  getCurrentUsername,
+  getUserLanguage,
+  isForce,
+  isJwtExpired,
+  requireUserToken,
+  ts2UTC,
+} from '../../library/base';
 
 // Mock dependencies
 vi.mock('@laisky/js-utils', () => ({
@@ -119,6 +128,37 @@ describe('base.jsx', () => {
       jsutils.KvGet.mockRejectedValueOnce(err);
 
       await expect(getCurrentUsername()).resolves.toBeUndefined();
+    });
+
+    test('keeps a sign-in whose read failed, because unreadable is not missing', async () => {
+      jsutils.KvDel.mockClear();
+      jsutils.KvGet.mockRejectedValueOnce(new Error('transient'));
+      await expect(getCurrentUsername()).resolves.toBeUndefined();
+      expect(jsutils.KvDel).not.toHaveBeenCalled();
+    });
+
+    test('still clears a sign-in that is genuinely missing', async () => {
+      jsutils.KvDel.mockClear();
+      jsutils.KvGet.mockResolvedValueOnce(null);
+      await expect(getCurrentUsername()).resolves.toBeUndefined();
+      expect(jsutils.KvDel).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('requireUserToken', () => {
+    test('returns the stored token', async () => {
+      jsutils.KvGet.mockResolvedValueOnce('stored-token');
+      await expect(requireUserToken()).resolves.toBe('stored-token');
+    });
+
+    test('rejects when no one is signed in', async () => {
+      jsutils.KvGet.mockResolvedValueOnce(null);
+      await expect(requireUserToken()).rejects.toThrow('Sign in is required.');
+    });
+
+    test('rejects when the token cannot be read', async () => {
+      jsutils.KvGet.mockRejectedValueOnce(new Error('transient'));
+      await expect(requireUserToken()).rejects.toThrow('transient');
     });
   });
 

@@ -4,10 +4,9 @@ import { gql } from 'graphql-request';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import jsutils from '@laisky/js-utils';
-import { getUserLanguage, graphqlMutation, graphqlQuery, KvKeyLanguage, KvKeyUserToken } from '../library/base.jsx';
+import { getUserLanguage, graphqlMutation, graphqlQuery, KvKeyLanguage, requireUserToken } from '../library/base.jsx';
 import { buildLocationPayload, buildMutationPostCandidates, datetimeLocalValueToISO, toDatetimeLocalValue } from '../library/postMeta.jsx';
-import { kvAddListener, kvGet } from '../library/storage.js';
+import { useKvChange } from '../library/useKvChange.js';
 
 export const postEditLoader = async ({ params }) => {
   const gqBody = gql`
@@ -54,7 +53,7 @@ export const postPublishLoader = async () => {
 export const PostEdit = ({ isPublish }) => {
   isPublish = isPublish === 'true';
   const [language, setLanguage] = useState(null);
-  const [content, setContent] = useState(null);
+  const [post, setPost] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [locationState, setLocationState] = useState({
@@ -73,9 +72,9 @@ export const PostEdit = ({ isPublish }) => {
 
   useEffect(() => {
     (async () => {
-      setContent(await renderContent());
+      setPost(await (isPublish ? postPublishLoader({ params }) : postEditLoader({ params })));
     })();
-  }, [params.name, language, locationState]);
+  }, [params.name, language]);
 
   useEffect(() => {
     if (!isPublish) {
@@ -290,7 +289,7 @@ export const PostEdit = ({ isPublish }) => {
 
     setSubmitting(true);
     try {
-      await submitWithFallback(gqBody, postCandidates, await kvGet(KvKeyUserToken));
+      await submitWithFallback(gqBody, postCandidates, await requireUserToken());
       navigate(`/p/${basePost.name}/?force=1`);
     } catch (err) {
       setSubmitError(`Failed to ${isPublish ? 'publish' : 'save'}: ${err?.message || 'Unknown error'}`);
@@ -299,32 +298,18 @@ export const PostEdit = ({ isPublish }) => {
     }
   };
 
-  useEffect(() => {
-    const watchLanguageChange = async () => {
-      await kvAddListener(
-        KvKeyLanguage,
-        async (key, op, oldVal, newVal) => {
-          if (op !== jsutils.KvOp.SET || key !== KvKeyLanguage || oldVal === newVal) {
-            return;
-          }
+  useKvChange(KvKeyLanguage, (value) => {
+    setLanguage(value);
+    navigate(0);
+  });
 
-          setLanguage(newVal);
-          navigate(0);
-        },
-        'page_post'
-      );
-    };
-
-    watchLanguageChange();
-  }, [navigate]);
-
-  const renderContent = async () => {
-    let post;
-    if (isPublish) {
-      post = await postPublishLoader({ params });
-    } else {
-      post = await postEditLoader({ params });
-    }
+  /**
+   * renderContent builds the editor from the loaded post on every render, so its handlers and error state stay current.
+   *
+   * @returns {React.ReactElement|null} The editor, or null until the post has loaded.
+   */
+  const renderContent = () => {
+    if (!post) return null;
 
     const initialPublishAt = toDatetimeLocalValue(post.created_at || new Date().toISOString());
     const timezoneLabel = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
@@ -443,7 +428,7 @@ export const PostEdit = ({ isPublish }) => {
   return (
     <div id="postEdit" className="row g-3 g-xl-4 align-items-start scrollable-content">
       {/* blog posts */}
-      <div className="col-12 col-xl-9">{content}</div>
+      <div className="col-12 col-xl-9">{renderContent()}</div>
     </div>
   );
 };
