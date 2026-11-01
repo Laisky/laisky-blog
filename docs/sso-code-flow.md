@@ -40,8 +40,10 @@ The mutation backend still enforces authorization. This change does not migrate
 sessions into cookies or change JWT scope or lifetime.
 
 The document sets no-referrer before external resource loading. Optional
-telemetry initializes after callback consumption and remains disabled if any
-callback marker survives cleanup. Existing Nginx root response configuration
+telemetry never starts while a callback marker is visible. The inline loader in
+`index.html` skips any URL carrying a marker, so a callback URL reaches the SDK
+only through bootstrap, after callback consumption, and it remains disabled if
+any callback marker survives cleanup. Existing Nginx root response configuration
 already sets Cache-Control: no-store, no-cache, must-revalidate, matching the
 registered root callback. Asset caching and authored article content are unchanged.
 

@@ -1,8 +1,8 @@
 'use strict';
 
-import jsutils from '@laisky/js-utils';
 import { GraphQLClient } from 'graphql-request';
 import { jwtDecode } from 'jwt-decode';
+import { kvDel, kvGet, kvSet } from './storage.js';
 
 export const GraphqlAPI = 'https://gq_v2.laisky.com/query/';
 
@@ -82,21 +82,6 @@ export const normalizeGraphqlResponseContentType = async (response) => {
 export const graphqlFetch = async (input, init) => {
   const response = await globalThis.fetch(input, init);
   return normalizeGraphqlResponseContentType(response);
-};
-
-/**
- * safeKvGet loads a value from KV storage and returns a fallback value on storage errors.
- *
- * @param {string} key - The KV key to read.
- * @param {*} fallbackValue - The value returned when KV read fails.
- * @returns {Promise<*>} The stored value or fallback value.
- */
-const safeKvGet = async (key, fallbackValue = null) => {
-  try {
-    return await jsutils.KvGet(key);
-  } catch {
-    return fallbackValue;
-  }
 };
 
 /**
@@ -190,24 +175,20 @@ export const isJwtExpired = (token) => {
  */
 export const getCurrentUsername = async () => {
   // Ensure we have a valid, non-expired token before trusting cached user info
-  const token = await safeKvGet(KvKeyUserToken);
+  const token = await kvGet(KvKeyUserToken);
   if (!token || isJwtExpired(token)) {
-    try {
-      await jsutils.KvDel(KvKeyAuthUser);
-      await jsutils.KvDel(KvKeyUserToken);
-    } catch {
-      // Storage cleanup failed — not critical
-    }
+    await kvDel(KvKeyAuthUser);
+    await kvDel(KvKeyUserToken);
     return;
   }
 
   // Try to read cached auth user; if missing, decode from token and cache it
-  let userinfo = await safeKvGet(KvKeyAuthUser);
+  let userinfo = await kvGet(KvKeyAuthUser);
   if (!userinfo) {
     try {
       userinfo = jwtDecode(token);
       if (userinfo) {
-        await jsutils.KvSet(KvKeyAuthUser, userinfo);
+        await kvSet(KvKeyAuthUser, userinfo);
       }
     } catch {
       return;
@@ -224,11 +205,7 @@ export const getCurrentUsername = async () => {
  * @param {string} lang - The user language.
  */
 export const setUserLanguage = async (lang) => {
-  try {
-    await jsutils.KvSet(KvKeyLanguage, lang);
-  } catch {
-    // Storage write failed — language will fall back to browser default next load
-  }
+  await kvSet(KvKeyLanguage, lang);
 };
 
 /**
@@ -240,7 +217,7 @@ export const setUserLanguage = async (lang) => {
 export const getUserLanguage = async () => {
   // Get language from the URL parameter, kv storage, or browser settings in that order
   const url = new URL(window.location.href);
-  let lang = url.searchParams.get('lang') || (await safeKvGet(KvKeyLanguage)) || navigator.language || navigator.userLanguage;
+  let lang = url.searchParams.get('lang') || (await kvGet(KvKeyLanguage)) || navigator.language || navigator.userLanguage;
 
   // Convert to lowercase for consistent comparison
   const langLower = lang ? lang.toLowerCase() : '';

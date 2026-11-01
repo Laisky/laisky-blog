@@ -5,6 +5,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { BookOpen, ChevronRight, FileText } from 'lucide-react';
 import { graphqlQuery, isForce, KvKeyPrefixCache } from '../library/base.jsx';
 import { runAsyncWork } from '../library/asyncWork.js';
+import { getCache, setCache } from '../library/storage.js';
 
 const icons = {
   root: renderToStaticMarkup(<BookOpen size={18} />),
@@ -50,7 +51,7 @@ function validSeries(series) {
 async function loadSeries(key) {
   const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`postSeries:${key}`));
   if (!isForce()) {
-    const cached = await jsutils.GetCache(cacheKey);
+    const cached = await getCache(cacheKey);
     if (validSeries(cached)) return cached;
   }
   const response = await graphqlQuery(
@@ -72,7 +73,7 @@ async function loadSeries(key) {
   );
   const result = response?.GetBlogPostSeries?.[0];
   if (!validSeries(result)) throw new Error('Series is unavailable');
-  await jsutils.SetCache(cacheKey, result);
+  await setCache(cacheKey, result);
   return result;
 }
 

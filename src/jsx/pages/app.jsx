@@ -5,6 +5,7 @@ import { Link, Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { Dropdown, DropdownItem } from '../components/Dropdown';
 import { getUserLanguage, setUserLanguage } from '../library/base';
 import { runAsyncWork } from '../library/asyncWork.js';
+import { reportFailure } from '../library/failureReport.js';
 import { loadOptionalScript } from '../library/optionalScripts.js';
 
 /**
@@ -63,8 +64,10 @@ export const App = () => {
         if (active) setUserLang(lang);
       },
       { signal: controller.signal }
-    ).catch(() => {
-      if (active) setLanguageFailed(true);
+    ).catch((error) => {
+      if (!active) return;
+      setLanguageFailed(true);
+      reportFailure('language_preferences', error);
     });
 
     loadOptionalScript('analytics', { signal: controller.signal })

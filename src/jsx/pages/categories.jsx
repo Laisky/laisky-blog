@@ -17,11 +17,12 @@ import {
   KvKeyPrefixCache,
   ts2UTC,
 } from '../library/base.jsx';
+import { getCache, kvAddListener, setCache } from '../library/storage.js';
 
 export const loader = async ({ params }) => {
   const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`categories:${await getUserLanguage()}:${params.category}`));
   if (!isForce()) {
-    const cacheData = await jsutils.GetCache(cacheKey);
+    const cacheData = await getCache(cacheKey);
     if (cacheData) {
       return cacheData;
     }
@@ -69,7 +70,7 @@ export const loader = async ({ params }) => {
   };
 
   // update cache
-  jsutils.SetCache(cacheKey, result, DurationDay);
+  setCache(cacheKey, result, DurationDay);
 
   return result;
 };
@@ -92,7 +93,7 @@ export const Categories = () => {
   };
 
   const watchLanguageChange = async () => {
-    await jsutils.KvAddListener(
+    await kvAddListener(
       KvKeyLanguage,
       async (key, op, oldVal, newVal) => {
         if (op !== jsutils.KvOp.SET || key != KvKeyLanguage || oldVal === newVal) {

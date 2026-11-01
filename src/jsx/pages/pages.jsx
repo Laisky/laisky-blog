@@ -8,6 +8,8 @@ import { Sidebar } from '../components/sidebar.jsx';
 import { Tooltip } from '../components/Tooltip.jsx';
 
 import { KvKeyLanguage, formatTs, ts2UTC, getCurrentUsername } from '../library/base.jsx';
+import { reportFailure } from '../library/failureReport.js';
+import { kvAddListener, kvRemoveListener } from '../library/storage.js';
 export { loadPageData as loader } from './pagesData.js';
 
 // Session storage key for scroll positions
@@ -206,8 +208,9 @@ export const Page = () => {
   useEffect(() => {
     let cancelled = false;
     if (!problem) {
-      generatePostsContent(() => !cancelled).catch(() => {
+      generatePostsContent(() => !cancelled).catch((error) => {
         if (!cancelled) {
+          reportFailure('article_list', error);
           setContent(<p role="alert">Article display is unavailable. Please reload this page.</p>);
           setContentLoaded(true);
         }
@@ -224,7 +227,7 @@ export const Page = () => {
     /** registerLanguageListener revalidates the router for language changes and removes its own named subscription on cleanup. */
     const registerLanguageListener = async () => {
       try {
-        await jsutils.KvAddListener(
+        await kvAddListener(
           KvKeyLanguage,
           (key, op, oldVal, newVal) => {
             if (!cancelled && op === jsutils.KvOp.SET && key === KvKeyLanguage && oldVal !== newVal) {
@@ -237,7 +240,7 @@ export const Page = () => {
           },
           listenerName
         );
-        if (cancelled) jsutils.KvRemoveListener?.(KvKeyLanguage, listenerName);
+        if (cancelled) kvRemoveListener(KvKeyLanguage, listenerName);
       } catch {
         if (!cancelled) setListenerFailed(true);
       }
@@ -245,7 +248,7 @@ export const Page = () => {
     registerLanguageListener();
     return () => {
       cancelled = true;
-      jsutils.KvRemoveListener?.(KvKeyLanguage, listenerName);
+      kvRemoveListener(KvKeyLanguage, listenerName);
     };
   }, [listenerName]);
 

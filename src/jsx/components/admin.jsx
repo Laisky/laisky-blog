@@ -1,12 +1,12 @@
 'use strict';
 
-import jsutils from '@laisky/js-utils';
 import { FilePlus, LogIn, LogOut, Settings, Shield, User } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { getCurrentUsername, KvKeyAuthUser, KvKeyUserToken } from '../library/base';
 import { startSSOLogin } from '../library/sso';
+import { kvDel } from '../library/storage.js';
 
 /**
  * Admin renders login status and admin actions.
@@ -99,8 +99,8 @@ export const Admin = () => {
    */
   const logoutHandler = async (evt) => {
     evt.preventDefault();
-    await jsutils.KvDel(KvKeyAuthUser);
-    await jsutils.KvDel(KvKeyUserToken);
+    await kvDel(KvKeyAuthUser);
+    await kvDel(KvKeyUserToken);
     setUsername(null);
     navigate(0);
   };

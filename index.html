@@ -29,6 +29,49 @@
     <link rel="api-catalog" type="application/linkset+json" href="/.well-known/api-catalog" />
     <link rel="agent-skills" type="application/json" href="/.well-known/agent-skills/index.json" />
     <link rel="mcp-server-card" type="application/json" href="/.well-known/mcp/server-card.json" />
+    <script id="failure-reporting">
+      // Error reporting starts here, not in the bundle, so a bundle that fails to load or parse can still be reported.
+      (() => {
+        const callbackParameters = [
+          'sso_token',
+          'sso_code',
+          'sso_state',
+          'sso_flow',
+          'sso_challenge',
+          'sso_challenge_method',
+          'code_verifier',
+          'sso_verifier',
+          'sso_start',
+          'sso_return',
+          'sso_issuer',
+        ];
+        const url = new URL(window.location.href);
+        const names = [...url.searchParams.keys(), ...new URLSearchParams(url.hash.slice(1)).keys()];
+        // A sign-in callback stays out of reach of the SDK; the bundle loads it after cleaning the URL.
+        if (names.some((name) => callbackParameters.includes(name.toLowerCase()))) return;
+
+        const telemetry = document.createElement('script');
+        telemetry.async = true;
+        telemetry.crossOrigin = 'anonymous';
+        telemetry.referrerPolicy = 'no-referrer';
+        telemetry.src = 'https://js.sentry-cdn.com/0a5aa56db9cb55dc305a90b5ec8a5c51.min.js';
+        document.head.append(telemetry);
+
+        // Module scripts run before the load event, so an unset flag means the bundle failed or never ran.
+        window.addEventListener(
+          'load',
+          () => {
+            if (window.__BLOG_APP_STARTED__) return;
+            window.Sentry?.captureMessage('application_bundle failed (not_started)', {
+              level: 'error',
+              tags: { blog_operation: 'application_bundle', blog_failure: 'not_started' },
+              fingerprint: ['blog-failure', 'application_bundle', 'not_started'],
+            });
+          },
+          { once: true }
+        );
+      })();
+    </script>
     <script>
       (() => {
         const modelContext = globalThis.document?.modelContext ?? globalThis.navigator?.modelContext;

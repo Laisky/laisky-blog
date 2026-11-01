@@ -1,8 +1,8 @@
 'use strict';
 
-import jsutils from '@laisky/js-utils';
 import { jwtDecode } from 'jwt-decode';
 import { KvKeyAuthUser, KvKeyUserToken } from './base.jsx';
+import { kvDelStrict, kvGetStrict, kvSetStrict } from './storage.js';
 
 export const SSOLoginEntryURL = 'https://sso.laisky.com/';
 export const SSOCallbackURL = 'https://blog.laisky.com';
@@ -304,15 +304,15 @@ const exchangeCode = async (code, transaction) => {
  * @returns {Promise<void>} Resolves after both writes, or rejects after all recovery attempts settle.
  */
 const persistSession = async (session) => {
-  const previousUser = await jsutils.KvGet(KvKeyAuthUser);
-  const previousToken = await jsutils.KvGet(KvKeyUserToken);
+  const previousUser = await kvGetStrict(KvKeyAuthUser);
+  const previousToken = await kvGetStrict(KvKeyUserToken);
   try {
-    await jsutils.KvSet(KvKeyAuthUser, session.user);
-    await jsutils.KvSet(KvKeyUserToken, session.token);
+    await kvSetStrict(KvKeyAuthUser, session.user);
+    await kvSetStrict(KvKeyUserToken, session.token);
   } catch {
     await Promise.allSettled([
-      previousUser == null ? jsutils.KvDel(KvKeyAuthUser) : jsutils.KvSet(KvKeyAuthUser, previousUser),
-      previousToken == null ? jsutils.KvDel(KvKeyUserToken) : jsutils.KvSet(KvKeyUserToken, previousToken),
+      previousUser == null ? kvDelStrict(KvKeyAuthUser) : kvSetStrict(KvKeyAuthUser, previousUser),
+      previousToken == null ? kvDelStrict(KvKeyUserToken) : kvSetStrict(KvKeyUserToken, previousToken),
     ]);
     throw new Error(SignInError);
   }

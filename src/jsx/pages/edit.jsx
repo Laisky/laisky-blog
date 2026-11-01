@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import jsutils from '@laisky/js-utils';
 import { getUserLanguage, graphqlMutation, graphqlQuery, KvKeyLanguage, KvKeyUserToken } from '../library/base.jsx';
 import { buildLocationPayload, buildMutationPostCandidates, datetimeLocalValueToISO, toDatetimeLocalValue } from '../library/postMeta.jsx';
+import { kvAddListener, kvGet } from '../library/storage.js';
 
 export const postEditLoader = async ({ params }) => {
   const gqBody = gql`
@@ -289,7 +290,7 @@ export const PostEdit = ({ isPublish }) => {
 
     setSubmitting(true);
     try {
-      await submitWithFallback(gqBody, postCandidates, await jsutils.KvGet(KvKeyUserToken));
+      await submitWithFallback(gqBody, postCandidates, await kvGet(KvKeyUserToken));
       navigate(`/p/${basePost.name}/?force=1`);
     } catch (err) {
       setSubmitError(`Failed to ${isPublish ? 'publish' : 'save'}: ${err?.message || 'Unknown error'}`);
@@ -300,7 +301,7 @@ export const PostEdit = ({ isPublish }) => {
 
   useEffect(() => {
     const watchLanguageChange = async () => {
-      await jsutils.KvAddListener(
+      await kvAddListener(
         KvKeyLanguage,
         async (key, op, oldVal, newVal) => {
           if (op !== jsutils.KvOp.SET || key !== KvKeyLanguage || oldVal === newVal) {

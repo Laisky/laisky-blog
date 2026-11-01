@@ -307,3 +307,16 @@ test('uses the safe fallback for an externally targeted stored return path', asy
   await consumeSSOCallbackToken();
   expect(window.location.replace).toHaveBeenCalledWith('/pages/0/');
 });
+
+test('fails visibly and still mounts when the session store never settles', async () => {
+  let recover;
+  jsutils.KvGet.mockImplementation(() => new Promise((resolve) => (recover = resolve)));
+  const mountApplication = vi.fn();
+  await expect(bootstrapApplication(mountApplication)).resolves.toBe(true);
+  expect(mountApplication).toHaveBeenCalledOnce();
+  expect(document.querySelector('[role="alert"]').textContent).toBe('Sign-in could not be completed. Please try again.');
+  expect(jsutils.KvSet).not.toHaveBeenCalled();
+  // A late answer clears the module's stalled state for the tests that follow.
+  recover(null);
+  await Promise.resolve();
+}, 5000);

@@ -9,6 +9,7 @@ import React, { useEffect, useState, useId, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Comments } from '../components/comments.jsx';
 import { runAsyncWork } from '../library/asyncWork.js';
+import { reportFailure } from '../library/failureReport.js';
 import { parseAndReplacePostSeries } from './postSeries.jsx';
 import {
   enhancePostMenu,
@@ -33,6 +34,7 @@ import {
   KvKeyPrefixCache,
   ts2UTC,
 } from '../library/base.jsx';
+import { getCache, kvAddListener, kvRemoveListener, setCache } from '../library/storage.js';
 
 /** validCurrentPost checks the required current-article render fields before accepting a network or cache result. */
 const validCurrentPost = (post) =>
@@ -48,7 +50,7 @@ export const loader = async ({ params, language = null }) => {
   language = language || (await getUserLanguage());
   const cacheKey = KvKeyPrefixCache + (await jsutils.SHA256(`post:${language}:${params.name}`));
   if (!isForce()) {
-    const cacheData = await jsutils.GetCache(cacheKey);
+    const cacheData = await getCache(cacheKey);
     if (validCurrentPost(cacheData)) {
       return cacheData;
     }
@@ -87,7 +89,7 @@ export const loader = async ({ params, language = null }) => {
   if (!validCurrentPost(result)) throw new Error('Invalid article response');
 
   // update cache
-  await jsutils.SetCache(cacheKey, result);
+  await setCache(cacheKey, result);
 
   return result;
 };
@@ -369,8 +371,9 @@ export const Post = ({ isHistory }) => {
       );
 
       setContent(content);
-    })().catch(() => {
+    })().catch((error) => {
       if (cancelled) return;
+      reportFailure('article_load', error);
       setMenuHtml(null);
       setContent(
         <div className="col-12 col-xl-9" role="alert">
@@ -407,7 +410,7 @@ export const Post = ({ isHistory }) => {
     });
     return () => {
       controller.abort();
-      jsutils.KvRemoveListener?.(KvKeyLanguage, listenerName);
+      kvRemoveListener(KvKeyLanguage, listenerName);
     };
   }, [listenerName]);
 
@@ -609,7 +612,7 @@ const bindPostImageModal = (setImageModalOpen, setImageModalSrc, setImageModalAl
  * watchLanguageChange watches for language changes and updates state.
  */
 const watchLanguageChange = async (setLanguage, listenerName, signal) => {
-  await jsutils.KvAddListener(
+  await kvAddListener(
     KvKeyLanguage,
     async (key, op, oldVal, newVal) => {
       if (signal.aborted || op !== jsutils.KvOp.SET || key !== KvKeyLanguage || oldVal === newVal) {
@@ -620,5 +623,5 @@ const watchLanguageChange = async (setLanguage, listenerName, signal) => {
     },
     listenerName
   );
-  if (signal.aborted) jsutils.KvRemoveListener?.(KvKeyLanguage, listenerName);
+  if (signal.aborted) kvRemoveListener(KvKeyLanguage, listenerName);
 };
