@@ -104,7 +104,8 @@ describe('base.jsx', () => {
     test('returns undefined and clears storage when token expired', async () => {
       const past = Math.floor(Date.now() / 1000) - 10;
       const token = makeToken({ exp: past, display_name: 'User' });
-      jsutils.KvGet.mockResolvedValueOnce(token); // token
+      // The session read and the compare before deleting both see the stored token.
+      jsutils.KvGet.mockResolvedValueOnce(token).mockResolvedValueOnce(token);
 
       const name = await getCurrentUsername();
       expect(name).toBeUndefined();

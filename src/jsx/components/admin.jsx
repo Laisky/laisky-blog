@@ -1,12 +1,12 @@
 'use strict';
 
 import { FilePlus, LogIn, LogOut, Settings, Shield, User } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { getCurrentUsername } from '../library/base';
-import { signOut } from '../library/session.js';
+import { SessionStatus, signOut } from '../library/session.js';
 import { startSSOLogin } from '../library/sso';
+import { useSession } from '../library/useSession.js';
 
 /**
  * Admin renders login status and admin actions.
@@ -14,62 +14,10 @@ import { startSSOLogin } from '../library/sso';
  * @returns {React.ReactElement} The admin panel component.
  */
 export const Admin = () => {
-  const [loginBtn, setLoginBtn] = useState('');
-  const [username, setUsername] = useState(null);
+  const session = useSession();
   const [authError, setAuthError] = useState('');
+  const [signOutFailed, setSignOutFailed] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    (async () => {
-      const username = await getCurrentUsername();
-
-      let element;
-      if (username) {
-        element = (
-          <div>
-            <p className="d-flex align-items-center">
-              <User size={14} className="me-2" />
-              Welcome, {username}
-            </p>
-            <ul>
-              <li>
-                <Link to="/publish/" className="d-inline-flex align-items-center">
-                  <FilePlus size={14} className="me-2" />
-                  Publish
-                </Link>
-              </li>
-              <li>
-                <Link to="/admin/" className="d-inline-flex align-items-center">
-                  <Settings size={14} className="me-2" />
-                  Manage
-                </Link>
-              </li>
-              <li>
-                <Link onClick={logoutHandler} className="d-inline-flex align-items-center">
-                  <LogOut size={14} className="me-2" />
-                  Logout
-                </Link>
-              </li>
-            </ul>
-          </div>
-        );
-      } else {
-        element = (
-          <ul>
-            <li>
-              <button type="button" onClick={loginHandler} className="btn btn-link p-0 d-inline-flex align-items-center">
-                <LogIn size={14} className="me-2" />
-                Login
-              </button>
-            </li>
-          </ul>
-        );
-      }
-
-      setLoginBtn(element);
-      setUsername(username);
-    })();
-  }, [username]);
 
   /**
    * loginHandler redirects user to SSO login page directly.
@@ -99,14 +47,13 @@ export const Admin = () => {
    */
   const logoutHandler = async (evt) => {
     evt.preventDefault();
-    setAuthError('');
+    setSignOutFailed(false);
     try {
       await signOut();
     } catch {
-      setAuthError('Sign-out could not be completed, so you are still signed in. Please try again.');
+      setSignOutFailed(true);
       return;
     }
-    setUsername(null);
     navigate(0);
   };
 
@@ -116,8 +63,49 @@ export const Admin = () => {
         <Shield size={14} className="me-2" />
         Admin
       </h2>
-      {loginBtn}
+      {session?.status === SessionStatus.SignedIn && (
+        <div>
+          <p className="d-flex align-items-center">
+            <User size={14} className="me-2" />
+            Welcome, {session.username}
+          </p>
+          <ul>
+            <li>
+              <Link to="/publish/" className="d-inline-flex align-items-center">
+                <FilePlus size={14} className="me-2" />
+                Publish
+              </Link>
+            </li>
+            <li>
+              <Link to="/admin/" className="d-inline-flex align-items-center">
+                <Settings size={14} className="me-2" />
+                Manage
+              </Link>
+            </li>
+            <li>
+              <Link onClick={logoutHandler} className="d-inline-flex align-items-center">
+                <LogOut size={14} className="me-2" />
+                Logout
+              </Link>
+            </li>
+          </ul>
+        </div>
+      )}
+      {session?.status === SessionStatus.SignedOut && (
+        <ul>
+          <li>
+            <button type="button" onClick={loginHandler} className="btn btn-link p-0 d-inline-flex align-items-center">
+              <LogIn size={14} className="me-2" />
+              Login
+            </button>
+          </li>
+        </ul>
+      )}
+      {session?.status === SessionStatus.Unavailable && <p role="status">Sign-in status is unavailable right now.</p>}
       {authError && <p role="alert">{authError}</p>}
+      {signOutFailed && session?.status === SessionStatus.SignedIn && (
+        <p role="alert">Sign-out could not be completed, so you are still signed in. Please try again.</p>
+      )}
     </section>
   );
 };

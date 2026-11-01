@@ -52,8 +52,19 @@ These invariants are enforced by `sessionInvariants.test.jsx`:
   come from `user_token`: the token is one key, so a session changes in one write and
   needs no multi-key rollback. Every release stored `auth_user` as the decoded token, so
   dropping it changes no name, and leftover values are ignored until removed.
-- `getCurrentUsername` reads the token strictly, so a sign-in that could not be read is
-  not treated as missing and is never deleted.
+- `getSession` reports three states: signed in, signed out, and unavailable. A sign-in that
+  could not be read is not treated as missing, is never deleted, and shows a status
+  message rather than a Login button. `getCurrentUsername` wraps it for callers that only
+  ask whether to show signed-in features.
+- A deadline does not cancel a write. If a sign-in that was reported as failed commits
+  late, it is undone, so the stored state matches what the reader was told.
+- Clearing an expired token and undoing a late write both use `kvReplaceIfUnchanged`, so
+  neither removes a session written since. js-utils has no atomic compare, so this is two
+  store calls and a one-round-trip race remains across tabs. Web Locks would close it, but
+  a lock wait before mount risks the hang this design exists to prevent, for a window that
+  small.
+- `useSession` reads the session again when storage finishes late work, so a read that
+  timed out or a sign-out that seemed to fail settles to the true state without a reload.
 - `requireUserToken` guards privileged requests, so they fail before being sent rather
   than carrying `Bearer null`.
 
@@ -63,6 +74,10 @@ These invariants are enforced by `sessionInvariants.test.jsx`:
 does no storage work, so it cannot fail or wait, and it returns its own unsubscribe
 function. Components use the `useKvChange` hook, which ties the subscription to the
 effect's lifetime, so it ends on unmount and survives StrictMode re-runs.
+
+Overlapping writes to one key resolve to the newest: an older write that finishes later
+cannot replace the newer value or notify subscribers. `kvSubscribeRecovery` is a separate
+signal that fires when a timed-out operation finishes late.
 
 The js-utils listeners are deliberately not used. They fire only for writes made in the
 same page, and every write now goes through `kvSet`, so they add nothing. Keeping both

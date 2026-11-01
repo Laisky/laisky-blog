@@ -19,6 +19,6 @@ export const isHistoryDenial = (error) => {
   return (
     Array.isArray(errors) &&
     errors.length > 0 &&
-    errors.every(({ message }) => HistoryDenials.some((denial) => message?.startsWith(denial)))
+    errors.every((entry) => typeof entry?.message === 'string' && HistoryDenials.some((denial) => entry.message.startsWith(denial)))
   );
 };
