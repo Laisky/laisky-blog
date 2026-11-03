@@ -118,7 +118,8 @@ jobs:
         with:
           host: ${{ secrets.TARGET_HOST }}
           username: ${{ secrets.TARGET_HOST_USERNAME }}
-          password: ${{ secrets.TARGET_HOST_PASSWORD }}
+          key: ${{ secrets.TARGET_HOST_SSH_KEY }}
+          fingerprint: ${{ secrets.TARGET_HOST_FINGERPRINT }}
           port: ${{ secrets.TARGET_HOST_SSH_PORT }}
           envs: BLOG_DEPLOY_DIGEST,BLOG_DEPLOY_COMMIT,BLOG_DEPLOY_HELPER_B64
           command_timeout: 25m
