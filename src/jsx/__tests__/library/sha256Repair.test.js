@@ -44,9 +44,8 @@ describe('qualified dependency repair', () => {
 
 describe('diagram dependency repair controls', () => {
   it('is idempotent and rejects unqualified source or prototype workarounds', async () => {
-    const { repairDayjsSource, DAYJS_ORIGINAL_ALIAS, DAYJS_REPAIRED_ALIAS } = await import(
-      '../../../../.scripts/repair-startup-dependencies.mjs'
-    );
+    const { repairDayjsSource, DAYJS_ORIGINAL_ALIAS, DAYJS_REPAIRED_ALIAS } =
+      await import('../../../../.scripts/repair-startup-dependencies.mjs');
     const source = readFileSync(createRequire(require.resolve('mermaid')).resolve('dayjs'), 'utf8');
     const original = source.replace(DAYJS_REPAIRED_ALIAS, DAYJS_ORIGINAL_ALIAS);
     expect(repairDayjsSource(original)).toBe(repairDayjsSource(repairDayjsSource(original)));

@@ -3,6 +3,8 @@ import { parse, stringify } from 'flatted';
 import mermaid from 'mermaid';
 import { beforeAll, describe, expect, it } from 'vitest';
 
+import { DIAGRAM_CONFIG } from '../../library/diagrams.js';
+
 /** initializeMermaid selects the existing strict diagram mode for local compatibility checks. */
 function initializeMermaid() {
   mermaid.initialize({ startOnLoad: false, securityLevel: 'strict' });
@@ -41,5 +43,10 @@ describe('frontend dependency compatibility', () => {
     ['sequence', 'sequenceDiagram\n  Reader->>Blog: Open article\n  Blog-->>Reader: Author content'],
   ])('parses supported authored %s diagrams with the real Mermaid package', async (_name, source) => {
     await expect(mermaid.parse(source)).resolves.toBeTruthy();
+  });
+
+  it('accepts the pinned article diagram layout, theme and look with the real Mermaid package', () => {
+    mermaid.initialize({ startOnLoad: false, securityLevel: 'strict', ...DIAGRAM_CONFIG });
+    expect(mermaid.mermaidAPI.getSiteConfig()).toMatchObject(DIAGRAM_CONFIG);
   });
 });

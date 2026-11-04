@@ -91,6 +91,7 @@
     [["diagram date dependency initialization"], "retains date operations with inherited protection=true"]
   ],
   "library/bundledHashWrapper.test.js": [
+    [["actual bundled utility default export"], "exposes every utility the application calls through the default import"],
     [["actual bundled utility SHA256 contract"], "preserves asynchronous strings and cache keys with hardened=false, WebCrypto=false"],
     [["actual bundled utility SHA256 contract"], "preserves asynchronous strings and cache keys with hardened=false, WebCrypto=true"],
     [["actual bundled utility SHA256 contract"], "preserves asynchronous strings and cache keys with hardened=true, WebCrypto=false"],

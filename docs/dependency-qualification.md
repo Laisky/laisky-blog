@@ -77,3 +77,99 @@ Primary sources:
 [Minimatch nested-extglob advisory](https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74),
 [Minimatch globstar advisory](https://github.com/isaacs/minimatch/security/advisories/GHSA-7r86-cg39-jmmj),
 [Picomatch release](https://github.com/micromatch/picomatch/releases/tag/2.3.2).
+
+## Full upgrade on top of PR201 (2026-11-04)
+
+PR201 (Dependabot: DOMPurify 3.4.17, PostCSS, Rollup, nanoid) is extended into
+a full upgrade. Every package is refreshed within its declared range, and the
+majors listed below are applied. The npm lockfile delta is again reverted to
+the v2 file.
+
+### Majors applied and the compatibility fixes they needed
+
+- **Vite 8.3 + @vitejs/plugin-react 6.2.** Vite 8 always follows
+  `resolve.mainFields` (browser before module); the heuristic that used to
+  pick ESM when `browser` pointed at a UMD file is gone. `@laisky/js-utils`
+  has no `exports` map and its `browser` field points at a UMD bundle. Without
+  a fix, `KvGet`/`KvSet`/... are missing from the default import. The build
+  passes and pages still render, because the storage fallbacks absorb the
+  errors, but client caching stops working: the Chromium list-cache
+  qualification fails. `resolveAliases` in `vite.config.js` pins the package's
+  ESM build, and `bundledHashWrapper.test.js` reuses it and checks every
+  default member the app calls. The Vite 7.3.7 `resolutions` pin is removed,
+  because Vitest 5 takes Vite as a peer. The new default build target is
+  Safari 16.4, Chrome/Edge 111 and Firefox 114. Builds drop from about a
+  minute to about 4 seconds.
+- **Mermaid 12.3.** The new defaults are: ELK layout, the `redux-color` theme
+  with the `neo` look for most diagram types, and flowchart/state nodes at
+  least 120px wide with labels wrapping at 120px. `src/jsx/library/diagrams.js`
+  sets the Mermaid 11 layout, theme, look and node sizing once, before the
+  first render. In Chrome, flowchart, sequence, gantt, state and class
+  diagrams render at the same sizes as on v2. Article front matter and
+  `%%{init}%%` directives still override these settings. An article that asks
+  for `layout: elk` now actually gets ELK (Mermaid 11 silently fell back to
+  dagre), and ELK throws in a realm where `Object.prototype.toString` is
+  read-only. A scan of the built bundle for post-Safari-16 APIs
+  (`Object.groupBy`, `Promise.withResolvers`, `toSorted`, `findLast` and
+  similar) finds only `Object.groupBy`, and only in the new cynefin and
+  usecase diagram types. Mermaid 12 pulls
+  KaTeX 0.18.11, which is deprecated because its strict-mode metric warnings
+  shipped as a breaking minor; it only affects math inside diagrams.
+- **lucide-react 1.67.** Brand icons were removed. The About page's GitHub and
+  Twitter icons are now built with `createLucideIcon` from the 0.554 path data
+  (`components/brandIcons.js`), so the markup and the `.lucide` classes are
+  unchanged. Lucide also redrew `BookOpen` slightly.
+- **ESLint 10 + @eslint/js 10.** ESLint 9 reached end of life on 2026-08-06.
+  The config only used `eslint-plugin-react` to switch off a rule that was
+  never enabled, and its component-detection rules crash on ESLint 10, so the
+  plugin is removed. `eslint-plugin-import` and `eslint-plugin-jsx-a11y` were
+  never configured and stop at ESLint 9, so they are removed as well.
+  `eslint-plugin-react-hooks` 7 keeps enforcing `rules-of-hooks`.
+- **No code change needed:** html-react-parser 6, Vitest 5, jsdom 30 (Node
+  ^22.22.2), jest-dom 7 (replacing the deprecated 6.10.0), globals 17,
+  eslint-plugin-react-refresh 0.5, and TypeScript 6.0.3 (exact pin,
+  typescript-eslint supports <6.1).
+
+### Held back
+
+- graphql 17: graphql-request 7.4 allows only graphql 14-16.
+- marked 16+: `@laisky/js-utils` 0.0.5 requires marked ^15.0.7.
+- js-sha256 1.0: the app hashes through `@laisky/js-utils`, which keeps 0.11.
+  1.0 still assigns `toString` and would invalidate the SHA-pinned repair.
+- TypeScript 7: typescript-eslint refuses it.
+
+### Qualification
+
+The following were run with Node 22.22.3 and Yarn 1.22.22 on a fresh clone
+with an empty Yarn cache:
+
+- A frozen install with no peer or engine warnings.
+- The Fast CI controls and runner against the v2 base.
+- Full Vitest with regression accounting, ESLint and the production build.
+
+The Dockerfile builder stage installs and builds on `node:22-bullseye`
+(Node 22.23.2).
+
+In Chrome 157 (Playwright 1.64.1), the `lists`, `failures` and `lifecycle`
+sections of `.scripts/qualify_blog_browser.py` pass. The list, article and
+About pages are pixel-identical to v2 in light and dark mode at desktop and
+mobile widths, except for the animated wave emoji and Lucide's `BookOpen`.
+The Vite 8 dev server serves cached lists, diagrams and the About icons
+without page errors.
+
+### Pre-existing gap found during qualification
+
+In a realm where `Object.prototype.toString` is read-only, gantt diagrams
+render Mermaid's error SVG on v2 and on this branch alike. The cause is d3-format's
+`FormatSpecifier.prototype.toString = ...` assignment, not dayjs. The
+harness's `diagram` fault only waits for `.mermaid svg`, so it accepts that
+error SVG as a pass. This upgrade leaves the behaviour unchanged.
+
+Primary sources:
+[Vite 8 migration](https://vite.dev/guide/migration),
+[Mermaid changelog](https://github.com/mermaid-js/mermaid/blob/develop/packages/mermaid/CHANGELOG.md),
+[Lucide 1.0](https://lucide.dev/guide/version-1),
+[ESLint version support](https://eslint.org/version-support/),
+[ESLint 10 migration](https://eslint.org/docs/latest/use/migrate-to-10.0.0),
+[Vitest migration](https://vitest.dev/guide/migration),
+[KaTeX releases](https://github.com/KaTeX/KaTeX/releases).

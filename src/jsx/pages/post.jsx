@@ -20,7 +20,6 @@ import {
   setupPostMenuActiveState,
 } from './postMenu.js';
 
-import mermaid from 'mermaid';
 import { CodeBlock } from '../components/CodeBlock.jsx';
 import { Dropdown, DropdownItem } from '../components/Dropdown.jsx';
 import { Modal } from '../components/Modal.jsx';
@@ -35,6 +34,7 @@ import {
   KvKeyPrefixCache,
   ts2UTC,
 } from '../library/base.jsx';
+import { renderDiagrams } from '../library/diagrams.js';
 import { getCache, setCache } from '../library/storage.js';
 import { useKvChange } from '../library/useKvChange.js';
 
@@ -407,7 +407,7 @@ export const Post = ({ isHistory }) => {
     renderMathjax(signal).catch(featureFailed);
     parseAndReplacePostSeries({ root, signal }).catch(featureFailed);
     if (root.querySelector('.mermaid'))
-      runAsyncWork(() => mermaid.run({ nodes: root.querySelectorAll('.mermaid') }), { signal }).catch(featureFailed);
+      runAsyncWork(() => renderDiagrams(root.querySelectorAll('.mermaid')), { signal }).catch(featureFailed);
     const cleanupMenu = enhancePostMenu();
     improveMenuInteraction();
     const cleanupScrollSpy = setupPostMenuScrollSpy();
