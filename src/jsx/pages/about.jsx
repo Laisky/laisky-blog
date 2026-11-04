@@ -1,8 +1,10 @@
 'use strict';
 
-import { Github, Mail, Send, Twitter, BookOpen, ExternalLink, Globe } from 'lucide-react';
+import { BookOpen, ExternalLink, Globe, Mail, Send } from 'lucide-react';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
+
+import { Github, Twitter } from '../components/brandIcons';
 
 export const About = () => {
   const { tab: activeTab = 'site' } = useParams();
