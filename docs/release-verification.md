@@ -2,7 +2,7 @@
 
 The previous remote script ran legacy `docker-compose`, then `docker ps`. A failed rollout therefore returned the successful status of `docker ps`. The installed Compose v1 also rejected an unrelated service's `create_host_path` option while parsing the shared configuration. The public HTML continued to select the old entry bundle after the workflow reported success.
 
-The release keeps both existing image builds and the existing SSH deployment action. Deployment consumes the hash build's immutable digest and exact source commit, verifies its OCI revision label, and uses the already-installed `docker compose` v2 command. The prior running image ID is captured before the pull.
+The release keeps both existing image builds and the existing SSH deployment action. Deployment consumes the hash build's immutable digest and exact source commit, verifies its OCI revision label, and uses the already-installed `docker compose` plugin. Any plugin major version from 2 upward is accepted, because b1 upgrades the plugin independently of this repository; legacy v1 and malformed versions still fail before any rollout. The prior running image ID is captured before the pull.
 
 The helper verifies the existing `vps` project and `blog-v2` service labels, creates a temporary override containing only that service's image, and recreates only `blog-v2` with `--no-deps --no-build --pull never`. It does not remove orphan containers. The temporary override is removed on completion.
 

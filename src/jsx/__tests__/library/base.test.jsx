@@ -1,6 +1,15 @@
 import jsutils from '@laisky/js-utils';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { formatTs, getCurrentPathName, getCurrentUsername, getUserLanguage, isForce, isJwtExpired, ts2UTC } from '../../library/base';
+import {
+  formatTs,
+  getCurrentPathName,
+  getCurrentUsername,
+  getUserLanguage,
+  isForce,
+  isJwtExpired,
+  requireUserToken,
+  ts2UTC,
+} from '../../library/base';
 
 // Mock dependencies
 vi.mock('@laisky/js-utils', () => ({
@@ -95,22 +104,23 @@ describe('base.jsx', () => {
     test('returns undefined and clears storage when token expired', async () => {
       const past = Math.floor(Date.now() / 1000) - 10;
       const token = makeToken({ exp: past, display_name: 'User' });
-      jsutils.KvGet.mockResolvedValueOnce(token); // token
+      // The session read and the compare before deleting both see the stored token.
+      jsutils.KvGet.mockResolvedValueOnce(token).mockResolvedValueOnce(token);
 
       const name = await getCurrentUsername();
       expect(name).toBeUndefined();
       expect(jsutils.KvDel).toHaveBeenCalledTimes(2);
     });
 
-    test('decodes token to get username when cache missing and token valid', async () => {
+    test('decodes the username from a valid token without storing a copy', async () => {
       const future = Math.floor(Date.now() / 1000) + 300;
       const token = makeToken({ exp: future, display_name: 'Alice' });
-      jsutils.KvGet.mockResolvedValueOnce(token) // token
-        .mockResolvedValueOnce(null); // auth_user missing
+      jsutils.KvGet.mockResolvedValueOnce(token);
 
       const name = await getCurrentUsername();
       expect(name).toBe('Alice');
-      expect(jsutils.KvSet).toHaveBeenCalled();
+      expect(jsutils.KvGet).toHaveBeenCalledTimes(1);
+      expect(jsutils.KvSet).not.toHaveBeenCalled();
     });
 
     test('returns undefined when KvGet throws InvalidStateError', async () => {
@@ -119,6 +129,37 @@ describe('base.jsx', () => {
       jsutils.KvGet.mockRejectedValueOnce(err);
 
       await expect(getCurrentUsername()).resolves.toBeUndefined();
+    });
+
+    test('keeps a sign-in whose read failed, because unreadable is not missing', async () => {
+      jsutils.KvDel.mockClear();
+      jsutils.KvGet.mockRejectedValueOnce(new Error('transient'));
+      await expect(getCurrentUsername()).resolves.toBeUndefined();
+      expect(jsutils.KvDel).not.toHaveBeenCalled();
+    });
+
+    test('still clears a sign-in that is genuinely missing', async () => {
+      jsutils.KvDel.mockClear();
+      jsutils.KvGet.mockResolvedValueOnce(null);
+      await expect(getCurrentUsername()).resolves.toBeUndefined();
+      expect(jsutils.KvDel).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('requireUserToken', () => {
+    test('returns the stored token', async () => {
+      jsutils.KvGet.mockResolvedValueOnce('stored-token');
+      await expect(requireUserToken()).resolves.toBe('stored-token');
+    });
+
+    test('rejects when no one is signed in', async () => {
+      jsutils.KvGet.mockResolvedValueOnce(null);
+      await expect(requireUserToken()).rejects.toThrow('Sign in is required.');
+    });
+
+    test('rejects when the token cannot be read', async () => {
+      jsutils.KvGet.mockRejectedValueOnce(new Error('transient'));
+      await expect(requireUserToken()).rejects.toThrow('transient');
     });
   });
 

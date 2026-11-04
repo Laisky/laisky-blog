@@ -3,6 +3,7 @@
   <head>
     <title>Laisky's Blog</title>
     <meta charset="UTF-8" />
+    <meta name="referrer" content="no-referrer" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
@@ -28,6 +29,49 @@
     <link rel="api-catalog" type="application/linkset+json" href="/.well-known/api-catalog" />
     <link rel="agent-skills" type="application/json" href="/.well-known/agent-skills/index.json" />
     <link rel="mcp-server-card" type="application/json" href="/.well-known/mcp/server-card.json" />
+    <script id="failure-reporting">
+      // Error reporting starts here, not in the bundle, so a bundle that fails to load or parse can still be reported.
+      (() => {
+        const callbackParameters = [
+          'sso_token',
+          'sso_code',
+          'sso_state',
+          'sso_flow',
+          'sso_challenge',
+          'sso_challenge_method',
+          'code_verifier',
+          'sso_verifier',
+          'sso_start',
+          'sso_return',
+          'sso_issuer',
+        ];
+        const url = new URL(window.location.href);
+        const names = [...url.searchParams.keys(), ...new URLSearchParams(url.hash.slice(1)).keys()];
+        // A sign-in callback stays out of reach of the SDK; the bundle loads it after cleaning the URL.
+        if (names.some((name) => callbackParameters.includes(name.toLowerCase()))) return;
+
+        const telemetry = document.createElement('script');
+        telemetry.async = true;
+        telemetry.crossOrigin = 'anonymous';
+        telemetry.referrerPolicy = 'no-referrer';
+        telemetry.src = 'https://js.sentry-cdn.com/0a5aa56db9cb55dc305a90b5ec8a5c51.min.js';
+        document.head.append(telemetry);
+
+        // Module scripts run before the load event, so an unset flag means the bundle failed or never ran.
+        window.addEventListener(
+          'load',
+          () => {
+            if (window.__BLOG_APP_STARTED__) return;
+            window.Sentry?.captureMessage('application_bundle failed (not_started)', {
+              level: 'error',
+              tags: { blog_operation: 'application_bundle', blog_failure: 'not_started' },
+              fingerprint: ['blog-failure', 'application_bundle', 'not_started'],
+            });
+          },
+          { once: true }
+        );
+      })();
+    </script>
     <script>
       (() => {
         const modelContext = globalThis.document?.modelContext ?? globalThis.navigator?.modelContext;
@@ -42,18 +86,18 @@
             properties: {
               query: {
                 type: 'string',
-                description: 'Optional public resource need.'
-              }
+                description: 'Optional public resource need.',
+              },
             },
-            additionalProperties: false
+            additionalProperties: false,
           },
           execute: async () => ({
             resources: [
               'https://blog.laisky.com/llms.txt',
               'https://blog.laisky.com/openapi.json',
-              'https://blog.laisky.com/.well-known/mcp/server-card.json'
-            ]
-          })
+              'https://blog.laisky.com/.well-known/mcp/server-card.json',
+            ],
+          }),
         });
       })();
     </script>
@@ -137,8 +181,7 @@
                 }
               }
             ]
-          }
-          ,
+          },
           {
             "@type": "Service",
             "@id": "https://blog.laisky.com/#agent-discovery-service",
@@ -195,8 +238,9 @@
       <section style="padding: 2rem; max-width: 48rem; margin: 0 auto">
         <h1>Laisky's Blog</h1>
         <p>
-          Laisky's Blog publishes engineering notes about Go, distributed systems, security, operations, AI tooling, and production debugging.
-          Agents can use the Markdown and well-known discovery files linked from this page to understand the site without executing JavaScript.
+          Laisky's Blog publishes engineering notes about Go, distributed systems, security, operations, AI tooling, and production
+          debugging. Agents can use the Markdown and well-known discovery files linked from this page to understand the site without
+          executing JavaScript.
         </p>
         <p>
           Start with <a href="/llms.txt">llms.txt</a>, <a href="/index.md">index.md</a>, <a href="/openapi.json">OpenAPI</a>, or the
@@ -223,15 +267,16 @@
         </p>
         <h2>Laisky MCP</h2>
         <p>
-          Laisky MCP is available at <a href="https://mcp.laisky.com">https://mcp.laisky.com</a>. Use it when a task needs structured
-          access to Laisky services, blog metadata, or developer resources. The MCP discovery documents describe current transport,
-          capabilities, limitations, and expected agent behavior.
+          Laisky MCP is available at <a href="https://mcp.laisky.com">https://mcp.laisky.com</a>. Use it when a task needs structured access
+          to Laisky services, blog metadata, or developer resources. The MCP discovery documents describe current transport, capabilities,
+          limitations, and expected agent behavior.
         </p>
         <h2>Developer and source links</h2>
         <p>
           The public repository is <a href="https://github.com/Laisky/laisky-blog">github.com/Laisky/laisky-blog</a>. Agent coding
           instructions are available in <a href="https://github.com/Laisky/laisky-blog/blob/v2/AGENTS.md">AGENTS.md</a>. Public read
-          endpoints are free, versioned under <a href="/v1/resources">/v1/resources</a>, and documented in <a href="/openapi.json">OpenAPI</a>.
+          endpoints are free, versioned under <a href="/v1/resources">/v1/resources</a>, and documented in
+          <a href="/openapi.json">OpenAPI</a>.
         </p>
         <form
           hidden
@@ -252,7 +297,6 @@
       </main>
     </div>
 
-    <script async src="https://js.sentry-cdn.com/0a5aa56db9cb55dc305a90b5ec8a5c51.min.js" crossorigin="anonymous"></script>
     <script type="module" src="/src/jsx/main.jsx"></script>
   </body>
 </html>
