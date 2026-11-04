@@ -1,7 +1,6 @@
 import eslint from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
-import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 
 export default [
@@ -12,7 +11,6 @@ export default [
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     plugins: {
-      react: reactPlugin,
       'react-hooks': reactHooksPlugin,
       '@typescript-eslint': tseslint,
     },
@@ -54,13 +52,7 @@ export default [
         google: 'readonly',
       },
     },
-    settings: {
-      react: {
-        version: 'detect',
-      },
-    },
     rules: {
-      'react/react-in-jsx-scope': 'off',
       'react-hooks/rules-of-hooks': 'error',
       // Remove the 'exhaustive-deps' rule for now
       // 'react-hooks/exhaustive-deps': 'warn',
