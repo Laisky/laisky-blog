@@ -48,13 +48,42 @@ const markerKeys = (parameters) => [...parameters.keys()].filter(isSSOMarker);
  */
 const clearSSOMarkers = (parameters) => markerKeys(parameters).forEach((key) => parameters.delete(key));
 /**
+ * fragmentParameterNames lists every parameter name a standard fragment reader can see.
+ *
+ * A fragment is opaque to URL parsing, but OAuth-style fragment responses read it as form
+ * data and hash routers read it as an RFC 3986 relative reference, whose query follows the
+ * first "?" and whose nested fragment follows the first "#". Reading every "#"-delimited
+ * segment both ways covers both encodings and nested fragments in one linear pass. Names
+ * inside values stay ordinary data, matching top-level query parsing. The issuer applies
+ * the identical reading (see blog-sso-protocol.v1.json).
+ *
+ * @param {string} hash - A URL hash, including its leading "#" when present.
+ * @returns {string[]} The parameter names under both fragment readings.
+ */
+export const fragmentParameterNames = (hash) => {
+  const names = [];
+  for (const segment of hash.replace(/^#/, '').split('#')) {
+    names.push(...new URLSearchParams(segment).keys());
+    const queryStart = segment.indexOf('?');
+    if (queryStart >= 0) names.push(...new URLSearchParams(segment.slice(queryStart + 1)).keys());
+  }
+  return names;
+};
+/**
+ * fragmentMarkerKeys lists reserved protocol names visible under any fragment reading.
+ *
+ * @param {string} hash - A URL hash, including its leading "#" when present.
+ * @returns {string[]} The reserved parameter names.
+ */
+const fragmentMarkerKeys = (hash) => fragmentParameterNames(hash).filter(isSSOMarker);
+/**
  * hasSSOCallbackParameters detects authentication markers in the current callback URL.
  *
  * @returns {boolean} True when any callback marker remains visible.
  */
 export const hasSSOCallbackParameters = () => {
   const url = new URL(window.location.href);
-  return markerKeys(url.searchParams).length > 0 || markerKeys(new URLSearchParams(url.hash.slice(1))).length > 0;
+  return markerKeys(url.searchParams).length > 0 || fragmentMarkerKeys(url.hash).length > 0;
 };
 /**
  * clearSSOURLMarkers removes reserved query and fragment names while preserving ordinary fragments.
@@ -69,6 +98,10 @@ const clearSSOURLMarkers = (url) => {
     clearSSOMarkers(fragment);
     url.hash = fragment.toString();
   }
+  // Blog routes by path, so a fragment is only an anchor. A marker that survives
+  // form cleanup sits in a hash-route query or nested fragment; drop the fragment
+  // rather than guess another router's syntax.
+  if (fragmentMarkerKeys(url.hash).length > 0) url.hash = '';
 };
 
 /**
@@ -89,7 +122,7 @@ export const sanitizeRedirectPath = (redirectPath) => {
     return DefaultRedirectPath;
   try {
     const url = new URL(redirectPath, SSOCallbackURL);
-    if (url.origin !== SSOCallbackURL || [...url.searchParams.keys(), ...new URLSearchParams(url.hash.slice(1)).keys()].some(isSSOMarker)) {
+    if (url.origin !== SSOCallbackURL || [...url.searchParams.keys(), ...fragmentParameterNames(url.hash)].some(isSSOMarker)) {
       return DefaultRedirectPath;
     }
     return url.pathname + url.search + url.hash;
@@ -172,7 +205,7 @@ export const startSSOLogin = async (returnPath, issuer = 'sso') => {
 export const consumeSSOBootstrap = async () => {
   const url = new URL(window.location.href);
   if (
-    ![...markerKeys(url.searchParams), ...markerKeys(new URLSearchParams(url.hash.slice(1)))].some((key) =>
+    ![...markerKeys(url.searchParams), ...fragmentMarkerKeys(url.hash)].some((key) =>
       ['sso_start', 'sso_return', 'sso_issuer'].includes(key.toLowerCase())
     )
   )
@@ -303,7 +336,7 @@ const exchangeCode = async (code, transaction) => {
  */
 export const consumeSSOCallbackToken = async () => {
   const url = new URL(window.location.href);
-  const hashMarkers = markerKeys(new URLSearchParams(url.hash.slice(1)));
+  const hashMarkers = fragmentMarkerKeys(url.hash);
   if (markerKeys(url.searchParams).length === 0 && hashMarkers.length === 0) return false;
   const parameters = url.searchParams;
   const code = parameters.get('sso_code');

@@ -153,3 +153,31 @@ Browser references reviewed 2026-10-11:
   (issuer storage belongs to its origin; the fixed MCP entry preserves that origin).
 - https://developer.mozilla.org/en-US/docs/Web/API/History/replaceState
   (same-origin URL cleanup updates the current history entry without loading a document).
+
+## Fragment marker readings (2026-11-04)
+
+A fragment is opaque to URL parsing, but two standard readers see parameters in it:
+OAuth-style fragment responses read it as form data, and hash routers read it as an
+RFC 3986 relative reference whose query follows the first `?`. Reading only the
+whole fragment as form data treats `#/c?sso_token=x` as the single name
+`/c?sso_token`. `fragmentParameterNames` in `src/jsx/library/sso.jsx` therefore
+reads every `#`-delimited segment both ways, which also covers nested fragments.
+The return-route validator, callback and bootstrap detection, URL cleanup and the
+inline telemetry gate in `index.html` all use this reading. Names inside values
+stay ordinary data, matching top-level query parsing.
+
+Cleanup keeps the existing form-data removal unchanged. If a marker is still visible
+under either reading afterwards, the whole fragment is dropped. Blog routes by path,
+so a fragment is only an anchor and is not rewritten using another router's syntax.
+
+`src/jsx/__tests__/library/blog-sso-protocol.v1.json` is a byte-identical copy of the
+issuer's canonical `web/src/lib/blog-sso-protocol.v1.json` in Laisky/laisky-blog-graphql.
+It defines the reserved marker set, the return-route bound and the accepted or
+rejected bookmark routes that both sides must agree on. Change both copies together,
+keep them byte-identical, and bump `version` on any semantic change.
+
+References reviewed 2026-11-04:
+
+- RFC 3986 sections 3.5 and 4.2: <https://www.rfc-editor.org/rfc/rfc3986.html#section-3.5>
+- RFC 6749 section 4.2.2: <https://www.rfc-editor.org/rfc/rfc6749.html#section-4.2.2>
+- WHATWG URL application/x-www-form-urlencoded parser: <https://url.spec.whatwg.org/#concept-urlencoded-parser>

@@ -61,6 +61,24 @@ describe('inline failure reporting in index.html', () => {
     expect(telemetryScripts()).toHaveLength(0);
   });
 
+  it.each(SSOCallbackParameters)('keeps the SDK away from callback parameter %s in a hash-route query', (parameter) => {
+    window.history.replaceState({}, '', `/p/a/#/c?${parameter}=local-only`);
+    runInlineLoader();
+    expect(telemetryScripts()).toHaveLength(0);
+  });
+
+  it.each(SSOCallbackParameters)('keeps the SDK away from callback parameter %s in a nested fragment', (parameter) => {
+    window.history.replaceState({}, '', `/p/a/#/c#${parameter.toUpperCase()}=local-only`);
+    runInlineLoader();
+    expect(telemetryScripts()).toHaveLength(0);
+  });
+
+  it.each(['/p/a/#/c?view=compact', '/p/a/#intro#details'])('still loads the SDK for ordinary fragment %s', (path) => {
+    window.history.replaceState({}, '', path);
+    runInlineLoader();
+    expect(telemetryScripts()).toHaveLength(1);
+  });
+
   it('treats callback parameter names case-insensitively, as sso.jsx does', () => {
     window.history.replaceState({}, '', '/?SSO_Token=local-only');
     runInlineLoader();

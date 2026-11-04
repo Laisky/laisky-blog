@@ -46,7 +46,13 @@
           'sso_issuer',
         ];
         const url = new URL(window.location.href);
-        const names = [...url.searchParams.keys(), ...new URLSearchParams(url.hash.slice(1)).keys()];
+        const names = [...url.searchParams.keys()];
+        // Read each "#" segment as form data and as a hash-route query, as sso.jsx does.
+        for (const segment of url.hash.slice(1).split('#')) {
+          names.push(...new URLSearchParams(segment).keys());
+          const queryStart = segment.indexOf('?');
+          if (queryStart >= 0) names.push(...new URLSearchParams(segment.slice(queryStart + 1)).keys());
+        }
         // A sign-in callback stays out of reach of the SDK; the bundle loads it after cleaning the URL.
         if (names.some((name) => callbackParameters.includes(name.toLowerCase()))) return;
 
