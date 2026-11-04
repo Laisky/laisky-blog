@@ -48,42 +48,82 @@ const markerKeys = (parameters) => [...parameters.keys()].filter(isSSOMarker);
  */
 const clearSSOMarkers = (parameters) => markerKeys(parameters).forEach((key) => parameters.delete(key));
 /**
- * fragmentParameterNames lists every parameter name a standard fragment reader can see.
+ * MaxFragmentLength bounds the current page fragment, in characters after "#", that marker checks read.
+ *
+ * The query reaches the page in a request line that nginx bounds, but the browser never sends the
+ * fragment, so only the browser's own URL limit (2 MB in Chrome) applies to it. A longer fragment is
+ * not read: the checks treat it as carrying a marker and cleanup drops it, so padding cannot hide a
+ * credential and hostile input cannot make parsing exhaust the engine. The bound is eight times the
+ * 2,048-character return route, so no fragment that the blog or the issuer writes comes near it.
+ */
+export const MaxFragmentLength = 16384;
+/**
+ * someName reports whether any parameter name satisfies a predicate, stopping at the first match.
+ *
+ * It iterates instead of spreading the names into call arguments, whose count engines limit
+ * (JavaScriptCore at 65,536; V8 by stack size), so a long parameter list cannot throw.
+ *
+ * @param {URLSearchParams} parameters - The parsed parameters.
+ * @param {function(string): boolean} matches - The name predicate.
+ * @returns {boolean} True when a name matches.
+ */
+const someName = (parameters, matches) => {
+  for (const name of parameters.keys()) if (matches(name)) return true;
+  return false;
+};
+/**
+ * fragmentShowsName reports whether a standard fragment reader can see a matching parameter name.
  *
  * A fragment is opaque to URL parsing, but OAuth-style fragment responses read it as form
  * data and hash routers read it as an RFC 3986 relative reference, whose query follows the
  * first "?" and whose nested fragment follows the first "#". Reading every "#"-delimited
  * segment both ways covers both encodings and nested fragments in one linear pass. Names
  * inside values stay ordinary data, matching top-level query parsing. The issuer applies
- * the identical reading (see blog-sso-protocol.v1.json).
+ * the identical reading (see blog-sso-protocol.v1.json). The reading stops at the first match.
  *
- * @param {string} hash - A URL hash, including its leading "#" when present.
- * @returns {string[]} The parameter names under both fragment readings.
+ * @param {string} hash - A URL hash or fragment entry, including a leading "#" when present.
+ * @param {function(string): boolean} matches - The name predicate.
+ * @returns {boolean} True when a name under either reading matches.
  */
-export const fragmentParameterNames = (hash) => {
-  const names = [];
-  for (const segment of hash.replace(/^#/, '').split('#')) {
-    names.push(...new URLSearchParams(segment).keys());
-    const queryStart = segment.indexOf('?');
-    if (queryStart >= 0) names.push(...new URLSearchParams(segment.slice(queryStart + 1)).keys());
-  }
-  return names;
-};
+const fragmentShowsName = (hash, matches) =>
+  hash
+    .replace(/^#/, '')
+    .split('#')
+    .some((segment) => {
+      if (someName(new URLSearchParams(segment), matches)) return true;
+      const queryStart = segment.indexOf('?');
+      return queryStart >= 0 && someName(new URLSearchParams(segment.slice(queryStart + 1)), matches);
+    });
 /**
- * fragmentMarkerKeys lists reserved protocol names visible under any fragment reading.
+ * isOversizedFragment reports whether a fragment exceeds MaxFragmentLength and must fail closed unread.
  *
- * @param {string} hash - A URL hash, including its leading "#" when present.
- * @returns {string[]} The reserved parameter names.
+ * @param {string} hash - A URL hash or serialized fragment, including a leading "#" when present.
+ * @returns {boolean} True when the fragment is too long to read.
  */
-const fragmentMarkerKeys = (hash) => fragmentParameterNames(hash).filter(isSSOMarker);
+const isOversizedFragment = (hash) => hash.replace(/^#/, '').length > MaxFragmentLength;
+/**
+ * pageFragmentShowsMarker reports whether the current page fragment may carry a reserved name.
+ *
+ * @param {string} hash - The page URL hash, including its leading "#" when present.
+ * @param {function(string): boolean} [matches] - The reserved-name predicate; any marker by default.
+ * @returns {boolean} True for a visible match or for a fragment too long to read.
+ */
+const pageFragmentShowsMarker = (hash, matches = isSSOMarker) => isOversizedFragment(hash) || fragmentShowsName(hash, matches);
+/**
+ * isBootstrapMarker recognizes the legacy bootstrap names in any letter case.
+ *
+ * @param {string} key - A query or fragment parameter name.
+ * @returns {boolean} True for sso_start, sso_return or sso_issuer.
+ */
+const isBootstrapMarker = (key) => ['sso_start', 'sso_return', 'sso_issuer'].includes(key.toLowerCase());
 /**
  * hasSSOCallbackParameters detects authentication markers in the current callback URL.
  *
- * @returns {boolean} True when any callback marker remains visible.
+ * @returns {boolean} True when any callback marker remains visible, or the fragment is too long to read.
  */
 export const hasSSOCallbackParameters = () => {
   const url = new URL(window.location.href);
-  return markerKeys(url.searchParams).length > 0 || fragmentMarkerKeys(url.hash).length > 0;
+  return someName(url.searchParams, isSSOMarker) || pageFragmentShowsMarker(url.hash);
 };
 /**
  * clearSSOURLMarkers removes reserved query names and every fragment entry that shows one.
@@ -95,18 +135,26 @@ export const hasSSOCallbackParameters = () => {
  * another entry's value such as "note=x?sso_token=...". Checking only the re-encoded result
  * would miss it, since serialization percent-encodes the "?" or "#" that exposed it. Kept
  * entries serialize exactly as before, and a fragment without markers is left untouched.
+ * A fragment too long to read, before or after serialization, is dropped whole, so the
+ * cleaned URL never fails the bounded checks again.
  *
  * @param {URL} url - The mutable callback URL.
  * @returns {void} No return value.
  */
 const clearSSOURLMarkers = (url) => {
   clearSSOMarkers(url.searchParams);
-  if (fragmentMarkerKeys(url.hash).length === 0) return;
+  if (!pageFragmentShowsMarker(url.hash)) return;
+  if (isOversizedFragment(url.hash)) {
+    url.hash = '';
+    return;
+  }
   // Frame entries as the form parser does: one leading "?" is dropped, then "&" splits.
   const entries = url.hash.slice(1).replace(/^\?/, '').split('&');
-  const kept = entries.filter((entry) => fragmentMarkerKeys(entry).length === 0);
+  const kept = entries.filter((entry) => !fragmentShowsName(entry, isSSOMarker));
   // The leading "&" stops the constructor from dropping a "?" that starts a kept entry.
-  url.hash = new URLSearchParams(`&${kept.join('&')}`).toString();
+  const cleaned = new URLSearchParams(`&${kept.join('&')}`).toString();
+  // Serialization percent-encodes kept text, which can grow it past the bound.
+  url.hash = isOversizedFragment(cleaned) ? '' : cleaned;
 };
 
 /**
@@ -127,7 +175,8 @@ export const sanitizeRedirectPath = (redirectPath) => {
     return DefaultRedirectPath;
   try {
     const url = new URL(redirectPath, SSOCallbackURL);
-    if (url.origin !== SSOCallbackURL || [...url.searchParams.keys(), ...fragmentParameterNames(url.hash)].some(isSSOMarker)) {
+    // The 2,048-character route bound already limits this reading, which must match the issuer's exactly.
+    if (url.origin !== SSOCallbackURL || someName(url.searchParams, isSSOMarker) || fragmentShowsName(url.hash, isSSOMarker)) {
       return DefaultRedirectPath;
     }
     return url.pathname + url.search + url.hash;
@@ -209,12 +258,7 @@ export const startSSOLogin = async (returnPath, issuer = 'sso') => {
  */
 export const consumeSSOBootstrap = async () => {
   const url = new URL(window.location.href);
-  if (
-    ![...markerKeys(url.searchParams), ...fragmentMarkerKeys(url.hash)].some((key) =>
-      ['sso_start', 'sso_return', 'sso_issuer'].includes(key.toLowerCase())
-    )
-  )
-    return false;
+  if (!someName(url.searchParams, isBootstrapMarker) && !pageFragmentShowsMarker(url.hash, isBootstrapMarker)) return false;
   const parameters = url.searchParams;
   const returnPath = parameters.get('sso_return');
   const issuer = parameters.get('sso_issuer') ?? 'sso';
@@ -341,8 +385,8 @@ const exchangeCode = async (code, transaction) => {
  */
 export const consumeSSOCallbackToken = async () => {
   const url = new URL(window.location.href);
-  const hashMarkers = fragmentMarkerKeys(url.hash);
-  if (markerKeys(url.searchParams).length === 0 && hashMarkers.length === 0) return false;
+  const fragmentShowsMarker = pageFragmentShowsMarker(url.hash);
+  if (!someName(url.searchParams, isSSOMarker) && !fragmentShowsMarker) return false;
   const parameters = url.searchParams;
   const code = parameters.get('sso_code');
   const state = parameters.get('sso_state');
@@ -354,7 +398,7 @@ export const consumeSSOCallbackToken = async () => {
     RandomValuePattern.test(code || '') &&
     RandomValuePattern.test(state || '') &&
     markerKeys(parameters).every((key) => ['sso_code', 'sso_state'].includes(key)) &&
-    hashMarkers.length === 0;
+    !fragmentShowsMarker;
   clearSSOURLMarkers(url);
   const cleanURL = url.pathname + url.search + url.hash;
   window.history.replaceState({}, document.title, cleanURL);

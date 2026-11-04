@@ -41,6 +41,7 @@ try {
     'legacy-alias',
     'legacy-hash',
     'hidden-hash',
+    'large-hash',
     'mixed-hash',
     'wrong-state',
     'expired',
@@ -166,6 +167,9 @@ try {
     } else if (mode === 'hidden-hash') {
       // Form cleanup keeps "note"; its value hides a hash-route query marker.
       await page.goto('https://blog.laisky.com/#note=x?sso_token=LOCAL_ONLY_BEARER_CANARY&sso_code=old');
+    } else if (mode === 'large-hash') {
+      // 200,000 ordinary entries (800 KB) once made the fragment readings throw; a bearer follows them.
+      await page.goto('https://blog.laisky.com/#' + 'x=1&'.repeat(200000) + 'sso_token=LOCAL_ONLY_BEARER_CANARY');
     } else if (mode === 'legacy' || mode === 'legacy-alias') {
       await page.goto('https://blog.laisky.com/?' + (mode === 'legacy-alias' ? 'SSO_TOKEN' : 'sso_token') + '=LOCAL_ONLY_BEARER_CANARY');
     } else if (mode === 'bootstrap-unsafe') {

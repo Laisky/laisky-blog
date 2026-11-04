@@ -160,7 +160,7 @@ A fragment is opaque to URL parsing, but two standard readers see parameters in 
 OAuth-style fragment responses read it as form data, and hash routers read it as an
 RFC 3986 relative reference whose query follows the first `?`. Reading only the
 whole fragment as form data treats `#/c?sso_token=x` as the single name
-`/c?sso_token`. `fragmentParameterNames` in `src/jsx/library/sso.jsx` therefore
+`/c?sso_token`. `fragmentShowsName` in `src/jsx/library/sso.jsx` therefore
 reads every `#`-delimited segment both ways, which also covers nested fragments.
 The return-route validator, callback and bootstrap detection, URL cleanup and the
 inline telemetry gate in `index.html` all use this reading. Names inside values
@@ -182,6 +182,35 @@ constructor, which drops one more leading `?`. `#??sso_token` is therefore treat
 marker. The issuer's helper does the same, so both sides agree. The extra match can only
 reject a route or drop an entry; it never accepts a marker.
 
+The checks iterate over parameter names and stop at the first match. They never spread
+names into call arguments: engines limit the argument count (JavaScriptCore at 65,536, V8
+by stack size), and an 800 KB fragment of `x=1` entries made the earlier spread-based
+reading throw `RangeError` in Chrome. The page then never mounted, and a padded bearer
+stayed in the URL.
+
+The current page fragment is also bounded. The query reaches the page in a request line
+that nginx bounds, but the browser never sends the fragment, so only the browser's own
+URL limit (2 MB in Chrome) applies to it. A fragment longer than `MaxFragmentLength`
+(16,384 characters after `#`) is not read; it fails closed:
+
+- callback and bootstrap detection and the inline telemetry gate treat it as carrying a
+  marker, so padding cannot push a credential past the checks;
+- cleanup drops the whole fragment, and also drops a cleaned fragment whose serialization
+  grows past the bound, so the cleaned URL always passes the checks again;
+- the visit is then handled like any rejected callback: no exchange, an inline sign-in
+  error, and the application mounts on the clean URL.
+
+The bound is eight times the 2,048-character return route, so no fragment that the blog
+or the issuer writes comes near it; fragments up to the bound are read exactly as before.
+The return-route validator applies the shared reading without this bound, because its
+own 2,048-character route bound applies first. The bound is consumer-side, so the shared
+contract and its version do not change. `index.html` repeats the constant, and
+`inlineTelemetry.test.js` pins it to `MaxFragmentLength` and checks that the inline gate
+and the bundle agree on every fragment of up to four pieces.
+`src/jsx/__tests__/library/ssoFragmentBounds.test.jsx` keeps the 800 KB cases, the
+boundary and the serialization-growth case, and `scripts/security/sso-built-browser.mjs`
+runs the padded bearer in Chrome as the `large-hash` mode.
+
 `src/jsx/__tests__/library/ssoFragmentCleanup.test.jsx` runs cleanup on every fragment of
 up to five pieces drawn from names, a value and the `?`, `#` and `&` delimiters. Its
 oracle reads fragments with the WHATWG URL parser plus this conservative reading, and
@@ -202,3 +231,7 @@ References reviewed 2026-11-04:
 - WHATWG URL application/x-www-form-urlencoded parser: <https://url.spec.whatwg.org/#concept-urlencoded-parser>
   (splits on `&` and skips empty sequences; the `URLSearchParams` string constructor first
   drops one leading `?`, per the Living Standard updated 19 October 2026).
+- MDN, Function.prototype.apply (argument length limit, JavaScriptCore at 65,536):
+  <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply>
+- Chromium URL display guidelines (2 MB URL limit):
+  <https://chromium.googlesource.com/chromium/src/+/main/docs/security/url_display_guidelines/url_display_guidelines.md>

@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { SSOCallbackParameters } from '../../library/sso';
+import { hasSSOCallbackParameters, MaxFragmentLength, SSOCallbackParameters } from '../../library/sso';
 import { initializeOptionalTelemetry, TelemetryLoaderURL } from '../../library/telemetry';
 
 vi.mock('@laisky/js-utils', () => ({ default: { KvSet: vi.fn(), KvGet: vi.fn(), KvDel: vi.fn() } }));
@@ -77,6 +77,61 @@ describe('inline failure reporting in index.html', () => {
     window.history.replaceState({}, '', path);
     runInlineLoader();
     expect(telemetryScripts()).toHaveLength(1);
+  });
+
+  it.each([
+    ['a marker-free fragment', Array(200000).fill('x=1').join('&')],
+    ['a marker hidden after the padding', `${Array(200000).fill('x=1').join('&')}&sso_token=local-only`],
+  ])(
+    'keeps the SDK away from an oversized fragment, %s, without throwing',
+    (_name, fragment) => {
+      window.history.replaceState({}, '', `/p/a/#${fragment}`);
+      expect(runInlineLoader).not.toThrow();
+      expect(telemetryScripts()).toHaveLength(0);
+    },
+    // jsdom parses the 800 KB URL in JavaScript, so this case gets more than the default 5 s.
+    30000
+  );
+
+  it('reads a marker-free fragment of exactly the bound sso.jsx uses, and fails closed one character past it', () => {
+    window.history.replaceState({}, '', `/p/a/#${'x'.repeat(MaxFragmentLength)}`);
+    runInlineLoader();
+    expect(telemetryScripts()).toHaveLength(1);
+    telemetryScripts().forEach((script) => script.remove());
+    window.history.replaceState({}, '', `/p/a/#${'x'.repeat(MaxFragmentLength + 1)}`);
+    runInlineLoader();
+    expect(telemetryScripts()).toHaveLength(0);
+  });
+
+  it('finds a callback parameter after thousands of ordinary fragment entries', () => {
+    window.history.replaceState({}, '', `/p/a/#${Array(3000).fill('x=1').join('&')}&SSO_TOKEN=local-only`);
+    runInlineLoader();
+    expect(telemetryScripts()).toHaveLength(0);
+  });
+
+  it('agrees with the bundle on every short fragment of names, markers, values and delimiters', () => {
+    const pieces = ['n', 'sso_token', 'SSO%5Fcode', '=v', '?', '#', '&'];
+    let layer = [''];
+    let fragments = [];
+    for (let length = 1; length <= 4; length += 1) {
+      layer = layer.flatMap((prefix) => pieces.map((piece) => prefix + piece));
+      fragments = fragments.concat(layer);
+    }
+    const verdicts = fragments.map((fragment) => {
+      window.history.replaceState({}, '', `/p/a/#${fragment}`);
+      runInlineLoader();
+      const loaded = telemetryScripts().length === 1;
+      telemetryScripts().forEach((script) => script.remove());
+      window.dispatchEvent(new window.Event('load'));
+      return { fragment, loaded, detected: hasSSOCallbackParameters() };
+    });
+    expect(verdicts).toHaveLength(2800);
+    expect(verdicts.filter(({ loaded, detected }) => loaded === detected).slice(0, 10)).toEqual([]);
+    // Positive controls: the corpus reaches both outcomes, including markers only a hash-route query shows.
+    expect(verdicts.filter(({ loaded }) => loaded).length).toBeGreaterThan(500);
+    expect(verdicts.filter(({ loaded }) => !loaded).length).toBeGreaterThan(500);
+    expect(verdicts.find(({ fragment }) => fragment === 'n?sso_token').loaded).toBe(false);
+    expect(verdicts.find(({ fragment }) => fragment === 'n=v?n').loaded).toBe(true);
   });
 
   it('treats callback parameter names case-insensitively, as sso.jsx does', () => {
