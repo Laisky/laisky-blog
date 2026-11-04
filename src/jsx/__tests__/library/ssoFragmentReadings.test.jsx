@@ -88,6 +88,12 @@ describe('hash-route and nested-fragment markers on the current URL', () => {
     ['/p/a/?view=compact#/c?sso_token=SYNTHETIC_CANARY', '/p/a/?view=compact'],
     ['/p/a/#/a#SSO_CODE=SYNTHETIC_CANARY', '/p/a/'],
     ['/p/a/?sso_token=SYNTHETIC_CANARY#/c?sso_code=SYNTHETIC_CANARY', '/p/a/'],
+    // A marker hidden in the value of an entry that form cleanup keeps must not survive re-encoding.
+    ['/p/a/#note=foo?sso_token=SYNTHETIC_CANARY&sso_code=old', '/p/a/'],
+    ['/p/a/#note=foo#sso_token=SYNTHETIC_CANARY&sso_code=old', '/p/a/'],
+    ['/p/a/#sso_code=old&?sso_token=SYNTHETIC_CANARY', '/p/a/'],
+    ['/p/a/#section=intro&#sso_token=SYNTHETIC_CANARY&sso_code=old', '/p/a/#section=intro'],
+    ['/p/a/#section=intro&note=foo?SSO%5FTOKEN=SYNTHETIC_CANARY&sso_state=old', '/p/a/#section=intro'],
   ])('cleans %s from history before rejecting without exchange', async (path, cleaned) => {
     window.history.replaceState({}, '', path);
     const replaceState = vi.spyOn(window.history, 'replaceState');
@@ -102,6 +108,16 @@ describe('hash-route and nested-fragment markers on the current URL', () => {
     expect(globalThis.fetch).not.toHaveBeenCalled();
   });
 
+  test.each(['#/c?view=compact', '#intro#details', '#note=foo%3Fsso_token%3Dx&section=intro'])(
+    'keeps ordinary fragment %s byte-identical while cleaning a query callback',
+    async (hash) => {
+      window.history.replaceState({}, '', `/p/a/?sso_token=SYNTHETIC_CANARY${hash}`);
+      await expect(consumeSSOCallbackToken()).rejects.toThrow('Sign-in could not');
+      expect(window.location.search).toBe('');
+      expect(window.location.hash).toBe(hash);
+    }
+  );
+
   test('keeps the existing whole-form fragment cleanup output unchanged', async () => {
     window.history.replaceState({}, '', '/p/a/#section=intro&sso_token=SYNTHETIC_CANARY');
     await expect(consumeSSOCallbackToken()).rejects.toThrow('Sign-in could not');
@@ -114,6 +130,16 @@ describe('hash-route and nested-fragment markers on the current URL', () => {
     await expect(consumeSSOBootstrap()).rejects.toThrow('Sign-in could not');
     expect(window.location.hash).toBe('');
     expect(window.sessionStorage.getItem(KvKeySSOTransaction)).toBeNull();
+    expect(globalThis.fetch).not.toHaveBeenCalled();
+  });
+
+  test('cleans a bootstrap marker without keeping a credential hidden in another fragment entry', async () => {
+    window.history.replaceState({}, '', '/#note=x?sso_token=SYNTHETIC_CANARY&sso_start=1');
+    const replaceState = vi.spyOn(window.history, 'replaceState');
+    await expect(consumeSSOBootstrap()).rejects.toThrow('Sign-in could not');
+    expect(window.location.hash).toBe('');
+    expect(replaceState).toHaveBeenCalledOnce();
+    expect(JSON.stringify(replaceState.mock.calls)).not.toContain('SYNTHETIC_CANARY');
     expect(globalThis.fetch).not.toHaveBeenCalled();
   });
 });

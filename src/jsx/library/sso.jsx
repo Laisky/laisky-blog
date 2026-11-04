@@ -86,22 +86,27 @@ export const hasSSOCallbackParameters = () => {
   return markerKeys(url.searchParams).length > 0 || fragmentMarkerKeys(url.hash).length > 0;
 };
 /**
- * clearSSOURLMarkers removes reserved query and fragment names while preserving ordinary fragments.
+ * clearSSOURLMarkers removes reserved query names and every fragment entry that shows one.
+ *
+ * Fragment cleanup works on the "&"-separated form entries that the form-data cleanup always
+ * removed. Under either fragment reading, a marker and its value lie inside a single entry,
+ * because "&" ends a parameter in both readings. Dropping each entry whose own text shows a
+ * marker under either reading therefore removes every marker value, including one hidden in
+ * another entry's value such as "note=x?sso_token=...". Checking only the re-encoded result
+ * would miss it, since serialization percent-encodes the "?" or "#" that exposed it. Kept
+ * entries serialize exactly as before, and a fragment without markers is left untouched.
  *
  * @param {URL} url - The mutable callback URL.
  * @returns {void} No return value.
  */
 const clearSSOURLMarkers = (url) => {
   clearSSOMarkers(url.searchParams);
-  const fragment = new URLSearchParams(url.hash.slice(1));
-  if (markerKeys(fragment).length > 0) {
-    clearSSOMarkers(fragment);
-    url.hash = fragment.toString();
-  }
-  // Blog routes by path, so a fragment is only an anchor. A marker that survives
-  // form cleanup sits in a hash-route query or nested fragment; drop the fragment
-  // rather than guess another router's syntax.
-  if (fragmentMarkerKeys(url.hash).length > 0) url.hash = '';
+  if (fragmentMarkerKeys(url.hash).length === 0) return;
+  // Frame entries as the form parser does: one leading "?" is dropped, then "&" splits.
+  const entries = url.hash.slice(1).replace(/^\?/, '').split('&');
+  const kept = entries.filter((entry) => fragmentMarkerKeys(entry).length === 0);
+  // The leading "&" stops the constructor from dropping a "?" that starts a kept entry.
+  url.hash = new URLSearchParams(`&${kept.join('&')}`).toString();
 };
 
 /**

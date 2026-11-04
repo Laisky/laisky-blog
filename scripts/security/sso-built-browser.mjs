@@ -40,6 +40,7 @@ try {
     'legacy',
     'legacy-alias',
     'legacy-hash',
+    'hidden-hash',
     'mixed-hash',
     'wrong-state',
     'expired',
@@ -162,6 +163,9 @@ try {
     page.on('pageerror', (error) => errors.push(error.message));
     if (mode === 'legacy-hash') {
       await page.goto('https://blog.laisky.com/#SSO_TOKEN=LOCAL_ONLY_BEARER_CANARY');
+    } else if (mode === 'hidden-hash') {
+      // Form cleanup keeps "note"; its value hides a hash-route query marker.
+      await page.goto('https://blog.laisky.com/#note=x?sso_token=LOCAL_ONLY_BEARER_CANARY&sso_code=old');
     } else if (mode === 'legacy' || mode === 'legacy-alias') {
       await page.goto('https://blog.laisky.com/?' + (mode === 'legacy-alias' ? 'SSO_TOKEN' : 'sso_token') + '=LOCAL_ONLY_BEARER_CANARY');
     } else if (mode === 'bootstrap-unsafe') {
@@ -230,6 +234,7 @@ try {
       );
     } else {
       assert.equal(await page.evaluate(() => window.sessionStorage.getItem('sso_code_transaction')), null);
+      assert.equal(page.url().includes('LOCAL_ONLY_BEARER_CANARY'), false, 'A rejected bearer must not stay in the URL');
       assert.equal(
         /sso_(?:token|code|state|flow|challenge|verifier|start|return|issuer)|code_verifier/i.test(
           new URL(page.url()).search + new URL(page.url()).hash

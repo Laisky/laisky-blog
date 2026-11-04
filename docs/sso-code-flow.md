@@ -166,9 +166,28 @@ The return-route validator, callback and bootstrap detection, URL cleanup and th
 inline telemetry gate in `index.html` all use this reading. Names inside values
 stay ordinary data, matching top-level query parsing.
 
-Cleanup keeps the existing form-data removal unchanged. If a marker is still visible
-under either reading afterwards, the whole fragment is dropped. Blog routes by path,
-so a fragment is only an anchor and is not rewritten using another router's syntax.
+Cleanup removes whole form entries, the `&`-separated units that the earlier form-data
+cleanup already removed. A fragment that shows no marker under either reading is left
+byte-identical. Otherwise every entry whose own text shows a marker under either reading
+is dropped, and the kept entries are serialized exactly as before; a fragment without
+`?` or `#` therefore cleans to the same output as the form-data-only rule. Because `&`
+ends a parameter in both readings, each marker and its value lie inside one entry, so
+none of them survives. Checking only the re-encoded fragment is not enough: in
+`#note=x?sso_token=secret&sso_code=old`, form cleanup keeps `note`, and serialization
+percent-encodes the `?` that exposed `sso_token`, so the secret would stay in history
+while every reading reported the fragment clean.
+
+The query reading passes the text after the first `?` to the `URLSearchParams`
+constructor, which drops one more leading `?`. `#??sso_token` is therefore treated as a
+marker. The issuer's helper does the same, so both sides agree. The extra match can only
+reject a route or drop an entry; it never accepts a marker.
+
+`src/jsx/__tests__/library/ssoFragmentCleanup.test.jsx` runs cleanup on every fragment of
+up to five pieces drawn from names, a value and the `?`, `#` and `&` delimiters. Its
+oracle reads fragments with the WHATWG URL parser plus this conservative reading, and
+checks four rules: no marker or marker value survives, ordinary fragments stay
+byte-identical, fragments without `?` or `#` clean exactly as the form-data-only rule
+did, and cleanup only removes entries, never rewrites them.
 
 `src/jsx/__tests__/library/blog-sso-protocol.v1.json` is a byte-identical copy of the
 issuer's canonical `web/src/lib/blog-sso-protocol.v1.json` in Laisky/laisky-blog-graphql.
@@ -181,3 +200,5 @@ References reviewed 2026-11-04:
 - RFC 3986 sections 3.5 and 4.2: <https://www.rfc-editor.org/rfc/rfc3986.html#section-3.5>
 - RFC 6749 section 4.2.2: <https://www.rfc-editor.org/rfc/rfc6749.html#section-4.2.2>
 - WHATWG URL application/x-www-form-urlencoded parser: <https://url.spec.whatwg.org/#concept-urlencoded-parser>
+  (splits on `&` and skips empty sequences; the `URLSearchParams` string constructor first
+  drops one leading `?`, per the Living Standard updated 19 October 2026).
