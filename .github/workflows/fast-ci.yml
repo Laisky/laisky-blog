@@ -51,6 +51,7 @@ jobs:
         run: node --test .scripts/test_fast_ci.mjs .scripts/test_blog_regressions.mjs .scripts/test_dependency_repair.mjs .scripts/test_circleci_base.mjs
       - name: Verify scoped release failure controls
         run: |
+          python3 -m unittest discover -s .scripts -p test_verify_private_maps.py -v
           python3 -m unittest discover -s .scripts -p test_deploy_blog.py -v
           python3 -m unittest discover -s .scripts -p test_circleci_checkout.py -v
       - name: Frozen setup, changed-file formatting and essential units
