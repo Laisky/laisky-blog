@@ -1,6 +1,7 @@
 """Exercise private source-map isolation and byte-identity checks."""
 
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 import tempfile
@@ -36,7 +37,7 @@ class VerifyPrivateMapsTest(unittest.TestCase):
     def test_matching_builds(self):
         """Accept matching scripts and return hashes without map contents."""
         result = self.check()
-        self.assertEqual(result[0]['asset'], 'app.js')
+        self.assertEqual(result[0]['asset_path_sha256'], hashlib.sha256(b'app.js').hexdigest())
         self.assertEqual(len(result[0]['sha256']), 64)
         self.assertNotIn('sources', json.dumps(result))
 
@@ -44,11 +45,21 @@ class VerifyPrivateMapsTest(unittest.TestCase):
         """Keep synthetic source contents out of the hash-only manifest."""
         canaries = ['query=TOKEN', 'cookie', 'account', 'user', 'ip', 'request body', 'response body', 'DOM', 'storage']
         (self.private / 'app.js.map').write_text(json.dumps({
-            'version': 3, 'sources': ['src/app.js'], 'mappings': 'AAAA', 'sourcesContent': canaries
+            'version': 3, 'sources': ['src/app.js'], 'mappings': 'AAAA', 'sourcesContent': [' '.join(canaries)]
         }))
         output = json.dumps(self.check())
         for canary in canaries:
             self.assertNotIn(canary, output)
+
+    def test_manifest_hides_asset_filename(self):
+        """Hash file paths so attacker-controlled names do not appear in the output."""
+        canary = 'TOKEN_COOKIE_ACCOUNT_USER_IP_BODY_DOM_STORAGE'
+        (self.public / (canary + '.js')).write_text('export {}')
+        (self.private / (canary + '.js')).write_text('export {}')
+        (self.private / (canary + '.js.map')).write_text(json.dumps({
+            'version': 3, 'sources': ['source'], 'mappings': 'AAAA'
+        }))
+        self.assertNotIn(canary, json.dumps(self.check()))
 
     def test_reject_mismatched_bytes(self):
         """Reject an independently generated build with different script bytes."""
@@ -78,13 +89,28 @@ class VerifyPrivateMapsTest(unittest.TestCase):
         """Record mapless scripts explicitly while still comparing their bytes."""
         (self.public / 'wrapper.js').write_text('export {}')
         (self.private / 'wrapper.js').write_text('export {}')
-        self.assertIsNone(self.check()[1]['map_sha256'])
+        with self.assertRaisesRegex(ValueError, 'unqualified mapless'):
+            self.check()
+        qualified = {'wrapper.js': hashlib.sha256(b'export {}').hexdigest()}
+        result = module.verify(self.public, self.private, self.repo, qualified)
+        self.assertIsNone(result[1]['map_sha256'])
+        (self.private / 'wrapper.js').write_text('unmapped executable')
+        (self.public / 'wrapper.js').write_text('unmapped executable')
+        with self.assertRaisesRegex(ValueError, 'unqualified mapless'):
+            module.verify(self.public, self.private, self.repo, qualified)
 
     def test_reject_invalid_map(self):
         """Reject a map that lacks source positions."""
-        (self.private / 'app.js.map').write_text('{"version":3,"sources":[],"mappings":""}')
-        with self.assertRaisesRegex(ValueError, 'invalid or empty'):
-            self.check()
+        for value in [
+            {'version': 3, 'sources': [], 'mappings': ''},
+            {'version': 3, 'sources': [1], 'mappings': 'AAAA'},
+            {'version': 3, 'sources': ['app.js'], 'mappings': 1},
+            {'version': 3, 'sources': ['app.js'], 'mappings': '%%%invalid'},
+            {'version': 3, 'sources': ['app.js'], 'mappings': 'AAAA', 'sourcesContent': []},
+        ]:
+            (self.private / 'app.js.map').write_text(json.dumps(value))
+            with self.assertRaisesRegex(ValueError, 'invalid or empty'):
+                self.check()
 
 
 if __name__ == '__main__':

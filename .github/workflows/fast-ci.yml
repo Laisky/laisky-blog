@@ -52,6 +52,7 @@ jobs:
       - name: Verify scoped release failure controls
         run: |
           python3 -m unittest discover -s .scripts -p test_verify_private_maps.py -v
+          python3 -m unittest discover -s .scripts -p test_create_offline_sentry_config.py -v
           python3 -m unittest discover -s .scripts -p test_deploy_blog.py -v
           python3 -m unittest discover -s .scripts -p test_circleci_checkout.py -v
       - name: Frozen setup, changed-file formatting and essential units
