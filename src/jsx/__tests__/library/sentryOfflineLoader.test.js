@@ -22,7 +22,11 @@ const scripts = () => [...document.querySelectorAll('script[src*="sentry-cdn"]')
 
 beforeEach(() => {
   window.history.replaceState({}, '', '/');
-  window.Sentry = { init: vi.fn(), captureMessage: vi.fn() };
+  window.Sentry = {
+    init: vi.fn(),
+    captureMessage: vi.fn(),
+    makeFetchTransport: vi.fn(() => ({ send: vi.fn(), flush: vi.fn() })),
+  };
   installOfflineSentryAdapter(window, config);
 });
 

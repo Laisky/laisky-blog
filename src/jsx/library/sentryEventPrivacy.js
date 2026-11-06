@@ -71,8 +71,46 @@ export const sanitizeSentryEvent = (event, config) => {
 };
 
 /**
+ * makeGuardedTransport wraps an SDK transport and forwards only reconstructed error event envelope items.
+ *
+ * @param {Function} factory - The SDK transport factory.
+ * @param {object} options - The transport options supplied by the SDK.
+ * @param {object} config - The validated build identity and asset list.
+ * @returns {object} An SDK-compatible transport that delegates flushing.
+ */
+const makeGuardedTransport = (factory, options, config) => {
+  const underlying = factory(options);
+  if (typeof underlying?.send !== 'function' || typeof underlying?.flush !== 'function') {
+    throw new Error('Invalid SDK transport');
+  }
+  return {
+    send: (envelope) => {
+      if (!Array.isArray(envelope) || !Array.isArray(envelope[1])) return Promise.resolve();
+      const items = envelope[1]
+        .filter(
+          (item) =>
+            Array.isArray(item) &&
+            item[0]?.type === 'event' &&
+            item[1] &&
+            typeof item[1] === 'object' &&
+            !Array.isArray(item[1]) &&
+            (item[1].type === undefined || item[1].type === 'event' || item[1].type === 'error')
+        )
+        .map((item) => [{ type: 'event' }, sanitizeSentryEvent(item[1], config)]);
+      if (!items.length) return Promise.resolve();
+      const headers = {};
+      if (typeof envelope[0]?.event_id === 'string' && /^[0-9a-f]{32}$/.test(envelope[0].event_id)) {
+        headers.event_id = envelope[0].event_id;
+      }
+      return underlying.send([headers, items]);
+    },
+    flush: (timeout) => underlying.flush(timeout),
+  };
+};
+
+/**
  * createOfflineSentryAdapter validates explicit local configuration and builds an opt-in loader callback.
- * This covers error events processed by beforeSend only, not transactions, replays, sessions or attachments.
+ * Its guarded transport only forwards sanitized error events; other envelope items are discarded.
  *
  * @param {object} input - Trusted commit SHA, manifest digest, environment, origin and generated asset paths.
  * @returns {Function} A callback for assignment to window.sentryOnLoad before adding the loader.
@@ -110,11 +148,19 @@ export const createOfflineSentryAdapter = (input) => {
     assets: new Set(input.assets),
   };
   return (sentry) => {
+    const transportFactory = sentry?.makeFetchTransport || sentry?.makeXHRTransport;
+    if (typeof transportFactory !== 'function') throw new Error('Missing SDK transport factory');
     sentry.init({
       release: config.release,
       environment: config.environment,
       sendDefaultPii: false,
+      autoSessionTracking: false,
+      sendClientReports: false,
+      tracesSampleRate: 0,
+      replaysSessionSampleRate: 0,
+      replaysOnErrorSampleRate: 0,
       beforeSend: (event) => sanitizeSentryEvent(event, config),
+      transport: (options) => makeGuardedTransport(transportFactory, options, config),
     });
   };
 };
