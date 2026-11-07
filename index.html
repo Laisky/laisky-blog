@@ -45,10 +45,25 @@
           'sso_return',
           'sso_issuer',
         ];
+        // showsCallbackParameter reports whether form-encoded text names a callback parameter, stopping at the
+        // first match; iterating, not spreading names into call arguments, keeps long lists from throwing.
+        const showsCallbackParameter = (text) => {
+          for (const name of new URLSearchParams(text).keys()) if (callbackParameters.includes(name.toLowerCase())) return true;
+          return false;
+        };
         const url = new URL(window.location.href);
-        const names = [...url.searchParams.keys(), ...new URLSearchParams(url.hash.slice(1)).keys()];
+        const fragment = url.hash.slice(1);
+        // Read each "#" segment as form data and as a hash-route query, as sso.jsx does. Like
+        // sso.jsx (MaxFragmentLength), treat a fragment over 16384 characters as a callback, unread.
+        const isCallback =
+          showsCallbackParameter(url.search) ||
+          fragment.length > 16384 ||
+          fragment.split('#').some((segment) => {
+            const queryStart = segment.indexOf('?');
+            return showsCallbackParameter(segment) || (queryStart >= 0 && showsCallbackParameter(segment.slice(queryStart + 1)));
+          });
         // A sign-in callback stays out of reach of the SDK; the bundle loads it after cleaning the URL.
-        if (names.some((name) => callbackParameters.includes(name.toLowerCase()))) return;
+        if (isCallback) return;
 
         const telemetry = document.createElement('script');
         telemetry.async = true;
